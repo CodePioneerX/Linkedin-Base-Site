@@ -4,6 +4,13 @@
 
 ## Getting started
 
+### Creating a virtual env using Anaconda **optional**
+#####  `conda create -n soen python=3.9`
+##### theb press y
+#####  `conda activate soen`
+
+
+
 ### Clone the repo
 ###### `git clone https://github.com/haris2055/SOEN390.git`
 ###### `cd SOEN390/frontend`
