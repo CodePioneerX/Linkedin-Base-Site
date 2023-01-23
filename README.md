@@ -2,6 +2,27 @@
 
 ## Summary
 
+## Getting started
+
+### Clone the repo
+###### `git clone https://github.com/haris2055/SOEN390.git`
+###### `cd SOEN390/frontend`
+
+### Install npm dependencies
+###### `npm install`
+
+### Start React dev server
+###### `npm start`
+
+### Start React dev server
+from another terminal
+###### `cd SOEN390/backend`
+###### `pip install -r requirements.txt`
+
+### Start Django server
+###### `python manage.py runserver`
+
+
 ## Core Features
 
 ## Team Members
