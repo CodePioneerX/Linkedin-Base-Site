@@ -23,7 +23,7 @@ function LoginPage() {
       
       <Button className='loginButton'>Submit</Button>
      
-      <p className='loginP'>New to Connection? 
+      <p className='loginP'>New to Connect? 
       <a href='#'> Register</a>
       </p>
     </Form>
