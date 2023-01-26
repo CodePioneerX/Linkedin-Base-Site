@@ -16,7 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from workshare.views import ProfileView, ProfileCreateView
+from django.conf import settings
+from django.conf.urls.static import static
 from workshare import views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 router = routers.DefaultRouter()
 router.register(r'workshares', views.WorkShareView, 'workshare')
@@ -24,4 +28,9 @@ router.register(r'workshares', views.WorkShareView, 'workshare')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-]
+    path('api/profile/<int:pk>', ProfileView.as_view(), name='profile_detail'),
+    path('api/profile/', ProfileCreateView.as_view(), name='profile_create'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+urlpatterns += staticfiles_urlpatterns()

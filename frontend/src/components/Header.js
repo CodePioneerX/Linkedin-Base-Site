@@ -60,7 +60,7 @@ export default class Header extends Component {
                     to={"/myNetwork"}
                     style={{ paddingRight: "50px" }}
                   >
-                    My Network
+                    Network
                   </Nav.Link>
                   <Nav.Link
                     as={Link}
