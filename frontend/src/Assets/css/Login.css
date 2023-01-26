@@ -1,0 +1,75 @@
+.formBackground{
+    background-color: #44599d;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+    }
+  
+  .form{
+    background-color: white;
+    padding: 20px 60px ;
+    border-radius: 10px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .logo{
+    color: #47449f;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  img{
+    height: 50px;
+  }
+
+  .title{
+    color: #5d5b8d;
+    font-size: 24px;
+  }
+  
+  
+  label{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #391aa1;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  
+  input{
+    padding: 15px;
+    border: none;
+    width: 250px;
+    border-bottom: 1px solid #a7bcff;   
+  }
+
+  #userEmail::placeholder{
+        color: rgb(199, 213, 224);
+    }
+  
+  #userPassword::placeholder{
+      color: rgb(199, 213, 224);
+  }
+  
+  .loginButton{
+    background-color: #639dd7;
+    color: white;
+    width: 100%;
+    padding: 10px;
+    font-weight: bold;
+    border:none;
+    cursor:pointer;   
+  }
+
+ .loginP{
+    color: #6574a7;
+    font-size: 12px;
+    margin-top: 10px;
+    justify-content: center;
+    display: flex;
+  }
