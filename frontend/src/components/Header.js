@@ -14,6 +14,7 @@ import Notification from "../screens/Notification";
 import Settings from "../screens/Settings";
 import ViewProfile from "../screens/ViewProfile";
 import Home from "../screens/Home";
+import LoginPage from "../screens/LoginPage";
 
 export default class Header extends Component {
   render() {
@@ -30,8 +31,7 @@ export default class Header extends Component {
               <Navbar.Brand as={Link} to={"/"}>
                 <img
                   src={logo}
-                  width="170"
-                  height="35"
+                  width="230"
                   className="d-inline-block align-top"
                   alt="Logo"
                 />
@@ -52,34 +52,34 @@ export default class Header extends Component {
                 className="justify-content-end"
               >
                 <Nav className="me-auto">
-                  <Nav.Link as={Link} to={"/"} style={{ paddingRight: "50px" }}>
+                  <Nav.Link as={Link} to={"/"} style={{ paddingRight: "40px" }}>
                     Home
                   </Nav.Link>
                   <Nav.Link
                     as={Link}
                     to={"/myNetwork"}
-                    style={{ paddingRight: "50px" }}
+                    style={{ paddingRight: "40px" }}
                   >
                     Network
                   </Nav.Link>
                   <Nav.Link
                     as={Link}
                     to={"/jobs"}
-                    style={{ paddingRight: "50px" }}
+                    style={{ paddingRight: "40px" }}
                   >
                     Jobs
                   </Nav.Link>
                   <Nav.Link
                     as={Link}
                     to={"/messaging"}
-                    style={{ paddingRight: "50px" }}
+                    style={{ paddingRight: "40px" }}
                   >
                     Messaging
                   </Nav.Link>
                   <Nav.Link
                     as={Link}
                     to={"/notification"}
-                    style={{ paddingRight: "50px" }}
+                    style={{ paddingRight: "40px" }}
                   >
                     Notification
                   </Nav.Link>
@@ -89,6 +89,9 @@ export default class Header extends Component {
                     </NavDropdown.Item>
                     <NavDropdown.Item as={Link} to={"/settings"}>
                       Settings
+                    </NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to={"/login"}>
+                      Login
                     </NavDropdown.Item>
                   </NavDropdown>
                 </Nav>
@@ -112,6 +115,8 @@ export default class Header extends Component {
             <Route path="/viewProfile" element={<ViewProfile />} />
 
             <Route path="/settings" element={<Settings />} />
+
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </div>
       </Router>
