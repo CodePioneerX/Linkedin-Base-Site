@@ -18,7 +18,9 @@ export default class Posts extends Component {
     return (
       <Container className="justify-content-md-center padd">
         <Row>
+
             <h1>Activities</h1>
+
         </Row>
         <Row>
 
