@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from workshare.views import ProfileView, ProfileCreateView
+from workshare.views import PostView, PostCreateView, PostLatestView
 from django.conf import settings
 from django.conf.urls.static import static
 from workshare import views
@@ -30,6 +31,9 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/profile/<int:pk>', ProfileView.as_view(), name='profile_detail'),
     path('api/profile/', ProfileCreateView.as_view(), name='profile_create'),
+    path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),
+    path('api/posts/', PostLatestView.as_view(), name='post_latest_detail'),
+    path('api/post/', PostCreateView.as_view(), name='post_create'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

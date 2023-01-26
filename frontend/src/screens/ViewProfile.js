@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import {Container, Row, Col} from 'react-bootstrap';
+import Posts from '../components/Posts';
 
 export default class ViewProfile extends Component {
   state = {
@@ -53,6 +54,9 @@ export default class ViewProfile extends Component {
             </ul>
           </Container>
           </div>
+        </Row>
+        <Row>
+          <Posts/>
         </Row>
         </div>
       </Container>
