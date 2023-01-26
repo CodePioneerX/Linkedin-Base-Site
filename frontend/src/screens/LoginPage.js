@@ -22,10 +22,16 @@ function LoginPage() {
       </FormGroup>
       
       <Button className='loginButton'>Submit</Button>
-     
+        <div>
       <p className='loginP'>New to Connect? 
       <a href='#'> Register</a>
-      </p>
+     </p>
+       </div>
+       <div>
+      <p className='loginP'>Forget password? 
+      <a href='#'> Click here</a>
+     </p>
+       </div>
     </Form>
     </div>
   </div>
