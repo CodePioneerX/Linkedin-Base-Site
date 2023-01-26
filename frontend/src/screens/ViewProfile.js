@@ -36,12 +36,6 @@ export default class ViewProfile extends Component {
             <p className="profile-title padd_small">{this.state.profile.title}</p>
             <h2>About Me</h2>
             <p>{this.state.profile.about}</p>
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <div className="profile-content">
-          <Container className="justify-content-md-center pd-5 padd_small">
             <h2 className="padd_small">Experience</h2>
             <ul className="experience-list padd_small">
             {this.state.profile.experience}
@@ -52,6 +46,13 @@ export default class ViewProfile extends Component {
                 </li>
               ))} */}
             </ul>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <div className="profile-content">
+          <Container className="justify-content-md-center pd-5 padd_small">
+
           </Container>
           </div>
         </Row>

@@ -98,3 +98,11 @@ footer {
   padding-bottom: 3rem;
   min-width: 6rem;
 }
+
+.pad_down{
+  padding-bottom: 3rem;
+}
+
+.limit_width {
+  max-width: 30rem;
+}

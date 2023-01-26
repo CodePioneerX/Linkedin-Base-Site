@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {Container, Row, Col} from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import axios from 'axios'
 
 export default class Posts extends Component {
@@ -17,7 +18,9 @@ export default class Posts extends Component {
     return (
       <Container className="justify-content-md-center padd">
         <Row>
-            <h1>Live Feed</h1>
+
+            <h1>Activities</h1>
+
         </Row>
         <Row>
 
@@ -32,6 +35,8 @@ export default class Posts extends Component {
                   <p>By: {post.author}</p>
                   <p>Likes: {post.likes}</p>
                   <p>Created at: {post.created_at}</p>
+                  <Form.Control className='padd pad_down limit_width' type="text" placeholder="Comment..."  rows={3} />
+                  <br/>
                 </Container>
 
                 <Row>
