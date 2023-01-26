@@ -57,7 +57,7 @@ footer {
 
 
 footer {
-  position: absolute;
+  position: relative;
   bottom: 0;
   width: 100%;
   padding-top: 0.5rem;
@@ -72,9 +72,37 @@ footer {
   padding: 0 1rem;
   background-color: rgba(255, 255, 255, 0.01); /* slightly darker background color */
   padding-top: 3rem;
+  padding-bottom: 3rem;
+
 }
 
 .padd_small {
   background-color: rgba(253, 253, 253, 0.01); /* slightly darker background color */
   padding-top: 1rem;
+}
+
+.img_box {
+  width: 10rem;
+  height:  10rem;
+  background-color: rgba(255, 255, 255, 0.01); /* slightly darker background color */
+  padding-top: 3rem;
+}
+
+.darker {
+  background-color: rgba(0, 0, 0, 0.01); /* slightly darker background color */
+}
+
+.btns {
+  background-color: rgba(255, 255, 255, 0.01); /* slightly darker background color */
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  min-width: 6rem;
+}
+
+.pad_down{
+  padding-bottom: 3rem;
+}
+
+.limit_width {
+  max-width: 30rem;
 }
