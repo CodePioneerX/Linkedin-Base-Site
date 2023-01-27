@@ -14,8 +14,13 @@ import Notification from "../screens/Notification";
 import Settings from "../screens/Settings";
 import ViewProfile from "../screens/ViewProfile";
 import Home from "../screens/Home";
+import LoginPage from "../screens/LoginPage";
+
+// import { useDispatch, useSelector } from "react-redux";
 
 export default class Header extends Component {
+
+
   render() {
     return (
       <Router>
@@ -91,6 +96,13 @@ export default class Header extends Component {
                       Settings
                     </NavDropdown.Item>
                   </NavDropdown>
+                  {/* <Nav.Link
+                    as={Link}
+                    to={"/LoginPage"}
+                    style={{ paddingRight: "50px" }}
+                  >
+                    Logout
+                  </Nav.Link> */}
                 </Nav>
               </Navbar.Collapse>
             </Container>
@@ -99,6 +111,8 @@ export default class Header extends Component {
 
         <div>
           <Routes>
+            <Route path="/LoginPage" element={<LoginPage />} />
+            
             <Route path="/" element={<Home />} />
 
             <Route path="/myNetwork" element={<MyNetwork />} />
