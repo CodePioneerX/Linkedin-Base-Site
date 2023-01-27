@@ -8,14 +8,20 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import LoginPage from './screens/LoginPage';
+import userInfoFromStorage from './store'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const user = userInfoFromStorage;
 root.render(
   <Provider store ={store}>
-    {/* <Router> */}
-    <App /> 
-     {/* <LoginPage/> 
-     </Router> */}
+   {!user? (<App />) : (
+     <Router> 
+     
+      <LoginPage/> 
+      </Router> 
+   )}
+   
+  
   </Provider>
  
 );
