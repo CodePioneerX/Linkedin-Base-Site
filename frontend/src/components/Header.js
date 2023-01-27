@@ -15,10 +15,18 @@ import Settings from "../screens/Settings";
 import ViewProfile from "../screens/ViewProfile";
 import Home from "../screens/Home";
 import LoginPage from "../screens/LoginPage";
+import store from "../store";
+import { logout } from "../actions/userActions";
 
-// import { useDispatch, useSelector } from "react-redux";
 
 export default class Header extends Component {
+  
+  
+logoutHandler =() =>{
+  store.dispatch(logout())
+  // this.props.navigation.navigate('Jobs')
+  console.log('reached here')
+}
 
 
   render() {
@@ -95,14 +103,14 @@ export default class Header extends Component {
                     <NavDropdown.Item as={Link} to={"/settings"}>
                       Settings
                     </NavDropdown.Item>
+                    <NavDropdown.Item onClick={ this.logoutHandler }
+                    >
+                      
+                      Logout
+
+                    </NavDropdown.Item>
                   </NavDropdown>
-                  {/* <Nav.Link
-                    as={Link}
-                    to={"/LoginPage"}
-                    style={{ paddingRight: "50px" }}
-                  >
-                    Logout
-                  </Nav.Link> */}
+                  
                 </Nav>
               </Navbar.Collapse>
             </Container>
@@ -110,9 +118,7 @@ export default class Header extends Component {
         </div>
 
         <div>
-          <Routes>
-            <Route path="/LoginPage" element={<LoginPage />} />
-            
+          <Routes>  
             <Route path="/" element={<Home />} />
 
             <Route path="/myNetwork" element={<MyNetwork />} />
@@ -126,6 +132,8 @@ export default class Header extends Component {
             <Route path="/viewProfile" element={<ViewProfile />} />
 
             <Route path="/settings" element={<Settings />} />
+
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </div>
       </Router>
