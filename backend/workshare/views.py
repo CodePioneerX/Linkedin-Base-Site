@@ -7,13 +7,26 @@ from rest_framework import viewsets
 from .serializers import WorkShareSerializer
 from .models import WorkShare
 from .models import Profile, Post
-from .serializers import ProfileSerializer, PostSerializer
+from .serializers import ProfileSerializer, PostSerializer, UserSerializer
+from rest_framework import status
+from rest_framework.authtoken.models import Token
 
 class WorkShareView(viewsets.ModelViewSet):
     serializer_class = WorkShareSerializer
     queryset = WorkShare.objects.all()
     
-    
+class UserCreate(APIView):
+    def post(self, request, format='json'):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                token = Token.objects.create(user=user)
+                json = serializer.data
+                json['token'] = token.key
+                return Response(json, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class ProfileView(APIView):
     def get(self, request, pk):
