@@ -34,7 +34,7 @@ urlpatterns = [
     path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),
     path('api/posts/', PostLatestView.as_view(), name='post_latest_detail'),
     path('api/post/', PostCreateView.as_view(), name='post_create'),
-    path('api/users/', views.UserCreate.as_view(), name='account-create'),
+    path('register', views.UserCreate.as_view(), name='account-create'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

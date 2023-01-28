@@ -10,12 +10,15 @@ from .models import Profile, Post
 from .serializers import ProfileSerializer, PostSerializer, UserSerializer
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import User
 
 class WorkShareView(viewsets.ModelViewSet):
     serializer_class = WorkShareSerializer
     queryset = WorkShare.objects.all()
     
-class UserCreate(APIView):
+class UserCreate(CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
     def post(self, request, format='json'):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
