@@ -18,7 +18,6 @@ import LoginPage from "../screens/LoginPage";
 import store from "../store";
 import { logout } from "../actions/userActions";
 
-
 export default class Header extends Component {
   
   
@@ -44,8 +43,7 @@ logoutHandler =() =>{
               <Navbar.Brand as={Link} to={"/"}>
                 <img
                   src={logo}
-                  width="170"
-                  height="35"
+                  width="230"
                   className="d-inline-block align-top"
                   alt="Logo"
                 />
@@ -66,34 +64,34 @@ logoutHandler =() =>{
                 className="justify-content-end"
               >
                 <Nav className="me-auto">
-                  <Nav.Link as={Link} to={"/"} style={{ paddingRight: "50px" }}>
+                  <Nav.Link as={Link} to={"/"} style={{ paddingRight: "40px" }}>
                     Home
                   </Nav.Link>
                   <Nav.Link
                     as={Link}
                     to={"/myNetwork"}
-                    style={{ paddingRight: "50px" }}
+                    style={{ paddingRight: "40px" }}
                   >
                     Network
                   </Nav.Link>
                   <Nav.Link
                     as={Link}
                     to={"/jobs"}
-                    style={{ paddingRight: "50px" }}
+                    style={{ paddingRight: "40px" }}
                   >
                     Jobs
                   </Nav.Link>
                   <Nav.Link
                     as={Link}
                     to={"/messaging"}
-                    style={{ paddingRight: "50px" }}
+                    style={{ paddingRight: "40px" }}
                   >
                     Messaging
                   </Nav.Link>
                   <Nav.Link
                     as={Link}
                     to={"/notification"}
-                    style={{ paddingRight: "50px" }}
+                    style={{ paddingRight: "40px" }}
                   >
                     Notification
                   </Nav.Link>

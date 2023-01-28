@@ -12,7 +12,7 @@ class WorkShareSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('name', 'title', 'about', 'image', 'experience')
+        fields = ('name', 'email', 'city', 'title', 'about', 'image', 'experience', 'education')
         
         
 class PostSerializer(serializers.ModelSerializer):
