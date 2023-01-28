@@ -13,7 +13,7 @@ function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
   const userLogin = useSelector(state => state.userLogin)
   const {error, loading, userInfo} = userLogin
 
@@ -23,6 +23,7 @@ function LoginPage() {
     ()=>{
     if(userInfo){
       window.location.reload(false);
+      navigate('/viewProfile/')
       // navigate('/')
     }
   }

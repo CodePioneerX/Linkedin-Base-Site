@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useEffect} from 'react'
 import axios from 'axios';
 import {Container, Row, Col} from 'react-bootstrap';
+import { useDispatch, useSelector} from 'react-redux';
 import Posts from '../components/Posts';
 
 export default class ViewProfile extends Component {
@@ -8,10 +9,13 @@ export default class ViewProfile extends Component {
     profile: {}
   }
 
+  
+
   componentDidMount() {
     // once log-in functionality is implemented, this api call will be changed from profile/1 to currently logged-in user
 
     // Make an API call to retrieve the profile information
+
     axios.get(`http://localhost:8000/api/profile/1`)
       .then(res => {
         this.setState({ profile: res.data });
