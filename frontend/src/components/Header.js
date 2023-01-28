@@ -15,8 +15,20 @@ import Settings from "../screens/Settings";
 import ViewProfile from "../screens/ViewProfile";
 import Home from "../screens/Home";
 import LoginPage from "../screens/LoginPage";
+import store from "../store";
+import { logout } from "../actions/userActions";
 
 export default class Header extends Component {
+  
+  
+logoutHandler =() =>{
+  store.dispatch(logout())
+  // this.props.navigation.navigate('Jobs')
+  window.location.reload(false);
+  console.log('reached here')
+}
+
+
   render() {
     return (
       <Router>
@@ -90,10 +102,14 @@ export default class Header extends Component {
                     <NavDropdown.Item as={Link} to={"/settings"}>
                       Settings
                     </NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to={"/login"}>
-                      Login
+                    <NavDropdown.Item onClick={ this.logoutHandler }
+                    >
+                      
+                      Logout
+
                     </NavDropdown.Item>
                   </NavDropdown>
+                  
                 </Nav>
               </Navbar.Collapse>
             </Container>
@@ -101,7 +117,7 @@ export default class Header extends Component {
         </div>
 
         <div>
-          <Routes>
+          <Routes>  
             <Route path="/" element={<Home />} />
 
             <Route path="/myNetwork" element={<MyNetwork />} />
