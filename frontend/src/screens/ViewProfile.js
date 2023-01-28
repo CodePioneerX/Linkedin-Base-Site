@@ -9,6 +9,8 @@ export default class ViewProfile extends Component {
   }
 
   componentDidMount() {
+    // once log-in functionality is implemented, this api call will be changed from profile/1 to currently logged-in user
+
     // Make an API call to retrieve the profile information
     axios.get(`http://localhost:8000/api/profile/1`)
       .then(res => {
@@ -27,17 +29,18 @@ export default class ViewProfile extends Component {
         <Row>
           <Col>
             <div className="profile-header">
-              <img src={this.state.profile.image} alt="Profile" className="profile-image" />
+              <img src={this.state.profile.image} alt="Profile" class="profile-image padd_small" />
             </div>
           </Col>
           <Col>
           <div className="profile-header padd_small">
             <h1 className="profile-name padd_small">{this.state.profile.name}</h1>
-            <p className="profile-title padd_small">{this.state.profile.title}</p>
-            <h2>About Me</h2>
-            <p>{this.state.profile.about}</p>
+            <h4 className="profile-title padd_small">{this.state.profile.title}</h4>
+            <h6 className="profile-city">{this.state.profile.city}</h6>
+            <h2 className='padd_small'>About Me</h2>
+            <p className='about-me'>{this.state.profile.about}</p>
             <h2 className="padd_small">Experience</h2>
-            <ul className="experience-list padd_small">
+            <ul className="experience-list">
             {this.state.profile.experience}
               {/* {this.state.profile.experience.map(exp => (
                 <li key={exp.id}>
@@ -45,6 +48,10 @@ export default class ViewProfile extends Component {
                   <p>{exp.description}</p>
                 </li>
               ))} */}
+            </ul>
+            <h2 className="padd_small">Education</h2>
+            <ul className="education-list">
+              {this.state.profile.education}
             </ul>
             </div>
           </Col>
