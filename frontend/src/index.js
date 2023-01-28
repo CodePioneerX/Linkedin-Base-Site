@@ -14,7 +14,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 const user = userInfoFromStorage;
 root.render(
   <Provider store ={store}>
-   {!user? (<App />) : (
+   {!localStorage.getItem("userInfo")? (<App />) : (
      <Router> 
      
       <LoginPage/> 

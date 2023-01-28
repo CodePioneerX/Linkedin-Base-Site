@@ -23,12 +23,14 @@ function LoginPage() {
     if(userInfo){
         navigate('/')
     }
-  }, [navigate, userInfo]
+  }, [navigate, userInfo],
  );
 
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(login(email, password))
+    console.log("login success")
+    console.log(userInfo)
   }
 
 
