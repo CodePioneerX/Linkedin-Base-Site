@@ -2,11 +2,12 @@ import React, {useState, useEffect} from 'react';
 import '../Assets/css/Login.css';
 import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import { useDispatch, useSelector} from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import{ login } from '../actions/userActions'
 import {Link} from 'react-router-dom'
+
 
 function LoginPage() {
   const [email, setEmail] = useState('')
@@ -36,6 +37,7 @@ function LoginPage() {
 
   return (
    <div className='formBackground'>
+    {/* <div className='homeContainer'> */}
     <div className='form'>
     <span className="logo">
         <img src={process.env.PUBLIC_URL+'/logo.png'} alt="logo" ></img>
@@ -69,6 +71,13 @@ function LoginPage() {
        </div>
     </Form>
     </div>
+    {/* <div className='homeComponent'>
+    <div>
+    
+    </div>
+    </div> */}
+    
+    {/* </div> */}
   </div>
   );
 }
