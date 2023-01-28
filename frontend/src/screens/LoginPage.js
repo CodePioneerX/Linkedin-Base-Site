@@ -20,11 +20,12 @@ function LoginPage() {
   const navigate = useNavigate();
 
   useEffect(
-    () => {
+    ()=>{
     if(userInfo){
-        navigate('/')
+      window.location.reload(false);
+      // navigate('/')
     }
-  }, [navigate, userInfo],
+  }
  );
 
   const submitHandler = (e) => {

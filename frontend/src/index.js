@@ -11,10 +11,10 @@ import LoginPage from './screens/LoginPage';
 import userInfoFromStorage from './store'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const user = userInfoFromStorage;
+
 root.render(
   <Provider store ={store}>
-   {!localStorage.getItem("userInfo")? (<App />) : (
+   {localStorage.getItem("userInfo")? (<App />) : (
      <Router> 
      
       <LoginPage/> 

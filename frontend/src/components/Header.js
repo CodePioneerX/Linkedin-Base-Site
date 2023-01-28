@@ -25,6 +25,7 @@ export default class Header extends Component {
 logoutHandler =() =>{
   store.dispatch(logout())
   // this.props.navigation.navigate('Jobs')
+  window.location.reload(false);
   console.log('reached here')
 }
 
