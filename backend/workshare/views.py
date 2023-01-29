@@ -16,7 +16,7 @@ class WorkShareView(viewsets.ModelViewSet):
     serializer_class = WorkShareSerializer
     queryset = WorkShare.objects.all()
     
-class UserCreate(CreateAPIView):
+class UserCreate(APIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     def post(self, request, format='json'):
