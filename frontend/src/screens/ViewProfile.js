@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useEffect} from 'react'
 import axios from 'axios';
 import {Container, Row, Col} from 'react-bootstrap';
+import { useDispatch, useSelector} from 'react-redux';
 import Posts from '../components/Posts';
 
 export default class ViewProfile extends Component {
@@ -8,9 +9,12 @@ export default class ViewProfile extends Component {
     profile: {}
   }
 
+  
+
   componentDidMount() {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     const user_id = userInfo.id
+
 
     axios.get(`http://localhost:8000/api/profile/${user_id}`)
       .then(res => {

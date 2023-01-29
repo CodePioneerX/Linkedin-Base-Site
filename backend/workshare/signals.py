@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 from .models import Profile
 
-
 def updateUser(sender, instance, **kwargs):
     user = instance
     if user.email != '':

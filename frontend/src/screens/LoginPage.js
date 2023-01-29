@@ -12,12 +12,14 @@ import {Link} from 'react-router-dom'
 function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
   const userLogin = useSelector(state => state.userLogin)
   const {error, loading, userInfo} = userLogin
 
   const navigate = useNavigate();
+  //const pk = useSelector(state => state.user.pk);
 
   useEffect(
     ()=>{
@@ -26,6 +28,10 @@ function LoginPage() {
     }
   }
  );
+
+ function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -57,7 +63,7 @@ function LoginPage() {
           value={password} onChange={(e)=> setPassword(e.target.value)}/>
       </FormGroup>
       
-      <Button className='loginButton' type='submit' >
+      <Button id='submit' className='loginButton' type='submit' >
         Submit</Button>
         <div>
       <p className='loginP'>New to Connect? 
