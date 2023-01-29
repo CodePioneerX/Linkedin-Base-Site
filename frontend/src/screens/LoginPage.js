@@ -12,40 +12,27 @@ import {Link} from 'react-router-dom'
 function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  
 
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const userLogin = useSelector(state => state.userLogin)
   const {error, loading, userInfo} = userLogin
 
   const navigate = useNavigate();
-  //const pk = useSelector(state => state.user.pk);
 
   useEffect(
     ()=>{
     if(userInfo){
       window.location.reload(false);
-      //navigate('/viewProfile/')
       // navigate('/')
     }
   }
  );
 
- function sleep (time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
-
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(login(email, password))
     console.log("login success")
-    console.log('userInfo: ',userInfo)
-    sleep(1000).then(() => {
-      // Do something after the sleep!
-      if (userInfo != null){
-        window.location.reload(true);
-      }
-    });
+    console.log(userInfo)
   }
 
 
@@ -71,20 +58,26 @@ function LoginPage() {
           value={password} onChange={(e)=> setPassword(e.target.value)}/>
       </FormGroup>
       
-      <Button id='submit' className='loginButton' type='submit' >
-        Submit</Button>
+      <Button className='loginButton' type='submit'>Submit</Button>
+      </Form>
         <div>
-      <p className='loginP'>New to Connect? 
-      <a href='#'> Register</a>
-     </p>
-       </div>
-       <div>
-      <p className='loginP'>Forget password? 
-      <a href='#'> Click here</a>
-     </p>
-       </div>
-    </Form>
-    </div>
+            <p className="loginP">
+              New to Connect?
+              <Link to="/signUp" style={{ marginLeft: ".3rem" }}>
+                Register
+              </Link>
+            </p>
+          </div>
+          <div>
+            <p className="loginP">
+              Forget password?
+              <Link to="#" style={{ marginLeft: ".3rem" }}>
+                Click her
+              </Link>
+            </p>
+          </div>
+
+      </div>
     {/* <div className='homeComponent'>
     <div>
     
