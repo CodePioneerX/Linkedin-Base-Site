@@ -25,8 +25,6 @@ function LoginPage() {
     ()=>{
     if(userInfo){
       window.location.reload(false);
-      //navigate('/viewProfile/')
-      // navigate('/')
     }
   }
  );
@@ -39,13 +37,7 @@ function LoginPage() {
     e.preventDefault()
     dispatch(login(email, password))
     console.log("login success")
-    console.log('userInfo: ',userInfo)
-    sleep(1000).then(() => {
-      // Do something after the sleep!
-      if (userInfo != null){
-        window.location.reload(true);
-      }
-    });
+    // console.log(userInfo)
   }
 
 
