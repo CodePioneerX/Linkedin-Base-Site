@@ -12,28 +12,40 @@ import {Link} from 'react-router-dom'
 function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  
 
   const dispatch = useDispatch(); 
   const userLogin = useSelector(state => state.userLogin)
   const {error, loading, userInfo} = userLogin
 
   const navigate = useNavigate();
+  //const pk = useSelector(state => state.user.pk);
 
   useEffect(
     ()=>{
     if(userInfo){
       window.location.reload(false);
-      navigate('/viewProfile/')
+      //navigate('/viewProfile/')
       // navigate('/')
     }
   }
  );
 
+ function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(login(email, password))
     console.log("login success")
-    console.log(userInfo)
+    console.log('userInfo: ',userInfo)
+    sleep(1000).then(() => {
+      // Do something after the sleep!
+      if (userInfo != null){
+        window.location.reload(true);
+      }
+    });
   }
 
 
@@ -59,7 +71,7 @@ function LoginPage() {
           value={password} onChange={(e)=> setPassword(e.target.value)}/>
       </FormGroup>
       
-      <Button className='loginButton' type='submit' >
+      <Button id='submit' className='loginButton' type='submit' >
         Submit</Button>
         <div>
       <p className='loginP'>New to Connect? 

@@ -103,6 +103,7 @@ logoutHandler =() =>{
                       Settings
                     </NavDropdown.Item>
                     <NavDropdown.Item onClick={ this.logoutHandler }
+                    id="logout"
                     >
                       
                       Logout
