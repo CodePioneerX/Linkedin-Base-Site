@@ -23,7 +23,6 @@ function LoginPage() {
     ()=>{
     if(userInfo){
       window.location.reload(false);
-      // navigate('/')
     }
   }
  );
@@ -32,7 +31,7 @@ function LoginPage() {
     e.preventDefault()
     dispatch(login(email, password))
     console.log("login success")
-    console.log(userInfo)
+    // console.log(userInfo)
   }
 
 
