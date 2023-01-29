@@ -23,7 +23,7 @@ function LoginPage() {
     ()=>{
     if(userInfo){
       window.location.reload(false);
-      // navigate('/')
+
     }
   }
  );

@@ -18,7 +18,7 @@ class Profile(models.Model):
     city = models.CharField(max_length=255, default='')
     title = models.CharField(max_length=255)
     about = models.TextField()
-    image = models.ImageField(upload_to='images', blank=True, default='')
+    image = models.ImageField(upload_to='images/', blank=True, default="default.jpg")
     experience = models.TextField()
     education = models.TextField(default='')
 
