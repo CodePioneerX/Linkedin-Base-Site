@@ -1,52 +1,70 @@
-import React, { Component, useState, useEffect} from 'react'
+import React, { useState, useEffect} from 'react'
 import axios from 'axios';
 import {Container, Row, Col} from 'react-bootstrap';
 import { useDispatch, useSelector} from 'react-redux';
-import Posts from '../components/Posts';
+import Posts from '../components/Posts-old';
+import { useNavigate} from 'react-router-dom';
+import Alert from 'react-bootstrap/Alert';
 
-export default class ViewProfile extends Component {
-  state = {
-    profile: {}
-  }
+
+function ViewProfile() {
+
+
+  const [profile, setProfile] = useState('')
+
+  const dispatch = useDispatch(); 
+  const userLogin = useSelector(state => state.userLogin)
+  const { userInfo } = userLogin;
+  const navigate = useNavigate();
+  
+  console.log("userLogin: ",userLogin)
+  console.log("userInfo: ",userInfo)
+
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate('/')
+    }
+  }, [ userInfo, navigate]);
 
   
+  const getProfile= async () => {
+    const {data} = await axios.get(`http://localhost:8000/api/profile/`+userInfo.id)
+    setProfile(data)}
 
-  componentDidMount() {
-    // once log-in functionality is implemented, this api call will be changed from profile/1 to currently logged-in user
+  useEffect(() => {
+   //make request to get profile details
+    getProfile();
+  }, []);
 
-    // Make an API call to retrieve the profile information
 
-    axios.get(`http://localhost:8000/api/profile/1`)
-      .then(res => {
-        this.setState({ profile: res.data });
-      })
-      .then(
-        console.log('this.state.profile: ',this.state.profile)
-      )
-  }
 
-  render() {
+
+
+
+  
+    
     return (
       <Container className="justify-content-md-center padd">
-        
+        {userInfo ? (
         <div className="profile-page">
         <Row>
           <Col>
             <div className="profile-header">
-              <img src={this.state.profile.image} alt="Profile" class="profile-image padd_small" />
+              <img src={profile.image} alt="Profile" class="profile-image padd_small" />
             </div>
           </Col>
           <Col>
           <div className="profile-header padd_small">
-            <h1 className="profile-name padd_small">{this.state.profile.name}</h1>
-            <h4 className="profile-title padd_small">{this.state.profile.title}</h4>
-            <h6 className="profile-city">{this.state.profile.city}</h6>
+            <h1 className="profile-name padd_small">{profile.name}</h1>
+            <h4 className="profile-title padd_small">{profile.title}</h4>
+            <h6 className="profile-city">{profile.city}</h6>
             <h2 className='padd_small'>About Me</h2>
-            <p className='about-me'>{this.state.profile.about}</p>
+            <p className='about-me'>{profile.about}</p>
             <h2 className="padd_small">Experience</h2>
             <ul className="experience-list">
-            {this.state.profile.experience}
-              {/* {this.state.profile.experience.map(exp => (
+            {profile.experience}
+              {/* {profile.experience.map(exp => (
                 <li key={exp.id}>
                   <h3>{exp.title} at {exp.company}</h3>
                   <p>{exp.description}</p>
@@ -55,7 +73,7 @@ export default class ViewProfile extends Component {
             </ul>
             <h2 className="padd_small">Education</h2>
             <ul className="education-list">
-              {this.state.profile.education}
+              {profile.education}
             </ul>
             </div>
           </Col>
@@ -71,7 +89,13 @@ export default class ViewProfile extends Component {
           <Posts/>
         </Row>
         </div>
+        ) : (
+          <Alert  className='alertLogin' key='primary' variant='primary'>
+              <h5>You are not signed in! Please <a href="/login">Sign in</a> or <a href="/register">Register</a>!</h5>
+          </Alert>
+        )}
       </Container>
     )
-  }
+  
 }
+export default ViewProfile;
