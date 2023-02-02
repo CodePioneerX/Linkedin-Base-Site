@@ -147,6 +147,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+  'DEFAULT_AUTHENTICATION_CLASSES': (
+      
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [ 'rest_framework.permissions.IsAuthenticated',]
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -169,9 +177,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "images/"]
 print("PATH : ",STATICFILES_DIRS)
 
-
-MEDIA_URL = '/'
 MEDIA_ROOT = os.path.join(BASE_DIR, '/')
+MEDIA_URL = '/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -180,7 +187,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-# CORS_ORIGIN_WHITELIST = [
-#      'http://localhost:3000'
-# ]
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000'
+]
 

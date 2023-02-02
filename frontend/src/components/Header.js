@@ -17,7 +17,7 @@ import Home from "../screens/Home";
 import LoginPage from "../screens/LoginPage";
 import store from "../store";
 import { logout } from "../actions/userActions";
-
+import SignUp from "../screens/SignUp";
 export default class Header extends Component {
   
   
@@ -104,9 +104,7 @@ logoutHandler =() =>{
                     </NavDropdown.Item>
                     <NavDropdown.Item onClick={ this.logoutHandler }
                     >
-                      
                       Logout
-
                     </NavDropdown.Item>
                   </NavDropdown>
                   
@@ -133,6 +131,8 @@ logoutHandler =() =>{
             <Route path="/settings" element={<Settings />} />
 
             <Route path="/login" element={<LoginPage />} />
+
+            <Route path="/signUp" element={<SignUp/>} />
           </Routes>
         </div>
       </Router>

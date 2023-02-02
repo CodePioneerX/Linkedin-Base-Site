@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useEffect} from 'react'
 import axios from 'axios';
 import {Container, Row, Col} from 'react-bootstrap';
+import { useDispatch, useSelector} from 'react-redux';
 import Posts from '../components/Posts';
 
 export default class ViewProfile extends Component {
@@ -8,16 +9,21 @@ export default class ViewProfile extends Component {
     profile: {}
   }
 
-  componentDidMount() {
-    // once log-in functionality is implemented, this api call will be changed from profile/1 to currently logged-in user
+  
 
-    // Make an API call to retrieve the profile information
-    axios.get(`http://localhost:8000/api/profile/1`)
+  componentDidMount() {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    const user_id = userInfo.id
+
+
+    axios.get(`http://localhost:8000/api/profile/${user_id}`)
       .then(res => {
         this.setState({ profile: res.data });
+        // console.log("res.data: ", res.data)
       })
       .then(
-        console.log('this.state.profile: ',this.state.profile)
+        // console.log('this.state: ', this.state)
+        
       )
   }
 
@@ -29,7 +35,8 @@ export default class ViewProfile extends Component {
         <Row>
           <Col>
             <div className="profile-header">
-              <img src={this.state.profile.image} alt="Profile" class="profile-image padd_small" />
+              {/* temporary placeholder image */}
+              <img src="/images/default.jpg" alt="Profile" class="profile-image padd_small" />
             </div>
           </Col>
           <Col>

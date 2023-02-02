@@ -23,7 +23,7 @@ function LoginPage() {
     ()=>{
     if(userInfo){
       window.location.reload(false);
-      // navigate('/')
+
     }
   }
  );
@@ -58,20 +58,26 @@ function LoginPage() {
           value={password} onChange={(e)=> setPassword(e.target.value)}/>
       </FormGroup>
       
-      <Button className='loginButton' type='submit' >
-        Submit</Button>
+      <Button className='loginButton' type='submit'>Submit</Button>
+      </Form>
         <div>
-      <p className='loginP'>New to Connect? 
-      <a href='#'> Register</a>
-     </p>
-       </div>
-       <div>
-      <p className='loginP'>Forget password? 
-      <a href='#'> Click here</a>
-     </p>
-       </div>
-    </Form>
-    </div>
+            <p className="loginP">
+              New to Connect?
+              <Link to="/signUp" style={{ marginLeft: ".3rem" }}>
+                Register
+              </Link>
+            </p>
+          </div>
+          <div>
+            <p className="loginP">
+              Forget password?
+              <Link to="#" style={{ marginLeft: ".3rem" }}>
+                Click her
+              </Link>
+            </p>
+          </div>
+
+      </div>
     {/* <div className='homeComponent'>
     <div>
     
