@@ -26,6 +26,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 router = routers.DefaultRouter()
 router.register(r'workshares', views.WorkShareView, 'workshare')
 
+
 urlpatterns = [
     path('api/login/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('admin/', admin.site.urls),
@@ -36,6 +37,7 @@ urlpatterns = [
     path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),
     path('api/posts/', PostLatestView.as_view(), name='post_latest_detail'),
     path('api/post/', PostCreateView.as_view(), name='post_create'),
+    path('register', views.UserCreate.as_view(), name='account-create'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

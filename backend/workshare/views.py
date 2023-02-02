@@ -36,7 +36,20 @@ class WorkShareView(viewsets.ModelViewSet):
     serializer_class = WorkShareSerializer
     queryset = WorkShare.objects.all()
     
-    
+class UserCreate(APIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    def post(self, request, format='json'):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                token = Token.objects.create(user=user)
+                json = serializer.data
+                json['token'] = token.key
+                return Response(json, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class ProfileView(APIView):
     def get(self, request, pk):
