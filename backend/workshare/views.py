@@ -1,16 +1,18 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
-from rest_framework import viewsets
-from .serializers import WorkShareSerializer
-from .models import WorkShare
-from .models import Profile, Post
-from .serializers import ProfileSerializer, PostSerializer, UserSerializer
-from rest_framework import status
-from rest_framework.authtoken.models import Token
+from rest_framework import viewsets, status
+from .models import WorkShare, Profile, Post
 from django.contrib.auth.models import User
+from .serializers import WorkShareSerializer, ProfileSerializer, PostSerializer, UserSerializer
+from django.contrib.auth.hashers import make_password
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.authtoken.models import Token
 
 class WorkShareView(viewsets.ModelViewSet):
     serializer_class = WorkShareSerializer

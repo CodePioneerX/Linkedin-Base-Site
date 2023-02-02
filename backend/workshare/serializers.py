@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import WorkShare, Profile, Post
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
+from rest_framework_jwt.settings import api_settings
 
 class WorkShareSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,12 +10,14 @@ class WorkShareSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'completed')
 
 class UserSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
     username = serializers.CharField(max_length = 30)
+    email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
+    #first_name = serializers.CharField(max_length = 30)
+    #last_name = serializers.CharField(max_length = 30)
     password = serializers.CharField(min_length=8, write_only = True)
 
     def create(self, validated_data):
-        user = User.objects.create_user( validated_data['username'], validated_data['email'])
+        user = User.objects.create_user( validated_data['username'], email= validated_data['email'])
         user.set_password(validated_data['password'])
         user.save()
         return user
@@ -25,8 +28,8 @@ class UserSerializer(serializers.ModelSerializer):
         # extra_kwargs = { 'password': {'write_only': True}}
        # extra_kwargs = {
         #'first_name': {'required': True},
-        #'last_name': {'required': True}
-   # }
+       #'last_name': {'required': True},
+    #}
 
         
 class ProfileSerializer(serializers.ModelSerializer):
