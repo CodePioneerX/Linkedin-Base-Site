@@ -28,8 +28,10 @@ router.register(r'workshares', views.WorkShareView, 'workshare')
 
 
 urlpatterns = [
+    path('api/login/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    #path('api/profile', views.getUserProfile, name='users-profile'),
     path('api/profile/<int:pk>', ProfileView.as_view(), name='profile_detail'),
     path('api/profile/', ProfileCreateView.as_view(), name='profile_create'),
     path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),
