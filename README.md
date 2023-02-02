@@ -56,6 +56,9 @@ from another terminal
 - Zachary Bruce – 40136585 – z-bruce
 
 ## Technologies Used
-
-  TBA
+- React 
+- Django 
+- Django Rest Framework 
+- React Bootstrap 
+- React Redux 
 
