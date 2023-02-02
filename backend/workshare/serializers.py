@@ -10,7 +10,7 @@ class WorkShareSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'completed')
 
 class UserSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(max_length = 30)
+    username = serializers.CharField(max_length = 30, validators=[UniqueValidator(queryset=User.objects.all())])
     email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
     #first_name = serializers.CharField(max_length = 30)
     #last_name = serializers.CharField(max_length = 30)
@@ -25,11 +25,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'password')
-        # extra_kwargs = { 'password': {'write_only': True}}
-       # extra_kwargs = {
-        #'first_name': {'required': True},
-       #'last_name': {'required': True},
-    #}
 
         
 class ProfileSerializer(serializers.ModelSerializer):
