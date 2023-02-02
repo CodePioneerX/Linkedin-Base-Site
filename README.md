@@ -1,6 +1,21 @@
-# SOEN390 - Linkedin Base Site
+# SOEN390 - LinkedIn Based Site
 
 ## Summary
+Our project, CONNECT, is a employment and business centred social media platform that works through websites and mobile apps. In essence, it is a simplified LinkedIn platform created for our SOEN390 Software Engineering Team Project course. 
+
+
+## Core Features
+- User account managemet (login, signup, etc.)
+- Organized and customizable user profile 
+- Users can connect with one another 
+- Direct messaging between connected users 
+- User posts 
+- User job posts 
+- Users can search through job posts 
+- Users can apply to jobs through job posts / third party apps 
+- Activty notification system 
+- Admin functionalities (user and post management, harrassment report management, etc.)
+
 
 ## Getting started
 
@@ -8,7 +23,6 @@
 #####  `conda create -n soen python=3.9`
 ##### theb press y
 #####  `conda activate soen`
-
 
 
 ### Clone the repo
@@ -29,8 +43,6 @@ from another terminal
 ### Start Django server
 ###### `python manage.py runserver`
 
-
-## Core Features
 
 ## Team Members
 - Victoria Castelli - 40117055 - VCastelli 
