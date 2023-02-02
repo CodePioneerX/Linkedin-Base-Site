@@ -81,6 +81,23 @@ footer {
   padding-top: 1rem;
 }
 
+.profile-image {
+  width: 100%;
+  height: 100%;
+}
+
+.about-me {
+  white-space: pre-line;
+}
+
+.experience-list {
+  white-space: pre-line;
+}
+
+.education-list {
+  white-space: pre-line;
+}
+
 .img_box {
   width: 10rem;
   height:  10rem;
