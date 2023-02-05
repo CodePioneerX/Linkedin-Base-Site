@@ -13,14 +13,13 @@ function LoginPage() {
   
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  
 
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const userLogin = useSelector(state => state.userLogin)
   const {error, loading, userInfo} = userLogin
 
   const navigate = useNavigate();
-  //const pk = useSelector(state => state.user.pk);
+
 
   function handleClick() {
     navigate('/register');
@@ -34,10 +33,6 @@ function LoginPage() {
   }
 }, [ userInfo, navigate]);
 
-
- function sleep (time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
 
   const submitHandler = (e) => {
     e.preventDefault()

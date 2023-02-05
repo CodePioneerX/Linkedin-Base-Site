@@ -96,3 +96,11 @@
     justify-content: center;
     display: flex;
   }
+
+  #firstName::placeholder{
+    color: rgb(199, 213, 224);
+  }
+
+  #lastName::placeholder{
+    color: rgb(199, 213, 224);
+  }
