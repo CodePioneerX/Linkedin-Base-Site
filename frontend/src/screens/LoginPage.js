@@ -41,7 +41,10 @@ function LoginPage() {
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(login(email, password))
-
+    setTimeout(window.close, 50);
+    window.open('/profile', '_blank', 'noreferrer');
+    //window.close();
+    //setTimeout(window.close, 8);
   }
 
 
