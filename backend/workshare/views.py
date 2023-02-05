@@ -15,6 +15,9 @@ from django.contrib.auth.hashers import make_password
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import status
+
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -58,6 +61,7 @@ class ProfileView(APIView):
         return Response(serializer.data)
     
     
+
 class ProfileCreateView(CreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
@@ -98,3 +102,31 @@ def getUserProfile(request):
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
+
+@api_view(['GET'])
+def getProfileView(request, pk):
+    profile = get_object_or_404(Profile, pk=pk)
+    serializer = ProfileSerializer(profile)
+    return Response(serializer.data)
+
+
+
+@api_view(['POST'])
+def registerUser(request):
+    data = request.data
+    print(data, type(data))
+    try: 
+         user = User.objects.create(
+              first_name= data['name'],
+              username=data['username'],
+              email=data['username'],
+              password=make_password(data['password'])
+         )  
+         
+         serializer = UserSerializerWithToken(user, many=False)
+         print('user created!')
+        
+         return Response(serializer.data)
+    except: 
+         message = {'detail':'User with this email already exists'}
+         return Response(message, status=status.HTTP_400_BAD_REQUEST)

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -17,22 +18,27 @@ import Home from "../screens/Home";
 import LoginPage from "../screens/LoginPage";
 import store from "../store";
 import { logout } from "../actions/userActions";
-import SignUp from "../screens/SignUp";
-export default class Header extends Component {
+import { useNavigate} from 'react-router-dom';
+
+function Header(){
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  //const navigate = useNavigate();
   
-  
-logoutHandler =() =>{
+function logoutHandler(){
   store.dispatch(logout())
   // this.props.navigation.navigate('Jobs')
-  window.location.reload(false);
+  //window.location.reload(false);
+  // window.location.assign("/login")
+  // navigate("/login");
   console.log('reached here')
 }
 
 
-  render() {
+
+  
     return (
-      <Router>
-        <div>
+      <>
           <Navbar
             collapseOnSelect
             expand="lg"
@@ -40,7 +46,7 @@ logoutHandler =() =>{
             className="navigation"
           >
             <Container>
-              <Navbar.Brand as={Link} to={"/"}>
+              <Navbar.Brand href="/">
                 <img
                   src={logo}
                   width="230"
@@ -64,57 +70,53 @@ logoutHandler =() =>{
                 className="justify-content-end"
               >
                 <Nav className="me-auto">
-                  <Nav.Link as={Link} to={"/"} style={{ paddingRight: "40px" }}>
+                  <Nav.Link href="/" style={{ paddingRight: "40px" }}>
                     Home
                   </Nav.Link>
-                  <Nav.Link
-                    as={Link}
-                    to={"/myNetwork"}
-                    style={{ paddingRight: "40px" }}
-                  >
+                  <Nav.Link href="/network" style={{ paddingRight: "40px" }}>
                     Network
                   </Nav.Link>
-                  <Nav.Link
-                    as={Link}
-                    to={"/jobs"}
-                    style={{ paddingRight: "40px" }}
-                  >
+                  <Nav.Link href="/jobs" style={{ paddingRight: "40px" }} >
                     Jobs
                   </Nav.Link>
-                  <Nav.Link
-                    as={Link}
-                    to={"/messaging"}
-                    style={{ paddingRight: "40px" }}
-                  >
+                  <Nav.Link href="/messaging"  style={{ paddingRight: "40px" }} >
                     Messaging
                   </Nav.Link>
-                  <Nav.Link
-                    as={Link}
-                    to={"/notification"}
-                    style={{ paddingRight: "40px" }}
-                  >
+                  <Nav.Link href="/notifications" style={{ paddingRight: "40px" }} >
                     Notification
                   </Nav.Link>
                   <NavDropdown title="Profile" id="collasible-nav-dropdown">
-                    <NavDropdown.Item as={Link} to={"/viewProfile"}>
+                  {userInfo ? (
+                    <NavDropdown.Item href="/profile">
                       View Profile
                     </NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to={"/settings"}>
+                    ) : (<></>)}
+                    <NavDropdown.Item href="/settings">
                       Settings
                     </NavDropdown.Item>
-                    <NavDropdown.Item onClick={ this.logoutHandler }
-                    >
-                      Logout
-                    </NavDropdown.Item>
+
+                    {userInfo ? (
+                      <NavDropdown.Item onClick={ logoutHandler } id="logout" >
+                        Logout
+                      </NavDropdown.Item> 
+                    ) : (
+                      <NavDropdown.Item href="/login" id="logout" >
+                      Login
+                    </NavDropdown.Item> 
+                    )}
+
+
+
+
                   </NavDropdown>
                   
                 </Nav>
               </Navbar.Collapse>
             </Container>
           </Navbar>
-        </div>
+    
 
-        <div>
+        {/* <div>
           <Routes>  
             <Route path="/" element={<Home />} />
 
@@ -134,8 +136,9 @@ logoutHandler =() =>{
 
             <Route path="/signUp" element={<SignUp/>} />
           </Routes>
-        </div>
-      </Router>
+        </div> */}
+      </>
     );
-  }
+  
 }
+export default Header;

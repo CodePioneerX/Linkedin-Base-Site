@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from workshare.views import ProfileView, ProfileCreateView
+from workshare.views import ProfileView, ProfileCreateView, getProfileView
 from workshare.views import PostView, PostCreateView, PostLatestView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -32,12 +32,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     #path('api/profile', views.getUserProfile, name='users-profile'),
-    path('api/profile/<int:pk>', ProfileView.as_view(), name='profile_detail'),
+    path('api/profile/<int:pk>', getProfileView, name='profile_detail'),
     path('api/profile/', ProfileCreateView.as_view(), name='profile_create'),
     path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),
     path('api/posts/', PostLatestView.as_view(), name='post_latest_detail'),
     path('api/post/', PostCreateView.as_view(), name='post_create'),
-    path('register', views.UserCreate.as_view(), name='account-create'),
+    path('api/register/' , views.registerUser, name='register'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
