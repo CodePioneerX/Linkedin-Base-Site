@@ -107,7 +107,6 @@ function logoutHandler(){
 
 
 
-
                   </NavDropdown>
                   
                 </Nav>
@@ -133,8 +132,6 @@ function logoutHandler(){
             <Route path="/settings" element={<Settings />} />
 
             <Route path="/login" element={<LoginPage />} />
-
-            <Route path="/signUp" element={<SignUp/>} />
           </Routes>
         </div> */}
       </>
