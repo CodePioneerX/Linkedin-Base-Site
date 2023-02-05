@@ -23,14 +23,16 @@ function RegisterPage() {
 
   const navigate = useNavigate();
 
+// note: navigate('/') causing infinite error loop - investigate
+
   useEffect(() => {
     if (userInfo) {
-        navigate('/')
+        // navigate('/')
     }
     
     if (status != '') {
         setStatus('')
-        navigate('/')
+        // navigate('/')
     }
     
   }, []);

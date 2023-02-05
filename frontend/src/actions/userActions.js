@@ -92,9 +92,10 @@ export const login = (email,password) => async (dispatch) => {
 
 // export const loadProfile = ()
 
+// note: dispatch({ type: USER_LOGOUT }) causing infinite error loop - investigate 
 export const logout = () => (dispatch) => {
     localStorage.removeItem('userInfo')
-    dispatch({ type: USER_LOGOUT })
+    // dispatch({ type: USER_LOGOUT })
 }
 
 

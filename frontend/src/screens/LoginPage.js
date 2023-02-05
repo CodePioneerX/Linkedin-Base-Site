@@ -26,10 +26,11 @@ function LoginPage() {
     navigate('/register');
   }
 
+  // note: navigate('/') causing infinite error loop - investigate
 
  useEffect(() => {
   if (userInfo) {
-    navigate('/')
+    // navigate('/')
   }
 }, [ userInfo, navigate]);
 
