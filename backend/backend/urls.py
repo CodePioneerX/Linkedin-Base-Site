@@ -17,11 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from workshare.views import ProfileView, ProfileCreateView, getProfileView
-from workshare.views import PostView, PostCreateView, PostLatestView
+from workshare.views import PostView, PostCreateView, PostLatestView, JobListingCreateView, JobListingLatestView
 from django.conf import settings
 from django.conf.urls.static import static
 from workshare import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
 router.register(r'workshares', views.WorkShareView, 'workshare')
@@ -36,8 +37,11 @@ urlpatterns = [
     path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),
     path('api/posts/', PostLatestView.as_view(), name='post_latest_detail'),
     path('api/post/', PostCreateView.as_view(), name='post_create'),
+    path('api/job/', JobListingCreateView.as_view(), name='job_listing_create'),
+    path('api/jobs/', JobListingLatestView.as_view(), name='job_listing_latest_detail'),
     path('api/register/' , views.registerUser, name='register'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
+#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-
-urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+#urlpatterns += staticfiles_urlpatterns()

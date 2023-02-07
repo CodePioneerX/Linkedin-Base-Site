@@ -16,7 +16,7 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -167,10 +167,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "images/"]
-print("PATH : ",STATICFILES_DIRS)
+print("PATH STATICFILES_DIRS: ",STATICFILES_DIRS)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, '/')
 MEDIA_URL = '/'
+print("PATH MEDIA_ROOT: ",MEDIA_ROOT)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -179,4 +180,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ORIGIN_WHITELIST = ["http://localhost:3000"]
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:8080",
+    "http://localhost:3000",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",
+    "http://localhost:3000",
+]

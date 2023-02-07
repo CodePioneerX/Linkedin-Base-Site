@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Container, Row, Col} from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import Posts from '../components/Posts-old';
+import Jobs from '../components/Jobs';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios'
 import Alert from 'react-bootstrap/Alert';
@@ -24,6 +25,7 @@ function Home() {
 
         </Row>)}
         <Posts/>
+        <Jobs/>
       </Container>
   )
 

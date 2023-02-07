@@ -8,9 +8,9 @@ from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
 from .serializers import WorkShareSerializer
 from .models import WorkShare
-from .models import Profile, Post
+from .models import Profile, Post, JobListing, Comment
 from django.contrib.auth.models import User
-from .serializers import ProfileSerializer, PostSerializer, UserSerializer, UserSerializerWithToken
+from .serializers import ProfileSerializer, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer
 from django.contrib.auth.hashers import make_password
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -81,6 +81,42 @@ class PostLatestView(APIView):
                 'created_at': post.created_at
             })
         return JsonResponse(post_list, safe=False)
+
+
+class JobListingCreateView(CreateAPIView):
+    queryset = JobListing.objects.all()
+    serializer_class = JobListingSerializer
+
+class JobListingLatestView(APIView):
+    def get(self, request):
+        jobs = JobListing.objects.all().order_by('-created_at')[:10]
+        job_list = []
+        for job in jobs:
+            job_comments = []
+            
+            job_comments.append({
+                'author': str(job.comments.author),
+                'content': job.comments.content,
+                'created_at': job.comments.created_at
+            })
+            job_list.append({
+                'id': job.id,
+                'author': job.author.username,
+                'title': job.title,
+                'description': job.description,
+                'image': job.image.url,
+                'likes': job.likes,
+                'created_at': job.created_at,
+                'salary': job.salary,
+                'location': job.location,
+                'status': job.status,
+                'company': job.company,
+                'comments': job_comments,
+                'job_type': job.job_type,
+                'remote': job.remote
+            })
+        return JsonResponse(job_list, safe=False)
+
 
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])

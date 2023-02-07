@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
-from .models import WorkShare, Profile, Post
+from .models import WorkShare, Profile, Post, JobListing, Comment
 
 class WorkShareSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,3 +47,15 @@ class UserSerializerWithToken(UserSerializer):
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
+    
+    
+    
+class JobListingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobListing
+        fields = ('id', 'title', 'description','company', 'remote', 'job_type', 'image', 'comments', 'likes', 'salary', 'location', 'status', 'author')
+        
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('id', 'content', 'author')

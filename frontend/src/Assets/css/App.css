@@ -132,3 +132,12 @@ footer {
 }
 
 
+.align_center {
+  text-align: center;
+  display: inline-flex !important;
+}
+
+.common-width {
+  min-width: 50vw !important;
+
+}
