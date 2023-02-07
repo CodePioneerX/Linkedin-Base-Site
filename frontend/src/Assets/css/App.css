@@ -123,3 +123,12 @@ footer {
 .limit_width {
   max-width: 30rem;
 }
+
+
+.alertLogin {
+  min-width: 50vw;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+
