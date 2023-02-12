@@ -23,19 +23,22 @@ function RegisterPage() {
 
   const navigate = useNavigate();
 
-// note: navigate('/') causing infinite error loop - investigate
-
   useEffect(() => {
     if (userInfo) {
-        // navigate('/')
+        navigate('/')
     }
-    
+
+    if (status === 'success') {
+      alert('Register success!')
+      navigate('/login')
+    }
+
     if (status != '') {
         setStatus('')
         // navigate('/')
     }
     
-  }, []);
+  }, [status, navigate]);
 
 
   const submitHandler = (e) => {
@@ -47,10 +50,8 @@ function RegisterPage() {
         
         dispatch(register(name, email, password))
         console.log(userInfo)
-        console.log("login success")
+        console.log("register success")
         setStatus('success')
-        
-        
     }
   }
 
