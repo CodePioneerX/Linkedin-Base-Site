@@ -95,7 +95,7 @@ export const login = (email,password) => async (dispatch) => {
 // note: dispatch({ type: USER_LOGOUT }) causing infinite error loop - investigate 
 export const logout = () => (dispatch) => {
     localStorage.removeItem('userInfo')
-    // dispatch({ type: USER_LOGOUT })
+    dispatch({ type: USER_LOGOUT })
 }
 
 
@@ -131,7 +131,7 @@ export const register = (name, email, password) => async (dispatch) => {
         // })
 
     } catch (error) {
-        console.log("login failed")
+        console.log("register failed")
         dispatch({
             
             type: USER_REGISTER_FAIL,
