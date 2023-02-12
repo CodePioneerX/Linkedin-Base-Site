@@ -58,7 +58,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  ReactDOM.createRoot(document.getElementById("root")).render(
+  return (
     <Provider store ={store}>
     
       <Header />
@@ -68,6 +68,5 @@ function App() {
     </Provider>
   );
 }
-
 
 export default App;
