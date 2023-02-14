@@ -19,8 +19,8 @@ export const EditProfileForm =(profile)=>{
     const [awards, setAwards] = useState(profile.profile.awards)
     const [languages, setLanguages] = useState(profile.profile.languages)
     
-
-    const handleEdit = ()=>{
+    const handleEdit = (e)=>{
+    e.preventDefault()
     console.log(name)
     console.log(title)
     console.log(city)
@@ -114,17 +114,17 @@ export const EditProfileForm =(profile)=>{
         <FormGroup className='mb-4'>
         <div className="profile-header">
               <p className='labelE'>Your profile image now</p>
-              <img src={profile.profile.image} value= {image} className='editImg' 
-              onChange={(e)=> setImage(e.target.value)}/>
+              <img src={profile.profile.image} className='editImg' />
         </div>
         </FormGroup>
         <FormGroup className='mb-4'>
         <Label className='labelE ' for="image">Choose your new profile image</Label>
-            <input type='file' name="image" id="image" />
+            <input type='file' name="image" id="image" 
+            onChange={(e)=> setImage(e.target.files[0])}/>
         </FormGroup>
      
         <div className='editButtonContainer'>
-        <Button className='editButton' onClick={handleEdit}> Save </Button>
+        <Button type = 'submit' className='editButton' onClick={handleEdit}> Save </Button>
         <Button className='editCancelButton' onClick={profile.quitEditor}>Cancel</Button>
         </div>
         </Form>
