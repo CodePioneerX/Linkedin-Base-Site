@@ -49,12 +49,26 @@
     height: 50px;
   }
 
+  .editImg{
+    height: 300px;
+    
+  }
+
   .title{
     color: #5d5b8d;
     font-size: 24px;
   }
   
-  
+  .labelE{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #2f0d5ca7;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+
   label{
     display: flex;
     align-items: center;
@@ -87,6 +101,36 @@
     font-weight: bold;
     border:none;
     cursor:pointer;   
+  }
+
+  .editButton{
+    background-color: #19932a;
+    color: white;
+    width: 10%;
+    padding: 10px;
+    font-weight: bold;
+    border:none;
+    cursor:pointer;
+    
+  }
+
+  .editCancelButton{
+    background-color: #c80b0b;
+    color: white;
+    width: 10%;
+    padding: 10px;
+    font-weight: bold;
+    border:none;
+    cursor:pointer;
+    margin: 10px;
+  }
+
+  .editButtonContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    
   }
 
  .loginP{

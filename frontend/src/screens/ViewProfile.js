@@ -2,16 +2,17 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import Posts from "../components/Posts-old copy";
+import Posts from "../components/Posts-old_copy";
 import { useNavigate } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-
+import { EditProfileForm } from '../components/EditProfileForm';
 
 
 function ViewProfile() {
   const [profile, setProfile] = useState("");
+  const [editor, setEditor] = useState(false)
 
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
@@ -39,12 +40,22 @@ function ViewProfile() {
     getProfile();
   }, []);
 
+  const editorMode = ()=>{
+    setEditor(true)
+  }
+ 
+  const quitEditor = ()=>{
+    setEditor(false)
+  }
+
   return (
     <Container className="justify-content-md-center padd">
       {userInfo ? (
+        // (editor? <EditProfileForm profile={profile} quitEditor={quitEditor}/>: 
         <div className="profile-page">
           <div style={{ display: "flex" }}>
             <div style={{ flex: 5}}>
+            {editor? <EditProfileForm profile={profile} quitEditor={quitEditor}/>: 
           <Col>
           <div style={{borderRadius: "10px", overflow: "hidden", boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)", marginBottom: "2rem", borderBottom: "1px solid #ccc"}}>
             <Row style={{backgroundImage: `url(${require("../images/a.jpg")})`, paddingBottom: "15px", backgroundSize: "cover", backgroundPosition: "center center", display: "flex", flexDirection: "column", alignItems: "center"}}>     
@@ -59,7 +70,8 @@ function ViewProfile() {
                 <button style={{backgroundColor: "#3D13C6", color: "white", borderRadius: "20px", padding: "10px 20px", border: "none", marginRight: "10px"}}>
                   Connections
                 </button>
-                <button style={{backgroundColor: "#3D13C6", color: "white", borderRadius: "20px", padding: "10px 20px", border: "none", marginRight: "10px"}}>
+                <button style={{backgroundColor: "#3D13C6", color: "white", borderRadius: "20px", padding: "10px 20px", border: "none", marginRight: "10px"}}
+                onClick={editorMode}>
                 Edit Profile
                 </button>
                 <button style={{backgroundColor: "#3D13C6", color: "white", borderRadius: "20px", padding: "10px 20px", border: "none", marginRight: "10px"}}>
@@ -144,6 +156,7 @@ function ViewProfile() {
                   </Col>
                 </Row>
               </Col>
+      }
               </div>
               
               <div style={{ flex: 2}}>
@@ -165,6 +178,7 @@ function ViewProfile() {
             </div>
           </Row>
         </div>
+      
       ) : (
         <Alert className="alertLogin" key="primary" variant="primary">
           <h5>
