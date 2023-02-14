@@ -19,8 +19,16 @@ class Profile(models.Model):
     title = models.CharField(max_length=255)
     about = models.TextField()
     image = models.ImageField(upload_to='images', blank=True, default='images/default.png')
-    experience = models.TextField()
+    experience = models.TextField(default='')
     education = models.TextField(default='')
+    work = models.TextField(default='')
+    volunteering = models.TextField(default='')
+    courses = models.TextField(default='')
+    projects = models.TextField(default='')
+    awards = models.TextField(default='')
+    languages = models.TextField(default='')
+    
+    
 
     def __str__(self):
         return self.name
