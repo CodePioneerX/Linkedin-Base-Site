@@ -1,8 +1,8 @@
 
-
+import Button from 'react-bootstrap/Button';
 import React, { useState, useEffect} from 'react'
 import '../Assets/css/Login.css';
-import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
+import {  Form, FormGroup, Label, Input} from 'reactstrap';
 
 export const EditProfileForm =(profile)=>{
     const [name, setName] = useState(profile.profile.name)
@@ -12,6 +12,13 @@ export const EditProfileForm =(profile)=>{
     const [experience, setExperience] = useState(profile.profile.experience)
     const [education, setEducation] = useState(profile.profile.education)
     const [image, setImage] = useState(profile.profile.image)
+    const [work, setWork] = useState(profile.profile.work)
+    const [volunteering, setVolunteering] = useState(profile.profile.volunteering)
+    const [courses, setCourses] = useState(profile.profile.courses)
+    const [projects, setProjects] = useState(profile.profile.projects)
+    const [awards, setAwards] = useState(profile.profile.awards)
+    const [languages, setLanguages] = useState(profile.profile.languages)
+    
 
     const handleEdit = ()=>{
     console.log(name)
@@ -21,6 +28,12 @@ export const EditProfileForm =(profile)=>{
     console.log(experience)
     console.log(education)
     console.log(image)
+    console.log(work)
+    console.log(volunteering)
+    console.log(courses)
+    console.log(projects)
+    console.log(awards)
+    console.log(languages)
     profile.quitEditor()
     }
     
@@ -60,6 +73,44 @@ export const EditProfileForm =(profile)=>{
             onChange={(e)=> setEducation(e.target.value)}/>
         </FormGroup>
         <FormGroup className='mb-4'>
+        <Label className='labelE' for="work">Work</Label>
+            <textarea  className= 'form-control'
+            name="work" id="work" value = {work} placeholder={profile.profile.work} 
+            onChange={(e)=> setWork(e.target.value)}/>
+        </FormGroup>
+        <FormGroup>
+        <Label className='labelE' for="volunteering">Volunteering</Label>
+            <textarea  className= 'form-control'
+            name="volunteering" id="volunteering" value = {volunteering} placeholder={profile.profile.volunteering} 
+            onChange={(e)=> setVolunteering(e.target.value)}/>
+        </FormGroup>
+        <FormGroup>
+        <Label className='labelE' for="courses">Courses</Label>
+            <textarea  className= 'form-control'
+            name="courses" id="courses" value = {courses} placeholder={profile.profile.courses} 
+            onChange={(e)=> setCourses(e.target.value)}/>
+        </FormGroup>
+        <FormGroup>
+        <Label className='labelE' for="projects">Projects</Label>
+            <textarea  className= 'form-control'
+            name="projects" id="projects" value = {projects} placeholder={profile.profile.projects} 
+            onChange={(e)=> setProjects(e.target.value)}/>
+        </FormGroup>
+        <FormGroup>
+        <Label className='labelE' for="awards">Awards</Label>
+            <textarea  className= 'form-control'
+            name="awards" id="awards" value = {awards} placeholder={profile.profile.awards} 
+            onChange={(e)=> setAwards(e.target.value)}/>
+        </FormGroup>
+        <FormGroup>
+        <Label className='labelE' for="languages">Languages</Label>
+            <textarea  className= 'form-control'
+            name="languages" id="languages" value = {languages} placeholder={profile.profile.languages} 
+            onChange={(e)=> setLanguages(e.target.value)}/>
+        </FormGroup>
+
+       
+        <FormGroup className='mb-4'>
         <div className="profile-header">
               <p className='labelE'>Your profile image now</p>
               <img src={profile.profile.image} value= {image} className='editImg' 
@@ -70,8 +121,9 @@ export const EditProfileForm =(profile)=>{
         <Label className='labelE ' for="image">Choose your new profile image</Label>
             <input type='file' name="image" id="image" />
         </FormGroup>
+     
         <div className='editButtonContainer'>
-        <Button className='editButton' onClick={handleEdit}>Save</Button>
+        <Button className='editButton' onClick={handleEdit}> Save </Button>
         <Button className='editCancelButton' onClick={profile.quitEditor}>Cancel</Button>
         </div>
         </Form>

@@ -106,7 +106,7 @@
   .editButton{
     background-color: #19932a;
     color: white;
-    width: 10%;
+    /* width: 10%; */
     padding: 10px;
     font-weight: bold;
     border:none;
@@ -117,7 +117,7 @@
   .editCancelButton{
     background-color: #c80b0b;
     color: white;
-    width: 10%;
+    /* width: 10%; */
     padding: 10px;
     font-weight: bold;
     border:none;
