@@ -38,6 +38,7 @@ export const EditProfileForm =(profile)=>{
     }
     
     return <div>
+        <h2>Edit Your Profile</h2>
         <Form >
         <FormGroup className='mb-4'>
         <Label className='labelE' for="name" >User Name</Label>
