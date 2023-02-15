@@ -26,7 +26,7 @@ function RegisterPage() {
   useEffect(() => {
     if (userInfo) {
         navigate('/login')
-        alert('Your account has been successfully registered. \nAn email will be sent to you from your CONNECT team. Click the activation link in the email to activate your account and login.')
+        alert('An email will be sent to you from your CONNECT team. Click the activation link in the email to activate your account and complete the registration process.\n\nIf you do not see an email from us in your email inbox, please check your spam folder. ')
     }
   }, [userInfo, navigate]);
 
