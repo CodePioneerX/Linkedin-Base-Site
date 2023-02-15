@@ -50,7 +50,7 @@ export const EditProfileForm =(profile)=>{
         }
         
         const { data } = await axios.post(
-            `http://localhost:8000/api/profile/` + userInfo.id,
+            `http://localhost:8000/api/profile/update/` + userInfo.id,
     //         {'name': name, 
     //         'title': title, 
     //         'city': city, 
