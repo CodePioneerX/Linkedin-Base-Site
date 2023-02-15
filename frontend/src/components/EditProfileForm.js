@@ -21,6 +21,7 @@ export const EditProfileForm =(profile)=>{
     
     const handleEdit = (e)=>{
     e.preventDefault()
+    try{
     console.log(name)
     console.log(title)
     console.log(city)
@@ -35,6 +36,12 @@ export const EditProfileForm =(profile)=>{
     console.log(awards)
     console.log(languages)
     profile.quitEditor()
+    } catch(error){
+        console.log('edit profile failed')
+        console.log((error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message))
+    }
     }
     
     return <div>
