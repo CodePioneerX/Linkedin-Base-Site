@@ -26,49 +26,66 @@ export const EditProfileForm =(profile)=>{
     const { userInfo } = userLogin;
     
     const uploadData = async ()=>{
+        const file = image
+        const formData = new FormData()
+        formData.append('image', file)
+        formData.append('name', name) 
+        formData.append('title', title) 
+        formData.append('city', city) 
+        formData.append('about', about)
+        formData.append('experience', experience)
+        formData.append('education', education) 
+        formData.append('work', work) 
+        formData.append('volunteering', volunteering)
+        formData.append('courses', courses)
+        formData.append('projects', projects) 
+        formData.append('awards', awards)
+        formData.append('languages', languages)
+
         const config = {
             headers: {
-                'Content-type': 'application/json'
+                // 'Content-type': 'application/json'
+                'Content-Type':'multipart/form-data'
             }
         }
         
         const { data } = await axios.post(
             `http://localhost:8000/api/profile/` + userInfo.id,
-            {'name': name, 
-            'title': title, 
-            'city': city, 
-            'about' :about,
-            'experience': experience,
-            'education':education, 
-            'image':imagePath, 
-            'work':work, 
-            'volunteering':volunteering,
-            'courses':courses, 
-            'projects':projects, 
-            'awards':awards, 
-            'languages':languages
-    },
-            config
+    //         {'name': name, 
+    //         'title': title, 
+    //         'city': city, 
+    //         'about' :about,
+    //         'experience': experience,
+    //         'education':education, 
+    //         'image':imagePath, 
+    //         'work':work, 
+    //         'volunteering':volunteering,
+    //         'courses':courses, 
+    //         'projects':projects, 
+    //         'awards':awards, 
+    //         'languages':languages
+    // },
+        formData,config
         )
     }
 
-    const uploadImage = async () => {
-        console.log("file is uploading")
-        const file = image
-        const formData = new FormData()
+    // const uploadImage = async () => {
+    //     console.log("file is uploading")
+    //     const file = image
+    //     const formData = new FormData()
 
-        formData.append('image', file)
-            const config = {
-                headers:{
-                    'Content-Type':'multipart/form-data'
-                }
-            }
+    //     formData.append('image', file)
+    //         const config = {
+    //             headers:{
+    //                 'Content-Type':'multipart/form-data'
+    //             }
+    //         }
             
-            const {data} = await axios.post(
-                `http://localhost:8000/api/profile/` + userInfo.id, 
-                formData, config)
+    //         const {data} = await axios.post(
+    //             `http://localhost:8000/api/profile/` + userInfo.id, 
+    //             formData, config)
 
-    }
+    // }
     
     const handleEdit = (e)=>{
     e.preventDefault()
