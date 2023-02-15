@@ -107,13 +107,15 @@ def registerUser(request):
               first_name= data['name'],
               username=data['username'],
               email=data['username'],
-              password=make_password(data['password'])
-         )  
-         
+              password=make_password(data['password']),
+              is_active=False
+              )
+
          serializer = UserSerializerWithToken(user, many=False)
          print('user created!')
-        
+         #print(user.email)
+         #activateEmail(request, user, user.email)
          return Response(serializer.data)
     except: 
-         message = {'detail':'User with this email already exists'}
+         message = {'detail':'A problem occurred while registering this account. Make sure that the email entered is correct and that it does not belong to an existing user.'}
          return Response(message, status=status.HTTP_400_BAD_REQUEST)
