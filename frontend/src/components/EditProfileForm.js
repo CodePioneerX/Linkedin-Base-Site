@@ -1,8 +1,10 @@
 
 import Button from 'react-bootstrap/Button';
 import React, { useState, useEffect} from 'react'
+import {useSelector } from "react-redux";
 import '../Assets/css/Login.css';
 import {  Form, FormGroup, Label, Input} from 'reactstrap';
+import axios from 'axios';
 
 export const EditProfileForm =(profile)=>{
     const [name, setName] = useState(profile.profile.name)
@@ -12,29 +14,79 @@ export const EditProfileForm =(profile)=>{
     const [experience, setExperience] = useState(profile.profile.experience)
     const [education, setEducation] = useState(profile.profile.education)
     const [image, setImage] = useState(profile.profile.image)
+    const [imagePath, setImagePath] = useState(profile.profile.image)
     const [work, setWork] = useState(profile.profile.work)
     const [volunteering, setVolunteering] = useState(profile.profile.volunteering)
     const [courses, setCourses] = useState(profile.profile.courses)
     const [projects, setProjects] = useState(profile.profile.projects)
     const [awards, setAwards] = useState(profile.profile.awards)
     const [languages, setLanguages] = useState(profile.profile.languages)
+
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
+    
+    const uploadData = async ()=>{
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+        
+        const { data } = await axios.post(
+            `http://localhost:8000/api/profile/` + userInfo.id,
+            {'name': name, 
+            'title': title, 
+            'city': city, 
+            'about' :about,
+            'experience': experience,
+            'education':education, 
+            'image':imagePath, 
+            'work':work, 
+            'volunteering':volunteering,
+            'courses':courses, 
+            'projects':projects, 
+            'awards':awards, 
+            'languages':languages
+    },
+            config
+        )
+    }
+
+    const uploadImage = async () => {
+        console.log("file is uploading")
+        const file = image
+        const formData = new FormData()
+
+        formData.append('image', file)
+            const config = {
+                headers:{
+                    'Content-Type':'multipart/form-data'
+                }
+            }
+            
+            const {data} = await axios.post(
+                `http://localhost:8000/api/profile/` + userInfo.id, 
+                formData, config)
+
+    }
     
     const handleEdit = (e)=>{
     e.preventDefault()
     try{
-    console.log(name)
-    console.log(title)
-    console.log(city)
-    console.log(about)
-    console.log(experience)
-    console.log(education)
-    console.log(image)
-    console.log(work)
-    console.log(volunteering)
-    console.log(courses)
-    console.log(projects)
-    console.log(awards)
-    console.log(languages)
+    // console.log(name)
+    // console.log(title)
+    // console.log(city)
+    // console.log(about)
+    // console.log(experience)
+    // console.log(education)
+    // console.log(image)
+    // console.log(imagePath)
+    // console.log(work)
+    // console.log(volunteering)
+    // console.log(courses)
+    // console.log(projects)
+    // console.log(awards)
+    // console.log(languages)
     profile.quitEditor()
     } catch(error){
         console.log('edit profile failed')
@@ -127,7 +179,8 @@ export const EditProfileForm =(profile)=>{
         <FormGroup className='mb-4'>
         <Label className='labelE ' for="image">Choose your new profile image</Label>
             <input type='file' name="image" id="image" 
-            onChange={(e)=> setImage(e.target.files[0])}/>
+            onChange={(e)=> {setImage(e.target.files[0])
+                            setImagePath('/images/'+ e.target.files[0].name)}}/>
         </FormGroup>
      
         <div className='editButtonContainer'>
