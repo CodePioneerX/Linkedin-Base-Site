@@ -48,7 +48,6 @@ function LoginPage() {
   return (
    
     <div className='formBackground'>
-      {/* <div className='homeContainer'> */}
       <div className='form'>
       <span className="logo">
           <img src={process.env.PUBLIC_URL+'/logo.png'} alt="logo" ></img>
@@ -82,13 +81,6 @@ function LoginPage() {
         </div>
       </Form>
       </div>
-      {/* <div className='homeComponent'>
-      <div>
-      
-      </div>
-      </div> */}
-      
-      {/* </div> */}
    
   </div>
   );

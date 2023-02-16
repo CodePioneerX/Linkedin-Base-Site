@@ -43,7 +43,6 @@ function RegisterPage() {
 
   return (
    <div className='formBackground'>
-    {/* <div className='homeContainer'> */}
     <div className='form'>
     <span>
       <Alert  className='warningDifferentPasswords' key='warning' variant='warning' show={Boolean((password!='') && (confirmPassword!='') && (password != confirmPassword))}>
@@ -84,23 +83,13 @@ function RegisterPage() {
       </Button>
         <div>
             <p className='loginP'>Already a member?&nbsp;
-                <a href='/login'> Log in</a>
+                <a href='/login'>Log in</a>
             </p>
        </div>
        <div>
-      <p className='loginP'>Forgot password?&nbsp;
-      <a href='#'> Click here</a>
-     </p>
        </div>
     </Form>
     </div>
-    {/* <div className='homeComponent'>
-    <div>
-    
-    </div>
-    </div> */}
-    
-    {/* </div> */}
   </div>
   );
 }
