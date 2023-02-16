@@ -10,7 +10,7 @@ from .serializers import WorkShareSerializer
 from .models import WorkShare
 from .models import Profile, Post
 from django.contrib.auth.models import User
-from .serializers import ProfileSerializer, PostSerializer, UserSerializer, UserSerializerWithToken
+from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken
 from django.contrib.auth.hashers import make_password
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -53,6 +53,41 @@ class ProfileCreateView(CreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     
+    
+# still need to figure out how to make it so user must be authenticated/can only edit their own profile
+@api_view(['PUT'])
+# @permission_classes([IsAuthenticated])
+def updateUserProfile(request, pk):
+    profile = get_object_or_404(Profile, pk=pk)
+
+    # print("DEBUG : INITIAL PROFILE DATA: ", profile.name, profile.city, profile.title, profile.user)
+
+    data = request.data
+
+    # print("DEBUG : REQUEST DATA: ", data)
+
+    profile.name = data['name']
+    profile.city = data['city']
+    profile.title = data['title']
+    profile.about = data['about']
+    profile.experience = data['experience']
+    profile.education = data['education']
+    profile.work = data['work']
+    profile.volunteering = data['volunteering']
+    profile.courses = data['courses']
+    profile.projects = data['projects']
+    profile.awards = data['awards']
+    profile.languages = data['languages']
+
+    profile.save()
+
+    # print("DEBUG : MODIFIED PROFILE DATA: ", profile.name, profile.city, profile.title)
+
+    serializer = ProfileSerializerWithToken(profile, many=False)
+    
+    # print("DEBUG : SERIALIZER DATA: ", serializer.data)
+
+    return Response(serializer.data)
     
     
 class PostView(APIView):

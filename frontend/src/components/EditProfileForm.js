@@ -49,8 +49,8 @@ export const EditProfileForm =(profile)=>{
             }
         }
         
-        const { data } = await axios.post(
-            `http://localhost:8000/api/profile/` 
+        const { data } = await axios.put(
+            `http://localhost:8000/api/profile/update/` + userInfo.id 
             ,
     //         {'name': name, 
     //         'title': title, 
@@ -69,6 +69,9 @@ export const EditProfileForm =(profile)=>{
         formData,
         config
         )
+        // NOTE: the page needs to be reloaded for the updated profile data to load
+        //       can probably figure out a better way to do it using the state
+        window.location.reload(false);
     }
 
     // const uploadImage = async () => {
