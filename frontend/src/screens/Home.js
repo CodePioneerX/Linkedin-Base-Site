@@ -15,7 +15,11 @@ function Home() {
   return (
       <Container className="justify-content-md-center padd">
         {userInfo ? (
-          <></>
+        <Container>
+          <a className='btn btn-primary' href='/create/post' role='button'>
+            Create a Post
+          </a>
+        </Container>
         ) : (        
         <Row>
           

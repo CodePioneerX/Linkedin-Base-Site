@@ -86,7 +86,7 @@ class PostLatestView(APIView):
 
 class JobListingCreateView(CreateAPIView):
     print("JobListing recieved")
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
     queryset = JobListing.objects.all()
     serializer_class = JobListingSerializer
     
@@ -114,7 +114,30 @@ class JobListingCreateView(CreateAPIView):
              
         
         
+class PostListingCreateView(CreateAPIView):
+    print("PostListing recieved")
+    #permission_classes = [IsAuthenticated]
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
     
+    def create(self, validated_data):
+        print(self)
+        request = self.request 
+        #print(request.user)
+        print(request)
+        # getting the user object from email
+        user = User.objects.get(email=request.data['author'])
+        post = Post.objects.create(
+            author=user,
+            title=request.data['title'],
+            content=request.data['content'],
+            image=request.data['image'],
+        )
+        post.save()
+        #print(post)
+        return Response(status=status.HTTP_200_OK)
+        #return JsonResponse(job, safe=False)
+                
         
 
 class JobListingLatestView(APIView):

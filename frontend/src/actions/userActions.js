@@ -196,12 +196,6 @@ export const create_job = (author, email,title, description,remote, active, comp
             type: CREATE_JOB_REQUEST
         })
         
-        // const config = {
-        //     headers: {
-        //         'Content-type': 'multipart/form-data'
-        //     }
-        // }
-          
         const { 
             userLogin: { userInfo },
         } = getState()
@@ -210,7 +204,7 @@ export const create_job = (author, email,title, description,remote, active, comp
         const config = {
             headers: {
                 'Content-type': 'multipart/form-data',
-                Authorization: `Bearer ${userInfo.token}`
+                //Authorization: `Bearer ${userInfo.token}`
             } 
         }
         
@@ -226,19 +220,54 @@ export const create_job = (author, email,title, description,remote, active, comp
             type: CREATE_JOB_SUCCESS,
             payload: data
         })
-        //localStorage.setItem('userInfo', JSON.stringify(data))
-        // dispatch(login(email, password))
-
-        // dispatch({
-        //     type: USER_LOGIN_SUCCESS,
-        //     payload: data
-        // })
-
     } catch (error) {
         console.log("creating a job failed")
         dispatch({
             
             type: CREATE_JOB_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+    }
+}
+
+export const create_post = (author,title, content, image)  => async (dispatch, getState) => {
+    try {
+        
+        dispatch({
+            type: CREATE_POST_REQUEST
+        })
+        
+        const { 
+            userLogin: { userInfo },
+        } = getState()
+
+      
+        const config = {
+            headers: {
+                'Content-type': 'multipart/form-data',
+                //Authorization: `Bearer ${userInfo.token}`
+            } 
+        }
+        
+        console.log('config: ', config)
+
+        const { data } = await axios.post(
+            'http://localhost:8000/api/create_post/',
+            { 'author': author, 'title': title, 'content': content, 'image':image },
+            config
+        )
+        
+        dispatch({
+            type: CREATE_POST_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        console.log("creating a POST failed")
+        dispatch({
+            
+            type: CREATE_POST_FAIL,
             payload: error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.message,

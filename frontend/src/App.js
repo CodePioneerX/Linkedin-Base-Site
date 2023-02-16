@@ -14,6 +14,7 @@ import LoginPage from './screens/LoginPage';
 import RegisterPage from './screens/RegisterPage';
 import ViewProfile from "./screens/ViewProfile";
 import CreateJob from "./screens/CreateJob";
+import CreatePost from './screens/CreatePost';
 import myNetwork from './screens/MyNetwork';
 import Job from './screens/Job';
 import Messaging from './screens/Messaging';
@@ -57,6 +58,9 @@ const router = createBrowserRouter([
   },{
     path: "/create/job",
     element: <CreateJob/>,
+  },{
+    path: "/create/post",
+    element: <CreatePost/>,
   }
 
 ]);

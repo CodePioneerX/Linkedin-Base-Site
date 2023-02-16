@@ -31,7 +31,7 @@ export default class Posts extends Component {
 
                 <Container className='darker'>
                   <p>{post.content}</p>
-                  <img className='img_box' src={post.image} alt={post.title} />
+                  <img className='img_box' src={'http://localhost:8000'+post.image} alt={post.title} />
                   <p>By: {post.author}</p>
                   <p>Likes: {post.likes}</p>
                   <p>Created at: {post.created_at}</p>

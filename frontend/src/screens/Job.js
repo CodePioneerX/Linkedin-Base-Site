@@ -9,7 +9,7 @@ import Alert from 'react-bootstrap/Alert';
 function Job() {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-
+  
 
   return (
       <Container className="justify-content-md-center padd">
