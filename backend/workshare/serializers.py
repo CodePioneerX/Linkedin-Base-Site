@@ -13,7 +13,18 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('name', 'email', 'city', 'title', 'about', 'image', 'experience', 'education', 'work', 'volunteering', 'courses', 'projects', 'awards', 'languages')
-        
+
+# for the authentication for editing, i think we will need a profile serializer with token, something like below        
+class ProfileSerializerWithToken(ProfileSerializer):
+    token = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = ('name', 'email', 'city', 'title', 'about', 'image', 'experience', 'education', 'work', 'volunteering', 'courses', 'projects', 'awards', 'languages', 'token')
+
+    def get_token(self, obj):
+        token = RefreshToken.for_user(obj.user)
+        return str(token.access_token)
         
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,6 +48,7 @@ class UserSerializer(serializers.ModelSerializer):
             name = obj.email
 
         return name
+
 class UserSerializerWithToken(UserSerializer):
     token = serializers.SerializerMethodField(read_only=True)
 

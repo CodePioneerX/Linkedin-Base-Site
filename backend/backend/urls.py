@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from workshare.views import ProfileView, ProfileCreateView, getProfileView
+from workshare.views import ProfileView, ProfileCreateView, getProfileView, updateUserProfile
 from workshare.views import PostView, PostCreateView, PostLatestView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -33,6 +33,7 @@ urlpatterns = [
     #path('api/profile', views.getUserProfile, name='users-profile'),
     path('api/profile/<int:pk>', getProfileView, name='profile_detail'),
     path('api/profile/', ProfileCreateView.as_view(), name='profile_create'),
+    path('api/profile/update/<int:pk>', updateUserProfile, name='profile_update'),
     path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),
     path('api/posts/', PostLatestView.as_view(), name='post_latest_detail'),
     path('api/post/', PostCreateView.as_view(), name='post_create'),
