@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    #'workshare',
     'workshare.apps.WorkshareConfig',
     'django_extensions',
 ]

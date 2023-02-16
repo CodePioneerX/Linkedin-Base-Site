@@ -14,7 +14,11 @@ function Job() {
   return (
       <Container className="justify-content-md-center padd">
         {userInfo ? (
-          <></>
+          <Container>
+            <a className='btn btn-primary' href='/create/job' role='button'>
+              Create a job listing
+            </a>
+          </Container>
         ) : (        
         <Row>
           

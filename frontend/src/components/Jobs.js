@@ -13,6 +13,9 @@ import {
     MDBIcon,
     MDBInput,
     MDBRow,
+    MDBPagination, 
+    MDBPaginationItem, 
+    MDBPaginationLink
   } from "mdb-react-ui-kit";
 export default class Jobs extends Component {
   state = {
@@ -23,6 +26,8 @@ export default class Jobs extends Component {
     axios.get('http://localhost:8000/api/jobs/')
       .then(res => this.setState({ jobs: res.data }))
   }
+
+  
 
   render() {
     const Comment = ({ author, content, createdAt }) => {
@@ -52,7 +57,7 @@ export default class Jobs extends Component {
                 <Container className='darker'>
                   <p>{job.content}</p>
                   {/* <img className='img_box' src={(".."+job.image)} alt={job.title} /> */}
-                  <img className='img_box' src={('http://localhost:8000/static/'+job.image.split('images/')[1])} />
+                  <img className='img_box' src={('http://localhost:8000/images/'+job.image.split('images/')[1])} />
                   <p>By: {job.author}</p>
                   <p>Likes: {job.likes}</p>
                   <p>Created at: {job.created_at}</p>
@@ -62,35 +67,44 @@ export default class Jobs extends Component {
                   <br/>
 
             
-                {job.comments.map(comment => (
+                {job.comments.length > 0 && <h4>Comments</h4>}
+                {job.comments.length > 0 && job.comments.map(comment => (
                     
                     <Row>
                             <MDBContainer >
                             <MDBRow> 
-                            <MDBCard className="mb-4">
-                                    <MDBCardBody className='common-width'>
-                                    <p>{comment.content}</p>
+                            <MDBCard className="mb-4 restrict-height">
+                                    <MDBCardBody className='common-width '>
+                                      <Row> 
+                                    
 
                                     <div className="d-flex justify-content-between common-width">
-                                        <div className="d-flex flex-row align-items-center">
-                                        <MDBCardImage
-                                            src='http://localhost:8000/static/default.png'
-                                            alt="avatar"
-                                            // width="25"
-                                            // height="25"
-                                        />
-                                        <p className="small mb-0 ms-2">{comment.author}</p>
-                                        </div>
-                                        <div className="d-flex flex-row align-items-center">
-                                        <p className="small text-muted mb-0">Likes</p>
-                                        <MDBIcon
-                                            far
-                                            icon="thumbs-up mx-2 fa-xs text-black"
-                                            style={{ marginTop: "-0.16rem" }}
-                                        />
-                                        <p className="small text-muted mb-0">3</p>
-                                        </div>
+                                        <Col>
+                                            <div className="d-flex flex-row align-items-center">
+                                            <MDBCardImage
+                                                className="rounded-circle"
+                                                src='http://localhost:8000/images/default.png'
+                                                alt="avatar"
+                                                // width="25"
+                                                // height="25"
+                                            />
+                                            <p className="tiny">{comment.author}</p>
+                                            </div>
+                                        </Col>
+                                        <Col><p className="small">{comment.content}</p></Col>
+                                        <Col>
+                                          <div className="d-flex flex-row align-items-center">
+                                          <p className="tiny text-muted ">Likes ( </p>
+                                          <MDBIcon
+                                              far
+                                              icon="thumbs-up fa-xs text-black"
+                                              
+                                          />
+                                          <p className="small text-muted "> 3)</p>
+                                          </div>
+                                        </Col>
                                     </div>
+                                    </Row>
                                     </MDBCardBody>
                                 </MDBCard>
                             </MDBRow>
@@ -121,6 +135,27 @@ export default class Jobs extends Component {
               </Row>
             ))}
 
+        </Row>
+        <Row>
+        <nav aria-label='Page navigation example'>
+          <MDBPagination className='mb-0'>
+            <MDBPaginationItem>
+              <MDBPaginationLink href='#'>Previous</MDBPaginationLink>
+            </MDBPaginationItem>
+            <MDBPaginationItem>
+              <MDBPaginationLink href='#'>1</MDBPaginationLink>
+            </MDBPaginationItem>
+            <MDBPaginationItem>
+              <MDBPaginationLink href='#'>2</MDBPaginationLink>
+            </MDBPaginationItem>
+            <MDBPaginationItem>
+              <MDBPaginationLink href='#'>3</MDBPaginationLink>
+            </MDBPaginationItem>
+            <MDBPaginationItem>
+              <MDBPaginationLink href='#'>Next</MDBPaginationLink>
+            </MDBPaginationItem>
+          </MDBPagination>
+        </nav>
         </Row>
       </Container>
     )

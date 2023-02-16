@@ -37,7 +37,7 @@ urlpatterns = [
     path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),
     path('api/posts/', PostLatestView.as_view(), name='post_latest_detail'),
     path('api/post/', PostCreateView.as_view(), name='post_create'),
-    path('api/job/', JobListingCreateView.as_view(), name='job_listing_create'),
+    path('api/create_job/', JobListingCreateView.as_view(), name='job_listing_create'),
     path('api/jobs/', JobListingLatestView.as_view(), name='job_listing_latest_detail'),
     path('api/register/' , views.registerUser, name='register'),
 ] 

@@ -13,6 +13,7 @@ import { Container } from 'react-bootstrap';
 import LoginPage from './screens/LoginPage';
 import RegisterPage from './screens/RegisterPage';
 import ViewProfile from "./screens/ViewProfile";
+import CreateJob from "./screens/CreateJob";
 import myNetwork from './screens/MyNetwork';
 import Job from './screens/Job';
 import Messaging from './screens/Messaging';
@@ -53,6 +54,9 @@ const router = createBrowserRouter([
   },{
     path: "/settings",
     element: <Settings/>,
+  },{
+    path: "/create/job",
+    element: <CreateJob/>,
   }
 
 ]);

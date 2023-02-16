@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
+import json
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -84,8 +85,37 @@ class PostLatestView(APIView):
 
 
 class JobListingCreateView(CreateAPIView):
+    print("JobListing recieved")
+    permission_classes = [IsAuthenticated]
     queryset = JobListing.objects.all()
     serializer_class = JobListingSerializer
+    
+    def create(self, validated_data):
+        print(self)
+        request = self.request 
+        print(request.user)
+        print(request)
+        job = JobListing.objects.create(
+            author=request.user,
+            title=request.data['title'],
+            description=request.data['description'],
+            image=request.data['image'],
+            salary=request.data['salary'],
+            company = request.data['company'],
+            location = request.data['location'],
+            status = request.data['status'],
+            job_type = request.data['job_type'],
+            remote = True#request.data['remote']
+        )
+        job.save()
+        print(job)
+        return Response(status=status.HTTP_200_OK)
+        #return JsonResponse(job, safe=False)
+             
+        
+        
+    
+        
 
 class JobListingLatestView(APIView):
     def get(self, request):
@@ -94,11 +124,14 @@ class JobListingLatestView(APIView):
         for job in jobs:
             job_comments = []
             
-            job_comments.append({
-                'author': str(job.comments.author),
-                'content': job.comments.content,
-                'created_at': job.comments.created_at
-            })
+            if job.comments is not None:
+                job_comments.append({
+                    'author': str(job.comments.author),
+                    'content': job.comments.content,
+                    'created_at': job.comments.created_at
+                })
+            else:
+                job_comments=[]
             job_list.append({
                 'id': job.id,
                 'author': job.author.username,
