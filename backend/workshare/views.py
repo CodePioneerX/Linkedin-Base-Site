@@ -91,12 +91,13 @@ class JobListingCreateView(CreateAPIView):
     serializer_class = JobListingSerializer
     
     def create(self, validated_data):
-        print(self)
+        #print(self)
         request = self.request 
-        print(request.user)
-        print(request)
+        #print(request.user)
+        #print(request)
+        user = User.objects.get(email=request.data['author'])
         job = JobListing.objects.create(
-            author=request.user,
+            author=user,#request.user,
             title=request.data['title'],
             description=request.data['description'],
             image=request.data['image'],
@@ -108,7 +109,7 @@ class JobListingCreateView(CreateAPIView):
             remote = True#request.data['remote']
         )
         job.save()
-        print(job)
+        #print(job)
         return Response(status=status.HTTP_200_OK)
         #return JsonResponse(job, safe=False)
              
