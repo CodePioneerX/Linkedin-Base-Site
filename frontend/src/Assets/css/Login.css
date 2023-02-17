@@ -89,6 +89,18 @@
     border-bottom: 1px solid #a7bcff;   
   }
 
+  .warningDifferentPasswords{
+    padding: 10px;
+    border: none;
+    width: 250px; 
+    text-align: center;
+  }
+
+  .warningDifferentPasswords h6{
+    padding-top: 5px;
+    font-size: 75%;
+  }
+
   #userEmail::placeholder{
         color: rgb(199, 213, 224);
     }

@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import{
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
@@ -77,6 +78,7 @@ export const getProfileDetails = (id) => async (dispatch, getState) => {
             type: USER_DETAILS_SUCCESS,
             payload: data
         })
+
     } catch (error) {
         dispatch({
             type: USER_DETAILS_FAIL,
@@ -129,7 +131,6 @@ export const logout = () => (dispatch) => {
 
 export const register = (name, email, password) => async (dispatch) => {
     try {
-        
         dispatch({
             type: USER_REGISTER_REQUEST
         })
@@ -150,6 +151,7 @@ export const register = (name, email, password) => async (dispatch) => {
             type: USER_REGISTER_SUCCESS,
             payload: data
         })
+
         //localStorage.setItem('userInfo', JSON.stringify(data))
         // dispatch(login(email, password))
 
@@ -161,7 +163,6 @@ export const register = (name, email, password) => async (dispatch) => {
     } catch (error) {
         console.log("register failed")
         dispatch({
-            
             type: USER_REGISTER_FAIL,
             payload: error.response && error.response.data.detail
                 ? error.response.data.detail
