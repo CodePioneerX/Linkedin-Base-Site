@@ -28,11 +28,13 @@ class Profile(models.Model):
     awards = models.TextField(default='')
     languages = models.TextField(default='')
     
-    
-
     def __str__(self):
         return self.name
-    
+
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)    
     
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -43,11 +45,23 @@ class Post(models.Model):
     likes = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     
+    def __str__(self):
+        return self.author.email
+    
+class JobListing(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    remote = models.BooleanField(default=False)
+    company = models.CharField(max_length=255)
+    job_type = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    comments = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True)
+    likes = models.IntegerField(default=0)
+    salary = models.IntegerField(default=0)
+    location = models.CharField(max_length=255)
+    status = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
-    
-class Comment(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
+        return self.title

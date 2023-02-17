@@ -14,7 +14,7 @@ export default class Posts extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:8000/api/posts/')
+    axios.get('http://localhost:8000/api/posts/user/'+this.props.u_id)
       .then(res => this.setState({ posts: res.data }))
   }
 
@@ -54,8 +54,10 @@ export default class Posts extends Component {
                   <Col xs={10} style={{ borderRadius: "20px", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "-40px" }}>
                           <div style={{borderBottom: "1px solid #d3d3d3",marginBottom:"10px"}}></div>
                         <Row style={{ display: "flex", alignItems: "center"}}>
-                          <img src={post.image} alt={post.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} />
-                          <p>{post.author}</p>
+                          {/* <img src={post.image} alt={post.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> */}
+                          {post.image ? <img src={post.image} alt="test alt image text" style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <p>test</p>}
+                          <p>P TEST {post.author}</p>
+                          {console.log("DEBUG : post.author: ", post.author)}
                         </Row>
 
                         <h4 style={{ textAlign: "center",paddingBottom: "5px", paddingTop:"6px"}}>{post.title}</h4>

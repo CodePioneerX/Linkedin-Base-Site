@@ -155,4 +155,20 @@ footer {
   padding-bottom: 3rem;
 }
 
+.align_center {
+  text-align: center;
+  display: inline-flex !important;
+}
 
+.common-width {
+  min-width: 50vw !important;
+}
+
+.restrict-height {
+  max-height: 5rem !important;
+  margin-left: 1rem;
+}
+
+.tiny {
+  font-size: 0.75rem;
+}

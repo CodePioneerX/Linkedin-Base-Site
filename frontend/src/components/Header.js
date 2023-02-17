@@ -88,7 +88,7 @@ function logoutHandler(){
                   <NavDropdown title="Profile" id="collasible-nav-dropdown">
                   {userInfo ? (
                     <NavDropdown.Item href="/profile">
-                      View Profile
+                      My Profile
                     </NavDropdown.Item>
                     ) : (<></>)}
                     <NavDropdown.Item href="/settings">

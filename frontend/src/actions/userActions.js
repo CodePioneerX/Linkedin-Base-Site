@@ -14,9 +14,21 @@ import{
     USER_DETAILS_SUCCESS,
     USER_DETAILS_FAIL,
 
+    GET_PROFILE_REQUEST,
+    GET_PROFILE_SUCCESS,
+    GET_PROFILE_FAIL,
+
     GET_POSTS_REQUEST,
     GET_POSTS_SUCCESS,
     GET_POSTS_FAIL,
+
+    CREATE_JOB_REQUEST,
+    CREATE_JOB_SUCCESS,
+    CREATE_JOB_FAIL,
+
+    CREATE_POST_REQUEST,
+    CREATE_POST_SUCCESS,
+    CREATE_POST_FAIL,
 } from '../constants/userConstants'
 
 export const getProfileDetails = (id) => async (dispatch, getState) => {
@@ -90,14 +102,10 @@ export const login = (email,password) => async (dispatch) => {
     }
 }
 
-// export const loadProfile = ()
-
-// note: dispatch({ type: USER_LOGOUT }) causing infinite error loop - investigate 
 export const logout = () => (dispatch) => {
     localStorage.removeItem('userInfo')
     dispatch({ type: USER_LOGOUT })
 }
-
 
 export const register = (name, email, password) => async (dispatch) => {
     try {
@@ -143,10 +151,10 @@ export const register = (name, email, password) => async (dispatch) => {
 }
 
 // Name should be GET PROFILE not POSTS
-export const getPosts = (id) => async (dispatch, getState) => {
+export const getProfile = (id) => async (dispatch, getState) => {
     try {
         dispatch({
-            type: GET_POSTS_REQUEST
+            type: GET_PROFILE_REQUEST
         })
         
         const { 
@@ -173,6 +181,106 @@ export const getPosts = (id) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: GET_POSTS_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+    }
+}
+
+export const create_job = (author, email,title, description,remote, active, company,job_type, image,salary,location)  => async (dispatch, getState) => {
+    try {
+        
+        dispatch({
+            type: CREATE_JOB_REQUEST
+        })
+        
+        // const config = {
+        //     headers: {
+        //         'Content-type': 'multipart/form-data'
+        //     }
+        // }
+          
+        const { 
+            userLogin: { userInfo },
+        } = getState()
+
+      
+        const config = {
+            headers: {
+                'Content-type': 'multipart/form-data',
+                // Authorization: `Bearer ${userInfo.token}`
+            } 
+        }
+        
+        console.log('config: ', config)
+
+        const { data } = await axios.post(
+            'http://localhost:8000/api/create_job/',
+            { 'author': email, 'title': title, 'description': description, 'remote':true ,'status':'active' ,'company':company ,'job_type':job_type ,'salary':salary ,'location':location, 'image':image },
+            config
+        )
+        
+        dispatch({
+            type: CREATE_JOB_SUCCESS,
+            payload: data
+        })
+        //localStorage.setItem('userInfo', JSON.stringify(data))
+        // dispatch(login(email, password))
+
+        // dispatch({
+        //     type: USER_LOGIN_SUCCESS,
+        //     payload: data
+        // })
+
+    } catch (error) {
+        console.log("creating a job failed")
+        dispatch({
+            
+            type: CREATE_JOB_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+    }
+}
+
+export const create_post = (author,title, content, image)  => async (dispatch, getState) => {
+    try {
+        
+        dispatch({
+            type: CREATE_POST_REQUEST
+        })
+        
+        const { 
+            userLogin: { userInfo },
+        } = getState()
+
+      
+        const config = {
+            headers: {
+                'Content-type': 'multipart/form-data',
+                //Authorization: `Bearer ${userInfo.token}`
+            } 
+        }
+        
+        console.log('config: ', config)
+
+        const { data } = await axios.post(
+            'http://localhost:8000/api/create_post/',
+            { 'author': author, 'title': title, 'content': content, 'image':image },
+            config
+        )
+        
+        dispatch({
+            type: CREATE_POST_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        console.log("creating a POST failed")
+        dispatch({
+            
+            type: CREATE_POST_FAIL,
             payload: error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.message,

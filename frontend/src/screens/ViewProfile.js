@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import Posts from "../components/Posts-old_copy";
+import Posts from "../components/Posts-old";
 import { useNavigate } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
 import Tab from 'react-bootstrap/Tab';
@@ -164,7 +164,8 @@ function ViewProfile() {
                 <row>
                   <div
                     className="profile-header" style={{ backgroundColor: "white", borderRadius: "7px", borderBottom: "1px solid #ccc", boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)", padding: "1.5rem",}}>
-                    <Posts />
+                    {/* <Posts /> */}
+                    <Posts u_id={userLogin.userInfo.id}/>
                   </div>
                 </row>
               </Col>
