@@ -31,7 +31,7 @@ function logoutHandler(){
   //window.location.reload(false);
   // window.location.assign("/login")
   // navigate("/login");
-  console.log('reached here')
+  // console.log('reached here')
 }
 
 
@@ -88,7 +88,7 @@ function logoutHandler(){
                   <NavDropdown title="Profile" id="collasible-nav-dropdown">
                   {userInfo ? (
                     <NavDropdown.Item href="/profile">
-                      View Profile
+                      My Profile
                     </NavDropdown.Item>
                     ) : (<></>)}
                     <NavDropdown.Item href="/settings">

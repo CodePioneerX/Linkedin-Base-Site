@@ -3,15 +3,15 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
 from .serializers import WorkShareSerializer
 from .models import WorkShare
-from .models import Profile, Post
+from .models import Profile, Post, JobListing, Comment
 from django.contrib.auth.models import User
-from .serializers import ProfileSerializer, PostSerializer, UserSerializer, UserSerializerWithToken
+from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -64,7 +64,91 @@ class ProfileCreateView(CreateAPIView):
     serializer_class = ProfileSerializer
     
     
+# still need to figure out how to make it so user must be authenticated/can only edit their own profile
+@api_view(['PUT'])
+# @permission_classes([IsAuthenticated])
+def updateUserProfile(request, pk):
+    profile = get_object_or_404(Profile, pk=pk)
+
+    # print("DEBUG : INITIAL PROFILE DATA: ", profile.name, profile.city, profile.title, profile.user)
+
+    data = request.data
+
+    # print("DEBUG : REQUEST DATA: ", data)
+
+    profile.name = data['name']
+    profile.city = data['city']
+    profile.title = data['title']
+    profile.about = data['about']
+    profile.experience = data['experience']
+    profile.education = data['education']
+    profile.work = data['work']
+    profile.volunteering = data['volunteering']
+    profile.courses = data['courses']
+    profile.projects = data['projects']
+    profile.awards = data['awards']
+    profile.languages = data['languages']
+
+    profile.save()
+
+    # print("DEBUG : MODIFIED PROFILE DATA: ", profile.name, profile.city, profile.title)
+
+    serializer = ProfileSerializerWithToken(profile, many=False)
     
+    # print("DEBUG : SERIALIZER DATA: ", serializer.data)
+
+    return Response(serializer.data)
+    
+@api_view(['PUT'])    
+def PostUpdateView(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    data = request.data
+
+    post.title = data['title']
+    post.content = data['content']
+
+    post.save()
+
+    serializer = PostSerializer(post, many=False)
+
+    return Response(serializer.data)
+
+@api_view(['DELETE', 'GET'])
+def PostDeleteView(request, pk):
+    # permission_classes = [AllowAny]
+    post = Post.objects.get(id=pk)
+    post.delete()
+    return Response('Post Deleted')
+
+@api_view(['PUT'])
+def JobListingUpdateView(request, pk):
+    job = get_object_or_404(JobListing, pk=pk)
+
+    data = request.data
+
+    # bugs with remote, status, image fields
+    job.title = data['title']
+    job.description = data['description']
+    # job.remote = data['remote']
+    job.company = data['company']
+    job.job_type = data['job_type']
+    job.salary = data['salary']
+    job.location = data['location']
+    # job.status = data['active']
+
+    job.save()
+    
+    serializer = JobListingSerializer(job, many=False)
+
+    return Response(serializer.data)
+
+@api_view(['DELETE', 'GET'])
+def JobListingDeleteView(request, pk):
+    job = JobListing.objects.get(id=pk)
+    job.delete()
+    return Response('JobListing Deleted')
+
 class PostView(APIView):
     def get(self, request, pk):
         post = get_object_or_404(Post, pk=pk)
@@ -81,16 +165,131 @@ class PostLatestView(APIView):
         posts = Post.objects.all().order_by('-created_at')[:10]
         post_list = []
         for post in posts:
+            image_path = ""
+            if post.image and hasattr(post.image, 'url'):
+                image_path = post.image.url
+
             post_list.append({
                 'id': post.id,
                 'author': post.author.username,
                 'title': post.title,
                 'content': post.content,
-                'image': post.image.url,
+                'image': image_path,
                 'likes': post.likes,
                 'created_at': post.created_at
             })
         return JsonResponse(post_list, safe=False)
+
+# retrieve specific user's post, for use in viewing user profiles
+class UserPostsView(APIView):
+    def get(self, request, pk):
+        posts = Post.objects.all().filter(author__id = pk).order_by('-created_at')[:10]
+        post_list = []
+        for post in posts:
+            image_path = ""
+            if post.image and hasattr(post.image, 'url'):
+                image_path = post.image.url
+            post_list.append({
+                'id': post.id,
+                'author': post.author.username,
+                'title': post.title,
+                'content': post.content,
+                'image': image_path,
+                'likes': post.likes,
+                'created_at': post.created_at
+            })
+        return JsonResponse(post_list, safe=False)
+
+class PostListingCreateView(CreateAPIView):
+    #  print("PostListing recieved")
+     #permission_classes = [IsAuthenticated]
+     queryset = Post.objects.all()
+     serializer_class = PostSerializer
+
+     def create(self, validated_data):
+        print(self)
+        request = self.request 
+        #print(request.user)
+        print(request)
+        # getting the user object from email
+        user = User.objects.get(email=request.data['author'])
+        post = Post.objects.create(
+            author=user,
+            title=request.data['title'],
+            content=request.data['content'],
+            image=request.data['image'],
+        )
+        post.save()
+        #print(post)
+        return Response(status=status.HTTP_200_OK)
+         #return JsonResponse(job, safe=False)
+
+class JobListingCreateView(CreateAPIView):
+    # print("Job Listing recieved")
+    # permission_classes = [IsAuthenticated]    
+    queryset = JobListing.objects.all()
+    serializer_class = JobListingSerializer
+
+    def create(self, validated_data):
+        # print("DEBUG : self: ", self)
+        request = self.request 
+        # print("DEBUG : request.user: ", request.user)
+        # print("DEBUG : request: ", request)
+        # print("DEBUG : request.data: ", request.data)
+        # print("DEBUG : request.data['author']: ", request.data['author'])
+        job = JobListing.objects.create(
+            author=User.objects.get(email=request.data['author']),
+            title=request.data['title'],
+            description=request.data['description'],
+            image=request.data['image'],
+            salary=request.data['salary'],
+            company = request.data['company'],
+            location = request.data['location'],
+            status = request.data['status'],
+            job_type = request.data['job_type'],
+            remote = True#request.data['remote']
+        )
+        job.save()
+        print("DEBUG : job: ", job)
+        return Response(status=status.HTTP_200_OK)
+
+class JobListingLatestView(APIView):
+    def get(self, request):
+        jobs = JobListing.objects.all().order_by('-created_at')[:10]
+        job_list = []
+        for job in jobs:
+            job_comments = []
+            image_path = ""
+
+            if job.comments is not None:
+                job_comments.append({
+                    'author': str(job.comments.author),
+                    'content': job.comments.content,
+                    'created_at': job.comments.created_at
+                })
+            else:
+                job_comments=[]
+
+            if job.image and hasattr(job.image, 'url'):
+                image_path = job.image.url
+
+            job_list.append({
+                'id': job.id,
+                'author': job.author.username,
+                'title': job.title,
+                'description': job.description,
+                'image': image_path,
+                'likes': job.likes,
+                'created_at': job.created_at,
+                'salary': job.salary,
+                'location': job.location,
+                'status': job.status,
+                'company': job.company,
+                'comments': job_comments,
+                'job_type': job.job_type,
+                'remote': job.remote
+            })
+        return JsonResponse(job_list, safe=False)
 
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
