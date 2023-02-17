@@ -110,31 +110,55 @@
   .editButton{
     background-color: #19932a;
     color: white;
-    /* width: 10%; */
+    width: 10%;
     padding: 10px;
     font-weight: bold;
     border:none;
     cursor:pointer;
-    
   }
 
-  .editCancelButton{
-    background-color: #c80b0b;
+  .editSaveButton{
+    background-color: #19932a;
     color: white;
-    /* width: 10%; */
+    width: 70%;
     padding: 10px;
     font-weight: bold;
     border:none;
+    border-radius: 20px; 
+    cursor:pointer;
+    margin: 10px;
+  }
+
+  .editCancelButton{
+    /* background-color: #c80b0b;*/
+    background-color: grey;
+    color: white;
+    width: 70%;
+    padding: 10px;
+    font-weight: bold;
+    border:none;
+    border-radius: 20px; 
+    cursor:pointer;
+    margin: 10px;
+  }
+
+  .editDeleteButton{
+    background-color: #c80b0b;
+    color: white;
+    width: 70%;
+    padding: 10px;
+    font-weight: bold;
+    border:none;
+    border-radius: 20px; 
     cursor:pointer;
     margin: 10px;
   }
 
   .editButtonContainer{
-    display: flex;
-    flex-direction: column;
+    /* display: flex; */
+    /* flex-direction: column; */
     align-items: center;
-    padding: 10px;
-    
+    /* padding: 10px; */
   }
 
  .loginP{

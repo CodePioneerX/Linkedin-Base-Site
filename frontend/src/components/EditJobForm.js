@@ -1,9 +1,9 @@
 import Button from 'react-bootstrap/Button';
-import React, { useState, useEffect} from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import '../Assets/css/Login.css';
 import { Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
-import { update_job } from '../actions/userActions';
+import { delete_job, update_job } from '../actions/userActions';
 
 export const EditJobForm = (job) => {
     const [author, setAuthor] = useState(job.job.author)
@@ -24,10 +24,6 @@ export const EditJobForm = (job) => {
 
     const dispatch = useDispatch();
 
-    useEffect (() => {
-        
-    }, [])
-
     const submitHandler = (e)=>{
         e.preventDefault()
         
@@ -39,6 +35,13 @@ export const EditJobForm = (job) => {
     const cancelHandler = (e) => {
         e.preventDefault()
 
+        window.location.reload(false)
+    }
+
+    const deleteHandler = (e) => {
+        e.preventDefault()
+        alert('Are you sure you want to delete this job?')
+        dispatch(delete_job(job.job.id))
         window.location.reload(false)
     }
     
@@ -98,10 +101,17 @@ export const EditJobForm = (job) => {
                 </Col>
             </Row>
         
-            <div className='editButtonContainer'>
-                <Button type = 'submit' className='editButton' onClick={submitHandler}> Save </Button>
-                <Button className='editCancelButton' onClick={cancelHandler}>Cancel</Button>
-            </div>
+            <Row className='editButtonContainer'>
+                <Col xs={12} md={4}>
+                    <Button type = 'submit' className='editSaveButton' onClick={submitHandler}> Save </Button>
+                </Col>
+                <Col xs={12} md={4}>
+                    <Button className='editCancelButton' onClick={cancelHandler}>Cancel</Button>
+                </Col>
+                <Col xs={12} md={4}>
+                    <Button className='editDeleteButton' onClick={deleteHandler}>Delete</Button>
+                </Col>
+            </Row>
         </Form>
     </div>
 } 

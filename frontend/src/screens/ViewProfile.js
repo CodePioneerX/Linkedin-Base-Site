@@ -25,8 +25,8 @@ function ViewProfile() {
   const { userInfo } = userLogin;
   const navigate = useNavigate();
 
-  console.log("userLogin: ", userLogin);
-  console.log("userInfo: ", userInfo);
+  // console.log("userLogin: ", userLogin);
+  // console.log("userInfo: ", userInfo);
 
   useEffect(() => {
     if (!userInfo) {

@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import React, { useState, useEffect} from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import '../Assets/css/Login.css';
-import {  Form, FormGroup, Label, Input} from 'reactstrap';
+import {  Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import axios from 'axios';
 import { update_profile } from '../actions/userActions'
 
@@ -36,6 +36,11 @@ export const EditProfileForm =(profile)=>{
         // NOTE: the page needs to be reloaded for the updated profile data to load
         //       can probably figure out a better way to do it using the state
         window.location.reload(false);
+    }
+
+    const cancelHandler = (e) => {
+        e.preventDefault()
+        window.location.reload(false)
     }
     
     return <div>
@@ -125,10 +130,14 @@ export const EditProfileForm =(profile)=>{
                             setImagePath('/images/'+ e.target.files[0].name)}}/>
         </FormGroup>
      
-        <div className='editButtonContainer'>
-        <Button type = 'submit' className='editButton' onClick={submitHandler}> Save </Button>
-        <Button className='editCancelButton' onClick={profile.quitEditor}>Cancel</Button>
-        </div>
+        <Row className='editButtonContainer'>
+                <Col xs={12} md={6}>
+                    <Button type = 'submit' className='editSaveButton' onClick={submitHandler}> Save </Button>
+                </Col>
+                <Col xs={12} md={6}>
+                    <Button className='editCancelButton' onClick={cancelHandler}>Cancel</Button>
+                </Col>
+            </Row>
         </Form>
     </div>
 }

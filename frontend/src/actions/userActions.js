@@ -33,6 +33,10 @@ import{
     UPDATE_JOB_REQUEST,
     UPDATE_JOB_SUCCESS,
     UPDATE_JOB_FAIL,
+    
+    DELETE_JOB_REQUEST,
+    DELETE_JOB_SUCCESS,
+    DELETE_JOB_FAIL,
 
     CREATE_POST_REQUEST,
     CREATE_POST_SUCCESS,
@@ -41,6 +45,10 @@ import{
     UPDATE_POST_REQUEST,
     UPDATE_POST_SUCCESS,
     UPDATE_POST_FAIL,
+
+    DELETE_POST_REQUEST,
+    DELETE_POST_SUCCESS,
+    DELETE_POST_FAIL,
 } from '../constants/userConstants'
 
 export const getProfileDetails = (id) => async (dispatch, getState) => {
@@ -328,6 +336,43 @@ export const update_job = (jobID, author, title, description, remote, active, co
     }
 }
 
+export const delete_job = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: DELETE_JOB_REQUEST
+        })
+
+        const {
+            userLogin: {userInfo},
+        } = getState()
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                // Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.delete(
+            `http://localhost:8000/api/job/delete/` + id,
+            config
+        )
+        
+        dispatch({
+            type: DELETE_JOB_SUCCESS,
+            payload: data
+        })
+        
+    } catch (error) {
+        dispatch({
+            type: DELETE_JOB_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+    }
+}
+
 export const update_post = (postID, title, content) => async (dispatch, getState) => {
     try {
         dispatch({
@@ -355,6 +400,43 @@ export const update_post = (postID, title, content) => async (dispatch, getState
             payload: error.response && error.response.data.detail
             ? error.response.data.detail
             : error.message,
+        })
+    }
+}
+
+export const delete_post = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: DELETE_POST_REQUEST
+        })
+
+        const {
+            userLogin: {userInfo},
+        } = getState()
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                // Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+        
+        const { data } = await axios.delete(
+            `http://localhost:8000/api/post/delete/` + id,
+            config
+        )
+        
+        dispatch({
+            type: DELETE_POST_SUCCESS,
+            payload: data
+        })
+        
+    } catch (error) {
+        dispatch({
+            type: DELETE_POST_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
         })
     }
 }

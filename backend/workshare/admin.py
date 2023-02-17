@@ -8,10 +8,10 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = ('name', 'title', 'about', 'image', 'experience')
     
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'content', 'image', 'likes', 'author', 'created_at')
+    list_display = ('id', 'title', 'content', 'image', 'likes', 'author', 'created_at')
 
 class JobListingAdmin(admin.ModelAdmin):
-    list_display = ('title', 'description', 'remote', 'job_type', 'image', 'likes', 'salary', 'location', 'status', 'author')
+    list_display = ('id', 'title', 'description', 'remote', 'job_type', 'image', 'likes', 'salary', 'location', 'status', 'author')
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('content', 'author', 'created_at')

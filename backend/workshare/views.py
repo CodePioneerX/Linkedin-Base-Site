@@ -104,6 +104,13 @@ def PostUpdateView(request, pk):
 
     return Response(serializer.data)
 
+@api_view(['DELETE', 'GET'])
+def PostDeleteView(request, pk):
+    # permission_classes = [AllowAny]
+    post = Post.objects.get(id=pk)
+    post.delete()
+    return Response('Post Deleted')
+
 @api_view(['PUT'])
 def JobListingUpdateView(request, pk):
     job = get_object_or_404(JobListing, pk=pk)
@@ -125,6 +132,12 @@ def JobListingUpdateView(request, pk):
     serializer = JobListingSerializer(job, many=False)
 
     return Response(serializer.data)
+
+@api_view(['DELETE', 'GET'])
+def JobListingDeleteView(request, pk):
+    job = JobListing.objects.get(id=pk)
+    job.delete()
+    return Response('JobListing Deleted')
 
 class PostView(APIView):
     def get(self, request, pk):
@@ -178,7 +191,7 @@ class UserPostsView(APIView):
         return JsonResponse(post_list, safe=False)
 
 class PostListingCreateView(CreateAPIView):
-     print("PostListing recieved")
+    #  print("PostListing recieved")
      #permission_classes = [IsAuthenticated]
      queryset = Post.objects.all()
      serializer_class = PostSerializer
@@ -202,9 +215,8 @@ class PostListingCreateView(CreateAPIView):
          #return JsonResponse(job, safe=False)
 
 class JobListingCreateView(CreateAPIView):
-    print("Job Listing recieved")
+    # print("Job Listing recieved")
     # permission_classes = [IsAuthenticated]    
-    # permission_classes = [AllowAny]
     queryset = JobListing.objects.all()
     serializer_class = JobListingSerializer
 
