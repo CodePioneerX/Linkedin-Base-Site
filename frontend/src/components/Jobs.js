@@ -57,13 +57,15 @@ export default class Jobs extends Component {
                 <Container className='darker'>
                   <p>{job.content}</p>
                   {/* <img className='img_box' src={(".."+job.image)} alt={job.title} /> */}
-                  <img className='img_box' src={('http://localhost:8000/images/'+job.image.split('images/')[1])} />
+                  {/* <img className='img_box' src={('http://localhost:8000/images/'+job.image.split('images/')[1])} /> */}
+                  {job.image ? <img src={job.image} alt="test alt image text" style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
+                  <p>Description: {job.description}</p>
                   <p>By: {job.author}</p>
                   <p>Likes: {job.likes}</p>
                   <p>Created at: {job.created_at}</p>
                   <p>Salary: {job.salary}$/hour</p>
-                   <p>Location: {job.location}</p>
-                    <p>Category: {job.category}</p>
+                  <p>Location: {job.location}</p>
+                  <p>Category: {job.category}</p>
                   <br/>
 
             
@@ -124,6 +126,9 @@ export default class Jobs extends Component {
                 </Container>
 
                 <Row>
+                  <Col>
+                    <Button className='btns' variant="primary">Apply</Button>
+                  </Col>
                   <Col>
                     <Button className='btns' variant="primary">Like</Button>
                   </Col>

@@ -198,6 +198,7 @@ class JobListingLatestView(APIView):
         job_list = []
         for job in jobs:
             job_comments = []
+            image_path = ""
 
             if job.comments is not None:
                 job_comments.append({
@@ -207,12 +208,16 @@ class JobListingLatestView(APIView):
                 })
             else:
                 job_comments=[]
+
+            if job.image and hasattr(job.image, 'url'):
+                image_path = job.image.url
+
             job_list.append({
                 'id': job.id,
                 'author': job.author.username,
                 'title': job.title,
                 'description': job.description,
-                'image': job.image.url,
+                'image': image_path,
                 'likes': job.likes,
                 'created_at': job.created_at,
                 'salary': job.salary,

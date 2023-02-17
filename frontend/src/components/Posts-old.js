@@ -56,7 +56,7 @@ export default class Posts extends Component {
                         <Row style={{ display: "flex", alignItems: "center"}}>
                           {/* <img src={post.image} alt={post.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> */}
                           {post.image ? <img src={post.image} alt="test alt image text" style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <p>test</p>}
-                          <p>P TEST {post.author}</p>
+                          <p>{post.author}</p>
                           {console.log("DEBUG : post.author: ", post.author)}
                         </Row>
 
