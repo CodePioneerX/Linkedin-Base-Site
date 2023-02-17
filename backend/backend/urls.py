@@ -17,8 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from workshare.views import ProfileView, ProfileCreateView, getProfileView, updateUserProfile
-from workshare.views import JobListingCreateView, JobListingLatestView
-from workshare.views import PostView, PostCreateView, PostLatestView, PostListingCreateView, UserPostsView
+from workshare.views import JobListingCreateView, JobListingLatestView, JobListingUpdateView
+from workshare.views import PostView, PostCreateView, PostUpdateView, PostLatestView, PostListingCreateView, UserPostsView
 from django.conf import settings
 from django.conf.urls.static import static
 from workshare import views
@@ -39,9 +39,11 @@ urlpatterns = [
     path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),
     path('api/posts/', PostLatestView.as_view(), name='post_latest_detail'),
     path('api/post/', PostCreateView.as_view(), name='post_create'),
+    path('api/post/update/<int:pk>', PostUpdateView, name='post_update'),
     path('api/posts/user/<int:pk>', UserPostsView.as_view(), name='user_posts'),
     path('api/create_post/',PostListingCreateView.as_view(), name='post_listing_create'),
     path('api/create_job/', JobListingCreateView.as_view(), name='job_listing_create'),
+    path('api/job/update/<int:pk>', JobListingUpdateView, name='job_listing_update'),
     path('api/jobs/', JobListingLatestView.as_view(), name='job_listing_latest_detail'),
     path('api/register/' , views.registerUser, name='register'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

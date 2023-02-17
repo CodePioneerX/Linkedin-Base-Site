@@ -37,40 +37,41 @@ function CreatePost() {
     // if (password != confirmPassword) {
     //     setMessage('Passwords do not match')
     // } else {
-        
         dispatch(create_post(userInfo.email,title, content, image))
-        console.log(userInfo)
-        console.log("Job created with success")
-        setStatus('success')
+        // console.log(userInfo)
+        // console.log("Job created with success")
+        // setStatus('success')
         
+        navigate('/profile/')
         
-    
+        // navigate(-1) would go back to previous page, but on home page the new post doesn't appear until reload
+        // navigate(-1)
   }
 
   return (
       <Container className="justify-content-md-center padd">
         {userInfo ? (
           <Container className='padd'>
-            <h1>Create a job listing</h1>
+            <h1>Create a Post</h1>
             <Form className='padd' onSubmit={submitHandler}>
+                {/* disabling these for now, we should not allow the user to edit post author or email */}
                 <MDBRow className='mb-4'>
                     <MDBCol>
-                    <MDBInput id='form6Example1' label='Contact name'  value={author} onChange={(e)=> setAuthor(e.target.value)} />
+                      <MDBInput disabled id='form6Example1' label='Contact name' value={userLogin.userInfo.username} onChange={(e)=> setAuthor(e.target.value)} />
                     </MDBCol>
                     <MDBCol>
-                    <MDBInput id='form6Example2' label='Contact email'  value={email} onChange={(e)=> setEmail(e.target.value)}/>
+                      <MDBInput disabled id='form6Example2' label='Contact email' value={userLogin.userInfo.email} onChange={(e)=> setEmail(e.target.value)}/>
                     </MDBCol>
                 </MDBRow>
 
-                <MDBInput wrapperClass='mb-4' id='form6Example3' label='title'  value={title} onChange={(e)=> setTitle(e.target.value)} />
-                <MDBInput wrapperClass='mb-4' id='form6Example8' rows={4} label='content'  value={content} onChange={(e)=> setContent(e.target.value)}/>
+                <MDBInput wrapperClass='mb-4' id='form6Example3' label='Title'  value={title} onChange={(e)=> setTitle(e.target.value)} />
+                <MDBInput wrapperClass='mb-4' id='form6Example8' rows={4} label='Content'  value={content} onChange={(e)=> setContent(e.target.value)}/>
            
                 <div className='mb-4'>
-                    <MDBFile type="file" label='listing image' id='customFile'  onChange={(e)=> setImage(e.target.files[0])}/>
-
+                    <MDBFile wrapperClass='mb-4' type="file" label='Attach an image' id='customFile' onChange={(e)=> setImage(e.target.files[0])}/>
                 </div>
 
-                <MDBBtn className='mb-4 padd' type='submit' block>
+                <MDBBtn id='create-post-button' className='mb-4 padd' type='submit'>
                     Create a Post
                 </MDBBtn>
             </Form>

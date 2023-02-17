@@ -3,9 +3,11 @@ import {Container, Row, Col} from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
-import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
+import { faPaperPlane, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import { EditPostForm } from '../components/EditPostForm';
 
 
 export default class Posts extends Component {
@@ -13,8 +15,28 @@ export default class Posts extends Component {
     posts: []
   }
 
+  postEditorMode = () => {
+    // this.props.postEditorMode = true
+  }
+
+  quitPostEditor = () => {
+    // this.props.postEditorMode = false
+  }
+
+  handleClick = post => () => {
+    // console.log('click')
+    this.props.setpost(post)
+    // console.log("DEBUG : post: ", post)
+    this.props.edit()
+  }
+  
+  handleClick2 = () => {
+    // this.props.setpost = post
+    // this.props.quit()
+  }
+
   componentDidMount() {
-    axios.get('http://localhost:8000/api/posts/user/'+this.props.u_id)
+    axios.get(`http://localhost:8000/api/posts/user/` + this.props.u_id)
       .then(res => this.setState({ posts: res.data }))
   }
 
@@ -56,12 +78,20 @@ export default class Posts extends Component {
                         <Row style={{ display: "flex", alignItems: "center"}}>
                           {/* <img src={post.image} alt={post.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> */}
                           {post.image ? <img src={post.image} alt="test alt image text" style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <p>test</p>}
-                          <p>{post.author}</p>
+                          <Row>
+                          <Col>
+                            <p>{post.author}</p>
+                          </Col>
+                          <Col>
+                            {/* <button onClick={this.props.postEditorMode}>Edit Post</button> */}
+                            <button onClick={this.handleClick(post)} style={{ backgroundColor: "#3D13C6", color: "white", borderRadius: "25px", padding: "5px 10px", border: "none" }}><FontAwesomeIcon icon={faPenToSquare} style={{ color: "white"}}/> </button>
+                          </Col>
+                          </Row>
                           {console.log("DEBUG : post.author: ", post.author)}
                         </Row>
 
                         <h4 style={{ textAlign: "center",paddingBottom: "5px", paddingTop:"6px"}}>{post.title}</h4>
-                        <p style={{padding: "15px 0"}}>{post.content}</p>
+                        <p style={{padding: "15px 0", maxWidth: "100%", whiteSpace: "normal"}}>{post.content}</p>
                         <Row style={{ justifyContent: "space-between", borderBottom: "1px solid #D3D3D3", marginBottom:"10px" }}>
                           <p style={{ marginLeft: "10px", fontSize: "14px", color: "#808080" }}>
                             <FontAwesomeIcon icon={faHeart} style={{ color: "red", fontSize: "19px" }}/> {post.likes} Likes

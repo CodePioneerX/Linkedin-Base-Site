@@ -3,6 +3,7 @@ import {Container, Row, Col} from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import Posts from '../components/Posts-old';
 import Jobs from '../components/Jobs';
+import Newsfeed from '../components/Newsfeed';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios'
 import Alert from 'react-bootstrap/Alert';
@@ -15,11 +16,15 @@ function Home() {
   return (
       <Container className="justify-content-md-center padd">
         {userInfo ? (
+          <>
           <Container>
             <a className='btn btn-primary' href='/create/post' role='button'>
               Create a Post
             </a>
           </Container>
+          <Newsfeed author={userInfo.email}/>
+          <Jobs/>
+        </>
         ) : (        
         <Row>
           
@@ -28,8 +33,6 @@ function Home() {
           </Alert>
 
         </Row>)}
-        <Posts/>
-        <Jobs/>
       </Container>
   )
 

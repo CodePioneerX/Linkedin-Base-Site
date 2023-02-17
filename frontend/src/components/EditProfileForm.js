@@ -1,10 +1,11 @@
 
 import Button from 'react-bootstrap/Button';
 import React, { useState, useEffect} from 'react'
-import {useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import '../Assets/css/Login.css';
 import {  Form, FormGroup, Label, Input} from 'reactstrap';
 import axios from 'axios';
+import { update_profile } from '../actions/userActions'
 
 export const EditProfileForm =(profile)=>{
     const [name, setName] = useState(profile.profile.name)
@@ -25,98 +26,16 @@ export const EditProfileForm =(profile)=>{
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
     
-    const uploadData = async ()=>{
-        const file = image
-        const formData = new FormData()
-        formData.append('image', file)
-        formData.append('name', name) 
-        formData.append('title', title) 
-        formData.append('city', city) 
-        formData.append('about', about)
-        formData.append('experience', experience)
-        formData.append('education', education) 
-        formData.append('work', work) 
-        formData.append('volunteering', volunteering)
-        formData.append('courses', courses)
-        formData.append('projects', projects) 
-        formData.append('awards', awards)
-        formData.append('languages', languages)
-        console.log(...formData)
-        const config = {
-            headers: {
-                // 'Content-type': 'application/json'
-                'Content-Type':'multipart/form-data'
-            }
-        }
+    const dispatch = useDispatch();
+    
+    const submitHandler = (e)=>{
+        e.preventDefault()
+    
+        dispatch(update_profile(userInfo.id, name, title, city, about, experience, education, image, work, volunteering, courses, projects, awards, languages))
         
-        const { data } = await axios.put(
-            `http://localhost:8000/api/profile/update/` + userInfo.id 
-            ,
-    //         {'name': name, 
-    //         'title': title, 
-    //         'city': city, 
-    //         'about' :about,
-    //         'experience': experience,
-    //         'education':education, 
-    //         'image':image, 
-    //         'work':work, 
-    //         'volunteering':volunteering,
-    //         'courses':courses, 
-    //         'projects':projects, 
-    //         'awards':awards, 
-    //         'languages':languages
-    // },
-        formData,
-        config
-        )
         // NOTE: the page needs to be reloaded for the updated profile data to load
         //       can probably figure out a better way to do it using the state
         window.location.reload(false);
-    }
-
-    // const uploadImage = async () => {
-    //     console.log("file is uploading")
-    //     const file = image
-    //     const formData = new FormData()
-
-    //     formData.append('image', file)
-    //         const config = {
-    //             headers:{
-    //                 'Content-Type':'multipart/form-data'
-    //             }
-    //         }
-            
-    //         const {data} = await axios.post(
-    //             `http://localhost:8000/api/profile/` + userInfo.id, 
-    //             formData, config)
-
-    // }
-    
-    const handleEdit = (e)=>{
-    e.preventDefault()
-    try{
-    // console.log(name)
-    // console.log(title)
-    // console.log(city)
-    // console.log(about)
-    // console.log(experience)
-    // console.log(education)
-    // console.log(image)
-    // console.log(imagePath)
-    // console.log(work)
-    // console.log(volunteering)
-    // console.log(courses)
-    // console.log(projects)
-    // console.log(awards)
-    // console.log(languages)
-    uploadData()
-    profile.quitEditor()
-    } catch(error){
-        console.log('edit profile failed')
-        console.log((error.response && error.response.data.detail
-            ? error.response.data.detail
-            : error.message))
-    }
     }
     
     return <div>
@@ -207,7 +126,7 @@ export const EditProfileForm =(profile)=>{
         </FormGroup>
      
         <div className='editButtonContainer'>
-        <Button type = 'submit' className='editButton' onClick={handleEdit}> Save </Button>
+        <Button type = 'submit' className='editButton' onClick={submitHandler}> Save </Button>
         <Button className='editCancelButton' onClick={profile.quitEditor}>Cancel</Button>
         </div>
         </Form>

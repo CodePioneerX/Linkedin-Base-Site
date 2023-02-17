@@ -17,6 +17,9 @@ import {
     MDBPaginationItem, 
     MDBPaginationLink
   } from "mdb-react-ui-kit";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+
 export default class Jobs extends Component {
   state = {
     jobs: []
@@ -27,7 +30,10 @@ export default class Jobs extends Component {
       .then(res => this.setState({ jobs: res.data }))
   }
 
-  
+  handleClick = job => () => {
+    this.props.setjob(job)
+    this.props.edit()
+  }
 
   render() {
     const Comment = ({ author, content, createdAt }) => {
@@ -52,7 +58,11 @@ export default class Jobs extends Component {
         
             {this.state.jobs.map(job => (
               <Row className='padd' key={job.id}>
-                <h3>{job.title} @ {job.company}</h3>
+                <h3>{job.title} at {job.company}</h3>
+                {/* {console.log('DEBUG : this.props.author: ', this.props.author)}
+                {console.log('DEBUG : job.author: ', job.author)} */}
+                {this.props.author == job.author ? <button onClick={this.handleClick(job)} style={{ backgroundColor: "#3D13C6", color: "white", borderRadius: "25px", padding: "5px 10px", border: "none" }}><FontAwesomeIcon icon={faPenToSquare} style={{ color: "white"}}/> </button> : <></>}
+                
 
                 <Container className='darker'>
                   <p>{job.content}</p>
@@ -65,7 +75,7 @@ export default class Jobs extends Component {
                   <p>Created at: {job.created_at}</p>
                   <p>Salary: {job.salary}$/hour</p>
                   <p>Location: {job.location}</p>
-                  <p>Category: {job.category}</p>
+                  {/* <p>Category: {job.category}</p> */}
                   <br/>
 
             

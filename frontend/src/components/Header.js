@@ -31,7 +31,7 @@ function logoutHandler(){
   //window.location.reload(false);
   // window.location.assign("/login")
   // navigate("/login");
-  console.log('reached here')
+  // console.log('reached here')
 }
 
 

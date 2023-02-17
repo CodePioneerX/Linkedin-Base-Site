@@ -8,7 +8,7 @@ import {
     MDBFile
   } from 'mdb-react-ui-kit';
 import { useDispatch, useSelector} from 'react-redux';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {Container, Row, Col} from 'react-bootstrap';
 import Jobs from '../components/Jobs';
 import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
@@ -40,15 +40,17 @@ function CreateJob() {
 
   const submitHandler = (e) => {
     e.preventDefault()
-    // if (password != confirmPassword) {
-    //     setMessage('Passwords do not match')
-    // } else {
-        
-        console.log(author, email,title, description,remote, active, company,job_type, image,salary,location)
-        dispatch(create_job(userInfo.author, email,title, description,remote, active, company,job_type, image,salary,location))
-        console.log(userInfo)
-        console.log("Job created with success")
-        setStatus('success')
+      // setAuthor(userInfo.email)
+      console.log('author: ', author)
+      // console.log('userInfo.email: ', userInfo.email)
+      // console.log(author, email, title, description,remote, active, company,job_type, image,salary,location)
+      
+      dispatch(create_job(userInfo.email, email, title, description, remote, active, company, job_type, image,salary, location))
+      // console.log(userInfo)
+      // console.log("Job created with success")
+      setStatus('success')
+
+      navigate('/jobs/')
         
         
     
@@ -58,23 +60,23 @@ function CreateJob() {
       <Container className="justify-content-md-center padd">
         {userInfo ? (
           <Container className='padd'>
-            <h1>Create a job listing</h1>
+            <h1>Create a Job Listing</h1>
             <Form className='padd' onSubmit={submitHandler}>
                 <MDBRow className='mb-4'>
                     <MDBCol>
-                    <MDBInput id='form6Example1' label='Contact name'  value={author} onChange={(e)=> setAuthor(e.target.value)} />
+                      <MDBInput disabled id='form6Example1' label='Contact name' value={userLogin.userInfo.username} onChange={(e)=> setAuthor(e.target.value)} />
                     </MDBCol>
                     <MDBCol>
-                    <MDBInput id='form6Example2' label='Contact email'  value={email} onChange={(e)=> setEmail(e.target.value)}/>
+                      <MDBInput disabled id='form6Example2' label='Contact email'  value={userLogin.userInfo.email} onChange={(e)=> setEmail(e.target.value)}/>
                     </MDBCol>
                 </MDBRow>
 
-                <MDBInput wrapperClass='mb-4' id='form6Example3' label='title'  value={title} onChange={(e)=> setTitle(e.target.value)} />
+                <MDBInput wrapperClass='mb-4' id='form6Example3' label='Job Title'  value={title} onChange={(e)=> setTitle(e.target.value)} />
                 <MDBInput wrapperClass='mb-4' type='form6Example11' id='form6Example5' label='Company'  value={company} onChange={(e)=> setCompany(e.target.value)}/>
-                <MDBInput wrapperClass='mb-4' id='form6Example8' rows={4} label='description'  value={description} onChange={(e)=> setDescription(e.target.value)}/>
+                <MDBInput wrapperClass='mb-4' id='form6Example8' rows={4} label='Description'  value={description} onChange={(e)=> setDescription(e.target.value)}/>
                 <MDBInput wrapperClass='mb-4' id='form6Example4' label='Location'  value={location} onChange={(e)=> setLocation(e.target.value)}/>
-                <MDBInput wrapperClass='mb-4' type='form6Example10' id='form6Example6' label='Job type (contract, part-time...)'  value={job_type} onChange={(e)=> setJob_type(e.target.value)}/>
-                <MDBInput wrapperClass='mb-4' textarea id='form6Example7' label='Salary'  value={salary} onChange={(e)=> setSalary(e.target.value)}/>
+                <MDBInput wrapperClass='mb-4' type='form6Example10' id='form6Example6' label='Job Type (Contract, Part-Time, etc.)'  value={job_type} onChange={(e)=> setJob_type(e.target.value)}/>
+                <MDBInput wrapperClass='mb-4' textarea id='form6Example7' label='Salary' value={salary} onChange={(e)=> setSalary(e.target.value)}/>
 
                 <MDBCheckbox
                     wrapperClass='d-flex mb-4'

@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
@@ -89,7 +89,43 @@ def updateUserProfile(request, pk):
 
     return Response(serializer.data)
     
+@api_view(['PUT'])    
+def PostUpdateView(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    data = request.data
+
+    post.title = data['title']
+    post.content = data['content']
+
+    post.save()
+
+    serializer = PostSerializer(post, many=False)
+
+    return Response(serializer.data)
+
+@api_view(['PUT'])
+def JobListingUpdateView(request, pk):
+    job = get_object_or_404(JobListing, pk=pk)
+
+    data = request.data
+
+    # bugs with remote, status, image fields
+    job.title = data['title']
+    job.description = data['description']
+    # job.remote = data['remote']
+    job.company = data['company']
+    job.job_type = data['job_type']
+    job.salary = data['salary']
+    job.location = data['location']
+    # job.status = data['active']
+
+    job.save()
     
+    serializer = JobListingSerializer(job, many=False)
+
+    return Response(serializer.data)
+
 class PostView(APIView):
     def get(self, request, pk):
         post = get_object_or_404(Post, pk=pk)
@@ -167,17 +203,20 @@ class PostListingCreateView(CreateAPIView):
 
 class JobListingCreateView(CreateAPIView):
     print("Job Listing recieved")
-    # permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]    
+    # permission_classes = [AllowAny]
     queryset = JobListing.objects.all()
     serializer_class = JobListingSerializer
 
     def create(self, validated_data):
-        print(self)
+        # print("DEBUG : self: ", self)
         request = self.request 
-        print(request.user)
-        print(request)
+        # print("DEBUG : request.user: ", request.user)
+        # print("DEBUG : request: ", request)
+        # print("DEBUG : request.data: ", request.data)
+        # print("DEBUG : request.data['author']: ", request.data['author'])
         job = JobListing.objects.create(
-            author=request.user,
+            author=User.objects.get(email=request.data['author']),
             title=request.data['title'],
             description=request.data['description'],
             image=request.data['image'],
@@ -189,7 +228,7 @@ class JobListingCreateView(CreateAPIView):
             remote = True#request.data['remote']
         )
         job.save()
-        print(job)
+        print("DEBUG : job: ", job)
         return Response(status=status.HTTP_200_OK)
 
 class JobListingLatestView(APIView):
