@@ -39,11 +39,15 @@ export default class Newsfeed extends Component {
                       <div style={{borderBottom: "1px solid #d3d3d3",marginBottom:"10px"}}></div>
                       <Row style={{ display: "flex", alignItems: "center"}}>
                         {/* <img src={post.image} alt={post.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> */}
-                        {post.image ? <img src={post.image} alt="test alt image text" style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <p>test</p>}
-                        <p>{post.author}</p>
-                        <div style={{width:'60%'}}></div>
-                        {this.props.author == post.author ? <button onClick={this.handleClick(post)} style={{ backgroundColor: "#3D13C6", color: "white", borderRadius: "25px", padding: "5px 10px", border: "none" }}><FontAwesomeIcon icon={faPenToSquare} style={{ color: "white"}}/> </button> : <></>}
-                        {/* {console.log("DEBUG : post.author: ", post.author)} */}
+                        <Col xs={2} md={2}>
+                          {post.image ? <img src={post.image} alt="test alt image text" style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <p></p>}
+                        </Col>
+                        <Col xs={7} md={8}>
+                          <p>{post.author}</p>
+                        </Col>
+                        <Col xs={2} md={2}>
+                          {this.props.author == post.author ? <button onClick={this.handleClick(post)} style={{ backgroundColor: "#3D13C6", color: "white", borderRadius: "25px", padding: "5px 10px", border: "none" }}><FontAwesomeIcon icon={faPenToSquare} style={{ color: "white"}}/> </button> : <></>}
+                        </Col>
                       </Row>
                       <h4 style={{ textAlign: "center",paddingBottom: "5px", paddingTop:"6px"}}>{post.title}</h4>
                       <p style={{padding: "15px 0"}}>{post.content}</p>

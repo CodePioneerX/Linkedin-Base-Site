@@ -1,11 +1,8 @@
-import React, { Component , useState, useEffect } from 'react'
-import {Container, Row, Col} from 'react-bootstrap';
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from 'react'
+import {Container, Row} from 'react-bootstrap';
+import { useSelector } from "react-redux";
 import Jobs from '../components/Jobs';
-import CreateJobForm from '../components/CreateJobForm';
 import { EditJobForm } from '../components/EditJobForm';
-import Button from 'react-bootstrap/Button';
-import axios from 'axios'
 import Alert from 'react-bootstrap/Alert';
 
 function Job() {

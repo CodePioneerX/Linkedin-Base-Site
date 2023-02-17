@@ -47,38 +47,41 @@ export default class Jobs extends Component {
       };
 
     return (
+      <>
       <Container className="justify-content-md-center padd">
         <Row>
-
             <h1>Latest Jobs</h1>
-
         </Row>
-        <Row>
-
-        
+        <Row style={{display: "flex", flexDirection: "column", alignItems: "center", marginBottom:"100px"}}>
             {this.state.jobs.map(job => (
-              <Row className='padd' key={job.id}>
-                <h3>{job.title} at {job.company}</h3>
-                {/* {console.log('DEBUG : this.props.author: ', this.props.author)}
-                {console.log('DEBUG : job.author: ', job.author)} */}
-                {this.props.author == job.author ? <button onClick={this.handleClick(job)} style={{ backgroundColor: "#3D13C6", color: "white", borderRadius: "25px", padding: "5px 10px", border: "none" }}><FontAwesomeIcon icon={faPenToSquare} style={{ color: "white"}}/> </button> : <></>}
-                
-
+              <Row key={job.id} style={{marginBottom: "25px", width: "75%"}}>
+              <Container style={{padding: "35px 0 0 35px", paddingBottom: "0" }}>
+                <Col xs={10} style={{ borderRadius: "20px", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "-40px" }}>
+                <div style={{borderBottom: "1px solid #d3d3d3",marginBottom:"10px"}}></div>
+                <Row>
+                  <Col xs={8} md={10}>
+                    <h3>{job.title} at {job.company}</h3>
+                  </Col>
+                  <Col xs={4} md={2}>
+                    {this.props.author == job.author ? <button onClick={this.handleClick(job)} style={{ backgroundColor: "#3D13C6", color: "white", borderRadius: "25px", padding: "5px 10px", border: "none" }}><FontAwesomeIcon icon={faPenToSquare} style={{ color: "white"}}/> </button> : <></>}
+                  </Col>
+                </Row>
                 <Container className='darker'>
                   <p>{job.content}</p>
                   {/* <img className='img_box' src={(".."+job.image)} alt={job.title} /> */}
                   {/* <img className='img_box' src={('http://localhost:8000/images/'+job.image.split('images/')[1])} /> */}
                   {job.image ? <img src={job.image} alt="test alt image text" style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
                   <p>Description: {job.description}</p>
-                  <p>By: {job.author}</p>
-                  <p>Likes: {job.likes}</p>
-                  <p>Created at: {job.created_at}</p>
-                  <p>Salary: {job.salary}$/hour</p>
                   <p>Location: {job.location}</p>
+                  <p>Salary: {job.salary}$/hour</p>
+                  <p>Position type: {job.job_type}</p>
+                  {job.remote ? <p>Remote work possible.</p> : <p>Must be willing to work in person.</p>} 
+                  <p>Recruiter: {job.author}</p>
+                  <p>Likes: {job.likes}</p>
+                  <p>Posted at: {job.created_at}</p>
                   {/* <p>Category: {job.category}</p> */}
                   <br/>
 
-            
                 {job.comments.length > 0 && <h4>Comments</h4>}
                 {job.comments.length > 0 && job.comments.map(comment => (
                     
@@ -121,13 +124,6 @@ export default class Jobs extends Component {
                                 </MDBCard>
                             </MDBRow>
                         </MDBContainer>
-                        {/* <Comment
-                        className='align'
-                        key={1}
-                        author={comment.author}
-                        content={comment.content}
-                        createdAt={comment.created_at}
-                        />    */}
                     </Row>
                 ))}
                   
@@ -147,6 +143,8 @@ export default class Jobs extends Component {
                   </Col>
                   
                 </Row>
+                </Col>
+                </Container>
               </Row>
             ))}
 
@@ -173,6 +171,7 @@ export default class Jobs extends Component {
         </nav>
         </Row>
       </Container>
+    </>
     )
   }
 }
