@@ -17,11 +17,11 @@ function Job() {
 
   const jobEditorMode = () => {
     setJobEditor(true)
-    console.log("DEBUG : jobEditor: ", jobEditor)
+    // console.log("DEBUG : jobEditor: ", jobEditor)
   }
 
   const quitJobEditor = () => {
-    console.log("DEBUG : jobEditor: ", jobEditor)
+    // console.log("DEBUG : jobEditor: ", jobEditor)
     setJobEditor(false)
   }
 
@@ -46,9 +46,6 @@ function Job() {
           </Alert>
 
         </Row>)}
-        {/* <CreateJobForm/> */}
-        {/* <EditJobForm /> */}
-        {/* <Jobs /> */}
       </Container>
   )
 

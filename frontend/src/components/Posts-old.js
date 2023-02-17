@@ -87,7 +87,7 @@ export default class Posts extends Component {
                             <button onClick={this.handleClick(post)} style={{ backgroundColor: "#3D13C6", color: "white", borderRadius: "25px", padding: "5px 10px", border: "none" }}><FontAwesomeIcon icon={faPenToSquare} style={{ color: "white"}}/> </button>
                           </Col>
                           </Row>
-                          {console.log("DEBUG : post.author: ", post.author)}
+                          {/* {console.log("DEBUG : post.author: ", post.author)} */}
                         </Row>
 
                         <h4 style={{ textAlign: "center",paddingBottom: "5px", paddingTop:"6px"}}>{post.title}</h4>

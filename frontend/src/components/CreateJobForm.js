@@ -80,8 +80,8 @@ export const CreateJobForm = () => {
                         <Input name='location' id='form6Example4' value={location} onChange={(e)=> setLocation(e.target.value)}/>
                     </Col>
                     <Col>
-                        <Label className='labelE' for='job-type'>Job Type (Full/Part-Time, etc.)</Label>
-                        <Input name='job-type' type='form6Example10' id='form6Example6' value={job_type} onChange={(e)=> setJob_type(e.target.value)}/>
+                        <Label className='labelE' for='job-type'>Job Type</Label>
+                        <Input name='job-type' id='form6Example6' value={job_type} onChange={(e)=> setJob_type(e.target.value)}/>
                     </Col>
                 </Row>
                 <Row className='mb-4'>

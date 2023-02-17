@@ -19,8 +19,10 @@ export default class Newsfeed extends Component {
     }
 
     handleClick = post => () => {
-      // this.props.setjob(job)
-      // this.props.edit()
+      // console.log('click')
+      this.props.setpost(post)
+      // console.log("DEBUG : post: ", post)
+      this.props.edit()
     }
 
     render() {

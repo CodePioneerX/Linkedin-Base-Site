@@ -75,7 +75,7 @@ function CreateJob() {
                 <MDBInput wrapperClass='mb-4' type='form6Example11' id='form6Example5' label='Company'  value={company} onChange={(e)=> setCompany(e.target.value)}/>
                 <MDBInput wrapperClass='mb-4' id='form6Example8' rows={4} label='Description'  value={description} onChange={(e)=> setDescription(e.target.value)}/>
                 <MDBInput wrapperClass='mb-4' id='form6Example4' label='Location'  value={location} onChange={(e)=> setLocation(e.target.value)}/>
-                <MDBInput wrapperClass='mb-4' type='form6Example10' id='form6Example6' label='Job Type (Contract, Part-Time, etc.)'  value={job_type} onChange={(e)=> setJob_type(e.target.value)}/>
+                <MDBInput wrapperClass='mb-4' id='form6Example6' label='Job Type (Contract, Part-Time, etc.)'  value={job_type} onChange={(e)=> setJob_type(e.target.value)}/>
                 <MDBInput wrapperClass='mb-4' textarea id='form6Example7' label='Salary' value={salary} onChange={(e)=> setSalary(e.target.value)}/>
 
                 <MDBCheckbox
