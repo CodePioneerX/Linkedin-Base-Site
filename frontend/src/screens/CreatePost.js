@@ -8,18 +8,17 @@ import {
     MDBFile
   } from 'mdb-react-ui-kit';
 import { useDispatch, useSelector} from 'react-redux';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {Container, Row, Col} from 'react-bootstrap';
-import Jobs from '../components/Jobs';
-import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
-import axios from 'axios'
+import { Form } from 'reactstrap';
 import Alert from 'react-bootstrap/Alert';
-import{ create_post } from '../actions/userActions'
+import{ create_post } from '../actions/postActions'
 
 function CreatePost() {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -27,26 +26,22 @@ function CreatePost() {
   const [email, setEmail] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [status, setStatus] = useState('')
   const [image, setImage] = useState('')
 
-
+  const { from } = location.state
 
   const submitHandler = (e) => {
     e.preventDefault()
-    // if (password != confirmPassword) {
-    //     setMessage('Passwords do not match')
-    // } else {
         dispatch(create_post(userInfo.email,title, content, image))
-        // console.log(userInfo)
-        // console.log("Job created with success")
-        // setStatus('success')
-        
-        navigate('/profile/')
-        
-        // navigate(-1) would go back to previous page, but on home page the new post doesn't appear until reload
-        // navigate(-1)
+        navigate(from)
+
   }
+
+  useEffect(() => {
+    // if (!userInfo) {
+    //   navigate("/");
+    // }
+  }, [userInfo, navigate]);
 
   return (
       <Container className="justify-content-md-center padd">

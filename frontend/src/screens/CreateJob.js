@@ -14,7 +14,7 @@ import Jobs from '../components/Jobs';
 import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import axios from 'axios'
 import Alert from 'react-bootstrap/Alert';
-import{ create_job } from '../actions/userActions'
+import{ create_job } from '../actions/jobActions'
 
 function CreateJob() {
   const userLogin = useSelector((state) => state.userLogin);

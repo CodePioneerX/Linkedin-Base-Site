@@ -23,15 +23,9 @@ import { useNavigate} from 'react-router-dom';
 function Header(){
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-  //const navigate = useNavigate();
   
 function logoutHandler(){
   store.dispatch(logout())
-  // this.props.navigation.navigate('Jobs')
-  //window.location.reload(false);
-  // window.location.assign("/login")
-  // navigate("/login");
-  // console.log('reached here')
 }
 
 
@@ -116,27 +110,6 @@ function logoutHandler(){
               </Navbar.Collapse>
             </Container>
           </Navbar>
-    
-
-        {/* <div>
-          <Routes>  
-            <Route path="/" element={<Home />} />
-
-            <Route path="/myNetwork" element={<MyNetwork />} />
-
-            <Route path="/jobs" element={<Jobs />} />
-
-            <Route path="/messaging" element={<Messaging />} />
-
-            <Route path="/notification" element={<Notification />} />
-
-            <Route path="/viewProfile" element={<ViewProfile />} />
-
-            <Route path="/settings" element={<Settings />} />
-
-            <Route path="/login" element={<LoginPage />} />
-          </Routes>
-        </div> */}
       </>
     );
   

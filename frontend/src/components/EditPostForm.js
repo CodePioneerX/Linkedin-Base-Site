@@ -3,7 +3,7 @@ import React, { useState, useEffect} from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import '../Assets/css/Login.css';
 import {  Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
-import { delete_post, update_post } from '../actions/userActions'
+import { delete_post, update_post } from '../actions/postActions'
 
 export const EditPostForm = (post) => {
     const [title, setTitle] = useState(post.post.title)

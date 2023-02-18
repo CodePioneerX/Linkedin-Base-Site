@@ -5,7 +5,7 @@ import '../Assets/css/Login.css';
 import { Form, FormGroup, Label, Input, Container, Row, Col } from 'reactstrap';
 import axios from 'axios';
 import Alert from 'react-bootstrap/Alert';
-import{ create_job } from '../actions/userActions'
+import{ create_job } from '../actions/jobActions'
 import '../Assets/css/App.css'
 
 export const CreateJobForm = () => {

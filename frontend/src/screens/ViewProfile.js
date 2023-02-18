@@ -3,10 +3,12 @@ import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Posts from "../components/Posts-old";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { EditProfileForm } from '../components/EditProfileForm';
 import { EditPostForm } from '../components/EditPostForm';
 import '../Assets/css/App.css'
@@ -25,8 +27,8 @@ function ViewProfile() {
   const { userInfo } = userLogin;
   const navigate = useNavigate();
 
-  // console.log("userLogin: ", userLogin);
-  // console.log("userInfo: ", userInfo);
+  // const userProfile = useSelector((state) => state.userProfile);
+  // const { error, loading, profile } = userProfile;
 
   useEffect(() => {
     if (!userInfo) {
@@ -168,11 +170,14 @@ function ViewProfile() {
                     <Row>
                         <div className="profile-header" style={{ backgroundColor: "white", borderRadius: "7px", borderBottom: "1px solid #ccc", boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)", padding: "1.5rem"}}>
                           <Row>
-                            <Col><h2>Activities</h2></Col>
-                            <Col><button className="profile-button" onClick={createPost}>Create Post</button></Col>
+                            <Col md={8}><h2>Activities</h2></Col>
+                            <Col md={4}>
+                              <Link className='profile-button' to='/create/post/' state={{from: "/profile/"}}>
+                                <button style={{ backgroundColor: "#3D13C6", color: "white", borderRadius: "25px", padding: "5px 10px", border: "none" }}><FontAwesomeIcon icon={faPenToSquare} style={{ color: "white"}}/> </button>
+                              </Link>
+                            </Col>
                           </Row>
                           <Posts u_id={userLogin.userInfo.id} edit={postEditorMode} quit={quitPostEditor} setpost={setPost}/>
-                          {/* <Posts u_id={userLogin.userInfo.id} quit={quitPostEditor} edit={postEditorMode}/> */}
                         </div>
                     </Row>
                   </Col>

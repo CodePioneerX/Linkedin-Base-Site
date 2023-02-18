@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import '../Assets/css/Login.css';
 import { Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
-import { delete_job, update_job } from '../actions/userActions';
+import { delete_job, update_job } from '../actions/jobActions';
 
 export const EditJobForm = (job) => {
     const [author, setAuthor] = useState(job.job.author)

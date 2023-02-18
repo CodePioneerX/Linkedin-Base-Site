@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Newsfeed from '../components/Newsfeed'
-import {Container,Row} from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 
 export default class MyNetwork extends Component {
@@ -11,6 +12,11 @@ export default class MyNetwork extends Component {
         {userInfo?
           <div>
           <h1>MyNetwork</h1>
+          <Container>
+                <Link className='btn btn-primary' to='/create/post/' state={{from: "/network"}}>
+                  Create a Post
+                </Link>
+          </Container>
           <Newsfeed/>
           </div>
           :

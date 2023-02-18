@@ -1,7 +1,7 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useState, useEffect } from 'react'
 import {Container, Row, Col} from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
-import Posts from '../components/Posts-old';
+import { Link } from 'react-router-dom';
 import Jobs from '../components/Jobs';
 import Newsfeed from '../components/Newsfeed';
 import { EditJobForm } from '../components/EditJobForm';
@@ -44,9 +44,9 @@ function Home() {
             postEditor ? <EditPostForm edit={postEditorMode} quitPostEditor={quitPostEditor} post={post} /> : 
             <>
               <Container>
-                <a className='btn btn-primary' href='/create/post' role='button'>
+                <Link className='btn btn-primary' to='/create/post/' state={{from: "/"}}>
                   Create a Post
-                </a>
+                </Link>
               </Container>
               <Newsfeed author={userInfo.email} edit={postEditorMode} quit={quitPostEditor} setpost={setPost} />
               <Jobs edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.email}/>
