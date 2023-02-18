@@ -85,15 +85,18 @@ function logoutHandler(){
                   <Nav.Link href="/notifications" style={{ paddingRight: "40px" }} >
                     Notification
                   </Nav.Link>
+                  
                   <NavDropdown title="Profile" id="collasible-nav-dropdown">
                   {userInfo ? (
                     <NavDropdown.Item href="/profile">
                       My Profile
                     </NavDropdown.Item>
                     ) : (<></>)}
+                    {userInfo ? (
                     <NavDropdown.Item href="/settings">
                       Settings
                     </NavDropdown.Item>
+                     ) : (<></>)}
 
                     {userInfo ? (
                       <NavDropdown.Item onClick={ logoutHandler } id="logout" >
@@ -108,7 +111,7 @@ function logoutHandler(){
 
 
                   </NavDropdown>
-                  
+                 
                 </Nav>
               </Navbar.Collapse>
             </Container>
