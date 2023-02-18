@@ -442,7 +442,7 @@ export const delete_post = (id) => async (dispatch, getState) => {
     }
 }
 
-export const update_profile = (uID, name, title, city, about, experience, education, work, volunteering, courses, projects, awards, languages) => async (dispatch, getState) => {
+export const update_profile = (uID, name, title, city, about, experience, education, image, work, volunteering, courses, projects, awards, languages) => async (dispatch, getState) => {
     try {
         dispatch({
             type: UPDATE_PROFILE_REQUEST
