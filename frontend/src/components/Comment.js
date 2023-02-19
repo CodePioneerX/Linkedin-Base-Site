@@ -11,17 +11,6 @@ import {
 } from "mdb-react-ui-kit";
 const Comment = ({ author, content, createdAt }) => {
   return (
-    // <div style={{ marginBottom: 20 }}>
-    //   <p>
-    //     <strong>{author}</strong> 
-    //   </p>
-    //   <p>
-    //     <strong>Content:</strong> {content}
-    //   </p>
-    //   <p>
-    //     <strong>Created at:</strong> {createdAt}
-    //   </p>
-    // </div>
     <MDBContainer>
         <MDBRow> 
         <MDBCard className="mb-4">

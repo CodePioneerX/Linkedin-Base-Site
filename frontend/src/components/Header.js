@@ -24,13 +24,9 @@ function Header(){
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   
-function logoutHandler(){
-  store.dispatch(logout())
-}
-
-
-
-  
+  function logoutHandler(){
+    store.dispatch(logout())
+  }
     return (
       <>
           <Navbar

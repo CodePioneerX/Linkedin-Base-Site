@@ -19,9 +19,7 @@ export default class Newsfeed extends Component {
     }
 
     handleClick = post => () => {
-      // console.log('click')
       this.props.setpost(post)
-      // console.log("DEBUG : post: ", post)
       this.props.edit()
     }
 
@@ -38,8 +36,8 @@ export default class Newsfeed extends Component {
                     <Col xs={10} style={{ borderRadius: "20px", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "-40px", width: "auto"}}>
                       <div style={{borderBottom: "1px solid #d3d3d3",marginBottom:"10px"}}></div>
                       <Row style={{ display: "flex", alignItems: "center"}}>
-                        {/* <img src={post.image} alt={post.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> */}
                         <Col xs={2} md={2}>
+                          {/* <img src={post.image} alt={post.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> */}
                           {post.image ? <img src={post.image} alt="test alt image text" style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <p></p>}
                         </Col>
                         <Col xs={7} md={8}>

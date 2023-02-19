@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from 'react'
+import React, { useState, Component } from 'react'
 import {
     MDBRow,
     MDBCol,
@@ -31,17 +31,10 @@ function CreatePost() {
   const { from } = location.state
 
   const submitHandler = (e) => {
-    e.preventDefault()
-        dispatch(create_post(userInfo.email,title, content, image))
-        navigate(from)
-
+      e.preventDefault()
+      dispatch(create_post(userInfo.email,title, content, image))
+      navigate(from)
   }
-
-  useEffect(() => {
-    // if (!userInfo) {
-    //   navigate("/");
-    // }
-  }, [userInfo, navigate]);
 
   return (
       <Container className="justify-content-md-center padd">
@@ -49,7 +42,6 @@ function CreatePost() {
           <Container className='padd'>
             <h1>Create a Post</h1>
             <Form className='padd' onSubmit={submitHandler}>
-                {/* disabling these for now, we should not allow the user to edit post author or email */}
                 <MDBRow className='mb-4'>
                     <MDBCol>
                       <MDBInput disabled id='form6Example1' label='Contact name' value={userLogin.userInfo.username} onChange={(e)=> setAuthor(e.target.value)} />

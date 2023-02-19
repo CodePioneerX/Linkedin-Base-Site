@@ -14,11 +14,9 @@ function Job() {
 
   const jobEditorMode = () => {
     setJobEditor(true)
-    // console.log("DEBUG : jobEditor: ", jobEditor)
   }
 
   const quitJobEditor = () => {
-    // console.log("DEBUG : jobEditor: ", jobEditor)
     setJobEditor(false)
   }
 

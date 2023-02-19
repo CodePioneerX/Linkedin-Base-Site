@@ -15,24 +15,9 @@ export default class Posts extends Component {
     posts: []
   }
 
-  postEditorMode = () => {
-    // this.props.postEditorMode = true
-  }
-
-  quitPostEditor = () => {
-    // this.props.postEditorMode = false
-  }
-
   handleClick = post => () => {
-    // console.log('click')
     this.props.setpost(post)
-    // console.log("DEBUG : post: ", post)
     this.props.edit()
-  }
-  
-  handleClick2 = () => {
-    // this.props.setpost = post
-    // this.props.quit()
   }
 
   componentDidMount() {

@@ -29,16 +29,10 @@ export const CreateJobForm = () => {
     const [image, setImage] = useState('')
 
     const submitHandler = (e) => {
-        // setAuthor(userInfo.email)
         
         e.preventDefault()
-            
-            console.log(author, email,title, description,remote, active, company,job_type, image,salary,location)
-            dispatch(create_job(userInfo.email, email,title, description, remote, active, company, job_type, image, salary, location))
-            console.log(userInfo)
-            console.log("Job successfully created.")
-            // setStatus('success')
-      }
+        dispatch(create_job(userInfo.email, email,title, description, remote, active, company, job_type, image, salary, location))
+    }
 
     return (
     <Container className="justify-content-md-center padd">
@@ -98,10 +92,6 @@ export const CreateJobForm = () => {
                         <Input name='active' type='checkbox' id='form6Example8' checked={active} onChange={(e)=> setActive(e.target.checked)}/>
                     </Col>
                 </Row>
-                {/* <Row className='mb-4'>
-                </Row>
-                <Row className='mb-4'>
-                </Row> */}
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='listing-image'>Listing Image</Label>
@@ -109,7 +99,6 @@ export const CreateJobForm = () => {
                     </Col>
                 </Row>
                 <Input className='profile-button' 
-                    // className='mb-4 padd' 
                     type='submit'>
                     Create a Job
                 </Input>

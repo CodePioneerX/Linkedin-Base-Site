@@ -68,9 +68,8 @@ export default class Jobs extends Component {
                 </Row>
                 <Container className='darker'>
                   <p>{job.content}</p>
-                  {/* <img className='img_box' src={(".."+job.image)} alt={job.title} /> */}
                   {/* <img className='img_box' src={('http://localhost:8000/images/'+job.image.split('images/')[1])} /> */}
-                  {job.image ? <img src={job.image} alt="test alt image text" style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
+                  {job.image ? <img src={job.image} alt={job.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
                   <p>Description: {job.description}</p>
                   <p>Location: {job.location}</p>
                   <p>Salary: {job.salary}$/hour</p>
@@ -79,7 +78,6 @@ export default class Jobs extends Component {
                   <p>Recruiter: {job.author}</p>
                   <p>Likes: {job.likes}</p>
                   <p>Posted at: {job.created_at}</p>
-                  {/* <p>Category: {job.category}</p> */}
                   <br/>
 
                 {job.comments.length > 0 && <h4>Comments</h4>}
@@ -100,8 +98,6 @@ export default class Jobs extends Component {
                                                 className="rounded-circle"
                                                 src='http://localhost:8000/images/default.png'
                                                 alt="avatar"
-                                                // width="25"
-                                                // height="25"
                                             />
                                             <p className="tiny">{comment.author}</p>
                                             </div>

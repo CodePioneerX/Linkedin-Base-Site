@@ -20,7 +20,6 @@ function LoginPage() {
   const {error, loading, userInfo} = userLogin
 
   const navigate = useNavigate();
-  //const pk = useSelector(state => state.user.pk);
 
   function handleClick() {
     navigate('/register');
@@ -30,12 +29,7 @@ function LoginPage() {
   if (userInfo) {
     navigate('/')
   }
-}, [ userInfo, navigate]);
-
-
- function sleep (time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
+  }, [ userInfo, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault()

@@ -33,8 +33,6 @@ export const EditProfileForm =(profile)=>{
     
         dispatch(update_profile(userInfo.id, name, title, city, about, experience, education, image, work, volunteering, courses, projects, awards, languages))
         
-        // NOTE: the page needs to be reloaded for the updated profile data to load
-        //       can probably figure out a better way to do it using the state
         window.location.reload(false);
     }
 

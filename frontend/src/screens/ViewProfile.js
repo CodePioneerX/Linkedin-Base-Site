@@ -27,9 +27,6 @@ function ViewProfile() {
   const { userInfo } = userLogin;
   const navigate = useNavigate();
 
-  // const userProfile = useSelector((state) => state.userProfile);
-  // const { error, loading, profile } = userProfile;
-
   useEffect(() => {
     if (!userInfo) {
       navigate("/");
@@ -44,7 +41,6 @@ function ViewProfile() {
   };
 
   useEffect(() => {
-    //make request to get profile details
     getProfile();
     // dispatch(get_profile(userInfo.id))
   }, []);

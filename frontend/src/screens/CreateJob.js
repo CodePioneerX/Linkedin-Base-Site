@@ -40,20 +40,9 @@ function CreateJob() {
 
   const submitHandler = (e) => {
     e.preventDefault()
-      // setAuthor(userInfo.email)
-      console.log('author: ', author)
-      // console.log('userInfo.email: ', userInfo.email)
-      // console.log(author, email, title, description,remote, active, company,job_type, image,salary,location)
-      
-      dispatch(create_job(userInfo.email, email, title, description, remote, active, company, job_type, image,salary, location))
-      // console.log(userInfo)
-      // console.log("Job created with success")
-      setStatus('success')
-
-      navigate('/jobs/')
-        
-        
-    
+    dispatch(create_job(userInfo.email, email, title, description, remote, active, company, job_type, image,salary, location))
+    setStatus('success')
+    navigate('/jobs/')
   }
 
   return (

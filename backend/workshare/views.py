@@ -64,17 +64,13 @@ class ProfileCreateView(CreateAPIView):
     serializer_class = ProfileSerializer
     
     
-# still need to figure out how to make it so user must be authenticated/can only edit their own profile
+# TO-DO: finalize implementation of user authentication
 @api_view(['PUT'])
 # @permission_classes([IsAuthenticated])
 def updateUserProfile(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
 
-    # print("DEBUG : INITIAL PROFILE DATA: ", profile.name, profile.city, profile.title, profile.user)
-
     data = request.data
-
-    # print("DEBUG : REQUEST DATA: ", data)
 
     profile.name = data['name']
     profile.city = data['city']
@@ -91,11 +87,7 @@ def updateUserProfile(request, pk):
 
     profile.save()
 
-    # print("DEBUG : MODIFIED PROFILE DATA: ", profile.name, profile.city, profile.title)
-
     serializer = ProfileSerializerWithToken(profile, many=False)
-    
-    # print("DEBUG : SERIALIZER DATA: ", serializer.data)
 
     return Response(serializer.data)
     
@@ -116,7 +108,6 @@ def PostUpdateView(request, pk):
 
 @api_view(['DELETE', 'GET'])
 def PostDeleteView(request, pk):
-    # permission_classes = [AllowAny]
     post = Post.objects.get(id=pk)
     post.delete()
     return Response('Post Deleted')
@@ -127,7 +118,7 @@ def JobListingUpdateView(request, pk):
 
     data = request.data
 
-    # bugs with remote, status, image fields
+    # TO-DO: resolve bugs with remote, status, image fields - they have been disabled for now
     job.title = data['title']
     job.description = data['description']
     # job.remote = data['remote']
@@ -155,7 +146,6 @@ class PostView(APIView):
         serializer = PostSerializer(post)
         return Response(serializer.data)
     
-    
 class PostCreateView(CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -180,7 +170,6 @@ class PostLatestView(APIView):
             })
         return JsonResponse(post_list, safe=False)
 
-# retrieve specific user's post, for use in viewing user profiles
 class UserPostsView(APIView):
     def get(self, request, pk):
         posts = Post.objects.all().filter(author__id = pk).order_by('-created_at')[:10]
@@ -201,17 +190,15 @@ class UserPostsView(APIView):
         return JsonResponse(post_list, safe=False)
 
 class PostListingCreateView(CreateAPIView):
-    #  print("PostListing recieved")
-     #permission_classes = [IsAuthenticated]
      queryset = Post.objects.all()
      serializer_class = PostSerializer
 
      def create(self, validated_data):
         print(self)
         request = self.request 
-        #print(request.user)
+        
         print(request)
-        # getting the user object from email
+        
         user = User.objects.get(email=request.data['author'])
         post = Post.objects.create(
             author=user,
@@ -220,23 +207,18 @@ class PostListingCreateView(CreateAPIView):
             image=request.data['image'],
         )
         post.save()
-        #print(post)
+        
         return Response(status=status.HTTP_200_OK)
-         #return JsonResponse(job, safe=False)
 
-class JobListingCreateView(CreateAPIView):
-    # print("Job Listing recieved")
-    # permission_classes = [IsAuthenticated]    
+
+class JobListingCreateView(CreateAPIView): 
     queryset = JobListing.objects.all()
     serializer_class = JobListingSerializer
 
     def create(self, validated_data):
-        # print("DEBUG : self: ", self)
+        
         request = self.request 
-        # print("DEBUG : request.user: ", request.user)
-        # print("DEBUG : request: ", request)
-        # print("DEBUG : request.data: ", request.data)
-        # print("DEBUG : request.data['author']: ", request.data['author'])
+        
         job = JobListing.objects.create(
             author=User.objects.get(email=request.data['author']),
             title=request.data['title'],
@@ -247,7 +229,7 @@ class JobListingCreateView(CreateAPIView):
             location = request.data['location'],
             status = request.data['status'],
             job_type = request.data['job_type'],
-            remote = True#request.data['remote']
+            remote = True
         )
         job.save()
         print("DEBUG : job: ", job)
@@ -292,7 +274,6 @@ class JobListingLatestView(APIView):
         return JsonResponse(job_list, safe=False)
 
 @api_view(['GET'])
-#@permission_classes([IsAuthenticated])
 def getUserProfile(request):
     user = request.user
     serializer = UserSerializer(user, many=False)
@@ -304,8 +285,6 @@ def getProfileView(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
     serializer = ProfileSerializer(profile)
     return Response(serializer.data)
-
-
 
 @api_view(['POST'])
 def registerUser(request):
