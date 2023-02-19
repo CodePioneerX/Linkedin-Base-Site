@@ -179,4 +179,29 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ORIGIN_WHITELIST = ["http://localhost:3000"]
+CORS_ORIGIN_WHITELIST = [
+     "http://localhost:8080",
+     "http://localhost:3000",
+]
+
+CORS_ALLOWED_ORIGINS = [
+     "http://localhost:8080",
+     "http://localhost:3000",
+]
+
+CORS_ALLOWED_METHODS= [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE'
+]
+
+# Emailing settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_FROM = 'team.connect.notifications@gmail.com'
+EMAIL_HOST_USER = 'team.connect.notifications@gmail.com'
+EMAIL_HOST_PASSWORD = 'pcvjukztfrcqixvn'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+PASSWORD_RESET_TIMEOUT = 900

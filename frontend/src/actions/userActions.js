@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import{
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
@@ -14,9 +15,13 @@ import{
     USER_DETAILS_SUCCESS,
     USER_DETAILS_FAIL,
 
-    GET_POSTS_REQUEST,
-    GET_POSTS_SUCCESS,
-    GET_POSTS_FAIL,
+    GET_PROFILE_REQUEST,
+    GET_PROFILE_SUCCESS,
+    GET_PROFILE_FAIL,
+
+    UPDATE_PROFILE_REQUEST,
+    UPDATE_PROFILE_SUCCESS,
+    UPDATE_PROFILE_FAIL,
 } from '../constants/userConstants'
 
 export const getProfileDetails = (id) => async (dispatch, getState) => {
@@ -45,6 +50,7 @@ export const getProfileDetails = (id) => async (dispatch, getState) => {
             type: USER_DETAILS_SUCCESS,
             payload: data
         })
+
     } catch (error) {
         dispatch({
             type: USER_DETAILS_FAIL,
@@ -90,18 +96,13 @@ export const login = (email,password) => async (dispatch) => {
     }
 }
 
-// export const loadProfile = ()
-
-// note: dispatch({ type: USER_LOGOUT }) causing infinite error loop - investigate 
 export const logout = () => (dispatch) => {
     localStorage.removeItem('userInfo')
     dispatch({ type: USER_LOGOUT })
 }
 
-
 export const register = (name, email, password) => async (dispatch) => {
     try {
-        
         dispatch({
             type: USER_REGISTER_REQUEST
         })
@@ -122,18 +123,10 @@ export const register = (name, email, password) => async (dispatch) => {
             type: USER_REGISTER_SUCCESS,
             payload: data
         })
-        //localStorage.setItem('userInfo', JSON.stringify(data))
-        // dispatch(login(email, password))
-
-        // dispatch({
-        //     type: USER_LOGIN_SUCCESS,
-        //     payload: data
-        // })
 
     } catch (error) {
         console.log("register failed")
         dispatch({
-            
             type: USER_REGISTER_FAIL,
             payload: error.response && error.response.data.detail
                 ? error.response.data.detail
@@ -142,11 +135,10 @@ export const register = (name, email, password) => async (dispatch) => {
     }
 }
 
-// Name should be GET PROFILE not POSTS
-export const getPosts = (id) => async (dispatch, getState) => {
+export const get_profile = (id) => async (dispatch, getState) => {
     try {
         dispatch({
-            type: GET_POSTS_REQUEST
+            type: GET_PROFILE_REQUEST
         })
         
         const { 
@@ -162,20 +154,64 @@ export const getPosts = (id) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.get(
-            `http://localhost:8000/api/profile/${id}`, 
+            `http://localhost:8000/api/profile/` + id, 
             config
         )
 
         dispatch({
-            type: GET_POSTS_SUCCESS,
+            type: GET_PROFILE_SUCCESS,
             payload: data
         })
     } catch (error) {
         dispatch({
-            type: GET_POSTS_FAIL,
+            type: GET_PROFILE_FAIL,
             payload: error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.message,
+        })
+    }
+}
+
+export const update_profile = (uID, name, title, city, about, experience, education, image, work, volunteering, courses, projects, awards, languages) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: UPDATE_PROFILE_REQUEST
+        })
+
+        const {
+            userLogin: {userInfo},
+        } = getState()
+
+        const config = {
+            headers: {
+                'Content-type': 'multipart/form-data'}
+        }
+        const { data } = await axios.put(`http://localhost:8000/api/profile/update/` + uID, 
+            {'name': name, 
+            'title': title, 
+            'city': city, 
+            'about': about,
+            'experience': experience,
+            'education': education, 
+            'work': work, 
+            'volunteering': volunteering,
+            'courses': courses, 
+            'projects': projects, 
+            'awards': awards, 
+            'languages': languages}, 
+            config)
+
+        dispatch({
+            type: UPDATE_PROFILE_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        console.log('updating post failed')
+        dispatch({
+            type: UPDATE_PROFILE_FAIL,
+            payload: error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
         })
     }
 }
