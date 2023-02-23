@@ -1,10 +1,11 @@
 from django.urls import reverse
 from rest_framework.test import APITestCase
+from django.test import TestCase
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 
-class AccountsTest(APITestCase):
+class AccountsTest(TestCase):
     def setUp(self):
         # We want to go ahead and originally create a user. 
         self.test_user = User.objects.create_user('testuser', 'test@example.com', 'testpassword')
