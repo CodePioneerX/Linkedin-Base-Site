@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
-from .models import WorkShare, Profile, Post
+from .models import WorkShare, Profile, Post, JobListing, Comment
 
 class WorkShareSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,13 +12,25 @@ class WorkShareSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('name', 'email', 'city', 'title', 'about', 'image', 'experience', 'education')
+        fields = ('name', 'email', 'city', 'title', 'about', 'image', 'experience', 'education', 'work', 'volunteering', 'courses', 'projects', 'awards', 'languages')
         
+class ProfileSerializerWithToken(ProfileSerializer):
+    token = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = ('name', 'email', 'city', 'title', 'about', 'image', 'experience', 'education', 'work', 'volunteering', 'courses', 'projects', 'awards', 'languages', 'token')
+
+    def get_token(self, obj):
+        token = RefreshToken.for_user(obj.user)
+        return str(token.access_token)
         
 class PostSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=False, allow_empty_file=True, use_url=True)
+    
     class Meta:
         model = Post
-        fields = ('id', 'title', 'content', 'image', 'comments', 'likes', 'author')
+        fields = ('id', 'title', 'content', 'image', 'likes', 'author')
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
@@ -37,6 +49,7 @@ class UserSerializer(serializers.ModelSerializer):
             name = obj.email
 
         return name
+
 class UserSerializerWithToken(UserSerializer):
     token = serializers.SerializerMethodField(read_only=True)
 
@@ -47,3 +60,13 @@ class UserSerializerWithToken(UserSerializer):
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
+
+class JobListingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobListing
+        fields = ('id', 'title', 'description','company', 'remote', 'job_type', 'image', 'comments', 'likes', 'salary', 'location', 'status', 'author')
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('id', 'content', 'author')

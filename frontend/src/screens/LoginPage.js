@@ -20,24 +20,16 @@ function LoginPage() {
   const {error, loading, userInfo} = userLogin
 
   const navigate = useNavigate();
-  //const pk = useSelector(state => state.user.pk);
 
   function handleClick() {
     navigate('/register');
   }
 
-  // note: navigate('/') causing infinite error loop - investigate
-
  useEffect(() => {
   if (userInfo) {
-    // navigate('/')
+    navigate('/')
   }
-}, [ userInfo, navigate]);
-
-
- function sleep (time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
+  }, [ userInfo, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -50,7 +42,6 @@ function LoginPage() {
   return (
    
     <div className='formBackground'>
-      {/* <div className='homeContainer'> */}
       <div className='form'>
       <span className="logo">
           <img src={process.env.PUBLIC_URL+'/logo.png'} alt="logo" ></img>
@@ -61,36 +52,29 @@ function LoginPage() {
       <Form className='loginForm' onSubmit={submitHandler}>
         <FormGroup >
         <Label for="email">Email</Label>
-            <Input type="email" name="email" id="email" placeholder="Enter your email" 
+            <Input type="email" name="email" id="email" placeholder="Enter your email" required
             value={email} onChange={(e)=> setEmail(e.target.value)}/>
         </FormGroup>
         <FormGroup>
             <Label for="password">Password</Label>
-            <Input type="password" name="password" id="password" placeholder="Enter your password" 
+            <Input type="password" name="password" id="password" placeholder="Enter your password" required
             value={password} onChange={(e)=> setPassword(e.target.value)}/>
         </FormGroup>
         
         <Button id='submit' className='loginButton' type='submit' >
           Submit</Button>
           <div>
-        <p className='loginP'>New to Connect? 
+        <p className='loginP'>New to Connect?&nbsp;
         <a href='register/'> Register</a>
       </p>
         </div>
         <div>
-        <p className='loginP'>Forget password? 
+        <p className='loginP'>Forget password?&nbsp;
         <a href='#'> Click here</a>
       </p>
         </div>
       </Form>
       </div>
-      {/* <div className='homeComponent'>
-      <div>
-      
-      </div>
-      </div> */}
-      
-      {/* </div> */}
    
   </div>
   );

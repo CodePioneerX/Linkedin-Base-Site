@@ -23,20 +23,10 @@ import { useNavigate} from 'react-router-dom';
 function Header(){
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-  //const navigate = useNavigate();
   
-function logoutHandler(){
-  store.dispatch(logout())
-  // this.props.navigation.navigate('Jobs')
-  //window.location.reload(false);
-  // window.location.assign("/login")
-  // navigate("/login");
-  console.log('reached here')
-}
-
-
-
-  
+  function logoutHandler(){
+    store.dispatch(logout())
+  }
     return (
       <>
           <Navbar
@@ -85,15 +75,18 @@ function logoutHandler(){
                   <Nav.Link href="/notifications" style={{ paddingRight: "40px" }} >
                     Notification
                   </Nav.Link>
+                  
                   <NavDropdown title="Profile" id="collasible-nav-dropdown">
                   {userInfo ? (
                     <NavDropdown.Item href="/profile">
-                      View Profile
+                      My Profile
                     </NavDropdown.Item>
                     ) : (<></>)}
+                    {userInfo ? (
                     <NavDropdown.Item href="/settings">
                       Settings
                     </NavDropdown.Item>
+                     ) : (<></>)}
 
                     {userInfo ? (
                       <NavDropdown.Item onClick={ logoutHandler } id="logout" >
@@ -108,32 +101,11 @@ function logoutHandler(){
 
 
                   </NavDropdown>
-                  
+                 
                 </Nav>
               </Navbar.Collapse>
             </Container>
           </Navbar>
-    
-
-        {/* <div>
-          <Routes>  
-            <Route path="/" element={<Home />} />
-
-            <Route path="/myNetwork" element={<MyNetwork />} />
-
-            <Route path="/jobs" element={<Jobs />} />
-
-            <Route path="/messaging" element={<Messaging />} />
-
-            <Route path="/notification" element={<Notification />} />
-
-            <Route path="/viewProfile" element={<ViewProfile />} />
-
-            <Route path="/settings" element={<Settings />} />
-
-            <Route path="/login" element={<LoginPage />} />
-          </Routes>
-        </div> */}
       </>
     );
   

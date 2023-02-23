@@ -6,6 +6,7 @@ import { useNavigate} from 'react-router-dom';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import{ register, login } from '../actions/userActions'
+import Alert from 'react-bootstrap/Alert';
 
 
 
@@ -15,27 +16,19 @@ function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState('')
   const [name, setName] = useState('')
-  const [status, setStatus] = useState('')
 
   const dispatch = useDispatch();
-  const userLogin = useSelector(state => state.userLogin)
-  const {error, loading, userInfo} = userLogin
+  const userRegister = useSelector(state => state.userRegister)
+  const {error, loading, userInfo} = userRegister
 
   const navigate = useNavigate();
 
-// note: navigate('/') causing infinite error loop - investigate
-
   useEffect(() => {
     if (userInfo) {
-        // navigate('/')
+        navigate('/login')
+        alert('An email will be sent to you from your CONNECT team. Click the activation link in the email to activate your account and complete the registration process.\n\nIf you do not see an email from us in your email inbox, please check your spam folder. ')
     }
-    
-    if (status != '') {
-        setStatus('')
-        // navigate('/')
-    }
-    
-  }, []);
+  }, [userInfo, navigate]);
 
 
   const submitHandler = (e) => {
@@ -43,23 +36,19 @@ function RegisterPage() {
     if (password != confirmPassword) {
         setMessage('Passwords do not match')
     } else {
-        
-        
         dispatch(register(name, email, password))
-        console.log(userInfo)
-        console.log("login success")
-        setStatus('success')
-        
-        
     }
   }
 
 
   return (
-
    <div className='formBackground'>
-    {/* <div className='homeContainer'> */}
     <div className='form'>
+    <span>
+      <Alert  className='warningDifferentPasswords' key='warning' variant='warning' show={Boolean((password!='') && (confirmPassword!='') && (password != confirmPassword))}>
+        <h6>The passwords entered do not match!</h6>
+      </Alert>
+      </span>
     <span className="logo">
         <img src={process.env.PUBLIC_URL+'/logo.png'} alt="logo" ></img>
     </span>
@@ -69,47 +58,38 @@ function RegisterPage() {
     <Form className='signupForm' onSubmit={submitHandler}>
     <FormGroup >
       <Label for="name">Name</Label>
-          <Input type="name" name="name" id="name" placeholder="Enter your name" 
+          <Input type="name" name="name" id="name" placeholder="Enter your name" required
           value={name} onChange={(e)=> setName(e.target.value)}/>
       </FormGroup>
       <FormGroup >
       <Label for="email">Email</Label>
-          <Input type="email" name="email" id="email" placeholder="Enter your email" 
+          <Input type="email" name="email" id="email" placeholder="Enter your email" required
           value={email} onChange={(e)=> setEmail(e.target.value)}/>
       </FormGroup>
       <FormGroup>
           <Label for="password">Password</Label>
-          <Input type="password" name="password" id="password" placeholder="Confirm password" 
+          <Input type="password" name="password" id="password" placeholder="Confirm password" required
           value={password} onChange={(e)=> setPassword(e.target.value)}/>
       </FormGroup>
       <FormGroup>
           <Label for="password">Confirm Password</Label>
-          <Input type="password" name="password" id="password2" placeholder="Enter your password" 
+          <Input type="password" name="password" id="password2" placeholder="Enter your password" required
           value={confirmPassword} onChange={(e)=> setConfirmPassword(e.target.value)}/>
       </FormGroup>
       
+
       <Button className='loginButton' type='submit' >
         Register
       </Button>
         <div>
-            <p className='loginP'>Already a member? 
-                <a href='/login'> Log in</a>
+            <p className='loginP'>Already a member?&nbsp;
+                <a href='/login'>Log in</a>
             </p>
        </div>
        <div>
-      <p className='loginP'>Forget password? 
-      <a href='#'> Click here</a>
-     </p>
        </div>
     </Form>
     </div>
-    {/* <div className='homeComponent'>
-    <div>
-    
-    </div>
-    </div> */}
-    
-    {/* </div> */}
   </div>
   );
 }

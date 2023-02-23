@@ -49,12 +49,30 @@
     height: 50px;
   }
 
+  .editImg{
+    height: 300px;
+    
+  }
+
   .title{
     color: #5d5b8d;
     font-size: 24px;
   }
+
+  h2{
+    color: #280950b9;
+  }
   
-  
+  .labelE{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #2f0d5ca7;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+
   label{
     display: flex;
     align-items: center;
@@ -69,6 +87,18 @@
     border: none;
     width: 250px;
     border-bottom: 1px solid #a7bcff;   
+  }
+
+  .warningDifferentPasswords{
+    padding: 10px;
+    border: none;
+    width: 250px; 
+    text-align: center;
+  }
+
+  .warningDifferentPasswords h6{
+    padding-top: 5px;
+    font-size: 75%;
   }
 
   #userEmail::placeholder{
@@ -87,6 +117,60 @@
     font-weight: bold;
     border:none;
     cursor:pointer;   
+  }
+
+  .editButton{
+    background-color: #19932a;
+    color: white;
+    width: 10%;
+    padding: 10px;
+    font-weight: bold;
+    border:none;
+    cursor:pointer;
+  }
+
+  .editSaveButton{
+    background-color: #19932a;
+    color: white;
+    width: 70%;
+    padding: 10px;
+    font-weight: bold;
+    border:none;
+    border-radius: 20px; 
+    cursor:pointer;
+    margin: 10px;
+  }
+
+  .editCancelButton{
+    /* background-color: #c80b0b;*/
+    background-color: grey;
+    color: white;
+    width: 70%;
+    padding: 10px;
+    font-weight: bold;
+    border:none;
+    border-radius: 20px; 
+    cursor:pointer;
+    margin: 10px;
+  }
+
+  .editDeleteButton{
+    background-color: #c80b0b;
+    color: white;
+    width: 70%;
+    padding: 10px;
+    font-weight: bold;
+    border:none;
+    border-radius: 20px; 
+    cursor:pointer;
+    margin: 10px;
+  }
+
+  .editButtonContainer{
+    /* display: flex; */
+    /* flex-direction: column; */
+    align-items: center;
+    /* padding: 10px; */
   }
 
  .loginP{
