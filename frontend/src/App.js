@@ -10,6 +10,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { Container } from 'react-bootstrap';
+import { ProfileScreen } from "./screens/ProfileScreen";
 import LoginPage from './screens/LoginPage';
 import RegisterPage from './screens/RegisterPage';
 import ViewProfile from "./screens/ViewProfile";
@@ -61,6 +62,9 @@ const router = createBrowserRouter([
   },{
     path: "create/post/",
     element: <CreatePost/>
+  },{
+    path: "/profileScreen",
+    element: <ProfileScreen/>
   }
 
 ]);
