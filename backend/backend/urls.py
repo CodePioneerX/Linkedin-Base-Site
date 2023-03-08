@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from workshare.views import ProfileView, ProfileCreateView, getProfileView, updateUserProfile
+from workshare.views import ProfileView, ProfileCreateView, getProfileView, updateUserProfile, searchProfilesView
 from workshare.views import JobListingCreateView, JobListingLatestView, JobListingUpdateView, JobListingDeleteView
 from workshare.views import PostView, PostCreateView, PostUpdateView, PostDeleteView, PostLatestView, PostListingCreateView, UserPostsView
 from django.conf import settings
@@ -34,6 +34,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
     path('api/profile/<int:pk>', getProfileView, name='profile_detail'),
+    path('api/search-profile/<searchValue>', searchProfilesView, name='profile_detail'),
     path('api/profile/', ProfileCreateView.as_view(), name='profile_create'),
     path('api/profile/update/<int:pk>', updateUserProfile, name='profile_update'),
     path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),
