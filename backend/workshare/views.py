@@ -63,7 +63,22 @@ class ProfileCreateView(CreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     
-    
+
+@api_view(['PUT'])
+def changePassword(request, pk):
+    user = get_object_or_404(User, pk=pk)
+
+    data = request.data
+
+    if user.check_password(data['oldPassword']):
+        user.set_password(data['newPassword'])
+        
+    user.save()
+
+    serializer = UserSerializerWithToken(user, many=False)
+
+    return Response(serializer.data)
+
 # TO-DO: finalize implementation of user authentication
 @api_view(['PUT'])
 # @permission_classes([IsAuthenticated])

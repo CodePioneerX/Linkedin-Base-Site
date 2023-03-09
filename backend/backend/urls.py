@@ -33,6 +33,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
+    path('api/changePassword/<int:pk>', views.changePassword, name='changePassword'),
     path('api/profile/<int:pk>', getProfileView, name='profile_detail'),
     path('api/profile/', ProfileCreateView.as_view(), name='profile_create'),
     path('api/profile/update/<int:pk>', updateUserProfile, name='profile_update'),

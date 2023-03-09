@@ -11,6 +11,10 @@ import{
     USER_REGISTER_SUCCESS,
     USER_REGISTER_FAIL,
 
+    CHANGE_PASSWORD_REQUEST,
+    CHANGE_PASSWORD_SUCCESS,
+    CHANGE_PASSWORD_FAIL,
+
     USER_DETAILS_REQUEST,
     USER_DETAILS_SUCCESS,
     USER_DETAILS_FAIL,
@@ -89,6 +93,41 @@ export const login = (email,password) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: USER_LOGIN_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+    }
+}
+
+export const changePassword = (id, oldPassword, newPassword) => async (dispatch) => {
+    try {
+        dispatch({
+            type: CHANGE_PASSWORD_REQUEST
+        })
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+
+        const { data } = await axios.put(
+            `http://localhost:8000/api/changePassword/${id}`,
+            { 'oldPassword': oldPassword, 'newPassword': newPassword },
+            config
+        )
+        console.log(data)
+        
+        dispatch({
+            type: CHANGE_PASSWORD_SUCCESS,
+            payload: data
+        })
+        localStorage.setItem('userInfo', JSON.stringify(data))
+
+    } catch (error) {
+        dispatch({
+            type: CHANGE_PASSWORD_FAIL,
             payload: error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.message,
