@@ -32,9 +32,11 @@ h3 {
 
 .changePasswordForm .pTextbox {
     max-width: 500px;
-
 }
 
 #submit {
     background-color: #3a0f90;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
 }

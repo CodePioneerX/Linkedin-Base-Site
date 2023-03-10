@@ -33,7 +33,7 @@ function Settings() {
             <h6>The new passwords entered do not match!</h6>
           </Alert>
         </span>
-        <h3>Change Password</h3>
+        <h3>Reset Password</h3>
         <FormGroup>
           <Label for="oldPassword">Old Password</Label>
           <Input type="password" name="password" id="oldPassword" className='pTextbox' placeholder="Enter current password" required
@@ -50,7 +50,7 @@ function Settings() {
           value={confirmNewPassword} onChange={(e)=> setConfirmNewPassword(e.target.value)}/>
       </FormGroup>
       <Button id='submit' className='changePassword' type='submit' onCli>
-          Submit Password Change
+          Submit New Password
       </Button>
       </Form>
       
