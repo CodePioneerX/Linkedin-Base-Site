@@ -9,9 +9,9 @@ from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
 from .serializers import WorkShareSerializer
 from .models import WorkShare
-from .models import Profile, Post, JobListing, Comment
+from .models import Profile, Post, JobListing, Comment, Recommendations
 from django.contrib.auth.models import User
-from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer
+from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -283,16 +283,29 @@ def getUserProfile(request):
 @api_view(['GET'])
 def getProfileView(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
-    serializer = ProfileSerializer(profile)
-    return Response(serializer.data)
+    profile_serializer = ProfileSerializer(profile)
+
+    sent_recommendations = Recommendations.objects.filter(sender=profile)
+    received_recommendations = Recommendations.objects.filter(receipent=profile)
+
+    sent_recommendations_serializer = RecommendationsSerializer(sent_recommendations, many=True)
+    received_recommendations_serializer = RecommendationsSerializer(received_recommendations, many=True)
+
+    data = {
+        "profile": profile_serializer.data,
+        "sent_recommendations": sent_recommendations_serializer.data,
+        "received_recommendations": received_recommendations_serializer.data
+    }
+
+    return Response(data)
 
 
 @api_view(['GET'])
-def searchProfilesView(request, searchValue):
+def searchProfilesView(request, searchValue, receiver_id):
     profiles = Profile.objects.filter(name__icontains=searchValue)
     serializer = ProfileSerializer(profiles, many=True)
     print("DEBUG: ", profiles)
-    return Response(serializer.data)
+    return Response({'receiver_id': receiver_id, 'profile': serializer.data})
 
 @api_view(['POST'])
 def registerUser(request):
@@ -351,3 +364,21 @@ def activate(request, uidb64, token):
     
     ###REDIRECTION LINK NEEDS TO BE CHANGED ONCE SITE GETS HOSTED
     return redirect("http://localhost:3000")
+
+@api_view(['POST'])
+def createRecommendationView(request, receiver_id):
+    sender = request.user.profile
+    
+    try:
+        receiver = Profile.objects.get(pk=receiver_id)
+    except Profile.DoesNotExist:
+        return Response({"error": "Receiver profile not found."}, status=status.HTTP_404_NOT_FOUND)
+    if sender == receiver:
+        return Response({"error": "Cannot recommend yourself."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    text = request.data.get('text', '')
+    recommendation = Recommendations(sender=sender, receipent=receiver, description=text)
+    recommendation.save()
+    serializer = RecommendationsSerializer(recommendation)
+
+    return Response(serializer.data, status=status.HTTP_201_CREATED)

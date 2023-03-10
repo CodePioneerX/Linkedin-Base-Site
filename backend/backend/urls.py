@@ -18,7 +18,7 @@ from django.urls import path, include
 from rest_framework import routers
 from workshare.views import ProfileView, ProfileCreateView, getProfileView, updateUserProfile, searchProfilesView
 from workshare.views import JobListingCreateView, JobListingLatestView, JobListingUpdateView, JobListingDeleteView
-from workshare.views import PostView, PostCreateView, PostUpdateView, PostDeleteView, PostLatestView, PostListingCreateView, UserPostsView
+from workshare.views import PostView, PostCreateView, PostUpdateView, PostDeleteView, PostLatestView, PostListingCreateView, UserPostsView, createRecommendationView
 from django.conf import settings
 from django.conf.urls.static import static
 from workshare import views
@@ -34,7 +34,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
     path('api/profile/<int:pk>', getProfileView, name='profile_detail'),
-    path('api/search-profile/<searchValue>', searchProfilesView, name='profile_detail'),
+    path('api/search-profile/<searchValue>/<receiver_id>/', searchProfilesView, name='profile_detail'),
     path('api/profile/', ProfileCreateView.as_view(), name='profile_create'),
     path('api/profile/update/<int:pk>', updateUserProfile, name='profile_update'),
     path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),
@@ -49,6 +49,7 @@ urlpatterns = [
     path('api/job/delete/<int:pk>', JobListingDeleteView, name='job_listing_delete'),
     path('api/jobs/', JobListingLatestView.as_view(), name='job_listing_latest_detail'),
     path('api/register/' , views.registerUser, name='register'),
+    path('api/create_recommendation/<int:receiver_id>', createRecommendationView, name='create_recommendation'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
