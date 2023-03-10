@@ -286,6 +286,14 @@ def getProfileView(request, pk):
     serializer = ProfileSerializer(profile)
     return Response(serializer.data)
 
+
+@api_view(['GET'])
+def searchProfilesView(request, searchValue):
+    profiles = Profile.objects.filter(name__icontains=searchValue)
+    serializer = ProfileSerializer(profiles, many=True)
+    print("DEBUG: ", profiles)
+    return Response(serializer.data)
+
 @api_view(['POST'])
 def registerUser(request):
     data = request.data
