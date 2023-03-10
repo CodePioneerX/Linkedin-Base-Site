@@ -1,3 +1,4 @@
+import '../Assets/css/Settings.css';
 import React, {useState, useEffect} from 'react';
 import { Container, Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import Alert from 'react-bootstrap/Alert';
@@ -24,33 +25,35 @@ function Settings() {
     return (
       <div >
         <h1>Settings</h1>
-        <div className='changePasswordForm'>
+        <div className='settingsForm'>
+        
+        <Form className='changePasswordForm' onSubmit={submitHandler}>
         <span>
-          <Alert  className='warningDifferentPasswords' key='warning' variant='warning' show={Boolean((newPassword!='') && (confirmNewPassword!='') && (newPassword != confirmNewPassword))}>
+          <Alert id='warningMessage' className='warningDifferentPasswords' key='warning' variant='warning' show={Boolean((newPassword!='') && (confirmNewPassword!='') && (newPassword != confirmNewPassword))}>
             <h6>The new passwords entered do not match!</h6>
           </Alert>
         </span>
         <h3>Change Password</h3>
-        <Form className='changePasswordForm'>
         <FormGroup>
           <Label for="oldPassword">Old Password</Label>
-          <Input type="password" name="password" id="oldPassword" placeholder="Enter current password" required
+          <Input type="password" name="password" id="oldPassword" className='pTextbox' placeholder="Enter current password" required
           value={oldPassword} onChange={(e)=> setOldPassword(e.target.value)}/>
       </FormGroup>
         <FormGroup>
           <Label for="newPassword">New Password</Label>
-          <Input type="password" name="password" id="newPassword" placeholder="Enter new password" required
+          <Input type="password" name="password" id="newPassword" className='pTextbox' placeholder="Enter new password" required
           value={newPassword} onChange={(e)=> setNewPassword(e.target.value)}/>
       </FormGroup>
       <FormGroup>
           <Label for="newPassword">Confirm New Password</Label>
-          <Input type="password" name="password" id="newPassword2" placeholder="Renter your new password" required
+          <Input type="password" name="password" id="newPassword2" className='pTextbox' placeholder="Renter your new password" required
           value={confirmNewPassword} onChange={(e)=> setConfirmNewPassword(e.target.value)}/>
       </FormGroup>
-      </Form>
-      <Button id='submit' className='changePassword' type='submit' onClick={submitHandler}>
+      <Button id='submit' className='changePassword' type='submit' onCli>
           Submit Password Change
       </Button>
+      </Form>
+      
       </div>
       </div>
 
