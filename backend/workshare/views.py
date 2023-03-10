@@ -66,6 +66,17 @@ class ProfileCreateView(CreateAPIView):
 
 @api_view(['PUT'])
 def changePassword(request, pk):
+    """
+    API endpoint for changing a user's password.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        pk (int): The primary key of the user to change the password for.
+
+    Returns:
+        Response: An HTTP response object containing the serialized data of the user with the updated password.
+    """
+
     user = get_object_or_404(User, pk=pk)
 
     data = request.data

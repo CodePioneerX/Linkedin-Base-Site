@@ -100,7 +100,16 @@ export const login = (email,password) => async (dispatch) => {
     }
 }
 
+/**
+ * Sends a PUT request containing oldPassword and newPassword to the following url: `http://localhost:8000/api/changePassword/${id}`.
+ * 
+ * @param {int} id 
+ * @param {String} oldPassword 
+ * @param {String} newPassword 
+ * @returns 
+ */
 export const changePassword = (id, oldPassword, newPassword) => async (dispatch) => {
+    
     try {
         dispatch({
             type: CHANGE_PASSWORD_REQUEST

@@ -5,17 +5,24 @@ import Alert from 'react-bootstrap/Alert';
 import { useDispatch, useSelector } from 'react-redux';
 import{ changePassword } from '../actions/userActions';
 
+/*
+More settings functionalities likely to be implemented. 
+Currently, the Settings page only consists of a form which allows uses to reset their passwords. 
+*/
 function Settings() {
 
+  //password-storing variables 
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
 
+  //user-storing variable 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   const dispatch = useDispatch(); 
 
+  //on password-change form submission
   const submitHandler = (e) => {
     e.preventDefault()
     console.log('form submitted')
