@@ -366,8 +366,8 @@ def activate(request, uidb64, token):
     return redirect("http://localhost:3000")
 
 @api_view(['POST'])
-def createRecommendationView(request, receiver_id):
-    sender = request.user.profile
+def createRecommendationView(request, sender_id, receiver_id):
+    sender = get_object_or_404(Profile, pk=sender_id)
     
     try:
         receiver = Profile.objects.get(pk=receiver_id)

@@ -49,7 +49,7 @@ urlpatterns = [
     path('api/job/delete/<int:pk>', JobListingDeleteView, name='job_listing_delete'),
     path('api/jobs/', JobListingLatestView.as_view(), name='job_listing_latest_detail'),
     path('api/register/' , views.registerUser, name='register'),
-    path('api/create_recommendation/<int:receiver_id>', createRecommendationView, name='create_recommendation'),
+    path('api/create_recommendation/<int:sender_id>/<int:receiver_id>', createRecommendationView, name='create_recommendation'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
