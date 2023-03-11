@@ -8,6 +8,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import '../Assets/css/App.css'
 
 import { useLocation } from "react-router-dom";
+import { sendRecommendation } from "../actions/recommendAction";
 
 export const ProfileScreen =()=>{
 
@@ -59,75 +60,44 @@ export const ProfileScreen =()=>{
         //change state
     }
 
-    //functions for recommendation
+    //display the recommendation form
     const enterRecommendation =() =>{
         setRecommendForm(true)
     };
 
+    //hide the recommendation form
     const exitRecommendation =() =>{
         setRecommendForm(false)
     };
 
+    //check if the current logged in user has recommended the searched user
     const checkRecommendation = async () =>{
-        try 
-        {
-            const config = {
-                headers: {
-                    'Content-type': 'application/json'
-                }
-            }
-    
-            const { data } = await axios.post(
-                'http://localhost:8000/api/recommend/check',
-                { 'recommender': myUserId, 'recommendee': otherUserId },
-                config
-            )
+      const { data } = await axios.get(
+        `http://localhost:8000/api/profile/` + myUserId
+      );
+      console.log(data.sent_recommendations)
+      var i ;
+      for(i=0; i < data.sent_recommendations.length; i++){
+      if(data.sent_recommendations[i].receipent == otherUserId){
+        console.log(i);
         setRecommended(true);
-        }catch(error){
-            console.log(error.response && error.response.data.detail
-                ? error.response.data.detail
-                : error.message)
-        }
+    setRecommendForm(false)
+        break;
+      }}
     };
 
-    const sendRecommendation = async (e) =>{
+    //send the recommendation request to the backend
+    const sendRecommendationHandler = async (e) =>{
         e.preventDefault()
-        console.log(myUserId)
-        console.log(otherUserId)
-        // console.log(title)
-        console.log(description)
-        console.log(userInfo.token)
         if (description === ""){
-            alert("Please fill all the blanks!")
+            alert("Description cannot be empty!")
             return;
         }
-        try 
-        {
-            const config = {
-                headers: {
-                    'Content-type': 'application/json',
-                    // "auth-token" : userInfo.token
-                }
-            }
-    
-            const { data } = await axios.post(
-                `http://localhost:8000/api/create_recommendation/` + myUserId +`/`+ otherUserId,
-                { 
-                // 'recommender': myUserId, 
-                // 'recommendee': otherUserId,
-                // 'title' : title,
-                'text': description},
-                config
-            )
-        setRecommended(true);
-        setRecommendForm(false)
-        }catch(error){
-            console.log(error.response && error.response.data.detail
-                ? error.response.data.detail
-                : error.message)
-        }
+        dispatch(sendRecommendation(myUserId, otherUserId,description));
+          window.location.reload(false)       
     }
 
+    //cancel the recommendation to the searched user if has recommended
     const cancelRecommendation = async (e) =>{
         e.preventDefault()
         try 
@@ -151,6 +121,7 @@ export const ProfileScreen =()=>{
         }
     }
 
+    //get the data of the searched user's profile
     const getProfile = async () => {
         const { data } = await axios.get(
           `http://localhost:8000/api/profile/` + otherUserId
@@ -160,7 +131,7 @@ export const ProfileScreen =()=>{
 
       useEffect(() => {
         getProfile();
-        // checkRecommendation();
+        checkRecommendation();
       }, []);
 
     return (    
@@ -229,7 +200,7 @@ export const ProfileScreen =()=>{
                         </FormGroup>
                         <Row className='editButtonContainer'>
                             <Col xs={12} md={6}>
-                                <Button type = 'submit' className='editSaveButton' onClick={sendRecommendation}> Save </Button>
+                                <Button type = 'submit' className='editSaveButton' onClick={sendRecommendationHandler}> Save </Button>
                             </Col>
                             <Col xs={12} md={6}>
                                 <Button className='editCancelButton' onClick={exitRecommendation}>Cancel</Button>
