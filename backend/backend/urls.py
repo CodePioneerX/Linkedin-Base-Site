@@ -16,9 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from workshare.views import ProfileView, ProfileCreateView, getProfileView, updateUserProfile
-from workshare.views import JobListingCreateView, JobListingLatestView, JobListingUpdateView, JobListingDeleteView
-from workshare.views import PostView, PostCreateView, PostUpdateView, PostDeleteView, PostLatestView, PostListingCreateView, UserPostsView
+from workshare.views import *
 from django.conf import settings
 from django.conf.urls.static import static
 from workshare import views
@@ -48,8 +46,9 @@ urlpatterns = [
     path('api/job/delete/<int:pk>', JobListingDeleteView, name='job_listing_delete'),
     path('api/jobs/', JobListingLatestView.as_view(), name='job_listing_latest_detail'),
     path('api/register/' , views.registerUser, name='register'),
-    path('api/connections/create/<int:sender_id>/<int:recipient_id>/', views.createConnection, name='createConnection'),
-    path('api/connections/status/<int:user1_id>/<int:user2_id>/', views.connectionStatus, name='connectionStatus'),
+    path('api/connections/create/<int:sender_id>/<int:recipient_id>/', createConnection, name='createConnection'),
+    path('api/connections/status/<int:user1_id>/<int:user2_id>/', connectionStatus, name='connectionStatus'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

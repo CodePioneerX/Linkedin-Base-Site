@@ -344,6 +344,7 @@ def activate(request, uidb64, token):
     ###REDIRECTION LINK NEEDS TO BE CHANGED ONCE SITE GETS HOSTED
     return redirect("http://localhost:3000")
 
+#A function to create a connection between users.
 def createConnection(request, sender_id, recipient_id):
     sender_user = get_object_or_404(User, id=sender_id)
     recipient_user = get_object_or_404(User, id=recipient_id)
@@ -351,30 +352,33 @@ def createConnection(request, sender_id, recipient_id):
     if Connection.objects.filter(sender =sender_user, recipient=recipient_user).exists():
         return JsonResponse({'message': 'Connection request already exists.'}, status=400)
     
-    connection_request = Connection.objects.create(sender=sender_user, recipient=recipient_user)
+    connection = Connection.objects.create(sender=sender_user, recipient=recipient_user, status='pending')
+    connection.save()
 
     return JsonResponse({'message': 'Connection request sent successfully.'}, status=201)
 
+#A function to check the connection status.
 def connectionStatus(request, user1_id, user2_id):
-    connection1 = Connection.objects.filter(sender_id=user1_id, recipient_id=user2_id).first()
-    connection2 = Connection.objects.filter(sender_id=user2_id, recipient_id=user1_id).first()
+    user1 = get_object_or_404(User, id=user1_id)
+    user2 = get_object_or_404(User, id=user2_id)
 
-    if connection2:
-        status = 'Confirm'
-    elif connection1:
-        status = 'Pending'
+    connection1 = Connection.objects.filter(sender=user1, recipient=user2).first()
+    if connection1:
+        if connection1.status == 'pending':
+            status = 'Pending'
+        elif connection1.status == 'accepted':
+            status = 'Accepted'
+        elif connection1.status == 'rejected':
+            status = 'Rejected'
     else:
-        status = 'No Connection'
-
+        connection2 = Connection.objects.filter(sender=user2, recipient=user1).first()
+        if connection2:
+            if connection2.status == 'pending':
+                status = 'Confirm'
+            elif connection2.status == 'accepted':
+                status = 'Accepted'
+            elif connection2.status == 'rejected':
+                status = 'Rejected'
+        else:
+            status = 'No Connection'
     return JsonResponse({'status': status})
-
-def acceptConection(request, user1_id, user2_id):
-    user2 = get_object_or_404(User, pk=user2_id)
-    connection = Connection.objects.filter(user1=user2_id, user2=user2_id, status=Connections.STATUS_REQUESTED).first()
-
-    if connection:
-        connection.status = Connections.STATUS_ACCEPTED
-        connection.save()
-        return JsonResponse({'status': 'success'})
-    else:
-        return JsonResponse({'status': 'error'})
