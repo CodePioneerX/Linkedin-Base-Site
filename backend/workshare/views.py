@@ -2,7 +2,7 @@ import time
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
@@ -15,7 +15,6 @@ from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSeri
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -366,42 +365,20 @@ def activate(request, uidb64, token):
     ###REDIRECTION LINK NEEDS TO BE CHANGED ONCE SITE GETS HOSTED
     return redirect("http://localhost:3000")
 
-#A function for the user to create a recommendation.
 @api_view(['POST'])
-@permission_classes([AllowAny])
-def createRecommendationView(request, sender_id, receiver_id):
-    sender_id = request.user.profile
+def createRecommendationView(request, receiver_id):
+    sender = request.user.profile
+    
     try:
         receiver = Profile.objects.get(pk=receiver_id)
     except Profile.DoesNotExist:
         return Response({"error": "Receiver profile not found."}, status=status.HTTP_404_NOT_FOUND)
-    if sender_id == receiver:
+    if sender == receiver:
         return Response({"error": "Cannot recommend yourself."}, status=status.HTTP_400_BAD_REQUEST)
     
     text = request.data.get('text', '')
-    recommendation = Recommendations(sender_id=sender_id, receiver_id=receiver_id, description=text)
+    recommendation = Recommendations(sender=sender, receipent=receiver, description=text)
     recommendation.save()
     serializer = RecommendationsSerializer(recommendation)
 
     return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-#Checking if a user already recommended another user.
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def checkRecommendationsView(request, sender_id, receiver_id):
-    sender_id = request.user.profile
-    recommendation = Recommendations.objects.filter(sender=sender_id, receipent=receiver_id).exists()
-  
-    if recommendation:
-        return Response({'recommended': True})
-    else:
-        return Response({'recommended': False})
-
-#A fucntion for the user to be able to delete a recommendation.
-@api_view(['DELETE'])
-@permission_classes([AllowAny])
-def deleteRecommendationView(request, sender_id, receiver_id):
-    sender_id = request.user.profile
-    recommendation = get_object_or_404(Recommendations, sender_id=sender_id, receipent=receiver_id)
-    recommendation.delete()
-    return Response({'message': 'Recommendation deleted successfully.'})
