@@ -32,7 +32,7 @@ class Profile(models.Model):
 
 class Recommendations(models.Model):
     sender = models.ForeignKey(Profile, on_delete= models.CASCADE, related_name='sent_recommendations')
-    receipent = models.ForeignKey(Profile, on_delete= models.CASCADE, related_name='received_recommendations')
+    recipient = models.ForeignKey(Profile, on_delete= models.CASCADE, related_name='received_recommendations')
     description = models.TextField(default='', blank=True)
 
 class Comment(models.Model):

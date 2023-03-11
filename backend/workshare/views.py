@@ -377,8 +377,19 @@ def createRecommendationView(request, sender_id, receiver_id):
         return Response({"error": "Cannot recommend yourself."}, status=status.HTTP_400_BAD_REQUEST)
     
     text = request.data.get('text', '')
-    recommendation = Recommendations(sender=sender, receipent=receiver, description=text)
+    recommendation = Recommendations(sender=sender, recipient=receiver, description=text)
     recommendation.save()
     serializer = RecommendationsSerializer(recommendation)
 
     return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+@api_view(['DELETE'])
+def deleteRecommendationView(request, sender_id, receiver_id):
+    
+    try:
+        recommendation = Recommendations.objects.get(sender_id=sender_id, recipient_id=receiver_id)
+    except Recommendations.DoesNotExist:
+        return Response({"error": "Recommendation not found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    recommendation.delete()
+    return Response({"message": "Recommendation deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
