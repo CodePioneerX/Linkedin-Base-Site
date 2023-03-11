@@ -96,6 +96,7 @@ export const ProfileScreen =()=>{
         console.log(otherUserId)
         // console.log(title)
         console.log(description)
+        console.log(userInfo.token)
         if (description === ""){
             alert("Please fill all the blanks!")
             return;
@@ -104,7 +105,8 @@ export const ProfileScreen =()=>{
         {
             const config = {
                 headers: {
-                    'Content-type': 'application/json'
+                    'Content-type': 'application/json',
+                    "auth-token" : userInfo.token
                 }
             }
     
