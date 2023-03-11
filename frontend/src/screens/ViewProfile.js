@@ -38,6 +38,7 @@ function ViewProfile() {
       `http://localhost:8000/api/profile/` + userInfo.id
     );
     setProfile(data.profile);
+    console.log(data)
   };
 
   useEffect(() => {

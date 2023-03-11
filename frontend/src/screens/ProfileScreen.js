@@ -35,14 +35,14 @@ export const ProfileScreen =()=>{
     const [recommendForm, setRecommendForm] = useState(false);
 
     //functions for connection
-    const checkConnection = async (e) =>{
+    const checkPendingConnection = async (e) =>{
         //axios request
         //change state
     };
 
-    const checkPendingConnection = async (e) =>{
+    const checkConnection = async (e) =>{
         //axios request
-        e.preventDefault()
+        // e.preventDefault()
         try 
         {
             const config = {
@@ -52,7 +52,7 @@ export const ProfileScreen =()=>{
             }
     
             const { data } = await axios.post(
-              `http://localhost:8000/api/connections/status/` + myUserId +`/`+ otherUserId,
+              `http://localhost:8000/api/connections/status/` + myUserId +`/`+ otherUserId +`/`,
                 config
             )
             console.log(data)
@@ -90,7 +90,7 @@ export const ProfileScreen =()=>{
       console.log(data.sent_recommendations)
       var i ;
       for(i=0; i < data.sent_recommendations.length; i++){
-      if(data.sent_recommendations[i].receipent == otherUserId){
+      if(data.sent_recommendations[i].recipient == otherUserId){
         console.log(i);
         setRecommended(true);
     setRecommendForm(false)
@@ -120,12 +120,11 @@ export const ProfileScreen =()=>{
                 }
             }
     
-            const { data } = await axios.post(
-                'http://localhost:8000/api/recommend/cancel',
-                { 'recommender': myUserId, 'recommendee': otherUserId },
+            const { data } = await axios.delete(
+              `http://localhost:8000/api/delete_recommendation/` + myUserId +`/`+ otherUserId,
                 config
             )
-        setRecommended(false);
+            window.location.reload(false)  
         }catch(error){
             console.log(error.response && error.response.data.detail
                 ? error.response.data.detail
@@ -141,9 +140,11 @@ export const ProfileScreen =()=>{
         setProfile(data.profile);
       };
 
+      //page set up
       useEffect(() => {
         getProfile();
         checkRecommendation();
+        checkConnection();
       }, []);
 
     return (    
