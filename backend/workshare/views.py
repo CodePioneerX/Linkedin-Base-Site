@@ -286,7 +286,7 @@ def getProfileView(request, pk):
     profile_serializer = ProfileSerializer(profile)
 
     sent_recommendations = Recommendations.objects.filter(sender=profile)
-    received_recommendations = Recommendations.objects.filter(receipent=profile)
+    received_recommendations = Recommendations.objects.filter(recipient=profile)
 
     sent_recommendations_serializer = RecommendationsSerializer(sent_recommendations, many=True)
     received_recommendations_serializer = RecommendationsSerializer(received_recommendations, many=True)
