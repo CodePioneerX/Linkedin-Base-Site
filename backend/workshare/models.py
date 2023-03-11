@@ -65,3 +65,15 @@ class JobListing(models.Model):
 
     def __str__(self):
         return self.title
+
+class Notification(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender_notifcation_set')
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipient_notifcation_set')
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    status = models.CharField(max_length=255)
+    unread = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
