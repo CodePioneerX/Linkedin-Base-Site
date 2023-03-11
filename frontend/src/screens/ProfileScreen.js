@@ -106,7 +106,7 @@ export const ProfileScreen =()=>{
             const config = {
                 headers: {
                     'Content-type': 'application/json',
-                    Authorization : `Bearer ${userInfo.token}`
+                    "auth-token" : userInfo.token
                 }
             }
     
