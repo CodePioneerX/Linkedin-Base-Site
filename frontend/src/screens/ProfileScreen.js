@@ -28,9 +28,11 @@ export const ProfileScreen =()=>{
     const [profile, setProfile] = useState("");
 
     //variables for condition check
-    const [isConnected, setIsConnected] = useState(true);
+    const [isConnected, setIsConnected] = useState(false);
     const [connectPending, setConnectPending] = useState(false);
     const [connectSender, setConnectSender] = useState(false);
+    const [connectStatus, setConnectStatus] = useState("");
+
     const [recommended, setRecommended] = useState(false);
     const [recommendForm, setRecommendForm] = useState(false);
 
@@ -41,9 +43,8 @@ export const ProfileScreen =()=>{
     };
 
     const checkConnection = async (e) =>{
-        //axios request
-        // e.preventDefault()
-        try 
+        
+      try 
         {
             const config = {
                 headers: {
@@ -51,11 +52,27 @@ export const ProfileScreen =()=>{
                 }
             }
     
-            const { data } = await axios.post(
+            const { data } = await axios.get(
               `http://localhost:8000/api/connections/status/` + myUserId +`/`+ otherUserId +`/`,
                 config
             )
-            console.log(data)
+            
+            
+            // console.log("check connection called.")
+            setConnectStatus(data.status)
+            // console.log(recommended)
+            // console.log(connectStatus)
+            if(connectStatus=="Accepted"){
+              setIsConnected(true)
+            }
+            if(connectStatus=="Pending"){
+              setConnectPending(true)
+              setConnectSender(true)
+            }
+            if(connectStatus=="Confirm"){
+              setConnectPending(true)
+              setConnectSender(false)
+            }
         }catch(error){
             console.log(error.response && error.response.data.detail
                 ? error.response.data.detail
@@ -65,10 +82,52 @@ export const ProfileScreen =()=>{
 
     const sendConnection = async (e) =>{
         //axios request
-    };
+        console.log("send connection")
+        e.preventDefault()
+        try 
+        {
+            const config = {
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            }
+    
+            const { data } = await axios.get(
+              `http://localhost:8000/api/connections/create/` + myUserId +`/`+ otherUserId +`/`,
+                config
+            )
+            window.location.reload(false)  
+        }catch(error){
+            console.log(error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message)
+        }
+    
+    
+      };
 
     const cancelConnection = async (e) =>{
         //axios request
+        console.log("send connection")
+        e.preventDefault()
+        try 
+        {
+            const config = {
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            }
+    
+            const { data } = await axios.get(
+              `http://localhost:8000/api/connections/delete/` + myUserId +`/`+ otherUserId +`/`,
+                config
+            )
+            window.location.reload(false)  
+        }catch(error){
+            console.log(error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message)
+        }
     }
 
     //display the recommendation form
@@ -86,12 +145,12 @@ export const ProfileScreen =()=>{
       const { data } = await axios.get(
         `http://localhost:8000/api/profile/` + myUserId
       );
-      console.log(data)
-      console.log(data.sent_recommendations)
+      // console.log(data)
+      // console.log(data.sent_recommendations)
       var i ;
       for(i=0; i < data.sent_recommendations.length; i++){
       if(data.sent_recommendations[i].recipient == otherUserId){
-        console.log(i);
+        // console.log(i);
         setRecommended(true);
     setRecommendForm(false)
         break;
@@ -143,9 +202,12 @@ export const ProfileScreen =()=>{
       //page set up
       useEffect(() => {
         getProfile();
-        checkRecommendation();
         checkConnection();
-      }, []);
+        checkRecommendation()
+        
+      }, [
+        isConnected,connectPending,connectSender,connectStatus,recommended,recommendForm
+      ]);
 
     return (    
     <Container className="justify-content-md-center padd">
@@ -161,7 +223,7 @@ export const ProfileScreen =()=>{
                     <Row style={{backgroundImage: `url(${require("../images/a.jpg")})`, paddingBottom: "15px", backgroundSize: "cover", backgroundPosition: "center center", display: "flex", flexDirection: "column", alignItems: "center"}}>     
                       <img src={profile.image} alt="Profile" className="profile-image padd_small" style={{ borderRadius: "50%", width: "auto", height: "250px"}}/>
                     </Row>
-
+                   
                     <Row style={{background:"white",display: "flex", flexDirection: "column", alignItems: "center"}}>
                       <div style={{textAlign: "center", padding: "1rem"}}>
                         <h1 className="profile-name">{profile.name}</h1>
@@ -170,7 +232,7 @@ export const ProfileScreen =()=>{
                         
                         {isConnected? 
                         <div>
-                        <button className="profile-button">Disconnect</button>
+                        <button className="profile-button" onClick={cancelConnection}>Disconnect</button>
                             {recommended? 
                             <button className="profile-button" onClick={cancelRecommendation}>Cancel recommendation</button>
                             :
@@ -189,7 +251,7 @@ export const ProfileScreen =()=>{
                                 </div>)
                             :
                             <div>
-                            <button className="profile-button">Connect</button>
+                            <button className="profile-button" onClick={sendConnection}>Connect</button>
                             <button className="profile-button">Message</button>
                             </div>)
                         }
