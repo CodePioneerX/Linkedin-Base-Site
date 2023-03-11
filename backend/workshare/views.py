@@ -414,3 +414,17 @@ def rejectConnection(request, user1_id, user2_id):
     connection.status = 'rejected'
     connection.save()
     return JsonResponse({'message': 'Connection request rejected successfully.'}, status=200)
+
+#A function to disconnect or delete a connection between users.
+def deleteConnection(request, user1_id, user2_id):
+    connection = Connection.objects.filter(
+        sender_id__in=[user1_id, user2_id],
+        recipient_id__in=[user1_id, user2_id],
+        status='accepted'
+    ).first()
+
+    if not connection:
+        return JsonResponse({'message': 'Connection does not exist or has not been accepted.'}, status=400)
+
+    connection.delete()
+    return JsonResponse({'message': 'Connection deleted successfully.'}, status=200)
