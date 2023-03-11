@@ -35,29 +35,40 @@ export const ProfileScreen =()=>{
     const [recommendForm, setRecommendForm] = useState(false);
 
     //functions for connection
-    const checkConnection =() =>{
+    const checkConnection = async (e) =>{
         //axios request
         //change state
     };
 
-    const checkPendingConnection =() =>{
+    const checkPendingConnection = async (e) =>{
         //axios request
-        //change state
+        e.preventDefault()
+        try 
+        {
+            const config = {
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            }
+    
+            const { data } = await axios.post(
+              `http://localhost:8000/api/connections/status/` + myUserId +`/`+ otherUserId,
+                config
+            )
+            console.log(data)
+        }catch(error){
+            console.log(error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message)
+        }
     };
 
-    const checkConnectSender =() =>{
+    const sendConnection = async (e) =>{
         //axios request
-        //change state
     };
 
-    const sendConnection =() =>{
+    const cancelConnection = async (e) =>{
         //axios request
-        //change state
-    };
-
-    const cancelConnection =() =>{
-        //axios request
-        //change state
     }
 
     //display the recommendation form
@@ -75,6 +86,7 @@ export const ProfileScreen =()=>{
       const { data } = await axios.get(
         `http://localhost:8000/api/profile/` + myUserId
       );
+      console.log(data)
       console.log(data.sent_recommendations)
       var i ;
       for(i=0; i < data.sent_recommendations.length; i++){
