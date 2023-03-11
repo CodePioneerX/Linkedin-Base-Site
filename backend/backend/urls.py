@@ -18,7 +18,7 @@ from django.urls import path, include
 from rest_framework import routers
 from workshare.views import ProfileView, ProfileCreateView, getProfileView, updateUserProfile, searchProfilesView
 from workshare.views import JobListingCreateView, JobListingLatestView, JobListingUpdateView, JobListingDeleteView
-from workshare.views import PostView, PostCreateView, PostUpdateView, PostDeleteView, PostLatestView, PostListingCreateView, UserPostsView, createRecommendationView
+from workshare.views import *
 from django.conf import settings
 from django.conf.urls.static import static
 from workshare import views
@@ -49,7 +49,9 @@ urlpatterns = [
     path('api/job/delete/<int:pk>', JobListingDeleteView, name='job_listing_delete'),
     path('api/jobs/', JobListingLatestView.as_view(), name='job_listing_latest_detail'),
     path('api/register/' , views.registerUser, name='register'),
-    path('api/create_recommendation/<int:receiver_id>', createRecommendationView, name='create_recommendation'),
+    path('api/create_recommendation/<int:sender_id>/<int:receiver_id>', createRecommendationView, name='create_recommendation'),
+    path('api/check_recommendation/<int:sender_id>/<int:receiver_id>', checkRecommendationsView, name='check_recommendation'),
+    path('api/delete_recommendations/<int:sender_id>/<int:receiver_id>', views.deleteRecommendationView, name='delete_recommendation'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
