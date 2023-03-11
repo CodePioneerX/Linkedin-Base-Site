@@ -208,3 +208,10 @@ footer {
   padding: 1.5rem;
   margin-bottom: 1rem;
 }
+
+
+.img_profile {
+  width: 3rem !important;
+  height: 3rem !important;
+  border-radius: 100%;
+}

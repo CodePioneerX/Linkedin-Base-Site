@@ -10,7 +10,6 @@ class WorkShare(models.Model):
     def _str_(self):
         return self.title
     
-    
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=255)
@@ -30,6 +29,11 @@ class Profile(models.Model):
     
     def __str__(self):
         return self.name
+
+class Recommendations(models.Model):
+    sender = models.ForeignKey(Profile, on_delete= models.CASCADE, related_name='sent_recommendations')
+    recipient = models.ForeignKey(Profile, on_delete= models.CASCADE, related_name='received_recommendations')
+    description = models.TextField(default='', blank=True)
 
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)

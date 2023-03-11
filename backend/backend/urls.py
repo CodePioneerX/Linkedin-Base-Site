@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from workshare.views import *
+from workshare.views import *
 from django.conf import settings
 from django.conf.urls.static import static
 from workshare import views
@@ -32,6 +33,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
     path('api/profile/<int:pk>', getProfileView, name='profile_detail'),
+    path('api/search-profile/<searchValue>/<receiver_id>/', searchProfilesView, name='profile_detail'),
     path('api/profile/', ProfileCreateView.as_view(), name='profile_create'),
     path('api/profile/update/<int:pk>', updateUserProfile, name='profile_update'),
     path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),
@@ -51,7 +53,8 @@ urlpatterns = [
     path('api/connections/accept/<int:user1_id>/<int:user2_id>/', acceptConnection, name='acceptConnection'),
     path('api/connections/reject/<int:user1_id>/<int:user2_id>/', rejectConnection, name='rejectConnection'),
     path('api/connections/delete/<int:user1_id>/<int:user2_id>/', deleteConnection, name='deleteConnection'),
-
+    path('api/create_recommendation/<int:sender_id>/<int:receiver_id>', createRecommendationView, name='create_recommendation'),
+    path('api/delete_recommendation/<int:sender_id>/<int:receiver_id>', deleteRecommendationView, name='delete_recommendation'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

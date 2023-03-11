@@ -10,6 +10,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { Container } from 'react-bootstrap';
+import { ProfileScreen } from "./screens/ProfileScreen";
 import LoginPage from './screens/LoginPage';
 import RegisterPage from './screens/RegisterPage';
 import ViewProfile from "./screens/ViewProfile";
@@ -21,9 +22,11 @@ import Messaging from './screens/Messaging';
 import Notification from './screens/Notification';
 import Settings from "./screens/Settings";
 import Home from './screens/Home';
+import SearchScreen from "./screens/SearchScreen";
 import  {Provider} from 'react-redux';
 import userInfoFromStorage from './store'
 import store from './store';
+
 
 const router = createBrowserRouter([
   {
@@ -59,8 +62,14 @@ const router = createBrowserRouter([
     path: "/create/job/",
     element: <CreateJob/>
   },{
+    path: "search/name/:name",
+    element: <SearchScreen/>
+  },{
     path: "create/post/",
     element: <CreatePost/>
+  },{
+    path: "/profileScreen",
+    element: <ProfileScreen/>
   }
 
 ]);

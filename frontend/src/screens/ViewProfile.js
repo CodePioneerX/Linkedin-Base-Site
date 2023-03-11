@@ -37,7 +37,7 @@ function ViewProfile() {
     const { data } = await axios.get(
       `http://localhost:8000/api/profile/` + userInfo.id
     );
-    setProfile(data);
+    setProfile(data.profile);
   };
 
   useEffect(() => {

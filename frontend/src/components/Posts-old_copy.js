@@ -30,7 +30,7 @@ export default class Posts extends Component {
                 <Container className='darker'>
                   <p>{post.content}</p>
                   {/* <img className='img_box' src={post.image} alt={post.title} /> */}
-                  {post.image ? <img src={post.image} alt="test alt image text" style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
+                  {post.image ? <img src={post.image} alt="test sss image text" style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
                   <p>By: {post.author}</p>
                   <p>Likes: {post.likes}</p>
                   <p>Created at: {post.created_at}</p>
