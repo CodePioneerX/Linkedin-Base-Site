@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Form from 'react-bootstrap/Form';
 import Nav from "react-bootstrap/Nav";
@@ -71,18 +72,21 @@ function Header(){
                 className="justify-content-end"
               >
                 <Nav className="me-auto">
+                {userInfo ? (
                   <Nav.Link href="/" style={{ paddingRight: "40px" }}>
                     Home
                   </Nav.Link>
+                  ) : (<></>)}
                   {userInfo ? (
                   <Nav.Link href="/network" style={{ paddingRight: "40px" }}>
                     Network
                   </Nav.Link>
                   ) : (<></>)}
+                  {userInfo ? (
                   <Nav.Link href="/jobs" style={{ paddingRight: "40px" }} >
                     Jobs
                   </Nav.Link>
-                  
+                   ) : (<></>)}
                   {userInfo ? (
                   <Nav.Link href="/messaging"  style={{ paddingRight: "40px" }} >
                     Messaging
@@ -90,7 +94,7 @@ function Header(){
                   ) : (<></>)}
 
 
-                  {userInfo ? (
+                  {/* {userInfo ? (
 
                   <NavDropdown title="Notifications" id="collasible-nav-dropdown2">
                  
@@ -103,8 +107,8 @@ function Header(){
                   
 
                   </NavDropdown>
-                  ) : (<></>)}
-                  
+                  ) : (<></>)} */}
+                  {userInfo ? (
                   <NavDropdown title="Profile" id="collasible-nav-dropdown">
                   {userInfo ? (
                     <NavDropdown.Item href="/profile">
@@ -130,6 +134,9 @@ function Header(){
 
 
                   </NavDropdown>
+                  ) : ( <NavDropdown.Item href="/login" id="logout" >
+                  Sign in
+                </NavDropdown.Item> )}
                  
                 </Nav>
               </Navbar.Collapse>
