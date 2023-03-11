@@ -153,7 +153,7 @@ export const ProfileScreen =()=>{
         const { data } = await axios.get(
           `http://localhost:8000/api/profile/` + otherUserId
         );
-        setProfile(data);
+        setProfile(data.profile);
       };
 
       useEffect(() => {
