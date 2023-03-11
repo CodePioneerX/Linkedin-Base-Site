@@ -65,3 +65,16 @@ class JobListing(models.Model):
 
     def __str__(self):
         return self.title
+
+class Connection(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+    )
+    sender = models.ForeignKey(User, related_name='first_user', on_delete=models.CASCADE)
+    recipient = models.ForeignKey(User, related_name='second_user', on_delete=models.CASCADE)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+
+    class Meta:
+        unique_together = ('sender', 'recipient')

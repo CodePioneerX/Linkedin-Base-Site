@@ -9,7 +9,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
 from .serializers import WorkShareSerializer
 from .models import WorkShare
-from .models import Profile, Post, JobListing, Comment
+from .models import Profile, Post, JobListing, Comment, Connection
 from django.contrib.auth.models import User
 from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer
 from django.contrib.auth.hashers import make_password
@@ -343,3 +343,38 @@ def activate(request, uidb64, token):
     
     ###REDIRECTION LINK NEEDS TO BE CHANGED ONCE SITE GETS HOSTED
     return redirect("http://localhost:3000")
+
+def createConnection(request, sender_id, recipient_id):
+    sender_user = get_object_or_404(User, id=sender_id)
+    recipient_user = get_object_or_404(User, id=recipient_id)
+
+    if Connection.objects.filter(sender =sender_user, recipient=recipient_user).exists():
+        return JsonResponse({'message': 'Connection request already exists.'}, status=400)
+    
+    connection_request = Connection.objects.create(sender=sender_user, recipient=recipient_user)
+
+    return JsonResponse({'message': 'Connection request sent successfully.'}, status=201)
+
+def connectionStatus(request, user1_id, user2_id):
+    connection1 = Connection.objects.filter(sender_id=user1_id, recipient_id=user2_id).first()
+    connection2 = Connection.objects.filter(sender_id=user2_id, recipient_id=user1_id).first()
+
+    if connection2:
+        status = 'Confirm'
+    elif connection1:
+        status = 'Pending'
+    else:
+        status = 'No Connection'
+
+    return JsonResponse({'status': status})
+
+def acceptConection(request, user1_id, user2_id):
+    user2 = get_object_or_404(User, pk=user2_id)
+    connection = Connection.objects.filter(user1=user2_id, user2=user2_id, status=Connections.STATUS_REQUESTED).first()
+
+    if connection:
+        connection.status = Connections.STATUS_ACCEPTED
+        connection.save()
+        return JsonResponse({'status': 'success'})
+    else:
+        return JsonResponse({'status': 'error'})
