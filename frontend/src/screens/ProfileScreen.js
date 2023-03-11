@@ -106,17 +106,17 @@ export const ProfileScreen =()=>{
             const config = {
                 headers: {
                     'Content-type': 'application/json',
-                    "auth-token" : userInfo.token
+                    // "auth-token" : userInfo.token
                 }
             }
     
             const { data } = await axios.post(
-                `http://localhost:8000/api/create_recommendation/` + otherUserId,
+                `http://localhost:8000/api/create_recommendation/` + myUserId +`/`+ otherUserId,
                 { 
                 // 'recommender': myUserId, 
                 // 'recommendee': otherUserId,
                 // 'title' : title,
-                'description': description},
+                'text': description},
                 config
             )
         setRecommended(true);
