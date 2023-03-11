@@ -48,6 +48,8 @@ urlpatterns = [
     path('api/register/' , views.registerUser, name='register'),
     path('api/connections/create/<int:sender_id>/<int:recipient_id>/', createConnection, name='createConnection'),
     path('api/connections/status/<int:user1_id>/<int:user2_id>/', connectionStatus, name='connectionStatus'),
+    path('api/connections/accept/<int:user1_id>/<int:user2_id>/', acceptConnection, name='acceptConnection'),
+    path('api/connections/reject/<int:user1_id>/<int:user2_id>/', rejectConnection, name='rejectConnection')
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

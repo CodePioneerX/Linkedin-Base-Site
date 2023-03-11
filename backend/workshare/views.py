@@ -382,3 +382,35 @@ def connectionStatus(request, user1_id, user2_id):
         else:
             status = 'No Connection'
     return JsonResponse({'status': status})
+
+#A function to accept a connection.
+def acceptConnection(request, user1_id, user2_id):
+    recipient = get_object_or_404(User, id=user2_id)
+    connection = Connection.objects.filter(sender_id=user1_id, recipient=recipient).first()
+    
+    if not connection:
+        return JsonResponse({'message': 'Connection request not found.'}, status=404)
+    
+    if connection.recipient != recipient:
+        return JsonResponse({'message': 'Only the recipient can accept the connection request.'}, status=403)
+    
+    if connection.status != 'pending':
+        return JsonResponse({'message': 'Connection request has already been accepted or rejected.'}, status=400)
+    
+    connection.status = 'accepted'
+    connection.save()
+    
+    return JsonResponse({'message': 'Connection request accepted successfully.'}, status=200)
+
+#A function to reject a connection.
+def rejectConnection(request, user1_id, user2_id):
+    connection = Connection.objects.filter(sender_id=user1_id, recipient_id=user2_id).first()
+    if not connection:
+        return JsonResponse({'message': 'Connection request not found.'}, status=404)
+    if connection.recipient_id != user2_id:
+        return JsonResponse({'message': 'Only the recipient can reject this connection request.'}, status=400)
+    if connection.status != 'pending':
+        return JsonResponse({'message': 'Connection request has already been accepted or rejected.'}, status=400)
+    connection.status = 'rejected'
+    connection.save()
+    return JsonResponse({'message': 'Connection request rejected successfully.'}, status=200)
