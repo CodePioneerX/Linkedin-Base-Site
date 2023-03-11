@@ -9,9 +9,9 @@ from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
 from .serializers import WorkShareSerializer
 from .models import WorkShare
-from .models import Profile, Post, JobListing, Comment
+from .models import Profile, Post, JobListing, Comment, Notification, NotificationPreference
 from django.contrib.auth.models import User
-from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer
+from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, NotificationSerializer, NotificationPreferenceSerializer
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -272,6 +272,78 @@ class JobListingLatestView(APIView):
                 'remote': job.remote
             })
         return JsonResponse(job_list, safe=False)
+
+@api_view(['GET'])
+def getNotificationView(request, pk):
+    '''Returns a specific notification'''
+
+    notification = get_object_or_404(Notification, pk=pk)
+    
+    serializer = NotificationSerializer(notification, many=False)
+
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getNotificationsView(request, pk):
+    '''Returns a user's 10 most recent notifications'''
+
+    notifications = Notification.objects.all().filter(recipient__id = pk).order_by('-created_at')[:10]
+
+    serializer = NotificationSerializer(notifications, many=True)
+
+    return Response(serializer.data)
+
+@api_view(['POST', 'GET'])
+def createNotificationView(request):
+    '''Creates a notification using the request data'''
+
+    data = request.data
+
+    sender = get_object_or_404(User, data['sender_id'])
+    recipient = get_object_or_404(User, data['recipient_id'])
+
+    notification = Notification.objects.create(
+        sender=sender,
+        recipient=recipient,
+        title=data['title'],
+        content=data['content'],
+        status='Sent'
+    )
+
+    serializer = NotificationSerializer(notification, many=False)
+
+    return Response(serializer.data)
+
+@api_view(['PUT', 'GET'])
+def readNotificationView(request, pk):
+    '''Marks a specific notification as read'''
+
+    notification = get_object_or_404(Notification, pk=pk)
+    notification.unread = False
+    
+    serializer = NotificationSerializer(notification, many=False)
+
+    return Response(serializer.data)
+
+@api_view(['DELETE', 'GET'])
+def deleteNotificationView(request, pk):
+    '''Deletes a specific notification'''
+
+    notification = get_object_or_404(Notification, pk=pk)
+    notification.delete()
+
+    return Response('Notification Deleted')
+
+@api_view(['DELETE', 'GET'])
+def clearNotificationsView(request, pk):
+    '''Clears (deletes) all of a specific user's notifications'''
+
+    notifications = Notification.objects.all().filter(receiver__id = pk)
+
+    for notification in notifications:
+        notification.delete()
+
+    return Response('Notifications Cleared')
 
 @api_view(['GET'])
 def getUserProfile(request):
