@@ -17,8 +17,8 @@ export const ProfileScreen =()=>{
     const dispatch = useDispatch();
 
     //recommendation data
-    const [title, setTitle] = useState("")
-    const [reason, setReason] = useState("")
+    // const [title, setTitle] = useState("")
+    const [description, setDescription] = useState("")
     
     //get ids to be used
     const location = useLocation();
@@ -94,9 +94,9 @@ export const ProfileScreen =()=>{
         e.preventDefault()
         console.log(myUserId)
         console.log(otherUserId)
-        console.log(title)
-        console.log(reason)
-        if (title ==="" || reason === ""){
+        // console.log(title)
+        console.log(description)
+        if (description === ""){
             alert("Please fill all the blanks!")
             return;
         }
@@ -109,11 +109,12 @@ export const ProfileScreen =()=>{
             }
     
             const { data } = await axios.post(
-                'http://localhost:8000/api/recommend/send',
-                { 'recommender': myUserId, 
-                'recommendee': otherUserId,
-                'title' : title,
-                'reason': reason},
+                `http://localhost:8000/api/create_recommendation/` + otherUserId,
+                { 
+                // 'recommender': myUserId, 
+                // 'recommendee': otherUserId,
+                // 'title' : title,
+                'description': description},
                 config
             )
         setRecommended(true);
@@ -157,7 +158,7 @@ export const ProfileScreen =()=>{
 
       useEffect(() => {
         getProfile();
-        checkRecommendation();
+        // checkRecommendation();
       }, []);
 
     return (    
@@ -213,16 +214,16 @@ export const ProfileScreen =()=>{
                 {/* Recommendation form     */}
                     {recommendForm?
                         <Form>
-                        <FormGroup >
+                        {/* <FormGroup >
                         <Label className='labelE' for="title" >Title</Label>
                         <Input  name="title" id="title" placeholder="write recommendation title here" 
                          onChange={(e)=> setTitle(e.target.value)}/>
-                        </FormGroup>
+                        </FormGroup> */}
                         <FormGroup >
-                        <Label className='labelE' for="reason" >Reason</Label>
+                        <Label className='labelE' for="description" >Description</Label>
                         <textarea style={{width : "100%" }}
-                        name="reason" id="reason" placeholder="write recommendation reason here" 
-                         onChange={(e)=> setReason(e.target.value)}/>
+                        name="description" id="description" placeholder="write recommendation description here" 
+                         onChange={(e)=> setDescription(e.target.value)}/>
                         </FormGroup>
                         <Row className='editButtonContainer'>
                             <Col xs={12} md={6}>

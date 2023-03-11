@@ -13,6 +13,9 @@ export default class MyNetwork extends Component {
           <div>
           <h1>MyNetwork</h1>
           <Container>
+          <Link to="/profileScreen" state={{data:3}}>
+            <button>other user profile</button>
+          </Link>
                 <Link className='btn btn-primary' to='/create/post/' state={{from: "/network"}}>
                   Create a Post
                 </Link>
