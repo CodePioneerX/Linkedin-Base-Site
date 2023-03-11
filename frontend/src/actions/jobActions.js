@@ -28,16 +28,18 @@ export const create_job = (author, email, title, description,remote, active, com
       
         const config = {
             headers: {
-                'Content-type': 'multipart/form-data',
+                'Content-type': 'multipart/form-data', 
                 // Authorization: `Bearer ${userInfo.token}`
             } 
         }
         
         console.log('config: ', config)
+        console.log('remote: ', remote)
+        console.log('active: ', active)
 
         const { data } = await axios.post(
             'http://localhost:8000/api/create_job/',
-            { 'author': author, 'title': title, 'description': description, 'remote':true ,'status':'active' ,'company':company ,'job_type':job_type ,'salary':salary ,'location':location, 'image':image },
+            { 'author': author, 'title': title, 'description': description, 'remote':remote ,'status':active ,'company':company ,'job_type':job_type ,'salary':salary ,'location':location, 'image':image },
             config
         )
         
@@ -72,6 +74,10 @@ export const update_job = (jobID, author, title, description, remote, active, co
             headers: {
                 'Content-type': 'multipart/form-data'}
         }
+
+        console.log('remote: ', remote)
+        console.log('active: ', active)
+        
         const { data } = await axios.put(`http://localhost:8000/api/job/update/` + jobID, 
         { 'author': author, 
         'title': title, 

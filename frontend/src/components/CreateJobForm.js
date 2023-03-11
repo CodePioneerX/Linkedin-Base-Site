@@ -85,11 +85,11 @@ export const CreateJobForm = () => {
                     </Col>
                     <Col>
                         <Label className='labelE' for='remote'>Remote?</Label>
-                        <Input name='remote' type="checkbox" id='form6Example8' checked={remote} onChange={(e)=> setRemote(true)}/>
+                        <Input name='remote' type="checkbox" id='form6Example81'  checked={remote} onChange={(e)=> setRemote(!remote)}/>
                     </Col>
                     <Col>
                         <Label className='labelE' for='active'>Active?</Label>
-                        <Input name='active' type='checkbox' id='form6Example8' checked={active} onChange={(e)=> setActive(e.target.checked)}/>
+                        <Input name='active' type='checkbox' id='form6Example8' checked={active} onChange={(e)=> setActive(!active)}/>
                     </Col>
                 </Row>
                 <Row className='mb-4'>
@@ -98,7 +98,7 @@ export const CreateJobForm = () => {
                         <Input name='listing-image' type="file" id='customFile' onChange={(e)=> setImage(e.target.files[0])}/>
                     </Col>
                 </Row>
-                <Input className='profile-button' 
+                <Input className='profile-button'  
                     type='submit'>
                     Create a Job
                 </Input>

@@ -12,7 +12,7 @@ export const EditJobForm = (job) => {
     const [description, setDescription] = useState(job.job.description)
     const [remote, setRemote] = useState(job.job.remote)
     const [status, setStatus] = useState(job.job.status)
-    const [active, setActive] = useState(job.job.active)
+    const [active, setActive] = useState(job.job.status)
     const [company, setCompany] = useState(job.job.company)
     const [job_type, setJob_type] = useState(job.job.job_type)
     const [salary, setSalary] = useState(job.job.salary)
@@ -93,11 +93,11 @@ export const EditJobForm = (job) => {
                 </Col>
                 <Col>
                     <Label className='labelE' for='remote'>Remote?</Label>
-                    <Input name='remote' type="checkbox" id='form6Example8' value={remote} onChange={(e)=> setRemote(true)}/>
+                    <Input name='remote' type="checkbox" id='form6Example8' checked={remote} onChange={(e)=> setRemote(!remote)}/>
                 </Col>
                 <Col>
                     <Label className='labelE' for='active'>Active?</Label>
-                    <Input name='active' type='checkbox' id='form6Example8' value={active} onChange={(e)=> setActive(e.target.checked)}/>
+                    <Input name='active' type='checkbox' id='form6Example8' checked={active} onChange={(e)=> setActive(!active)}/>
                 </Col>
             </Row>
         
