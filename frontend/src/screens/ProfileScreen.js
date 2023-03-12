@@ -42,6 +42,7 @@ export const ProfileScreen =()=>{
         //change state
     };
 
+    //check the connection status between the logged-in user and the searched user
     const checkConnection = async (e) =>{
         
       try 
@@ -80,6 +81,7 @@ export const ProfileScreen =()=>{
         }
     };
 
+    //send the connection request to the searched user
     const sendConnection = async (e) =>{
         //axios request
         console.log("send connection")
@@ -106,6 +108,7 @@ export const ProfileScreen =()=>{
     
       };
 
+    //disconnect from the searched user
     const cancelConnection = async (e) =>{
         //axios request
         console.log("send connection")
