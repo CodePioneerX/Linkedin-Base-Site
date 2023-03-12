@@ -5,10 +5,19 @@ import { userRegisterReducer,
         userLoginReducer, 
         userProfileReducer } from './reducers/userReducers'
 
+import {notificationsReducer,
+        notificationClearReducer,
+        notificationDeleteReducer
+    } from './reducers/notificationReducers'
+
 const reducer = combineReducers({
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
-    userProfile: userProfileReducer
+    userProfile: userProfileReducer,
+    
+    notifications: notificationsReducer,
+    notificationClear: notificationClearReducer,
+    notificationDelete: notificationDeleteReducer
 })
 
 const userInfoFromStorage = localStorage.getItem("userInfo") ? 
