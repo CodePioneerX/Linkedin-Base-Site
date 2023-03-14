@@ -49,7 +49,7 @@ function RegisterPage() {
       <div>
       {showAlert &&
       <Alert  id='successMessage' className='success' key='success' variant='success'>
-        <h6>An email will be sent to you from your CONNECT team. <br/><br/>Click the activation link in the email to activate your account and complete the registration process. <br/><br/>If you do not see an email from us in your email inbox, please check your spam folder.</h6>
+        <h6>An email will be sent to you from your CONNECT team. <br/><br/>Click the activation link in the email to activate your account and complete the registration process. <br/><br/>If you do not see an email from us in your email inbox, please check your spam folder or try registering again.</h6>
       </Alert>}
     </div>
     {!showAlert && <Form className='signupForm' onSubmit={submitHandler}>
