@@ -109,40 +109,43 @@ export const login = (email,password) => async (dispatch) => {
  * @returns 
  */
 export const changePassword = (id, oldPassword, newPassword) => async (dispatch) => {
-    
     try {
-        dispatch({
-            type: CHANGE_PASSWORD_REQUEST
-        })
-
-        const config = {
-            headers: {
-                'Content-type': 'application/json'
-            }
-        }
-
-        const { data } = await axios.put(
-            `http://localhost:8000/api/changePassword/${id}`,
-            { 'oldPassword': oldPassword, 'newPassword': newPassword },
-            config
-        )
-        console.log(data)
-        
-        dispatch({
-            type: CHANGE_PASSWORD_SUCCESS,
-            payload: data
-        })
-        localStorage.setItem('userInfo', JSON.stringify(data))
-
+      dispatch({
+        type: CHANGE_PASSWORD_REQUEST,
+      });
+  
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+  
+      const { data } = await axios.put(
+        `http://localhost:8000/api/changePassword/${id}`,
+        { oldPassword, newPassword },
+        config
+      );
+  
+      localStorage.setItem("userInfo", JSON.stringify(data));
+  
+      dispatch({
+        type: CHANGE_PASSWORD_SUCCESS,
+        payload: data,
+      });
+  
+      return { success: true, message: "Password changed successfully!" };
     } catch (error) {
-        dispatch({
-            type: CHANGE_PASSWORD_FAIL,
-            payload: error.response && error.response.data.detail
-                ? error.response.data.detail
-                : error.message,
-        })
+      dispatch({
+        type: CHANGE_PASSWORD_FAIL,
+        payload:
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+      });
+  
+      return { success: false, message: error.message };
     }
-}
+  };
 
 export const logout = () => (dispatch) => {
     localStorage.removeItem('userInfo')

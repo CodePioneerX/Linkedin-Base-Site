@@ -76,19 +76,20 @@ def changePassword(request, pk):
     Returns:
         Response: An HTTP response object containing the serialized data of the user with the updated password.
     """
-
-    user = get_object_or_404(User, pk=pk)
-
     data = request.data
+    try:
+        user = get_object_or_404(User, pk=pk)
 
-    if user.check_password(data['oldPassword']):
-        user.set_password(data['newPassword'])
-        
-    user.save()
+        if user.check_password(data['oldPassword']):
+            user.set_password(data['newPassword'])
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+            
+        user.save()
 
-    serializer = UserSerializerWithToken(user, many=False)
-
-    return Response(serializer.data)
+        return Response(status=status.HTTP_200_OK)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 # TO-DO: finalize implementation of user authentication
 @api_view(['PUT'])

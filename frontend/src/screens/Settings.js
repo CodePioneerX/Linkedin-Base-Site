@@ -1,6 +1,6 @@
 import '../Assets/css/Settings.css';
 import React, {useState, useEffect} from 'react';
-import { Container, Button, Form, FormGroup, Label, Input} from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import Alert from 'react-bootstrap/Alert';
 import { useDispatch, useSelector } from 'react-redux';
 import{ changePassword } from '../actions/userActions';
@@ -11,36 +11,56 @@ Currently, the Settings page only consists of a form which allows uses to reset 
 */
 function Settings() {
 
-  //password-storing variables 
-  const [oldPassword, setOldPassword] = useState('')
-  const [newPassword, setNewPassword] = useState('')
-  const [confirmNewPassword, setConfirmNewPassword] = useState('')
+  //password-storing variables
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [passwordChangeSuccess, setPasswordChangeSuccess] = useState(null);
 
-  //user-storing variable 
+  //user-storing variable
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
 
   //on password-change form submission
   const submitHandler = (e) => {
-    e.preventDefault()
-    console.log('form submitted')
-    dispatch(changePassword(userInfo.id, oldPassword, newPassword))
+    e.preventDefault();
+    if (newPassword === confirmNewPassword){
+      console.log("form submitted");
+
+      dispatch(changePassword(userInfo.id, oldPassword, newPassword)).then(
+        (res) => {
+          if (res.success) {
+            setPasswordChangeSuccess(res.message);
+          } else {
+            setPasswordChangeSuccess(
+              "Failed to change password. \nPlease verify the information you have entered and try again.");
+          }
+        }
+      );
+    }
     
-  }
+  };
+
     return (
-      <div >
-        <h1>Settings</h1>
-        <div className='settingsForm'>
-        
+      <div>
+      <h1>Settings</h1>
+      <div className='settingsForm'>
         <Form className='changePasswordForm' onSubmit={submitHandler}>
-        <span>
-          <Alert id='warningMessage' className='warningDifferentPasswords' key='warning' variant='warning' show={Boolean((newPassword!='') && (confirmNewPassword!='') && (newPassword != confirmNewPassword))}>
-            <h6>The new passwords entered do not match!</h6>
-          </Alert>
-        </span>
-        <h3>Reset Password</h3>
+          <span>
+            <Alert id='warningMessage'className='warningDifferentPasswords' key='warning' variant='warning' show={Boolean( newPassword !== '' && confirmNewPassword !== '' && newPassword !== confirmNewPassword )}>
+              <h6>The password entered in 'New Password' does not match the one entered in 'Confirm New Password'.</h6>
+            </Alert>
+          </span>
+           <span>
+            {passwordChangeSuccess && (
+            <Alert className={`passwordChangeAlert ${passwordChangeSuccess.includes("successfully") ? "alert-success" : "alert-danger" }`} variant={ passwordChangeSuccess.includes("successfully") ? "success" : "danger" } onClose={() => setPasswordChangeSuccess(null)}>
+                {" "}
+                {passwordChangeSuccess}{" "}
+              </Alert>)}
+          </span>
+          <h3>Reset Password</h3>
         <FormGroup>
           <Label for="oldPassword">Old Password</Label>
           <Input type="password" name="password" id="oldPassword" className='pTextbox' placeholder="Enter current password" required
@@ -56,7 +76,7 @@ function Settings() {
           <Input type="password" name="password" id="newPassword2" className='pTextbox' placeholder="Renter your new password" required
           value={confirmNewPassword} onChange={(e)=> setConfirmNewPassword(e.target.value)}/>
       </FormGroup>
-      <Button id='submit' className='changePassword' type='submit' onCli>
+      <Button id='submit' className='changePassword' type='submit'>
           Submit New Password
       </Button>
       </Form>
