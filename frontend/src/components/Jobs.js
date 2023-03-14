@@ -69,7 +69,7 @@ export default class Jobs extends Component {
                 <Container className='darker'>
                   <p>{job.content}</p>
                   {/* <img className='img_box' src={('http://localhost:8000/images/'+job.image.split('images/')[1])} /> */}
-                  {job.image ? <img src={job.image} alt={job.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
+                  {job.image ? <img src={'http://localhost:8000/'+job.image} alt={job.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
                   <p>Description: {job.description}</p>
                   <p>Location: {job.location}</p>
                   <p>Salary: {job.salary}$/hour</p>

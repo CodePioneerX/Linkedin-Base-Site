@@ -38,7 +38,7 @@ export default class Newsfeed extends Component {
                       <Row style={{ display: "flex", alignItems: "center"}}>
                         <Col xs={2} md={2}>
                           {/* <img src={post.image} alt={post.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> */}
-                          {post.image ? <img src={post.image} alt="test alt image text" style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <p></p>}
+                          {post.image ? <img src={'http://localhost:8000/'+post.image} alt="test alt image text" style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <p></p>}
                         </Col>
                         <Col xs={7} md={8}>
                           <p>{post.author}</p>

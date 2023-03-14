@@ -45,7 +45,7 @@ function RegisterPage() {
    <div className='formBackground'>
     <div className='form'>
     <span>
-      <Alert  className='warningDifferentPasswords' key='warning' variant='warning' show={Boolean((password!='') && (confirmPassword!='') && (password != confirmPassword))}>
+      <Alert id='wrongPassword' className='warningDifferentPasswords' key='warning' variant='warning' show={Boolean((password!='') && (confirmPassword!='') && (password != confirmPassword))}>
         <h6>The passwords entered do not match!</h6>
       </Alert>
       </span>

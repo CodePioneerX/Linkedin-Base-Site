@@ -1,8 +1,22 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import user from '@testing-library/user-event';
 import App from './App';
 
-test('renders learn react link', () => {
+
+
+test('Loads webpage', async () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+
+  const divs = await screen.findAllByRole('img');
+  expect(divs.length).toBeGreaterThan(0);
 });
+
+test('Loads images', async () => {
+  render(<App />);
+  
+  // check that there are images on the page
+
+  const images = await screen.findAllByRole('img');
+  expect(images.length).toBeGreaterThan(0);
+});
+
