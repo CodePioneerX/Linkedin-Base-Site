@@ -9,7 +9,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
 from .serializers import WorkShareSerializer
 from .models import WorkShare
-from .models import Profile, Post, JobListing, Comment, Connection, Recommendations
+from .models import Profile, Post, JobListing, Comment, Recommendations, Connection
 from django.contrib.auth.models import User
 from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer
 from django.contrib.auth.hashers import make_password
@@ -299,13 +299,14 @@ def getProfileView(request, pk):
 
     return Response(data)
 
-
+#Search function to look for user profiles.
 @api_view(['GET'])
 def searchProfilesView(request, searchValue, receiver_id):
     profiles = Profile.objects.filter(name__icontains=searchValue)
     serializer = ProfileSerializer(profiles, many=True)
     print("DEBUG: ", profiles)
     return Response({'receiver_id': receiver_id, 'profile': serializer.data})
+
 
 @api_view(['POST'])
 def registerUser(request):
@@ -364,6 +365,7 @@ def activate(request, uidb64, token):
     
     ###REDIRECTION LINK NEEDS TO BE CHANGED ONCE SITE GETS HOSTED
     return redirect("http://localhost:3000")
+
 
 #A function to create a connection between users.
 def createConnection(request, sender_id, recipient_id):
@@ -449,6 +451,7 @@ def deleteConnection(request, user1_id, user2_id):
 
     connection.delete()
     return JsonResponse({'message': 'Connection deleted successfully.'}, status=200)
+
 
 @api_view(['POST'])
 def createRecommendationView(request, sender_id, receiver_id):
