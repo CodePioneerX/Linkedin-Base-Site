@@ -70,7 +70,7 @@ function LoginPage() {
         </div>
         <div>
         <p className='loginP'>Forget password?&nbsp;
-        <a href='#'> Click here</a>
+        <a href='forgotpassword/'>Click here</a>
       </p>
         </div>
       </Form>
