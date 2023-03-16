@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import { Container } from 'react-bootstrap';
 import LoginPage from './screens/LoginPage';
+import ConnectHomePage from './screens/ConnectHomePage';
 import RegisterPage from './screens/RegisterPage';
 import ViewProfile from "./screens/ViewProfile";
 import CreateJob from './screens/CreateJob';
@@ -26,6 +27,10 @@ import userInfoFromStorage from './store'
 import store from './store';
 
 const router = createBrowserRouter([
+  {
+    path: "/connecthomepage",
+    element: <ConnectHomePage/>,
+  },
   {
     path: "/",
     element: <Home/>,
