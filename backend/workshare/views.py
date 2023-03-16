@@ -390,7 +390,7 @@ def connectionStatus(request, user1_id, user2_id):
         if connection1.status == 'pending':
             status = 'Pending'
         elif connection1.status == 'accepted':
-            status = 'Accepted'
+            status = 'Connected'
         elif connection1.status == 'rejected':
             status = 'Rejected'
     else:
@@ -399,7 +399,7 @@ def connectionStatus(request, user1_id, user2_id):
             if connection2.status == 'pending':
                 status = 'Confirm'
             elif connection2.status == 'accepted':
-                status = 'Accepted'
+                status = 'Connected'
             elif connection2.status == 'rejected':
                 status = 'Rejected'
         else:
@@ -434,8 +434,7 @@ def rejectConnection(request, user1_id, user2_id):
         return JsonResponse({'message': 'Only the recipient can reject this connection request.'}, status=400)
     if connection.status != 'pending':
         return JsonResponse({'message': 'Connection request has already been accepted or rejected.'}, status=400)
-    connection.status = 'rejected'
-    connection.save()
+    connection.delete()
     return JsonResponse({'message': 'Connection request rejected successfully.'}, status=200)
 
 #A function to disconnect or delete a connection between users.
