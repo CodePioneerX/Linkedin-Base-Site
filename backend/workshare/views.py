@@ -67,6 +67,7 @@ class ProfileCreateView(CreateAPIView):
 # TO-DO: finalize implementation of user authentication
 @api_view(['PUT'])
 # @permission_classes([IsAuthenticated])
+# This function is intended to allow the user to update their profile 
 def updateUserProfile(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
 
@@ -91,6 +92,7 @@ def updateUserProfile(request, pk):
 
     return Response(serializer.data)
     
+# This function is intended to allow the user to update an existing post that they posted
 @api_view(['PUT'])    
 def PostUpdateView(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -106,12 +108,14 @@ def PostUpdateView(request, pk):
 
     return Response(serializer.data)
 
+# This function is intended to allow the user to delete an existing post that they created
 @api_view(['DELETE', 'GET'])
 def PostDeleteView(request, pk):
     post = Post.objects.get(id=pk)
     post.delete()
     return Response('Post Deleted')
 
+# This function is intended to allow the user to update an existing job post that they created
 @api_view(['PUT'])
 def JobListingUpdateView(request, pk):
     job = get_object_or_404(JobListing, pk=pk)
@@ -134,6 +138,7 @@ def JobListingUpdateView(request, pk):
 
     return Response(serializer.data)
 
+# This function is intended to allow the user to delete an existing job post that they created
 @api_view(['DELETE', 'GET'])
 def JobListingDeleteView(request, pk):
     job = JobListing.objects.get(id=pk)
@@ -273,13 +278,14 @@ class JobListingLatestView(APIView):
             })
         return JsonResponse(job_list, safe=False)
 
+# This function is intended to allow us to get the user profile
 @api_view(['GET'])
 def getUserProfile(request):
     user = request.user
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
-
+# This function is intended allow us to get the recommendations related data (sent and received) of a given profile
 @api_view(['GET'])
 def getProfileView(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
@@ -307,7 +313,7 @@ def searchProfilesView(request, searchValue, receiver_id):
     print("DEBUG: ", profiles)
     return Response({'receiver_id': receiver_id, 'profile': serializer.data})
 
-
+# This function is intended to register a user
 @api_view(['POST'])
 def registerUser(request):
     data = request.data
@@ -329,7 +335,7 @@ def registerUser(request):
          message = {'detail':'A problem occurred while registering this account. Make sure that the email entered is correct and that it does not belong to an existing user.'}
          return Response(message, status=status.HTTP_400_BAD_REQUEST)
     
-
+# This function allows the user to activate their user account
 def activateEmail(request, user, to_email):
     mail_subject = 'Activate your user account. - Automated message. Please do not reply.'
     message = render_to_string('account_activation_email_template.html', {
@@ -344,6 +350,7 @@ def activateEmail(request, user, to_email):
     else:
         print('Problem sending confirmation email.')
 
+# This function allows the user to verify their email 
 def activate(request, uidb64, token):
     User = get_user_model()
     try:
@@ -451,7 +458,7 @@ def deleteConnection(request, user1_id, user2_id):
     connection.delete()
     return JsonResponse({'message': 'Connection deleted successfully.'}, status=200)
 
-
+# This function is intended to allow the user to create a recommendation
 @api_view(['POST'])
 def createRecommendationView(request, sender_id, receiver_id):
     sender = get_object_or_404(Profile, pk=sender_id)
@@ -470,6 +477,7 @@ def createRecommendationView(request, sender_id, receiver_id):
 
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+# This function is intended to allow the user to delete an existing recommendation
 @api_view(['DELETE'])
 def deleteRecommendationView(request, sender_id, receiver_id):
     
