@@ -1,13 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import { Container, Button, Form, FormGroup, Label, Input} from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import { useDispatch, useSelector} from 'react-redux';
 import { useNavigate} from 'react-router-dom';
-import Loader from '../components/Loader';
 import Message from '../components/Message';
 import{ login } from '../actions/userActions';
 import OfficeWorker from '../images/OfficeWorker.png';
 import '../Assets/css/HomePage.css';
-import {Link} from 'react-router-dom'
 
 
 function ConnectHomePage() {
@@ -18,13 +16,9 @@ function ConnectHomePage() {
 
   const dispatch = useDispatch(); 
   const userLogin = useSelector(state => state.userLogin)
-  const {error, loading, userInfo} = userLogin
+  const {error, userInfo} = userLogin
 
   const navigate = useNavigate();
-
-  function handleClick() {
-    navigate('/register');
-  }
 
  useEffect(() => {
   if (userInfo) {
@@ -52,7 +46,6 @@ function ConnectHomePage() {
         <img classname='officeWorker' id='officeWorker' src={OfficeWorker}></img>
       </div>
       {error && <Message variant='danger'>{error}</Message>}
-        {loading && <Loader />}
       <Form id='userLoginForm' className='userLoginForm' onSubmit={submitHandler}>
       <div id='loginTitleHome' className="loginTitleHome"><h2>Log in</h2></div>
         <FormGroup className='loginFormGroup'>

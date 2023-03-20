@@ -24,8 +24,10 @@ function Header(){
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   
+  
+  
   function logoutHandler(){
-    store.dispatch(logout())
+    store.dispatch(logout());
   }
     return (
       <>
@@ -34,16 +36,28 @@ function Header(){
             expand="lg"
             style={{ backgroundColor: "white" }}
             className="navigation"
-          >
+            >
             <Container>
-              <Navbar.Brand href="/">
-                <img
-                  src={logo}
-                  width="230"
-                  className="d-inline-block align-top"
-                  alt="Logo"
-                />
-              </Navbar.Brand>
+
+              {userInfo ? 
+                (<Navbar.Brand href="/">
+                  <img
+                    src={logo}
+                    width="230"
+                    className="d-inline-block align-top"
+                    alt="Logo"
+                  />
+                </Navbar.Brand>) 
+                : 
+                (<Navbar.Brand href="/connecthomepage">
+                  <img
+                    src={logo}
+                    width="230"
+                    className="d-inline-block align-top"
+                    alt="Logo"
+                  />
+                </Navbar.Brand>)
+              }
 
               <Form className="d-flex"> 
                 <Form.Control
@@ -89,11 +103,11 @@ function Header(){
                      ) : (<></>)}
 
                     {userInfo ? (
-                      <NavDropdown.Item onClick={ logoutHandler } id="logout" >
+                      <NavDropdown.Item href="/connecthomepage" onClick={ logoutHandler } id="logout" >
                         Logout
                       </NavDropdown.Item> 
                     ) : (
-                      <NavDropdown.Item href="/login" id="logout" >
+                      <NavDropdown.Item href="/connecthomepage" id="logout" >
                       Login
                     </NavDropdown.Item> 
                     )}

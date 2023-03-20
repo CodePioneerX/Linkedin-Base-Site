@@ -89,13 +89,14 @@ hr {
     color:#3a0f90;
     border-radius: 100px;
     width: 45%;
+    box-shadow: 4px 4px 10px #c5c5c5,
+        -4px -4px 10px #ffffff;
 }
 
 .submitLoginButton:hover {
     background-color: #3a0f90;
     border-color: #3a0f90;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
-    box-shadow: inset 5px 8px 4px -6.5px white;
     cursor: pointer;
     transition: background-color 0.5s ease-out;
 }
