@@ -20,11 +20,11 @@ function RegisterPage() {
   const dispatch = useDispatch();
   const [showAlert, setShowAlert] = useState(false);
   const userRegister = useSelector(state => state.userRegister);
-  const {error, loading, userInfo} = userRegister;
+  const {error, loading} = userRegister;
 
   const submitHandler = (e) => {
     e.preventDefault()
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       setMessage('Passwords do not match.');
     } 
     else if (password.length < 8) {
@@ -40,7 +40,7 @@ function RegisterPage() {
    <div className='formBackground'>
     <div className='form'>
     <span>
-      <Alert  className='warningDifferentPasswords' key='warning' variant='warning' show={Boolean((password!='') && (confirmPassword!='') && (password != confirmPassword))}>
+      <Alert  className='warningDifferentPasswords' key='warning' variant='warning' show={Boolean((password!== '') && (confirmPassword!=='') && (password !== confirmPassword))}>
         <h6>The passwords entered do not match!</h6>
       </Alert>
       <Alert  className='warningDifferentPasswords' id="infoPasswordLength" key='info' variant='warning' show={Boolean(password.length < 8 && password === confirmPassword && password.length > 0)}>
