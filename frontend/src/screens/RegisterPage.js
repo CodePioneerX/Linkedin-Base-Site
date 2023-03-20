@@ -48,7 +48,7 @@ function RegisterPage() {
       </Alert>
     </span>
     <span className="logo">
-        <img src={process.env.PUBLIC_URL+'/logo.png'} alt="logo" ></img>
+        <a href='/login'> <img src={process.env.PUBLIC_URL+'/logo.png'} alt="logo" ></img></a>
     </span>
      <span className="title">Sign Up</span>
      {error && <Message variant='danger'>{error}</Message>}
