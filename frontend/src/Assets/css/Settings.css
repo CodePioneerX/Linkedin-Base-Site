@@ -30,6 +30,11 @@ h3 {
     margin: auto;
 }
 
+#infoPasswordLength {
+    background-color:rgb(211, 244, 255);
+    color:rgb(0, 0, 87);
+  }
+
 .changePasswordForm .pTextbox {
     max-width: 500px;
 }

@@ -26,7 +26,7 @@ function Settings() {
   //on password-change form submission
   const submitHandler = (e) => {
     e.preventDefault();
-    if (newPassword === confirmNewPassword){
+    if (newPassword === confirmNewPassword && newPassword.length >= 8){
       console.log("form submitted");
 
       dispatch(changePassword(userInfo.id, oldPassword, newPassword)).then(
@@ -51,6 +51,9 @@ function Settings() {
           <span>
             <Alert id='warningMessage'className='warningDifferentPasswords' key='warning' variant='warning' show={Boolean( newPassword !== '' && confirmNewPassword !== '' && newPassword !== confirmNewPassword )}>
               <h6>The password entered in 'New Password' does not match the one entered in 'Confirm New Password'.</h6>
+            </Alert>
+            <Alert  className='warningDifferentPasswords' id="infoPasswordLength" key='info' variant='warning' show={Boolean(newPassword.length < 8 && newPassword.length > 0 && newPassword === confirmNewPassword)}>
+              <h6>Be sure to choose a password that is at least 8 characters in length.</h6>
             </Alert>
           </span>
            <span>

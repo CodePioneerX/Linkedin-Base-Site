@@ -25,8 +25,12 @@ function RegisterPage() {
   const submitHandler = (e) => {
     e.preventDefault()
     if (password != confirmPassword) {
-        setMessage('Passwords do not match')
-    } else {
+      setMessage('Passwords do not match.');
+    } 
+    else if (password.length < 8) {
+      setMessage('Password should be at least 8 characters in length. ');
+    }
+    else {
         dispatch(register(name, email, password));
         setTimeout(setShowAlert, 1250, true);
     }
@@ -38,6 +42,9 @@ function RegisterPage() {
     <span>
       <Alert  className='warningDifferentPasswords' key='warning' variant='warning' show={Boolean((password!='') && (confirmPassword!='') && (password != confirmPassword))}>
         <h6>The passwords entered do not match!</h6>
+      </Alert>
+      <Alert  className='warningDifferentPasswords' id="infoPasswordLength" key='info' variant='warning' show={Boolean(password.length < 8 && password === confirmPassword)}>
+        <h6>Be sure to choose a password that is at least 8 characters in length.</h6>
       </Alert>
     </span>
     <span className="logo">
