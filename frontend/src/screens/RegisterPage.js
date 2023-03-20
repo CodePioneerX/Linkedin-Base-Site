@@ -43,7 +43,7 @@ function RegisterPage() {
       <Alert  className='warningDifferentPasswords' key='warning' variant='warning' show={Boolean((password!='') && (confirmPassword!='') && (password != confirmPassword))}>
         <h6>The passwords entered do not match!</h6>
       </Alert>
-      <Alert  className='warningDifferentPasswords' id="infoPasswordLength" key='info' variant='warning' show={Boolean(password.length < 8 && password === confirmPassword)}>
+      <Alert  className='warningDifferentPasswords' id="infoPasswordLength" key='info' variant='warning' show={Boolean(password.length < 8 && password === confirmPassword && password.length > 0)}>
         <h6>Be sure to choose a password that is at least 8 characters in length.</h6>
       </Alert>
     </span>
