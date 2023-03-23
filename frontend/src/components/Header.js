@@ -11,7 +11,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import MyNetwork from "../screens/MyNetwork";
 import Jobs from "../screens/Job";
 import Messaging from "../screens/Messaging";
-import Notification from "../screens/Notification";
+import Notifications from "../screens/Notifications";
 import Settings from "../screens/Settings";
 import ViewProfile from "../screens/ViewProfile";
 import Home from "../screens/Home";
@@ -23,10 +23,27 @@ import { useNavigate} from 'react-router-dom';
 function Header(){
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  const notifications = useSelector((state) => state.notifications)
   
+  let unreadNotifications = 0
+
   function logoutHandler(){
     store.dispatch(logout())
   }
+
+  function getUnreadNotifications() {
+
+  }
+
+  if (!notifications.loading) {
+    for (const notification of notifications.notifications) {
+      if (notification.unread) {
+        unreadNotifications += 1
+      }
+    }
+  }
+
     return (
       <>
           <Navbar
@@ -72,9 +89,12 @@ function Header(){
                   <Nav.Link href="/messaging"  style={{ paddingRight: "40px" }} >
                     Messaging
                   </Nav.Link>
-                  <Nav.Link href="/notifications" style={{ paddingRight: "40px" }} >
-                    Notification
-                  </Nav.Link>
+                  <span style={{paddingRight: "40px", position: "relative"}}>
+                    <Nav.Link href="/notifications" style={{position: "relative", paddingRight: "0px" }} >
+                      Notifications
+                    </Nav.Link>
+                    {unreadNotifications ? <p style={{position: "absolute", left: "100px", bottom: "3px" ,backgroundColor: "red", borderRadius: "10px", color: "white", padding: "0 5px"}}>{unreadNotifications}</p> : <></> }
+                  </span>
                   
                   <NavDropdown title="Profile" id="collasible-nav-dropdown">
                   {userInfo ? (

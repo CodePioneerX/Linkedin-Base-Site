@@ -13,6 +13,7 @@ import { EditProfileForm } from '../components/EditProfileForm';
 import { EditPostForm } from '../components/EditPostForm';
 import '../Assets/css/App.css'
 import { get_profile } from '../actions/userActions'
+import { get_notifications } from "../actions/notificationActions";
 
 
 function ViewProfile() {
@@ -24,6 +25,8 @@ function ViewProfile() {
 
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
+  const notifications = useSelector((state) => state.notifications);
+
   const { userInfo } = userLogin;
   const navigate = useNavigate();
 
@@ -43,6 +46,7 @@ function ViewProfile() {
   useEffect(() => {
     getProfile();
     // dispatch(get_profile(userInfo.id))
+    dispatch(get_notifications(userInfo.id))
   }, []);
 
   const editorMode = ()=>{

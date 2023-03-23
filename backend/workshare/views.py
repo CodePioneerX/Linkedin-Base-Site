@@ -338,7 +338,7 @@ def deleteNotificationView(request, pk):
 def clearNotificationsView(request, pk):
     '''Clears (deletes) all of a specific user's notifications'''
 
-    notifications = Notification.objects.all().filter(receiver__id = pk)
+    notifications = Notification.objects.all().filter(recipient__id = pk)
 
     for notification in notifications:
         notification.delete()

@@ -39,7 +39,7 @@ export const get_notifications = (id) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.get(`http://localhost:8000/api/notifications/user/${id}`, config)
-        console.log(data)
+        
         dispatch({
             type: GET_NOTIFICATIONS_SUCCESS,
             payload: data,

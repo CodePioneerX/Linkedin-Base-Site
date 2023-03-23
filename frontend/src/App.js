@@ -18,7 +18,7 @@ import CreatePost from './screens/CreatePost';
 import MyNetwork from './screens/MyNetwork';
 import Job from './screens/Job';
 import Messaging from './screens/Messaging';
-import Notification from './screens/Notification';
+import Notifications from './screens/Notifications';
 import Settings from "./screens/Settings";
 import Home from './screens/Home';
 import  {Provider} from 'react-redux';
@@ -51,7 +51,7 @@ const router = createBrowserRouter([
     element: <Messaging/>,
   },{
     path: "/notifications",
-    element: <Notification/>,
+    element: <Notifications/>,
   },{
     path: "/settings",
     element: <Settings/>,
