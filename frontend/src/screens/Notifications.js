@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { get_notifications, delete_notification, clear_notifications } from '../actions/notificationActions'
+import { get_notifications, delete_notification, clear_notifications, read_notification, read_all_notifications } from '../actions/notificationActions'
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 
@@ -11,8 +11,8 @@ import { faTrashAlt, faEnvelopeOpen, faEnvelope } from '@fortawesome/free-regula
 
 function Notifications() {
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const userLogin = useSelector(state => state.userLogin)
     const {error, loading, userInfo} = userLogin
@@ -21,7 +21,7 @@ function Notifications() {
         if (userInfo) {
             dispatch(get_notifications(userInfo.id))
         }
-    }, [ userInfo, navigate]);
+    }, [ userInfo, dispatch ]);
 
     const notifications = useSelector((state) => state.notifications.notifications)
 
@@ -31,12 +31,12 @@ function Notifications() {
     }
 
     const readHandler = (notification_id) => {
-      // dispatch(read_notification(notification_id))
+      dispatch(read_notification(notification_id))
+      window.location.reload()
     }
 
     const markAllReadHandler = () => {
-      // mark all notifications as read
-      // dispatch(clear_notifications(userInfo.id))
+      dispatch(read_all_notifications(userInfo.id))
       window.location.reload()
     }
 
@@ -54,7 +54,7 @@ function Notifications() {
               <h1>Notifications</h1>
             </Col>
             <Col md={2}>
-              <Button className='btn btn-secondary' onClick={markAllReadHandler} style={{margin: "10px 0 0 0"}}>
+              <Button className='btn btn-secondary' onClick={() => markAllReadHandler()} style={{margin: "10px 0 0 0"}}>
                     Mark All as Read
               </Button> 
             </Col>

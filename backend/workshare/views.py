@@ -314,14 +314,29 @@ def createNotificationView(request):
 
     return Response(serializer.data)
 
-@api_view(['PUT', 'GET'])
+@api_view(['PUT'])
 def readNotificationView(request, pk):
-    '''Marks a specific notification as read'''
+    '''Toggles a notifications unread value. Unread becomes read, read becomes unread'''
 
     notification = get_object_or_404(Notification, pk=pk)
-    notification.unread = False
+    notification.unread = not(notification.unread)
+    notification.save()
     
     serializer = NotificationSerializer(notification, many=False)
+
+    return Response(serializer.data)
+
+@api_view(['PUT'])
+def readAllNotificationsView(request, pk):
+    '''Marks all notifications as read'''
+    
+    notifications = Notification.objects.all().filter(recipient__id = pk)
+
+    for notification in notifications:
+        notification.unread = False
+        notification.save()
+    
+    serializer = NotificationSerializer(notifications, many=True)
 
     return Response(serializer.data)
 

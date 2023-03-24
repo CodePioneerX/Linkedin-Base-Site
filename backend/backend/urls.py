@@ -50,10 +50,11 @@ urlpatterns = [
     path('api/register/' , views.registerUser, name='register'),
     path('api/notification/', views.createNotificationView, name='notification_create'),
     path('api/notification/delete/<int:pk>', views.deleteNotificationView, name='notification_delete'),
+    path('api/notification/read/<int:pk>', views.readNotificationView, name='notifications_read'),
     path('api/notification/<int:pk>', views.getNotificationView, name='get_notification'),
     path('api/notifications/user/<int:pk>', views.getNotificationsView, name='get_notifications'),
     path('api/notifications/user/clear/<int:pk>', views.clearNotificationsView, name='notifications_clear'),
-    path('api/notifications/user/clear/<int:pk>', views.clearNotificationsView, name='notifications_clear'),
+    path('api/notifications/user/read_all/<int:pk>', views.readAllNotificationsView, name='notifications_read_all'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

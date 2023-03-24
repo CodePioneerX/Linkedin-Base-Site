@@ -16,6 +16,10 @@ import{
     UPDATE_NOTIFICATION_REQUEST,
     UPDATE_NOTIFICATION_SUCCESS,
     UPDATE_NOTIFICATION_FAIL,
+
+    UPDATE_ALL_NOTIFICATIONS_REQUEST,
+    UPDATE_ALL_NOTIFICATIONS_SUCCESS,
+    UPDATE_ALL_NOTIFICATIONS_FAIL,
     
     DELETE_NOTIFICATION_REQUEST,
     DELETE_NOTIFICATION_SUCCESS,
@@ -117,4 +121,68 @@ export const clear_notifications = (id) => async (dispatch, getState) => {
                 : error.message,
         })
     }
+}
+
+export const read_notification = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: UPDATE_NOTIFICATION_REQUEST
+        })
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+            }
+        }
+        
+        const { data } = await axios.put(
+            `http://localhost:8000/api/notification/read/${id}`,
+            config
+        )
+        
+        dispatch({
+            type: UPDATE_NOTIFICATION_SUCCESS,
+            payload: data
+        })
+        
+    } catch (error) {
+        dispatch({
+            type: UPDATE_NOTIFICATION_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+    }
+}
+
+export const read_all_notifications = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: UPDATE_ALL_NOTIFICATIONS_REQUEST
+        })
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+            }
+        }
+
+        const { data } = await axios.put(
+            `http://localhost:8000/api/notifications/user/read_all/${id}`,
+            config
+        )
+
+        dispatch({
+            type: UPDATE_ALL_NOTIFICATIONS_SUCCESS,
+            payload: data
+        })
+    } catch(error) {
+        dispatch({
+            type: UPDATE_ALL_NOTIFICATIONS_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+    }
+
 }
