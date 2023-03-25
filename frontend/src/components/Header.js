@@ -24,8 +24,10 @@ function Header(){
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   
+  
+  
   function logoutHandler(){
-    store.dispatch(logout())
+    store.dispatch(logout());
   }
     return (
       <>
@@ -34,16 +36,28 @@ function Header(){
             expand="lg"
             style={{ backgroundColor: "white" }}
             className="navigation"
-          >
+            >
             <Container>
-              <Navbar.Brand href="/">
-                <img
-                  src={logo}
-                  width="230"
-                  className="d-inline-block align-top"
-                  alt="Logo"
-                />
-              </Navbar.Brand>
+
+              {userInfo ? 
+                (<Navbar.Brand href="/">
+                  <img
+                    src={logo}
+                    width="230"
+                    className="d-inline-block align-top"
+                    alt="Logo"
+                  />
+                </Navbar.Brand>) 
+                : 
+                (<Navbar.Brand href="/connecthomepage">
+                  <img
+                    src={logo}
+                    width="230"
+                    className="d-inline-block align-top"
+                    alt="Logo"
+                  />
+                </Navbar.Brand>)
+              }
 
               <Form className="d-flex"> 
                 <Form.Control
@@ -60,21 +74,33 @@ function Header(){
                 className="justify-content-end"
               >
                 <Nav className="me-auto">
-                  <Nav.Link href="/" style={{ paddingRight: "40px" }}>
+                  {userInfo ? 
+                (<Nav.Link href="/" style={{ paddingRight: "40px" }}>
                     Home
-                  </Nav.Link>
-                  <Nav.Link href="/network" style={{ paddingRight: "40px" }}>
+                </Nav.Link>) 
+                : 
+                (<Nav.Link href="/connecthomepage" style={{ paddingRight: "40px" }}>
+                  Home
+                </Nav.Link>)}
+                  {userInfo ? (
+                    <Nav.Link href="/network" style={{ paddingRight: "40px" }}>
                     Network
                   </Nav.Link>
+                    ) : (<></>)}
                   <Nav.Link href="/jobs" style={{ paddingRight: "40px" }} >
                     Jobs
                   </Nav.Link>
-                  <Nav.Link href="/messaging"  style={{ paddingRight: "40px" }} >
+                  
+                  {userInfo ? (
+                    <Nav.Link href="/messaging"  style={{ paddingRight: "40px" }} >
                     Messaging
                   </Nav.Link>
-                  <Nav.Link href="/notifications" style={{ paddingRight: "40px" }} >
-                    Notification
+                    ) : (<></>)}
+                  {userInfo ? (
+                    <Nav.Link href="/notifications" style={{ paddingRight: "40px" }} >
+                    Notifications
                   </Nav.Link>
+                    ) : (<></>)}
                   
                   <NavDropdown title="Profile" id="collasible-nav-dropdown">
                   {userInfo ? (
@@ -89,16 +115,14 @@ function Header(){
                      ) : (<></>)}
 
                     {userInfo ? (
-                      <NavDropdown.Item onClick={ logoutHandler } id="logout" >
+                      <NavDropdown.Item href="/connecthomepage" onClick={ logoutHandler } id="logout" >
                         Logout
                       </NavDropdown.Item> 
                     ) : (
-                      <NavDropdown.Item href="/login" id="logout" >
+                      <NavDropdown.Item href="/connecthomepage" id="logout" >
                       Login
                     </NavDropdown.Item> 
                     )}
-
-
 
                   </NavDropdown>
                  
