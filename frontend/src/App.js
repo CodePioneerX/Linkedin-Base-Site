@@ -16,7 +16,7 @@ import RegisterPage from './screens/RegisterPage';
 import ViewProfile from "./screens/ViewProfile";
 import CreateJob from './screens/CreateJob';
 import CreatePost from './screens/CreatePost';
-import MyNetwork from './screens/MyNetwork';
+import {MyNetwork} from './screens/MyNetwork';
 import Job from './screens/Job';
 import Messaging from './screens/Messaging';
 import Notification from './screens/Notification';

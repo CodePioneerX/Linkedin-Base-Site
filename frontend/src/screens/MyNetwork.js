@@ -1,21 +1,39 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import Newsfeed from '../components/Newsfeed'
 import { Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
+import ConnectionCard from '../components/ConnectionCard';
+import axios from "axios";
 
-export default class MyNetwork extends Component {
-  render() {
+
+export const MyNetwork =()=> {
+
     const userInfo =localStorage.getItem('userInfo');
+    const [connectionList, setConnectionList] = useState("");
+    
+    //retrieve the connection list from the back end
+    const getProfile = async () => {
+      const {data} = await axios.get(
+        `http://localhost:8000/api/profile/` + userInfo.userId
+      );
+      setConnectionList(data);
+      
+    };
+
     return (
       <div>
         {userInfo?
-          <div>
-          <h1>MyNetwork</h1>
+          <div >
           <Container>
-          <Link to="/profileScreen" state={{data:14}}>
-            <button>other user profile</button>
-          </Link>
+            <div style={{marginBottom:'5rem'}}>
+          <h1 style={{marginTop:'1rem'}}>My Connection</h1>
+
+          <ConnectionCard userId={15}/>
+
+
+          </div>
+          <hr/>
                 <Link className='btn btn-primary' to='/create/post/' state={{from: "/network"}}>
                   Create a Post
                 </Link>
@@ -35,5 +53,5 @@ export default class MyNetwork extends Component {
           }
       </div>
     )
-  }
+  
 }

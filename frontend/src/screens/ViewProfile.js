@@ -89,7 +89,9 @@ function ViewProfile() {
                           <h1 className="profile-name">{profile.name}</h1>
                           <h4 className="profile-title">{profile.title}</h4>
                           <h6 className="profile-city" style={{paddingBottom:"10px"}}>{profile.city}</h6>
+                          <Link to='/network'>
                           <button className="profile-button">Connections</button>
+                          </Link>
                           <button className="profile-button" onClick={editorMode}>Edit Profile</button>
                           <button className="profile-button">Contact Info</button>
                         </div>

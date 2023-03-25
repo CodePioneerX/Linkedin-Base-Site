@@ -63,7 +63,7 @@ export const ProfileScreen =()=>{
             setConnectStatus(data.status)
             // console.log(recommended)
             // console.log(connectStatus)
-            if(connectStatus=="Accepted"){
+            if(connectStatus=="Connected"){
               setIsConnected(true)
             }
             if(connectStatus=="Pending"){
