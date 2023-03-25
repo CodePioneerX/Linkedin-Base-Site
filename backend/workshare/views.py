@@ -11,10 +11,11 @@ from .serializers import WorkShareSerializer
 from .models import WorkShare
 from .models import Profile, Post, JobListing, Comment, Recommendations, Connection
 from django.contrib.auth.models import User
-from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer
+from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer, ConnectionSerializer
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
+from django.db.models import Q
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -379,7 +380,10 @@ def createConnection(request, sender_id, recipient_id):
     sender_user = get_object_or_404(User, id=sender_id)
     recipient_user = get_object_or_404(User, id=recipient_id)
 
-    if Connection.objects.filter(sender =sender_user, recipient=recipient_user).exists():
+    if Connection.objects.filter(sender=sender_user, recipient=recipient_user).exists():
+        return JsonResponse({'message': 'Connection request already exists.'}, status=400)
+    
+    if Connection.objects.filter(recipient=sender_user, sender=recipient_user).exists():
         return JsonResponse({'message': 'Connection request already exists.'}, status=400)
     
     connection = Connection.objects.create(sender=sender_user, recipient=recipient_user, status='pending')
@@ -414,6 +418,7 @@ def connectionStatus(request, user1_id, user2_id):
     return JsonResponse({'status': status})
 
 #A function to accept a connection.
+@api_view(['PUT'])
 def acceptConnection(request, user1_id, user2_id):
     recipient = get_object_or_404(User, id=user2_id)
     connection = Connection.objects.filter(sender_id=user1_id, recipient=recipient).first()
@@ -433,6 +438,7 @@ def acceptConnection(request, user1_id, user2_id):
     return JsonResponse({'message': 'Connection request accepted successfully.'}, status=200)
 
 #A function to reject a connection.
+@api_view(['DELETE', 'GET'])
 def rejectConnection(request, user1_id, user2_id):
     connection = Connection.objects.filter(sender_id=user1_id, recipient_id=user2_id).first()
     if not connection:
@@ -444,7 +450,21 @@ def rejectConnection(request, user1_id, user2_id):
     connection.delete()
     return JsonResponse({'message': 'Connection request rejected successfully.'}, status=200)
 
+# This function cancels a pending connection.
+@api_view(['DELETE', 'GET'])
+def cancelConnection(request, user1_id, user2_id):
+    connection = Connection.objects.filter(sender_id=user1_id, recipient_id=user2_id).first()
+    if not connection:
+        return JsonResponse({'message': 'Connection request not found.'}, status=404)
+    if connection.sender_id != user1_id:
+        return JsonResponse({'message': 'Only the sender can cancel this connection request.'}, status=400)
+    if connection.status != 'pending':
+        return JsonResponse({'message': 'Connection request has already been accepted or rejected.'}, status=400)
+    connection.delete()
+    return JsonResponse({'message': 'Connection request cancelled successfully.'}, status=200)
+
 #A function to disconnect or delete a connection between users.
+@api_view(['DELETE', 'GET'])
 def deleteConnection(request, user1_id, user2_id):
     connection = Connection.objects.filter(
         sender_id__in=[user1_id, user2_id],
@@ -457,6 +477,33 @@ def deleteConnection(request, user1_id, user2_id):
 
     connection.delete()
     return JsonResponse({'message': 'Connection deleted successfully.'}, status=200)
+
+# This function returns a list of pending connections for which a given user is the recipient
+@api_view(['GET'])
+def getPendingConnectionsView(request, pk):
+    connections = Connection.objects.all().filter(recipient_id=pk, status='pending')
+
+    serializer = ConnectionSerializer(connections, many=True)
+
+    return Response(serializer.data)
+
+# This function returns a list of pending connections for which a given user is the sender
+@api_view(['GET'])
+def getSentPendingConnectionsView(request, pk):
+    connections = Connection.objects.all().filter(sender_id=pk, status='pending')
+
+    serializer = ConnectionSerializer(connections, many=True)
+
+    return Response(serializer.data)
+
+# This function returns a list of accepted connections that a given user is apart of (as either sender or recipient)
+@api_view(['GET'])
+def getConnectionsView(request, pk):
+    connections = Connection.objects.all().filter((Q(recipient_id=pk) | Q(sender_id=pk)), status='accepted')
+
+    serializer = ConnectionSerializer(connections, many=True)
+
+    return Response(serializer.data)
 
 # This function is intended to allow the user to create a recommendation
 @api_view(['POST'])

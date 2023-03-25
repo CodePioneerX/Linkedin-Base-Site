@@ -17,7 +17,7 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('content', 'author', 'created_at')
 
 class ConnectionAdmin(admin.ModelAdmin):
-    list_display = ('sender', 'recipient')
+    list_display = ('sender', 'recipient', 'status')
 
 class RecommendationsAdmin(admin.ModelAdmin):
     list_display = ('id', 'sender', 'recipient', 'description')
