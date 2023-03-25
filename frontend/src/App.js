@@ -12,6 +12,7 @@ import {
 import { Container } from 'react-bootstrap';
 import { ProfileScreen } from "./screens/ProfileScreen";
 import LoginPage from './screens/LoginPage';
+import ConnectHomePage from './screens/ConnectHomePage';
 import RegisterPage from './screens/RegisterPage';
 import ViewProfile from "./screens/ViewProfile";
 import CreateJob from './screens/CreateJob';
@@ -29,6 +30,10 @@ import store from './store';
 
 
 const router = createBrowserRouter([
+  {
+    path: "/connecthomepage",
+    element: <ConnectHomePage/>,
+  },
   {
     path: "/",
     element: <Home/>,

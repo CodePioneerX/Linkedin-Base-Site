@@ -18,8 +18,10 @@ function Header(){
   // const navigate = useNavigate();
   const dispatch = useDispatch();
   
+  
+  
   function logoutHandler(){
-    store.dispatch(logout())
+    store.dispatch(logout());
   }
 
   const handleSearch = (event) => {
@@ -39,16 +41,28 @@ function Header(){
             expand="lg"
             style={{ backgroundColor: "white" }}
             className="navigation"
-          >
+            >
             <Container>
-              <Navbar.Brand href="/">
-                <img
-                  src={logo}
-                  width="230"
-                  className="d-inline-block align-top"
-                  alt="Logo"
-                />
-              </Navbar.Brand>
+
+              {userInfo ? 
+                (<Navbar.Brand href="/">
+                  <img
+                    src={logo}
+                    width="230"
+                    className="d-inline-block align-top"
+                    alt="Logo"
+                  />
+                </Navbar.Brand>) 
+                : 
+                (<Navbar.Brand href="/connecthomepage">
+                  <img
+                    src={logo}
+                    width="230"
+                    className="d-inline-block align-top"
+                    alt="Logo"
+                  />
+                </Navbar.Brand>)
+              }
 
               <Form className="d-flex"> 
                 <Form.Control
@@ -72,42 +86,33 @@ function Header(){
                 className="justify-content-end"
               >
                 <Nav className="me-auto">
-                {userInfo ? (
-                  <Nav.Link href="/" style={{ paddingRight: "40px" }}>
+                  {userInfo ? 
+                (<Nav.Link href="/" style={{ paddingRight: "40px" }}>
                     Home
-                  </Nav.Link>
-                  ) : (<></>)}
+                </Nav.Link>) 
+                : 
+                (<Nav.Link href="/connecthomepage" style={{ paddingRight: "40px" }}>
+                  Home
+                </Nav.Link>)}
                   {userInfo ? (
-                  <Nav.Link href="/network" style={{ paddingRight: "40px" }}>
+                    <Nav.Link href="/network" style={{ paddingRight: "40px" }}>
                     Network
                   </Nav.Link>
-                  ) : (<></>)}
-                  {userInfo ? (
+                    ) : (<></>)}
                   <Nav.Link href="/jobs" style={{ paddingRight: "40px" }} >
                     Jobs
                   </Nav.Link>
-                   ) : (<></>)}
+                  
                   {userInfo ? (
-                  <Nav.Link href="/messaging"  style={{ paddingRight: "40px" }} >
+                    <Nav.Link href="/messaging"  style={{ paddingRight: "40px" }} >
                     Messaging
                   </Nav.Link>
-                  ) : (<></>)}
-
-
-                  {/* {userInfo ? (
-
-                  <NavDropdown title="Notifications" id="collasible-nav-dropdown2">
-                 
-                    
-                      <NavDropdown.Item href="/profile">
-                        My Profile
-                      </NavDropdown.Item>
-
-
-                  
-
-                  </NavDropdown>
-                  ) : (<></>)} */}
+                    ) : (<></>)}
+                  {userInfo ? (
+                    <Nav.Link href="/notifications" style={{ paddingRight: "40px" }} >
+                    Notifications
+                  </Nav.Link>
+                    ) : (<></>)}
                   {userInfo ? (
                   <NavDropdown title="Profile" id="collasible-nav-dropdown">
                   {userInfo ? (
@@ -122,16 +127,14 @@ function Header(){
                      ) : (<></>)}
 
                     {userInfo ? (
-                      <NavDropdown.Item onClick={ logoutHandler } id="logout" >
+                      <NavDropdown.Item href="/connecthomepage" onClick={ logoutHandler } id="logout" >
                         Logout
                       </NavDropdown.Item> 
                     ) : (
-                      <NavDropdown.Item href="/login" id="logout" >
+                      <NavDropdown.Item href="/connecthomepage" id="logout" >
                       Login
                     </NavDropdown.Item> 
                     )}
-
-
 
                   </NavDropdown>
                   ) : ( <NavDropdown.Item href="/login" id="logout" >
