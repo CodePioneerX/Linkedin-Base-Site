@@ -57,6 +57,7 @@ urlpatterns = [
     path('api/connections/accepted/<int:pk>', views.getConnectionsView, name='getConnections'),
     path('api/connections/pending/<int:pk>', views.getPendingConnectionsView, name='getPendingConnections'),
     path('api/connections/pending_sent/<int:pk>', views.getSentPendingConnectionsView, name='getSentPendingConnections'),
+    path('api/connections/possible/<int:pk>', views.getPossibleConnectionsView, name='getPossibleConnections'),
     path('api/create_recommendation/<int:sender_id>/<int:receiver_id>', createRecommendationView, name='create_recommendation'),
     path('api/delete_recommendation/<int:sender_id>/<int:receiver_id>', deleteRecommendationView, name='delete_recommendation'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

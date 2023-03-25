@@ -11,7 +11,21 @@ const [profile, setProfile] = useState("");
 
 const getProfile = async () => {
     var userId;
-    props.type == 'received' ? userId = props.senderId : userId = props.recipientId
+
+    switch(props.type) {
+      case 'received':
+        userId = props.senderId;
+        break;
+      case 'sent':
+        userId = props.recipientId;
+        break;
+      case 'possible':
+        userId = props.recipientId;
+        break;
+      default:
+        userId = props.recipientId;
+        break;
+    }
 
     const {data} = await axios.get(
       `http://localhost:8000/api/profile/${userId}`
@@ -44,6 +58,14 @@ const getProfile = async () => {
     window.location.reload()
   }
 
+  const sendConnectionRequestHandler = async () => {
+    // send connection request
+    const response = await axios.post(
+      `http://localhost:8000/api/connections/create/${props.senderId}/${props.recipientId}/`  
+    )
+    window.location.reload()
+  }
+
   useEffect(() => {
      getProfile(); 
   }, []);
@@ -53,7 +75,7 @@ const getProfile = async () => {
       <Card >
         <Row>
           <Card.Body className='card_body'style={{ height:'90px'}} >
-              <div style={{display:'flex', justifyContent:'left'}}>
+            <div style={{display:'flex', justifyContent:'left'}}>
               <Col style={{display:'flex', justifyContent:'left'}}>
                   <Card.Img className='img-fluid rounded-pill' 
                   style={{width:'50px'}}
@@ -66,29 +88,39 @@ const getProfile = async () => {
                   <Button variant="primary">View Profile</Button>
                 </Link> : 
                 <>
-                  {props.type == 'received' ? 
-                  <>
-                    <Link to="/profileScreen" state={{data:props.senderId}}>
-                      <Button variant="primary">View Profile</Button>
-                    </Link>
-                    <div style={{paddingRight: "10px"}}></div>  
-                    <Button style={{height: '38px'}} onClick={acceptHandler} variant="secondary">Accept</Button>
-                    <div style={{paddingRight: "10px"}}></div>  
-                    <Button style={{height: '38px'}} onClick={rejectHandler} variant="danger">Reject</Button>
-                  </> : 
-                  <>
-                  <Link to="/profileScreen" state={{data:props.recipientId}}>
-                      <Button variant="primary">View Profile</Button>
-                  </Link>
-                  <div style={{paddingRight: "10px"}}></div>  
-                  <Button style={{height: '38px'}} onClick={cancelHandler} variant="danger">Cancel</Button>
-                  
-                  </>}
-                  
-                </>}
+                  {props.type == 'received' && 
+                    <>
+                      <Link to="/profileScreen" state={{data:props.senderId}}>
+                        <Button variant="primary">View Profile</Button>
+                      </Link>
+                      <div style={{paddingRight: "10px"}}></div>  
+                      <Button style={{height: '38px'}} onClick={acceptHandler} variant="secondary">Accept</Button>
+                      <div style={{paddingRight: "10px"}}></div>  
+                      <Button style={{height: '38px'}} onClick={rejectHandler} variant="danger">Reject</Button>
+                    </>
+                  }
+                  {props.type == 'sent' && 
+                    <>
+                      <Link to="/profileScreen" state={{data:props.recipientId}}>
+                          <Button variant="primary">View Profile</Button>
+                      </Link>
+                      <div style={{paddingRight: "10px"}}></div>  
+                      <Button style={{height: '38px'}} onClick={cancelHandler} variant="danger">Cancel</Button>
+                    </> 
+                  }
+                  {props.type == 'possible' && 
+                    <>
+                      <Link to="/profileScreen" state={{data:props.recipientId}}>
+                        <Button variant="primary">View Profile</Button>
+                      </Link>
+                      <div style={{paddingRight: "10px"}}></div>  
+                      <Button style={{height: '38px'}} onClick={sendConnectionRequestHandler} variant="secondary">Send Connection Request</Button>
+                    </> 
+                  }
+                </>
+              }
               </Col>
-              </div>
-              
+            </div>
           </Card.Body>
         </Row>
       </Card>

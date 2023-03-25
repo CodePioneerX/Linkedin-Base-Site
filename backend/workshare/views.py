@@ -375,7 +375,8 @@ def activate(request, uidb64, token):
     return redirect("http://localhost:3000")
 
 
-#A function to create a connection between users.
+# A function to create a connection between users.
+@api_view(['POST'])
 def createConnection(request, sender_id, recipient_id):
     sender_user = get_object_or_404(User, id=sender_id)
     recipient_user = get_object_or_404(User, id=recipient_id)
@@ -502,6 +503,27 @@ def getConnectionsView(request, pk):
     connections = Connection.objects.all().filter((Q(recipient_id=pk) | Q(sender_id=pk)), status='accepted')
 
     serializer = ConnectionSerializer(connections, many=True)
+
+    return Response(serializer.data)
+
+# This function returns a list of 5 user profiles who the user is NOT connected to
+@api_view(['GET'])
+def getPossibleConnectionsView(request, pk):
+    connections = Connection.objects.all().filter((Q(recipient_id=pk) | Q(sender_id=pk)))
+    
+    connection_list = []
+    for connection in connections:
+        if connection.recipient_id not in connection_list:
+            connection_list.append(connection.recipient_id)
+        if connection.sender_id not in connection_list:
+            connection_list.append(connection.sender_id)
+
+    possibleConnections = User.objects.all().exclude(id__in=connection_list)
+
+    if possibleConnections.count() >= 5:
+        possibleConnections = possibleConnections[:5]
+
+    serializer = UserSerializer(possibleConnections, many=True)
 
     return Response(serializer.data)
 

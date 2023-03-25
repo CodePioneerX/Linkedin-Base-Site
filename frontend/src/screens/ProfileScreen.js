@@ -84,7 +84,7 @@ export const ProfileScreen =()=>{
     //send the connection request to the searched user
     const sendConnection = async (e) =>{
         //axios request
-        console.log("send connection")
+        
         e.preventDefault()
         try 
         {
@@ -94,7 +94,7 @@ export const ProfileScreen =()=>{
                 }
             }
     
-            const { data } = await axios.get(
+            const { data } = await axios.post(
               `http://localhost:8000/api/connections/create/` + myUserId +`/`+ otherUserId +`/`,
                 config
             )
@@ -121,7 +121,7 @@ export const ProfileScreen =()=>{
                 }
             }
     
-            const { data } = await axios.get(
+            const { data } = await axios.delete(
               `http://localhost:8000/api/connections/delete/` + myUserId +`/`+ otherUserId +`/`,
                 config
             )
