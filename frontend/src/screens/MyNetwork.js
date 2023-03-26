@@ -113,9 +113,13 @@ export const MyNetwork =()=> {
               {connectionList.length > 0 && 
               <>
                 <h1 style={{marginTop:'1rem'}}>My Connections</h1>
-                {connectionList.map(connection => (
+                {connectionList.map(connection => userInfo.id == connection.sender ? 
+                <>
+                  <ConnectionCard key={connection.id} senderId={connection.sender} recipientId={connection.recipient} status={connection.status} type={'sent'}/>
+                </> : 
+                <>
                   <ConnectionCard key={connection.id} senderId={connection.sender} recipientId={connection.recipient} status={connection.status} type={'received'}/>
-                ))} 
+                </>)} 
               </>
               }
               {unconnectedList.length > 0 && 
