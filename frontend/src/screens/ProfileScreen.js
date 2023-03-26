@@ -7,7 +7,7 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import '../Assets/css/App.css'
 
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { sendRecommendation } from "../actions/recommendAction";
 
 export const ProfileScreen =()=>{
@@ -57,7 +57,6 @@ export const ProfileScreen =()=>{
               `http://localhost:8000/api/connections/status/` + myUserId +`/`+ otherUserId +`/`,
                 config
             )
-            
             
             // console.log("check connection called.")
             setConnectStatus(data.status)
@@ -250,7 +249,9 @@ export const ProfileScreen =()=>{
                                 </div>
                                 :
                                 <div>
+                                  <Link to='/network'>
                                 <button className="profile-button">Handle connect request</button>
+                                  </Link>
                                 </div>)
                             :
                             <div>
