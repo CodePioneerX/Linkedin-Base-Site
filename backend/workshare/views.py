@@ -9,12 +9,13 @@ from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
 from .serializers import WorkShareSerializer
 from .models import WorkShare
-from .models import Profile, Post, JobListing, Comment
+from .models import Profile, Post, JobListing, Comment, Recommendations, Connection
 from django.contrib.auth.models import User
-from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer
+from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer, ConnectionSerializer
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
+from django.db.models import Q
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -67,6 +68,7 @@ class ProfileCreateView(CreateAPIView):
 # TO-DO: finalize implementation of user authentication
 @api_view(['PUT'])
 # @permission_classes([IsAuthenticated])
+# This function is intended to allow the user to update their profile 
 def updateUserProfile(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
 
@@ -91,6 +93,7 @@ def updateUserProfile(request, pk):
 
     return Response(serializer.data)
     
+# This function is intended to allow the user to update an existing post that they posted
 @api_view(['PUT'])    
 def PostUpdateView(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -106,12 +109,14 @@ def PostUpdateView(request, pk):
 
     return Response(serializer.data)
 
+# This function is intended to allow the user to delete an existing post that they created
 @api_view(['DELETE', 'GET'])
 def PostDeleteView(request, pk):
     post = Post.objects.get(id=pk)
     post.delete()
     return Response('Post Deleted')
 
+# This function is intended to allow the user to update an existing job post that they created
 @api_view(['PUT'])
 def JobListingUpdateView(request, pk):
     job = get_object_or_404(JobListing, pk=pk)
@@ -134,6 +139,7 @@ def JobListingUpdateView(request, pk):
 
     return Response(serializer.data)
 
+# This function is intended to allow the user to delete an existing job post that they created
 @api_view(['DELETE', 'GET'])
 def JobListingDeleteView(request, pk):
     job = JobListing.objects.get(id=pk)
@@ -273,19 +279,42 @@ class JobListingLatestView(APIView):
             })
         return JsonResponse(job_list, safe=False)
 
+# This function is intended to allow us to get the user profile
 @api_view(['GET'])
 def getUserProfile(request):
     user = request.user
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
-
+# This function is intended allow us to get the recommendations related data (sent and received) of a given profile
 @api_view(['GET'])
 def getProfileView(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
-    serializer = ProfileSerializer(profile)
-    return Response(serializer.data)
+    profile_serializer = ProfileSerializer(profile)
 
+    sent_recommendations = Recommendations.objects.filter(sender=profile)
+    received_recommendations = Recommendations.objects.filter(recipient=profile)
+
+    sent_recommendations_serializer = RecommendationsSerializer(sent_recommendations, many=True)
+    received_recommendations_serializer = RecommendationsSerializer(received_recommendations, many=True)
+
+    data = {
+        "profile": profile_serializer.data,
+        "sent_recommendations": sent_recommendations_serializer.data,
+        "received_recommendations": received_recommendations_serializer.data
+    }
+
+    return Response(data)
+
+#Search function to look for user profiles.
+@api_view(['GET'])
+def searchProfilesView(request, searchValue, receiver_id):
+    profiles = Profile.objects.filter(name__icontains=searchValue)
+    serializer = ProfileSerializer(profiles, many=True)
+    print("DEBUG: ", profiles)
+    return Response({'receiver_id': receiver_id, 'profile': serializer.data})
+
+# This function is intended to register a user
 @api_view(['POST'])
 def registerUser(request):
     data = request.data
@@ -307,7 +336,7 @@ def registerUser(request):
          message = {'detail':'A problem occurred while registering this account. Make sure that the email entered is correct and that it does not belong to an existing user.'}
          return Response(message, status=status.HTTP_400_BAD_REQUEST)
     
-
+# This function allows the user to activate their user account
 def activateEmail(request, user, to_email):
     mail_subject = 'Activate your user account. - Automated message. Please do not reply.'
     message = render_to_string('account_activation_email_template.html', {
@@ -322,6 +351,7 @@ def activateEmail(request, user, to_email):
     else:
         print('Problem sending confirmation email.')
 
+# This function allows the user to verify their email 
 def activate(request, uidb64, token):
     User = get_user_model()
     try:
@@ -343,3 +373,187 @@ def activate(request, uidb64, token):
     
     ###REDIRECTION LINK NEEDS TO BE CHANGED ONCE SITE GETS HOSTED
     return redirect("http://localhost:3000")
+
+
+# A function to create a connection between users.
+@api_view(['POST'])
+def createConnection(request, sender_id, recipient_id):
+    sender_user = get_object_or_404(User, id=sender_id)
+    recipient_user = get_object_or_404(User, id=recipient_id)
+
+    if Connection.objects.filter(sender=sender_user, recipient=recipient_user).exists():
+        return JsonResponse({'message': 'Connection request already exists.'}, status=400)
+    
+    if Connection.objects.filter(recipient=sender_user, sender=recipient_user).exists():
+        return JsonResponse({'message': 'Connection request already exists.'}, status=400)
+    
+    connection = Connection.objects.create(sender=sender_user, recipient=recipient_user, status='pending')
+    connection.save()
+
+    return JsonResponse({'message': 'Connection request sent successfully.'}, status=201)
+
+#A function to check the connection status.
+def connectionStatus(request, user1_id, user2_id):
+    user1 = get_object_or_404(User, id=user1_id)
+    user2 = get_object_or_404(User, id=user2_id)
+
+    connection1 = Connection.objects.filter(sender=user1, recipient=user2).first()
+    if connection1:
+        if connection1.status == 'pending':
+            status = 'Pending'
+        elif connection1.status == 'accepted':
+            status = 'Connected'
+        elif connection1.status == 'rejected':
+            status = 'Rejected'
+    else:
+        connection2 = Connection.objects.filter(sender=user2, recipient=user1).first()
+        if connection2:
+            if connection2.status == 'pending':
+                status = 'Confirm'
+            elif connection2.status == 'accepted':
+                status = 'Connected'
+            elif connection2.status == 'rejected':
+                status = 'Rejected'
+        else:
+            status = 'No Connection'
+    return JsonResponse({'status': status})
+
+#A function to accept a connection.
+@api_view(['PUT'])
+def acceptConnection(request, user1_id, user2_id):
+    recipient = get_object_or_404(User, id=user2_id)
+    connection = Connection.objects.filter(sender_id=user1_id, recipient=recipient).first()
+    
+    if not connection:
+        return JsonResponse({'message': 'Connection request not found.'}, status=404)
+    
+    if connection.recipient != recipient:
+        return JsonResponse({'message': 'Only the recipient can accept the connection request.'}, status=403)
+    
+    if connection.status != 'pending':
+        return JsonResponse({'message': 'Connection request has already been accepted or rejected.'}, status=400)
+    
+    connection.status = 'accepted'
+    connection.save()
+    
+    return JsonResponse({'message': 'Connection request accepted successfully.'}, status=200)
+
+#A function to reject a connection.
+@api_view(['DELETE', 'GET'])
+def rejectConnection(request, user1_id, user2_id):
+    connection = Connection.objects.filter(sender_id=user1_id, recipient_id=user2_id).first()
+    if not connection:
+        return JsonResponse({'message': 'Connection request not found.'}, status=404)
+    if connection.recipient_id != user2_id:
+        return JsonResponse({'message': 'Only the recipient can reject this connection request.'}, status=400)
+    if connection.status != 'pending':
+        return JsonResponse({'message': 'Connection request has already been accepted or rejected.'}, status=400)
+    connection.delete()
+    return JsonResponse({'message': 'Connection request rejected successfully.'}, status=200)
+
+# This function cancels a pending connection.
+@api_view(['DELETE', 'GET'])
+def cancelConnection(request, user1_id, user2_id):
+    connection = Connection.objects.filter(sender_id=user1_id, recipient_id=user2_id).first()
+    if not connection:
+        return JsonResponse({'message': 'Connection request not found.'}, status=404)
+    if connection.sender_id != user1_id:
+        return JsonResponse({'message': 'Only the sender can cancel this connection request.'}, status=400)
+    if connection.status != 'pending':
+        return JsonResponse({'message': 'Connection request has already been accepted or rejected.'}, status=400)
+    connection.delete()
+    return JsonResponse({'message': 'Connection request cancelled successfully.'}, status=200)
+
+#A function to disconnect or delete a connection between users.
+@api_view(['DELETE', 'GET'])
+def deleteConnection(request, user1_id, user2_id):
+    connection = Connection.objects.filter(
+        sender_id__in=[user1_id, user2_id],
+        recipient_id__in=[user1_id, user2_id],
+        status='accepted'
+    ).first()
+
+    if not connection:
+        return JsonResponse({'message': 'Connection does not exist or has not been accepted.'}, status=400)
+
+    connection.delete()
+    return JsonResponse({'message': 'Connection deleted successfully.'}, status=200)
+
+# This function returns a list of pending connections for which a given user is the recipient
+@api_view(['GET'])
+def getPendingConnectionsView(request, pk):
+    connections = Connection.objects.all().filter(recipient_id=pk, status='pending')
+
+    serializer = ConnectionSerializer(connections, many=True)
+
+    return Response(serializer.data)
+
+# This function returns a list of pending connections for which a given user is the sender
+@api_view(['GET'])
+def getSentPendingConnectionsView(request, pk):
+    connections = Connection.objects.all().filter(sender_id=pk, status='pending')
+
+    serializer = ConnectionSerializer(connections, many=True)
+
+    return Response(serializer.data)
+
+# This function returns a list of accepted connections that a given user is apart of (as either sender or recipient)
+@api_view(['GET'])
+def getConnectionsView(request, pk):
+    connections = Connection.objects.all().filter((Q(recipient_id=pk) | Q(sender_id=pk)), status='accepted')
+
+    serializer = ConnectionSerializer(connections, many=True)
+
+    return Response(serializer.data)
+
+# This function returns a list of 5 user profiles who the user is NOT connected to
+@api_view(['GET'])
+def getPossibleConnectionsView(request, pk):
+    connections = Connection.objects.all().filter((Q(recipient_id=pk) | Q(sender_id=pk)))
+    
+    connection_list = []
+    for connection in connections:
+        if connection.recipient_id not in connection_list:
+            connection_list.append(connection.recipient_id)
+        if connection.sender_id not in connection_list:
+            connection_list.append(connection.sender_id)
+
+    possibleConnections = User.objects.all().exclude(id__in=connection_list)
+
+    if possibleConnections.count() >= 5:
+        possibleConnections = possibleConnections[:5]
+
+    serializer = UserSerializer(possibleConnections, many=True)
+
+    return Response(serializer.data)
+
+# This function is intended to allow the user to create a recommendation
+@api_view(['POST'])
+def createRecommendationView(request, sender_id, receiver_id):
+    sender = get_object_or_404(Profile, pk=sender_id)
+    
+    try:
+        receiver = Profile.objects.get(pk=receiver_id)
+    except Profile.DoesNotExist:
+        return Response({"error": "Receiver profile not found."}, status=status.HTTP_404_NOT_FOUND)
+    if sender == receiver:
+        return Response({"error": "Cannot recommend yourself."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    text = request.data.get('text', '')
+    recommendation = Recommendations(sender=sender, recipient=receiver, description=text)
+    recommendation.save()
+    serializer = RecommendationsSerializer(recommendation)
+
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+# This function is intended to allow the user to delete an existing recommendation
+@api_view(['DELETE'])
+def deleteRecommendationView(request, sender_id, receiver_id):
+    
+    try:
+        recommendation = Recommendations.objects.get(sender_id=sender_id, recipient_id=receiver_id)
+    except Recommendations.DoesNotExist:
+        return Response({"error": "Recommendation not found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    recommendation.delete()
+    return Response({"message": "Recommendation deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
