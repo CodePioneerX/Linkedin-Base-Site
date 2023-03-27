@@ -21,7 +21,6 @@ import Job from './screens/Job';
 import Messaging from './screens/Messaging';
 import Notification from './screens/Notification';
 import Settings from "./screens/Settings";
-import ForgotPasswordResetForm from "./screens/ForgotPasswordResetForm"; 
 import Home from './screens/Home';
 import  {Provider} from 'react-redux';
 import userInfoFromStorage from './store'
@@ -61,10 +60,6 @@ const router = createBrowserRouter([
   },{
     path: "/settings",
     element: <Settings/>,
-  },
-  {
-    path: "/forgotpasswordresetform",
-    element: <ForgotPasswordResetForm/>,
   },
   {
     path: "/create/job/",
