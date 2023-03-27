@@ -13,10 +13,13 @@ import { EditProfileForm } from '../components/EditProfileForm';
 import { EditPostForm } from '../components/EditPostForm';
 import '../Assets/css/App.css'
 import { get_profile } from '../actions/userActions'
+import ConnectionCard from '../components/ConnectionCard';
 
 
 function ViewProfile() {
   const [profile, setProfile] = useState("");
+  const [recomendation, setRecommendation] = useState("");    //Holds and sets the value
+  const [recievedRecommendations, setRecievedRec]= useState(""); 
   const [editor, setEditor] = useState(false)
   const [postEditor, setPostEditor] = useState(false)
   
@@ -30,7 +33,9 @@ function ViewProfile() {
   useEffect(() => {
     if (!userInfo) {
       navigate("/");
-    }
+    } else {
+    getProfile();
+  }
   }, [userInfo, navigate]);
 
   const getProfile = async () => {
@@ -38,7 +43,11 @@ function ViewProfile() {
       `http://localhost:8000/api/profile/` + userInfo.id
     );
     setProfile(data.profile);
-    console.log(data)
+    setRecommendation(data.received_recommendations);
+    // console.log(data)
+    setRecievedRec(data.sent_recommendations)
+
+    // console.log(data)
   };
 
   useEffect(() => {
@@ -67,7 +76,9 @@ function ViewProfile() {
   }
 
   return (
+    
     <Container className="justify-content-md-center padd">
+     
       {userInfo ? (
         <div className="profile-page">
           <div style={{ display: "flex" }}>
@@ -89,9 +100,7 @@ function ViewProfile() {
                           <h1 className="profile-name">{profile.name}</h1>
                           <h4 className="profile-title">{profile.title}</h4>
                           <h6 className="profile-city" style={{paddingBottom:"10px"}}>{profile.city}</h6>
-                          <Link to='/network'>
                           <button className="profile-button">Connections</button>
-                          </Link>
                           <button className="profile-button" onClick={editorMode}>Edit Profile</button>
                           <button className="profile-button">Contact Info</button>
                         </div>
@@ -116,16 +125,49 @@ function ViewProfile() {
 
                             <div className="profile-card">
                               <h2 className="padd_small"><b>Recommendations</b></h2>
+                              
+                     
                               <Tabs style={{paddingTop:"1rem"}}
                                 defaultActiveKey="recieved"
                                 id="recievedRecommendations"
                                 className="mb-3">
-                                <Tab eventKey="recieved" title="Recieved">
-                                  <p>This where the recieved recommendations will show</p>
-                                </Tab>
-                                <Tab eventKey="recommended" title="Recommended">
-                                    <p>This where the recommended will show</p>
-                                </Tab>
+                  
+                              <Tab eventKey="received" title="Received">
+                                {recomendation && Array.isArray(recomendation) && recomendation.map((rec, index) => (
+                                <table key={index} style={{ borderCollapse: "collapse", width: "100%", marginBottom: "20px" }}>
+                                  <thead style={{ color: "#644d81" }}>
+                                    <tr>
+                                      <ConnectionCard key={rec.id} senderId={rec.recipient} recipientId={rec.sender}/>
+                                    </tr>
+
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td style={{ width: "50%", border: "1px solid lightgrey", padding: "8px" }}>{rec.description}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              ))}
+
+                              </Tab>
+
+                              <Tab eventKey="recommended" title="Recommended">
+                                {recievedRecommendations && Array.isArray(recievedRecommendations) && recievedRecommendations.map((rec, index) => (
+                                <table key={index} style={{ borderCollapse: "collapse", width: "100%", marginBottom: "20px" }}>
+                                  <thead style={{ color: "#644d81" }}>
+                                    <tr>
+                                      <ConnectionCard key={rec.id} senderId={rec.sender} recipientId={rec.recipient} />
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td style={{ width: "50%", border: "1px solid lightgrey", padding: "8px" }}>{rec.description}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              ))}
+
+                              </Tab>
                             </Tabs>             
                             </div>
 

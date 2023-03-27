@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import '../Assets/css/App.css'
-
+import ConnectionCard from '../components/ConnectionCard';
 import { Link, useLocation } from "react-router-dom";
 import { sendRecommendation } from "../actions/recommendAction";
 
@@ -14,6 +14,8 @@ export const ProfileScreen =()=>{
 
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
+    const [recomendation, setRecommendation] = useState("");    //Holds and sets the value
+    const [recievedRecommendations, setRecievedRec]= useState("");
     
     const dispatch = useDispatch();
 
@@ -199,6 +201,8 @@ export const ProfileScreen =()=>{
           `http://localhost:8000/api/profile/` + otherUserId
         );
         setProfile(data.profile);
+        setRecommendation(data.received_recommendations);
+        setRecievedRec(data.sent_recommendations)
       };
 
       //page set up
@@ -307,19 +311,52 @@ export const ProfileScreen =()=>{
                           </div>
 
                           <div className="profile-card">
-                            <h2 className="padd_small"><b>Recommendations</b></h2>
-                            <Tabs style={{paddingTop:"1rem"}}
-                              defaultActiveKey="recieved"
-                              id="recievedRecommendations"
-                              className="mb-3">
-                              <Tab eventKey="recieved" title="Recieved">
-                                <p>This where the recieved recommendations will show</p>
+                              <h2 className="padd_small"><b>Recommendations</b></h2>
+                              
+                     
+                              <Tabs style={{paddingTop:"1rem"}}
+                                defaultActiveKey="recieved"
+                                id="recievedRecommendations"
+                                className="mb-3">
+                  
+                              <Tab eventKey="received" title="Received">
+                                {recomendation && Array.isArray(recomendation) && recomendation.map((rec, index) => (
+                                <table key={index} style={{ borderCollapse: "collapse", width: "100%", marginBottom: "20px" }}>
+                                  <thead style={{ color: "#644d81" }}>
+                                    <tr>
+                                      <ConnectionCard key={rec.id} senderId={rec.recipient} recipientId={rec.sender}/>
+                                    </tr>
+
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td style={{ width: "50%", border: "1px solid lightgrey", padding: "8px" }}>{rec.description}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              ))}
+
                               </Tab>
+
                               <Tab eventKey="recommended" title="Recommended">
-                                  <p>This where the recommended will show</p>
+                                {recievedRecommendations && Array.isArray(recievedRecommendations) && recievedRecommendations.map((rec, index) => (
+                                <table key={index} style={{ borderCollapse: "collapse", width: "100%", marginBottom: "20px" }}>
+                                  <thead style={{ color: "#644d81" }}>
+                                    <tr>
+                                      <ConnectionCard key={rec.id} senderId={rec.sender} recipientId={rec.recipient} />
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td style={{ width: "50%", border: "1px solid lightgrey", padding: "8px" }}>{rec.description}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              ))}
+
                               </Tab>
-                          </Tabs>             
-                          </div>
+                            </Tabs>             
+                            </div>
 
                           <div className="profile-card">
                             <h2 className="padd_small"><b>Work</b></h2>
