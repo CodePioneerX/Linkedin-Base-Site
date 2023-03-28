@@ -14,12 +14,13 @@ import { EditPostForm } from '../components/EditPostForm';
 import '../Assets/css/App.css'
 import { get_profile } from '../actions/userActions'
 import ConnectionCard from '../components/ConnectionCard';
+import RecommendationCard from "../components/RecommendationCard";
 
 
 function ViewProfile() {
   const [profile, setProfile] = useState("");
-  const [recomendation, setRecommendation] = useState("");    //Holds and sets the value
-  const [recievedRecommendations, setRecievedRec]= useState(""); 
+  const [recommendation, setRecommendation] = useState("");    //Holds and sets the value
+  const [receivedRecommendations, setReceivedRec]= useState(""); 
   const [editor, setEditor] = useState(false)
   const [postEditor, setPostEditor] = useState(false)
   
@@ -43,9 +44,9 @@ function ViewProfile() {
       `http://localhost:8000/api/profile/` + userInfo.id
     );
     setProfile(data.profile);
-    setRecommendation(data.received_recommendations);
+    setRecommendation(data.sent_recommendations);
     // console.log(data)
-    setRecievedRec(data.sent_recommendations)
+    setReceivedRec(data.received_recommendations);
 
     // console.log(data)
   };
@@ -129,44 +130,18 @@ function ViewProfile() {
                      
                               <Tabs style={{paddingTop:"1rem"}}
                                 defaultActiveKey="recieved"
-                                id="recievedRecommendations"
+                                id="receivedRecommendations"
                                 className="mb-3">
                   
                               <Tab eventKey="received" title="Received">
-                                {recomendation && Array.isArray(recomendation) && recomendation.map((rec, index) => (
-                                <table key={index} style={{ borderCollapse: "collapse", width: "100%", marginBottom: "20px" }}>
-                                  <thead style={{ color: "#644d81" }}>
-                                    <tr>
-                                      <ConnectionCard key={rec.id} senderId={rec.recipient} recipientId={rec.sender}/>
-                                    </tr>
-
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td style={{ width: "50%", border: "1px solid lightgrey", padding: "8px" }}>{rec.description}</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              ))}
-
+                                {receivedRecommendations && Array.isArray(receivedRecommendations) && receivedRecommendations.map((rec, index) => (
+                                  <RecommendationCard key={rec.id} senderId={rec.sender} recipientId={rec.recipient} description={rec.description} type={'received'}/>
+                                ))}
                               </Tab>
-
                               <Tab eventKey="recommended" title="Recommended">
-                                {recievedRecommendations && Array.isArray(recievedRecommendations) && recievedRecommendations.map((rec, index) => (
-                                <table key={index} style={{ borderCollapse: "collapse", width: "100%", marginBottom: "20px" }}>
-                                  <thead style={{ color: "#644d81" }}>
-                                    <tr>
-                                      <ConnectionCard key={rec.id} senderId={rec.sender} recipientId={rec.recipient} />
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td style={{ width: "50%", border: "1px solid lightgrey", padding: "8px" }}>{rec.description}</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              ))}
-
+                                {recommendation && Array.isArray(recommendation) && recommendation.map((rec, index) => (
+                                  <RecommendationCard key={rec.id} senderId={rec.sender} recipientId={rec.recipient} description={rec.description} type={'sent'}/> 
+                                ))}
                               </Tab>
                             </Tabs>             
                             </div>
