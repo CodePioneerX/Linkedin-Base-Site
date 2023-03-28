@@ -518,7 +518,7 @@ def getPossibleConnectionsView(request, pk):
         if connection.sender_id not in connection_list:
             connection_list.append(connection.sender_id)
 
-    possibleConnections = User.objects.all().exclude(id__in=connection_list)
+    possibleConnections = User.objects.all().exclude(Q(id__in=connection_list) | Q(id=pk))
 
     if possibleConnections.count() >= 5:
         possibleConnections = possibleConnections[:5]
