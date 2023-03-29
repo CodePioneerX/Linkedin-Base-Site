@@ -62,9 +62,9 @@ function LoginPage() {
         </FormGroup>
         
         <Button id='submit' className='loginButton' type='submit' >
-          Submit</Button>
+          Log in</Button>
           <div>
-        <p className='loginP'>New to Connect?&nbsp;
+        <p className='loginP'>New to CONNECT?&nbsp;
         <a href='register/'> Register</a>
       </p>
         </div>

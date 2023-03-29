@@ -32,6 +32,7 @@ function CreatePost() {
 
   const submitHandler = (e) => {
       e.preventDefault()
+      console.log('create_post: ',userInfo.email)
       dispatch(create_post(userInfo.email,title, content, image))
       navigate(from)
   }

@@ -1,32 +1,39 @@
-import React, { Component } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { Button } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
+import Form from 'react-bootstrap/Form';
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import logo from "../logo.jpg";
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import MyNetwork from "../screens/MyNetwork";
-import Jobs from "../screens/Job";
-import Messaging from "../screens/Messaging";
-import Notification from "../screens/Notification";
-import Settings from "../screens/Settings";
-import ViewProfile from "../screens/ViewProfile";
-import Home from "../screens/Home";
-import LoginPage from "../screens/LoginPage";
-import store from "../store";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userActions";
-import { useNavigate} from 'react-router-dom';
+import logo from "../logo.jpg";
+import store from "../store";
 
 function Header(){
   const userLogin = useSelector((state) => state.userLogin);
+  const [searchValue, setSearchValue] = useState('');
   const { userInfo } = userLogin;
+
+  // const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  
   
   function logoutHandler(){
-    store.dispatch(logout())
+    store.dispatch(logout());
   }
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+   // dispatch(search(searchValue));
+
+
+    // navigate('/search/name/'+searchValue);
+    //redirect to search page
+    //window.location.href = '/search/name/'+searchValue;
+  };
+
     return (
       <>
           <Navbar
@@ -34,16 +41,28 @@ function Header(){
             expand="lg"
             style={{ backgroundColor: "white" }}
             className="navigation"
-          >
+            >
             <Container>
-              <Navbar.Brand href="/">
-                <img
-                  src={logo}
-                  width="230"
-                  className="d-inline-block align-top"
-                  alt="Logo"
-                />
-              </Navbar.Brand>
+
+              {userInfo ? 
+                (<Navbar.Brand href="/">
+                  <img
+                    src={logo}
+                    width="230"
+                    className="d-inline-block align-top"
+                    alt="Logo"
+                  />
+                </Navbar.Brand>) 
+                : 
+                (<Navbar.Brand href="/connecthomepage">
+                  <img
+                    src={logo}
+                    width="230"
+                    className="d-inline-block align-top"
+                    alt="Logo"
+                  />
+                </Navbar.Brand>)
+              }
 
               <Form className="d-flex"> 
                 <Form.Control
@@ -51,7 +70,14 @@ function Header(){
                   placeholder="Search"
                   className="me-2"
                   aria-label="Search"
+                  value={searchValue}
+                  onSubmit={handleSearch}
+                  onChange={(e) => setSearchValue(e.target.value)}
                 />
+            
+                  <Nav.Link href={`/search/name/${searchValue}`} className="btn btn-success btn-sm p-1" >
+                    Search
+                  </Nav.Link>
               </Form>
 
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -60,22 +86,34 @@ function Header(){
                 className="justify-content-end"
               >
                 <Nav className="me-auto">
-                  <Nav.Link href="/" style={{ paddingRight: "40px" }}>
+                  {userInfo ? 
+                (<Nav.Link href="/" style={{ paddingRight: "40px" }}>
                     Home
-                  </Nav.Link>
-                  <Nav.Link href="/network" style={{ paddingRight: "40px" }}>
+                </Nav.Link>) 
+                : 
+                (<Nav.Link href="/connecthomepage" style={{ paddingRight: "40px" }}>
+                  Home
+                </Nav.Link>)}
+                  {userInfo ? (
+                    <Nav.Link href="/network" style={{ paddingRight: "40px" }}>
                     Network
                   </Nav.Link>
+                    ) : (<></>)}
                   <Nav.Link href="/jobs" style={{ paddingRight: "40px" }} >
                     Jobs
                   </Nav.Link>
-                  <Nav.Link href="/messaging"  style={{ paddingRight: "40px" }} >
+                  
+                  {userInfo ? (
+                    <Nav.Link href="/messaging"  style={{ paddingRight: "40px" }} >
                     Messaging
                   </Nav.Link>
-                  <Nav.Link href="/notifications" style={{ paddingRight: "40px" }} >
-                    Notification
+                    ) : (<></>)}
+                  {userInfo ? (
+                    <Nav.Link href="/notifications" style={{ paddingRight: "40px" }} >
+                    Notifications
                   </Nav.Link>
-                  
+                    ) : (<></>)}
+                  {userInfo ? (
                   <NavDropdown title="Profile" id="collasible-nav-dropdown">
                   {userInfo ? (
                     <NavDropdown.Item href="/profile">
@@ -89,18 +127,19 @@ function Header(){
                      ) : (<></>)}
 
                     {userInfo ? (
-                      <NavDropdown.Item onClick={ logoutHandler } id="logout" >
+                      <NavDropdown.Item href="/connecthomepage" onClick={ logoutHandler } id="logout" >
                         Logout
                       </NavDropdown.Item> 
                     ) : (
-                      <NavDropdown.Item href="/login" id="logout" >
+                      <NavDropdown.Item href="/connecthomepage" id="logout" >
                       Login
                     </NavDropdown.Item> 
                     )}
 
-
-
                   </NavDropdown>
+                  ) : ( <NavDropdown.Item href="/login" id="logout" >
+                  Sign in
+                </NavDropdown.Item> )}
                  
                 </Nav>
               </Navbar.Collapse>
