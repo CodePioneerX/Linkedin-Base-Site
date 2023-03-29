@@ -1,3 +1,8 @@
+#successMessage {
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
 /* Styling for home component */
 .homeComponent{
   border-left:  solid #3a0f90;
@@ -66,6 +71,8 @@
 
 /* Styling for the title */
   .title{
+    padding-top: 15px;
+    padding-bottom: 15px;
     color: #5d5b8d;
     font-size: 24px;
   }
@@ -118,6 +125,11 @@
     font-size: 75%;
   }
 
+
+  #infoPasswordLength {
+    background-color:rgb(211, 244, 255);
+    color:rgb(0, 0, 87);
+  }
 
 /* Styling for the placeholder text within the email input field */
   #userEmail::placeholder{
