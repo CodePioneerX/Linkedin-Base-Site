@@ -2,6 +2,7 @@
 import Button from 'react-bootstrap/Button';
 import React, { useState, useEffect} from 'react'
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import '../Assets/css/Login.css';
 import { Form, FormGroup, Label, Input, Container, Row, Col } from 'reactstrap';
 import axios from 'axios';
@@ -16,7 +17,7 @@ export const CreateJobForm = () => {
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
   
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
   
     let required_docs = required_docs_template;
@@ -39,10 +40,17 @@ export const CreateJobForm = () => {
 
     // Define function to handle form submission
     const submitHandler = (e) => {
-        // Dispatch action to create job listing
         e.preventDefault()
-
-        dispatch(create_job(userInfo.email, email, title, description, remote, active, company, job_type, image, salary, location, deadline, requiredDocs))
+        
+        // Dispatch action to create job listing
+        dispatch(create_job(userInfo.email, email, title, description, remote, active, company, job_type, image, salary, location, deadline, requiredDocs)).then(
+            (res) => {
+                if (res.success) {
+                    navigate('/jobs')
+                    window.location.reload(false)
+                }
+            }
+        )
     }
 
     // on page load, set the min value of the deadline input to current date
@@ -58,6 +66,8 @@ export const CreateJobForm = () => {
         
         document.getElementById("deadlineInput").setAttribute("min", today);
         document.getElementById("deadlineInput").setAttribute("value", today);
+
+        console.log(requiredDocs)
     }, []);
 
 

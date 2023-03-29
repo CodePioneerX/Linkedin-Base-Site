@@ -497,10 +497,14 @@ class JobListingCreateView(CreateAPIView):
             else:
                 salary = data['salary']
 
+            print("data", data)
+
             docs_data = {k: v for k, v in data.items() if k.startswith('required_docs')}
             
+            print("docs_data", docs_data)
+            
             docs_dict = {}
-
+            
             for key, value in docs_data.items():
                 if key.endswith('[type]'):
                     req_key = str(key).removesuffix('[type]') + '[required]'
@@ -510,6 +514,8 @@ class JobListingCreateView(CreateAPIView):
                     else:
                         docs_dict[docs_data[key]] = False
         
+            print("docs_dict", docs_dict)
+
             job = JobListing.objects.create(
                 author=User.objects.get(email=request.data['author']),
                 title=request.data['title'],
@@ -537,6 +543,11 @@ class JobListingCreateView(CreateAPIView):
                         document = Document.objects.get(document_type=doc)
                         job.required_docs.add(document)
                         job.save()
+                else:
+                    document = Document.objects.all().filter(document_type=doc)
+                    if not document.exists():
+                        document = Document(document_type=doc)
+                        document.save()
 
             serializer = JobListingSerializer(job, many=False)
 
@@ -548,7 +559,7 @@ class JobListingCreateView(CreateAPIView):
 class JobListingLatestView(APIView):
     def get(self, request):
         """
-        A view to handle the retreivel of the Latest Job Listings.
+        A view to handle the retrieval of the Latest Job Listings.
 
         Parameters:
         - request: An HTTP request object.

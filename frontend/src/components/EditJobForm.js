@@ -35,12 +35,15 @@ export const EditJobForm = (job) => {
     // Define a function to handle the submission of the job form
     const submitHandler = (e)=>{
         e.preventDefault()
-        
+        console.log(requiredDocs)
         // Dispatch an action to update the job details
-        dispatch(update_job(job.job.id, author, title, description, remote, active, company, job_type, image, salary, location, deadline, requiredDocs))
-        
-        // Reload the page
-        window.location.reload(false)
+        dispatch(update_job(job.job.id, author, title, description, remote, active, company, job_type, image, salary, location, deadline, requiredDocs)).then(
+            (res) => {
+                if (res.success) {
+                    window.location.reload(false)            
+                }
+            }
+        )
     }
     
     // Define a function to handle the cancellation of the job form
@@ -78,6 +81,7 @@ export const EditJobForm = (job) => {
         let today = `${year}-${month}-${day}`;
         
         document.getElementById("deadlineInput").setAttribute("min", today);
+        console.log(requiredDocs)
     }, []);
 
     // updates requiredDocs based on checkbox selection
