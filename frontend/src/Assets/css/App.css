@@ -64,7 +64,7 @@ footer {
 
 /* Add padding, a slightly darker background color, and reduce the padding-top to a section */
 footer {
-  position: relative;
+  position: fixed;
   bottom: 0;
   width: 100%;
   padding-top: 0.5rem;

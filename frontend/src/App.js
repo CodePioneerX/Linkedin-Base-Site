@@ -12,6 +12,8 @@ import {
 import { Container } from 'react-bootstrap';
 import { ProfileScreen } from "./screens/ProfileScreen";
 import LoginPage from './screens/LoginPage';
+import ForgotPassword from './screens/ForgotPassword';
+import PasswordReset from './screens/PasswordReset';
 import ConnectHomePage from './screens/ConnectHomePage';
 import RegisterPage from './screens/RegisterPage';
 import ViewProfile from "./screens/ViewProfile";
@@ -43,6 +45,14 @@ const router = createBrowserRouter([
     element:<LoginPage/>,
   },
   {
+    path: "/forgotpassword",
+    element:<ForgotPassword/>,
+  },
+  {
+    path: "/password_reset_form/:uidb64/:token",
+    element:<PasswordReset/>,
+  },
+  {
     path: "/register",
     element: <RegisterPage/>,
   },{
@@ -63,7 +73,8 @@ const router = createBrowserRouter([
   },{
     path: "/settings",
     element: <Settings/>,
-  },{
+  },
+  {
     path: "/create/job/",
     element: <CreateJob/>
   },{

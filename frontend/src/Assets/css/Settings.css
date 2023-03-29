@@ -1,0 +1,47 @@
+h1 {
+    padding: 50px 10px 50px 30px;
+}
+
+h3 {
+    padding-top: 15px;
+    padding-bottom: 20px;
+}
+
+.changePasswordForm {
+    width: 95%;
+    padding: 30px;
+    max-width: 1200px;
+    background-color: white;
+    height: 70%;
+    gap: 10px;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 25px;
+    display:block;
+    padding-bottom: 30px;
+    margin: auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.warningDifferentPasswords{
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+#infoPasswordLength {
+    background-color:rgb(211, 244, 255);
+    color:rgb(0, 0, 87);
+  }
+
+.changePasswordForm .pTextbox {
+    max-width: 500px;
+}
+
+#submit {
+    background-color: #3a0f90;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+}

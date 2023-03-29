@@ -93,7 +93,7 @@ function CreateJob() {
                     label='remote?'
                     
                     checked={remote} 
-                    onChange={(e)=> setRemote(e.target.checked)}
+                    onChange={(e)=> setRemote(!remote)}
                 />
 
               <MDBCheckbox
@@ -102,7 +102,7 @@ function CreateJob() {
                     label='active?'
                     //defaultChecked
                     checked={active} 
-                    onChange={(e)=> setActive(e.target.checked)}
+                    onChange={(e)=> setActive(!active)}
                 />
                 <div className='mb-4'>
                     <MDBFile type="file" label='listing image' id='customFile'  onChange={(e)=> setImage(e.target.files[0])}/>
