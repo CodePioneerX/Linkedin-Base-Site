@@ -17,7 +17,7 @@ import PasswordReset from './screens/PasswordReset';
 import ConnectHomePage from './screens/ConnectHomePage';
 import RegisterPage from './screens/RegisterPage';
 import ViewProfile from "./screens/ViewProfile";
-import CreateJob from './screens/CreateJob';
+import CreateJobForm from './components/CreateJobForm';
 import CreatePost from './screens/CreatePost';
 import {MyNetwork} from './screens/MyNetwork';
 import Job from './screens/Job';
@@ -76,7 +76,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/create/job/",
-    element: <CreateJob/>
+    element: <CreateJobForm/>
   },{
     path: "search/name/:name",
     element: <SearchScreen/>

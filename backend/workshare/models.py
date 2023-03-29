@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 
 # Create your models here.
 
@@ -68,6 +69,11 @@ class Post(models.Model):
     
 # The JobListing class creates and designs the model for job listings. A job listing will consist of 13 data fields, including the time of posting.   
 class JobListing(models.Model):
+    
+    # get_deadline() returns a default deadline 30 days later than the current day.
+    def get_deadline():
+        return datetime.datetime.today() + datetime.timedelta(days=30)
+    
     #list of data fields and their accepted format are defined here.
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
@@ -83,6 +89,7 @@ class JobListing(models.Model):
     status = models.CharField(max_length=255)
     required_docs = models.ManyToManyField('Document', default=None, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    deadline = models.DateTimeField(default=get_deadline)
 
     def get_required_docs(self):
         return ",".join([str(p) for p in self.required_docs.all()])

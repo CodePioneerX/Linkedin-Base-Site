@@ -78,6 +78,7 @@ export default class Jobs extends Component {
                   <p>Recruiter: {job.author}</p>
                   <p>Likes: {job.likes}</p>
                   <p>Posted at: {job.created_at}</p>
+                  <p>Application deadline: {job.deadline}</p>
                   <br/>
 
                 {job.comments.length > 0 && <h4>Comments</h4>}

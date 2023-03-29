@@ -18,6 +18,13 @@ export const CreateJobForm = () => {
     // const navigate = useNavigate();
     const dispatch = useDispatch();
   
+    let required_docs = [{'type':'CV', 'required':false}, 
+                      {'type':'Cover Letter','required':false}, 
+                      {'type':'Letter of Recommendation', 'required': false}, 
+                      {'type':'Portfolio', 'required':false}];
+
+    const possible_docs = ['CV', 'Cover Letter', 'Letter of Recommendation', 'Portfolio'];
+
     // Define state variables for form input fields
     const [author, setAuthor] = useState('')
     const [email, setEmail] = useState('')
@@ -31,6 +38,8 @@ export const CreateJobForm = () => {
     const [salary, setSalary] = useState('')
     const [location, setLocation] = useState('')
     const [image, setImage] = useState('')
+    const [deadline, setDeadline] = useState('')
+    const [requiredDocs, setRequiredDocs] = useState(required_docs)
 
     // Define function to handle form submission
     const submitHandler = (e) => {
@@ -38,14 +47,43 @@ export const CreateJobForm = () => {
         e.preventDefault()
         dispatch(create_job(userInfo.email, email,title, description, remote, active, company, job_type, image, salary, location))
     }
+
+    // on page load, set the min value of the deadline input to current date
+    useEffect(() => {
+        const date = new Date()
+    
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        (month < 10) && (month = `0${month}`);
+        let year = date.getFullYear();
+        
+        let today = `${year}-${month}-${day}`;
+        
+        document.getElementById("deadlineInput").setAttribute("min", today);
+    }, []);
+
+    // updates requiredDocs based on checkbox selection
+    function updateRequiredDocs(document) {
+        const newDocs = requiredDocs.map(doc => {
+          if (doc.type !== document) {
+            return doc;
+          }
+          if (doc.type === document) {
+            return {
+              ...doc, required: !(doc.required)
+            };
+          }
+        })
+        setRequiredDocs(newDocs)
+      }
     
     // Render form for creating job listing
     return (
     <Container className="justify-content-md-center padd">
         {userInfo ? (
-            <Container className='padd'>
-            <h1>Create a Job Listing</h1>
-            <Form className='padd' onSubmit={submitHandler}>
+            <Container>
+            <h2>Create a Job Listing</h2>
+            <Form onSubmit={submitHandler}>
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='contact-name'>Contact Name</Label>
@@ -61,8 +99,6 @@ export const CreateJobForm = () => {
                         <Label className='labelE' for='job-title'>Job Title</Label>
                         <Input name='job-title' id='form6Example3' value={title} onChange={(e)=> setTitle(e.target.value)} />
                     </Col>
-                </Row>
-                <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='company'>Company</Label>
                         <Input name='company' id='form6Example5' value={company} onChange={(e)=> setCompany(e.target.value)}/>
@@ -71,7 +107,7 @@ export const CreateJobForm = () => {
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='description'>Description</Label>
-                        <Input name='description' id='form6Example8' value={description} onChange={(e)=> setDescription(e.target.value)}/>
+                        <Input name='description' type='textarea' rows='4' id='form6Example8' value={description} onChange={(e)=> setDescription(e.target.value)}/>
                     </Col>
                 </Row>
                 <Row className='mb-4'>
@@ -87,15 +123,21 @@ export const CreateJobForm = () => {
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='salary'>Salary</Label>
-                        <Input id='form6Example7' label='Salary' value={salary} onChange={(e)=> setSalary(e.target.value)}/>    
+                        <Input id='form6Example7' type='number' label='Salary' value={salary} onChange={(e)=> setSalary(e.target.value)}/>    
                     </Col>
                     <Col>
+                        <Label className='labelE' for='deadline'>Application Deadline</Label>
+                        <Input type='date' id='deadlineInput' value={deadline} onChange={(e)=> setDeadline(e.target.value)}/>
+                    </Col>
+                </Row>
+                <Row className='mb-4'>
+                    <Col style={{paddingLeft: "40px"}}>
+                        <Input name='remote' className='form-checkbox-input' type="checkbox"  id='form6Example81'  checked={remote} onChange={(e)=> setRemote(!remote)}/>
                         <Label className='labelE' for='remote'>Remote?</Label>
-                        <Input name='remote' type="checkbox" id='form6Example81'  checked={remote} onChange={(e)=> setRemote(!remote)}/>
                     </Col>
-                    <Col>
+                    <Col style={{paddingLeft: "40px"}}>
+                        <Input name='active' className='form-checkbox-input' type='checkbox' id='form6Example8' checked={active} onChange={(e)=> setActive(!active)}/>
                         <Label className='labelE' for='active'>Active?</Label>
-                        <Input name='active' type='checkbox' id='form6Example8' checked={active} onChange={(e)=> setActive(!active)}/>
                     </Col>
                 </Row>
                 <Row className='mb-4'>
@@ -103,11 +145,21 @@ export const CreateJobForm = () => {
                         <Label className='labelE' for='listing-image'>Listing Image</Label>
                         <Input name='listing-image' type="file" id='customFile' onChange={(e)=> setImage(e.target.files[0])}/>
                     </Col>
+                </Row >
+                {possible_docs.map((doc, index) => (
+                    <Row key={index}>
+                        <Col xs='2'>
+                            <Input className='form-doc-input' type='checkbox' name={doc} checked={required_docs[doc]} onChange={() => updateRequiredDocs(doc)} />
+                        </Col>
+                        <Col xs='10'>
+                            <Label className='labelE' style={{position:'relative', left:'-100px'}} for={doc}>{`${doc}`} Required</Label>
+                        </Col>
+                    </Row>
+                ))}
+                <Row className='mb-4'></Row>
+                <Row className='mb-4'>
+                    <Input className='profile-button' type='submit' label='Create a Job'/>
                 </Row>
-                <Input className='profile-button'  
-                    type='submit'>
-                    Create a Job
-                </Input>
             </Form>
           </Container>) : (
           <Row>
@@ -122,10 +174,7 @@ export const CreateJobForm = () => {
 
     </Container>
         
-
-
     )
-
 
 }
 
