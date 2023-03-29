@@ -77,8 +77,8 @@ export default class Jobs extends Component {
                   {job.remote ? <p>Remote work possible.</p> : <p>Must be willing to work in person.</p>} 
                   <p>Recruiter: {job.author}</p>
                   <p>Likes: {job.likes}</p>
-                  <p>Posted at: {job.created_at}</p>
-                  <p>Application deadline: {job.deadline}</p>
+                  <p>Posted on: {job.created_at.slice(0, 10)}</p>
+                  <p>Application deadline: {job.deadline.slice(0, 10)}</p>
                   <br/>
 
                 {job.comments.length > 0 && <h4>Comments</h4>}

@@ -64,7 +64,7 @@ class UserSerializerWithToken(UserSerializer):
 class JobListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobListing
-        fields = ('id', 'title', 'description','company', 'remote', 'job_type', 'image', 'comments', 'likes', 'salary', 'location', 'status', 'author')
+        fields = ('id', 'title', 'description','company', 'remote', 'job_type', 'image', 'comments', 'likes', 'salary', 'location', 'status', 'author', 'deadline')
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:

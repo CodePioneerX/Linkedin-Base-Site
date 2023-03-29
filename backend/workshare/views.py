@@ -16,6 +16,7 @@ from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import Q
+import datetime
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -288,8 +289,6 @@ def JobListingUpdateView(request, pk):
 
     data = request.data
     
-    print('data',data)
-    
     try:
         if data['status'] == "true":
             status = True
@@ -304,7 +303,6 @@ def JobListingUpdateView(request, pk):
     else:
         remote = False
 
-    # TO-DO: resolve bugs with remote, status, image fields - they have been disabled for now
     job.title = data['title']
     job.description = data['description']
     job.remote = remote
@@ -313,6 +311,7 @@ def JobListingUpdateView(request, pk):
     job.salary = data['salary']
     job.location = data['location']
     job.status = status
+    job.deadline = data['deadline']
 
     job.save()
     
@@ -407,9 +406,7 @@ class JobListingCreateView(CreateAPIView):
         request = self.request 
         
         data = request.data
-            
-        print('data',data)
-        
+
         try:
             if data['status'] == "true":
                 stat = True
@@ -423,7 +420,6 @@ class JobListingCreateView(CreateAPIView):
             remote_ = True
         else:
             remote_ = False
-            
         
         job = JobListing.objects.create(
             author=User.objects.get(email=request.data['author']),
@@ -435,7 +431,8 @@ class JobListingCreateView(CreateAPIView):
             location = request.data['location'],
             status = stat,
             job_type = request.data['job_type'],
-            remote = remote_
+            remote = remote_,
+            deadline = request.data['deadline']
         )
         job.save()
         print("DEBUG : job: ", job)
@@ -475,7 +472,8 @@ class JobListingLatestView(APIView):
                 'company': job.company,
                 'comments': job_comments,
                 'job_type': job.job_type,
-                'remote': job.remote
+                'remote': job.remote,
+                'deadline': job.deadline
             })
         return JsonResponse(job_list, safe=False)
 

@@ -43,7 +43,7 @@ export const EditJobForm = (job) => {
         e.preventDefault()
         
         // Dispatch an action to update the job details
-        dispatch(update_job(job.job.id, author, title, description, remote, active, company, job_type, image, salary, location))
+        dispatch(update_job(job.job.id, author, title, description, remote, active, company, job_type, image, salary, location, deadline))
         
         // Reload the page
         window.location.reload(false)
@@ -68,8 +68,12 @@ export const EditJobForm = (job) => {
         window.location.reload(false)
     }
 
-    // on page load, set the min value of the deadline input to current date
+    // On page load, converts deadline to proper format
+    // and sets the min value of the deadline input to current date
     useEffect(() => {
+        var deadline_date = deadline.slice(0, 10)
+        setDeadline(deadline_date)
+
         const date = new Date()
     
         let day = date.getDate();

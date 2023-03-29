@@ -45,7 +45,7 @@ export const CreateJobForm = () => {
     const submitHandler = (e) => {
         // Dispatch action to create job listing
         e.preventDefault()
-        dispatch(create_job(userInfo.email, email,title, description, remote, active, company, job_type, image, salary, location))
+        dispatch(create_job(userInfo.email, email,title, description, remote, active, company, job_type, image, salary, location, deadline))
     }
 
     // on page load, set the min value of the deadline input to current date
