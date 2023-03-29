@@ -1,3 +1,4 @@
+// Import necessary components and functions
 import Button from 'react-bootstrap/Button';
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
@@ -5,7 +6,9 @@ import '../Assets/css/Login.css';
 import { Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { delete_job, update_job } from '../actions/jobActions';
 
+// Define the EditJobForm component with the job object as a parameter
 export const EditJobForm = (job) => {
+    // Define state variables to store the job details
     const [author, setAuthor] = useState(job.job.author)
     const [email, setEmail] = useState(job.job.author)
     const [title, setTitle] = useState(job.job.title)
@@ -18,33 +21,45 @@ export const EditJobForm = (job) => {
     const [salary, setSalary] = useState(job.job.salary)
     const [location, setLocation] = useState(job.job.location)
     const [image, setImage] = useState(job.job.image)
-
+    
+    // Retrieve the user's login information from the Redux store
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin;
-
+    
+    // Define the dispatch function to update or delete the job
     const dispatch = useDispatch();
-
+    
+    // Define a function to handle the submission of the job form
     const submitHandler = (e)=>{
         e.preventDefault()
         
+        // Dispatch an action to update the job details
         dispatch(update_job(job.job.id, author, title, description, remote, active, company, job_type, image, salary, location))
-
-        window.location.reload(false)
-    }
-
-    const cancelHandler = (e) => {
-        e.preventDefault()
-
-        window.location.reload(false)
-    }
-
-    const deleteHandler = (e) => {
-        e.preventDefault()
-        alert('Are you sure you want to delete this job?')
-        dispatch(delete_job(job.job.id))
+        
+        // Reload the page
         window.location.reload(false)
     }
     
+    // Define a function to handle the cancellation of the job form
+    const cancelHandler = (e) => {
+        e.preventDefault()
+        
+         // Reload the page
+        window.location.reload(false)
+    }
+    
+    // Define a function to handle the deletion of the job
+    const deleteHandler = (e) => {
+        e.preventDefault()
+        // Alert the user to confirm the deletion of the job
+        alert('Are you sure you want to delete this job?')
+        // Dispatch an action to delete the job
+        dispatch(delete_job(job.job.id))
+        // Reload the page
+        window.location.reload(false)
+    }
+    
+    // Render the form for editing the job details
     return <div>
         <h2>Edit Your Job Listing</h2>
         <Form>
