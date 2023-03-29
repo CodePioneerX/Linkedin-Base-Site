@@ -286,10 +286,20 @@ def PostDeleteView(request, pk):
 # This function is intended to allow the user to update an existing job post that they created
 @api_view(['PUT'])
 def JobListingUpdateView(request, pk):
-    job = get_object_or_404(JobListing, pk=pk)
+    """
+    A view to handle an update of an existing job listing.
 
+    Parameters:
+    - request: HTTP request object.
+    - pk (int): Primary key of the JobListing object that is being updated.
+
+    Returns:
+    - Response: HTTP response object with serialized job listing data.
+    """
     data = request.data
     
+    job = get_object_or_404(JobListing, pk=pk)
+
     try:
         if data['status'] == "true":
             status = True
@@ -329,10 +339,6 @@ def JobListingUpdateView(request, pk):
 
     job.save()
 
-    required_docs = job.required_docs.all()
-
-    print('required_docs', required_docs)
-
     for doc, req in docs_dict.items():
         document = Document.objects.get(document_type=doc)
         if req is True and job.required_docs:
@@ -366,9 +372,23 @@ def JobListingUpdateView(request, pk):
 # This function is intended to allow the user to delete an existing job post that they created
 @api_view(['DELETE', 'GET'])
 def JobListingDeleteView(request, pk):
-    job = JobListing.objects.get(id=pk)
-    job.delete()
-    return Response('JobListing Deleted')
+    """
+    A view to handle deletion of an existing job listing.
+
+    Parameters:
+    - request: HTTP request object.
+    - pk (int): Primary key of the JobListing object that is to be deleted.
+
+    Returns:
+    - Response: HTTP response object with a status code of 200 if the JobListing is deleted succesfully,
+                or a status code of 400 if there is an error.
+    """
+    try:
+        job = get_object_or_404(JobListing, pk=pk)
+        job.delete()
+        return Response(status=status.HTTP_200_OK)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class PostView(APIView):
     def get(self, request, pk):
@@ -446,75 +466,96 @@ class JobListingCreateView(CreateAPIView):
     serializer_class = JobListingSerializer
 
     def create(self, validated_data):
-        
-        request = self.request 
-        
-        data = request.data
+        """
+        A view to handle the creation of a new job listing.
 
+        Returns:
+        - Response: An HTTP response object with serialized JobListing data if the request is successful,
+                    or an HTTP response object with an error message if the request fails.
+        """
         try:
-            if data['status'] == "true":
-                stat = True
-            else:
-                stat = False
-        except:
-            stat = True
+            request = self.request 
             
-        
-        if data['remote'] == "true":
-            remote_ = True
-        else:
-            remote_ = False
+            data = request.data
 
-        if data['salary'] == '':
-            salary = 0
-        else:
-            salary = data['salary']
-
-        docs_data = {k: v for k, v in data.items() if k.startswith('required_docs')}
-        
-        docs_dict = {}
-
-        for key, value in docs_data.items():
-            if key.endswith('[type]'):
-                req_key = str(key).removesuffix('[type]') + '[required]'
+            try:
+                if data['status'] == "true":
+                    stat = True
+                else:
+                    stat = False
+            except:
+                stat = True
                 
-                if docs_data[req_key] == 'true':
-                    docs_dict[docs_data[key]] = True
-                else:
-                    docs_dict[docs_data[key]] = False
-     
-        job = JobListing.objects.create(
-            author=User.objects.get(email=request.data['author']),
-            title=request.data['title'],
-            description=request.data['description'],
-            image=request.data['image'],
-            salary=salary,
-            company = request.data['company'],
-            location = request.data['location'],
-            status = stat,
-            job_type = request.data['job_type'],
-            remote = remote_,
-            deadline = request.data['deadline']
-        )
-        job.save()
+            
+            if data['remote'] == "true":
+                remote_ = True
+            else:
+                remote_ = False
 
-        for doc, req in docs_dict.items():
-            if req is True: 
-                document = Document.objects.all().filter(document_type=doc)
-                if not document.exists():
-                    document = Document(document_type=doc)
-                    document.save()
-                    job.required_docs.add(document)
-                    job.save()
-                else:
-                    document = Document.objects.get(document_type=doc)
-                    job.required_docs.add(document)
-                    job.save()
+            if data['salary'] == '':
+                salary = 0
+            else:
+                salary = data['salary']
 
-        return Response(status=status.HTTP_200_OK)
+            docs_data = {k: v for k, v in data.items() if k.startswith('required_docs')}
+            
+            docs_dict = {}
+
+            for key, value in docs_data.items():
+                if key.endswith('[type]'):
+                    req_key = str(key).removesuffix('[type]') + '[required]'
+                    
+                    if docs_data[req_key] == 'true':
+                        docs_dict[docs_data[key]] = True
+                    else:
+                        docs_dict[docs_data[key]] = False
+        
+            job = JobListing.objects.create(
+                author=User.objects.get(email=request.data['author']),
+                title=request.data['title'],
+                description=request.data['description'],
+                image=request.data['image'],
+                salary=salary,
+                company = request.data['company'],
+                location = request.data['location'],
+                status = stat,
+                job_type = request.data['job_type'],
+                remote = remote_,
+                deadline = request.data['deadline']
+            )
+            job.save()
+
+            for doc, req in docs_dict.items():
+                if req is True: 
+                    document = Document.objects.all().filter(document_type=doc)
+                    if not document.exists():
+                        document = Document(document_type=doc)
+                        document.save()
+                        job.required_docs.add(document)
+                        job.save()
+                    else:
+                        document = Document.objects.get(document_type=doc)
+                        job.required_docs.add(document)
+                        job.save()
+
+            serializer = JobListingSerializer(job, many=False)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            message = {'detail':'A problem occurred while creating this Job Listing. Please try again later.'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 class JobListingLatestView(APIView):
     def get(self, request):
+        """
+        A view to handle the retreivel of the Latest Job Listings.
+
+        Parameters:
+        - request: An HTTP request object.
+
+        Returns:
+        - Response: A JSON response object containing the list of latest Job Listings.
+        """
         jobs = JobListing.objects.all().order_by('-created_at')[:10]
         all_docs = Document.objects.all()
         job_list = []
