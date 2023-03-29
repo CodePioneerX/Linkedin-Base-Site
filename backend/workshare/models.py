@@ -81,11 +81,21 @@ class JobListing(models.Model):
     salary = models.IntegerField(default=0)
     location = models.CharField(max_length=255)
     status = models.CharField(max_length=255)
+    required_docs = models.ManyToManyField('Document', default=None, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_required_docs(self):
+        return ",".join([str(p) for p in self.required_docs.all()])
 
     #this function defines what will be returned when the class is printed. The code below will return the title.
     def __str__(self):
         return self.title
+    
+class Document(models.Model):
+    document_type = models.CharField(max_length=256, unique=True)
+
+    def __str__(self):
+        return self.document_type
 
 # The Connection class creates and designs the connection model. The connection model will consist of 3 data fields: the sender, the recipient, and the status of their connection attempt. The possible statuses are pending, accepted and rejected.
 class Connection(models.Model):
