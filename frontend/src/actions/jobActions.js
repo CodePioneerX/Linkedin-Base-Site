@@ -32,17 +32,17 @@ export const create_job = (author, email, title, description,remote, active, com
         // Setting up the configuration for the request
         const config = {
             headers: {
-                'Content-type': 'multipart/form-data',
+                'Content-type': 'multipart/form-data', 
                 // Authorization: `Bearer ${userInfo.token}`
             } 
         }
         
         console.log('config: ', config)
-        
+
         // Sending the request to create a job using the axios.post() method and passing the job details along with the configuration object
         const { data } = await axios.post(
             'http://localhost:8000/api/create_job/',
-            { 'author': author, 'title': title, 'description': description, 'remote':true ,'status':'active' ,'company':company ,'job_type':job_type ,'salary':salary ,'location':location, 'image':image },
+            { 'author': author, 'title': title, 'description': description, 'remote':remote ,'status':active ,'company':company ,'job_type':job_type ,'salary':salary ,'location':location, 'image':image },
             config
         )
         

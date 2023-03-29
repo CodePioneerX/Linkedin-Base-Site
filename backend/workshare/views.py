@@ -122,16 +122,32 @@ def JobListingUpdateView(request, pk):
     job = get_object_or_404(JobListing, pk=pk)
 
     data = request.data
+    
+    print('data',data)
+    
+    try:
+        if data['status'] == "true":
+            status = True
+        else:
+            status = False
+    except:
+        status = True
+        
+    
+    if data['remote'] == "true":
+        remote = True
+    else:
+        remote = False
 
     # TO-DO: resolve bugs with remote, status, image fields - they have been disabled for now
     job.title = data['title']
     job.description = data['description']
-    # job.remote = data['remote']
+    job.remote = remote
     job.company = data['company']
     job.job_type = data['job_type']
     job.salary = data['salary']
     job.location = data['location']
-    # job.status = data['active']
+    job.status = status
 
     job.save()
     
@@ -225,6 +241,25 @@ class JobListingCreateView(CreateAPIView):
         
         request = self.request 
         
+        data = request.data
+            
+        print('data',data)
+        
+        try:
+            if data['status'] == "true":
+                stat = True
+            else:
+                stat = False
+        except:
+            stat = True
+            
+        
+        if data['remote'] == "true":
+            remote_ = True
+        else:
+            remote_ = False
+            
+        
         job = JobListing.objects.create(
             author=User.objects.get(email=request.data['author']),
             title=request.data['title'],
@@ -233,9 +268,9 @@ class JobListingCreateView(CreateAPIView):
             salary=request.data['salary'],
             company = request.data['company'],
             location = request.data['location'],
-            status = request.data['status'],
+            status = stat,
             job_type = request.data['job_type'],
-            remote = True
+            remote = remote_
         )
         job.save()
         print("DEBUG : job: ", job)
