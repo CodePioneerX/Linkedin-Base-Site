@@ -23,6 +23,11 @@ function CreateJob() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  let required_docs = [{'type':'CV', 'required':false}, 
+                      {'type':'Cover Letter','required':false}, 
+                      {'type':'Letter of Recommendation', 'required': false}, 
+                      {'type':'Portfolio', 'required':false}];
+
   const [author, setAuthor] = useState('')
   const [email, setEmail] = useState('')
   const [title, setTitle] = useState('')
@@ -35,12 +40,27 @@ function CreateJob() {
   const [salary, setSalary] = useState('')
   const [location, setLocation] = useState('')
   const [image, setImage] = useState('')
+  const [requiredDocs, setRequiredDocs] = useState(required_docs)
 
+  function handleClick(document) {
+    const newDocs = requiredDocs.map(doc => {
+      if (doc.type !== document) {
+        return doc;
+      }
+      if (doc.type === document) {
+        return {
+          ...doc, required: !(doc.required)
+        };
+      }
+    })
+    setRequiredDocs(newDocs)
+  }
 
+  const possible_docs = ['CV', 'Cover Letter', 'Letter of Recommendation', 'Portfolio']
 
   const submitHandler = (e) => {
     e.preventDefault()
-    dispatch(create_job(userInfo.email, email, title, description, remote, active, company, job_type, image,salary, location))
+    dispatch(create_job(userInfo.email, email, title, description, remote, active, company, job_type, image, salary, location))
     setStatus('success')
     navigate('/jobs/')
   }
@@ -73,7 +93,7 @@ function CreateJob() {
                     label='remote?'
                     
                     checked={remote} 
-                    onChange={(e)=> setRemote(true)}
+                    onChange={(e)=> setRemote(e.target.checked)}
                 />
 
               <MDBCheckbox
@@ -88,7 +108,19 @@ function CreateJob() {
                     <MDBFile type="file" label='listing image' id='customFile'  onChange={(e)=> setImage(e.target.files[0])}/>
 
                 </div>
-
+                {possible_docs.map((doc, index) => (
+                <div key={index}>
+                  {console.log(requiredDocs)}
+                  <MDBCheckbox
+                    wrapperClass='d-flex mb-4'
+                    // id='form6Example8'
+                    label={`${doc} Required`}
+                    // defaultChecked
+                    checked={required_docs[doc]}
+                    onChange={() => handleClick(doc)}
+                  />
+                </div>
+                ))}
                 <MDBBtn className='mb-4 padd' type='submit' block>
                     Create a job
                 </MDBBtn>
@@ -100,6 +132,8 @@ function CreateJob() {
           <Alert  className='alertLogin' key='primary' variant='primary'>
               <h5>You are not signed in! Please <a href="/login">Sign in</a> or <a href="/register">Register</a>!</h5>
           </Alert>
+
+          
 
         </Row>)}
         
