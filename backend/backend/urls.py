@@ -18,7 +18,7 @@ from django.urls import path, include
 from rest_framework import routers
 from workshare.views import ProfileView, ProfileCreateView, getProfileView, updateUserProfile
 from workshare.views import JobListingCreateView, JobListingLatestView, JobListingUpdateView, JobListingDeleteView
-from workshare.views import PostView, PostCreateView, PostUpdateView, PostDeleteView, PostLatestView, PostListingCreateView, UserPostsView
+from workshare.views import PostView, PostCreateView, PostUpdateView, PostDeleteView, PostLatestView, PostListingCreateView, UserPostsView, MessageList, MessageDetail, SendMessage, ReceiveMessages, DeleteMessage
 from django.conf import settings
 from django.conf.urls.static import static
 from workshare import views
@@ -48,6 +48,12 @@ urlpatterns = [
     path('api/job/delete/<int:pk>', JobListingDeleteView, name='job_listing_delete'),
     path('api/jobs/', JobListingLatestView.as_view(), name='job_listing_latest_detail'),
     path('api/register/' , views.registerUser, name='register'),
+    path('api/messages/', views.MessageListCreate.as_view(), name='messages_list'),
+    path('api/messages/<int:pk>/', views.MessageRetrieveUpdateDestroy.as_view(), name='message_detail'),
+    path('api/send-message/', SendMessage.as_view(), name='send_message'),
+    path('api/receive-messages/', ReceiveMessages.as_view(), name='receive_message'),
+    path('api/delete-message/<int:pk>/', DeleteMessage.as_view(), name='delete_message'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
-from .models import WorkShare, Profile, Post, JobListing, Comment
+from .models import WorkShare, Profile, Post, JobListing, Comment, DirectMessage, Conversation
 
 class WorkShareSerializer(serializers.ModelSerializer):
     class Meta:
@@ -70,3 +70,16 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id', 'content', 'author')
+
+class ConversationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Conversation
+        fields = ['id', 'participants']
+
+class MessageSerializer(serializers.ModelSerializer):
+    sender = serializers.ReadOnlyField(source='sender.username')
+    recipient = serializers.ReadOnlyField(source='recipient.username')
+
+    class Meta:
+        model = DirectMessage
+        fields = ['id', 'sender', 'recipient', 'conversation', 'content', 'timestamp']

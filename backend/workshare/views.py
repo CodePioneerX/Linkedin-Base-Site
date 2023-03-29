@@ -1,5 +1,6 @@
 import time
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
@@ -28,6 +29,24 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 from .tokens import account_activation_token
+
+#for dm feature
+from django.contrib import messages
+from .models import DirectMessage, Conversation
+from .serializers import MessageSerializer, ConversationSerializer
+from rest_framework import generics, permissions, status
+from channels.generic.websocket import WebsocketConsumer 
+from asgiref.sync import async_to_sync
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
+from django.core import serializers
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+import json
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -343,3 +362,79 @@ def activate(request, uidb64, token):
     
     ###REDIRECTION LINK NEEDS TO BE CHANGED ONCE SITE GETS HOSTED
     return redirect("http://localhost:3000")
+
+
+class MessageList(generics.ListCreateAPIView):
+    queryset = DirectMessage.objects.all()
+    serializer_class = MessageSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(sender=self.request.user)
+
+class MessageDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = DirectMessage.objects.all()
+    serializer_class = MessageSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_update(self, serializer):
+        serializer.save(sender=self.request.user)
+
+class SendMessage(generics.CreateAPIView):
+    serializer_class = MessageSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(sender=self.request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+class ReceiveMessages(generics.ListAPIView):
+    serializer_class = MessageSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return DirectMessage.objects.filter(recipient=self.request.user)
+    
+class DeleteMessage(generics.DestroyAPIView):
+    queryset = DirectMessage.objects.all()
+    serializer_class = MessageSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.sender == request.user or instance.recipient == request.user:
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response({'error': 'You do not have permission to delete this message.'}, status=status.HTTP_403_FORBIDDEN)
+        
+
+@login_required
+def get_users(request):
+    """
+    Returns a list of users to populate the DM list
+    """
+    users = User.objects.exclude(id=request.user.id)
+    users_list = []
+    for user in users:
+        users_list.append({"id": user.id, "username": user.username})
+    return JsonResponse(users_list, safe=False)
+
+
+class MessageListCreate(generics.ListCreateAPIView):
+    queryset = DirectMessage.objects.all()
+    serializer_class = MessageSerializer
+
+class MessageRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    queryset = DirectMessage.objects.all()
+    serializer_class = MessageSerializer
+
+class ConversationListCreate(generics.ListCreateAPIView):
+    queryset = Conversation.objects.all()
+    serializer_class = ConversationSerializer
+
+class ConversationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Conversation.objects.all()
+    serializer_class = ConversationSerializer
