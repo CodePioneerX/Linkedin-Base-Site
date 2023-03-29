@@ -8,6 +8,7 @@ import axios from 'axios';
 import Alert from 'react-bootstrap/Alert';
 import{ create_job } from '../actions/jobActions'
 import '../Assets/css/App.css'
+import { required_docs_template, possible_docs } from '../constants/jobConstants';
 
 // Define CreateJobForm component
 export const CreateJobForm = () => {
@@ -18,12 +19,7 @@ export const CreateJobForm = () => {
     // const navigate = useNavigate();
     const dispatch = useDispatch();
   
-    let required_docs = [{'type':'CV', 'required':false}, 
-                      {'type':'Cover Letter','required':false}, 
-                      {'type':'Letter of Recommendation', 'required': false}, 
-                      {'type':'Portfolio', 'required':false}];
-
-    const possible_docs = ['CV', 'Cover Letter', 'Letter of Recommendation', 'Portfolio'];
+    let required_docs = required_docs_template;
 
     // Define state variables for form input fields
     const [author, setAuthor] = useState('')
@@ -45,7 +41,7 @@ export const CreateJobForm = () => {
     const submitHandler = (e) => {
         // Dispatch action to create job listing
         e.preventDefault()
-        console.log(requiredDocs)
+
         dispatch(create_job(userInfo.email, email, title, description, remote, active, company, job_type, image, salary, location, deadline, requiredDocs))
     }
 
@@ -61,6 +57,7 @@ export const CreateJobForm = () => {
         let today = `${year}-${month}-${day}`;
         
         document.getElementById("deadlineInput").setAttribute("min", today);
+        document.getElementById("deadlineInput").setAttribute("value", today);
     }, []);
 
 
@@ -77,7 +74,6 @@ export const CreateJobForm = () => {
           }
         })
         setRequiredDocs(newDocs)
-        console.log('newDocs', newDocs)
       }
     
     // Render form for creating job listing

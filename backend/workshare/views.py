@@ -465,12 +465,16 @@ class JobListingCreateView(CreateAPIView):
         else:
             remote_ = False
 
+        if data['salary'] == '':
+            salary = 0
+        else:
+            salary = data['salary']
+
         docs_data = {k: v for k, v in data.items() if k.startswith('required_docs')}
         
         docs_dict = {}
 
         for key, value in docs_data.items():
-            print('key:', key, 'value: ', value)
             if key.endswith('[type]'):
                 req_key = str(key).removesuffix('[type]') + '[required]'
                 
@@ -484,7 +488,7 @@ class JobListingCreateView(CreateAPIView):
             title=request.data['title'],
             description=request.data['description'],
             image=request.data['image'],
-            salary=request.data['salary'],
+            salary=salary,
             company = request.data['company'],
             location = request.data['location'],
             status = stat,

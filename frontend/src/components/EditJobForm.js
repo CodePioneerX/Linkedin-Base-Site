@@ -8,12 +8,6 @@ import { delete_job, update_job } from '../actions/jobActions';
 
 // Define the EditJobForm component with the job object as a parameter
 export const EditJobForm = (job) => {
-    let required_docs = [{'type':'CV', 'required':false}, 
-                      {'type':'Cover Letter','required':false}, 
-                      {'type':'Letter of Recommendation', 'required': false}, 
-                      {'type':'Portfolio', 'required':false}];
-
-    const possible_docs = ['CV', 'Cover Letter', 'Letter of Recommendation', 'Portfolio'];
     
     // Define state variables to store the job details
     const [author, setAuthor] = useState(job.job.author)

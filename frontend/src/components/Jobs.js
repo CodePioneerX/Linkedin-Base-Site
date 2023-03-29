@@ -78,17 +78,19 @@ export default class Jobs extends Component {
                   <p>Posted on: {job.created_at.slice(0, 10)}</p>
                   <p>Application deadline: {job.deadline.slice(0, 10)}</p>
                   <p>Required documents: </p>
-                  <>{job.required_docs && 
-                    <ul>
-                      {job.required_docs.map((doc, index) => (
-                      <>
+                  {job.required_docs && 
+                  <>
+                    <ul key={job.id}>
+                      {job.required_docs.map(doc => (
+                      <React.Fragment key={doc.type}>
                         {doc.required && 
-                        <li key={index}>
+                        <li>
                           {doc.type}
                         </li>}
-                      </>
+                      </React.Fragment>
                       ))}
-                    </ul>}</>
+                    </ul>
+                  </>}
                   <br/>
                 {job.comments && job.comments.length > 0 && <h4>Comments</h4>}
                 {job.comments && job.comments.length > 0 && job.comments.map(comment => (
