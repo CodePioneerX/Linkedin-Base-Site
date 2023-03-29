@@ -17,7 +17,7 @@ import{
 } from '../constants/jobConstants'
 
 // Action to create a new job posting
-export const create_job = (author, email, title, description,remote, active, company,job_type, image,salary,location, deadline)  => async (dispatch, getState) => {
+export const create_job = (author, email, title, description,remote, active, company,job_type, image,salary,location, deadline, requiredDocs)  => async (dispatch, getState) => {
     try {
         // Dispatching the CREATE_JOB_REQUEST action to inform the state that job creation request has started
         dispatch({
@@ -42,7 +42,7 @@ export const create_job = (author, email, title, description,remote, active, com
         // Sending the request to create a job using the axios.post() method and passing the job details along with the configuration object
         const { data } = await axios.post(
             'http://localhost:8000/api/create_job/',
-            { 'author': author, 'title': title, 'description': description, 'remote':remote ,'status':active ,'company':company ,'job_type':job_type ,'salary':salary ,'location':location, 'image':image, 'deadline': deadline },
+            { 'author': author, 'title': title, 'description': description, 'remote':remote ,'status':active ,'company':company ,'job_type':job_type ,'salary':salary ,'location':location, 'image':image, 'deadline': deadline, 'required_docs': requiredDocs },
             config
         )
         
@@ -66,7 +66,7 @@ export const create_job = (author, email, title, description,remote, active, com
 }
 
 // Action to update an existing job posting
-export const update_job = (jobID, author, title, description, remote, active, company, job_type, image, salary, location, deadline) => async (dispatch, getState) => {
+export const update_job = (jobID, author, title, description, remote, active, company, job_type, image, salary, location, deadline, required_docs) => async (dispatch, getState) => {
     try {
         // Dispatching the UPDATE_JOB_REQUEST action to inform the state that job update request has started
         dispatch({
@@ -96,7 +96,8 @@ export const update_job = (jobID, author, title, description, remote, active, co
         'job_type': job_type,
         'salary': salary,
         'location': location,
-        'deadline': deadline }, 
+        'deadline': deadline,
+        'required_docs': required_docs }, 
         config)
 
          // If the request is successful, update the state with the new job data

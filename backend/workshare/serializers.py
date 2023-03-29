@@ -61,10 +61,14 @@ class UserSerializerWithToken(UserSerializer):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
 
+class DocumentSerializer(serializers.Serializer):
+    type = serializers.CharField(max_length=200)
+    required = serializers.BooleanField()
+        
 class JobListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobListing
-        fields = ('id', 'title', 'description','company', 'remote', 'job_type', 'image', 'comments', 'likes', 'salary', 'location', 'status', 'author', 'deadline')
+        fields = ('id', 'title', 'description','company', 'remote', 'job_type', 'image', 'comments', 'likes', 'salary', 'location', 'status', 'author', 'created_at', 'deadline')
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:

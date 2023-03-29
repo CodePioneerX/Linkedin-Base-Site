@@ -1,4 +1,5 @@
 import time
+import json
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from rest_framework.views import APIView
@@ -9,9 +10,9 @@ from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
 from .serializers import WorkShareSerializer
 from .models import WorkShare
-from .models import Profile, Post, JobListing, Comment, Recommendations, Connection
+from .models import Profile, Post, JobListing, Comment, Recommendations, Connection, Document
 from django.contrib.auth.models import User
-from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer, ConnectionSerializer
+from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer, ConnectionSerializer, DocumentSerializer
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -303,6 +304,19 @@ def JobListingUpdateView(request, pk):
     else:
         remote = False
 
+    docs_data = {k: v for k, v in data.items() if k.startswith('required_docs')}
+    
+    docs_dict = {}
+
+    for key, value in docs_data.items():
+        if key.endswith('[type]'):
+            req_key = str(key).removesuffix('[type]') + '[required]'
+            
+            if docs_data[req_key] == 'true':
+                docs_dict[docs_data[key]] = True
+            else:
+                docs_dict[docs_data[key]] = False
+
     job.title = data['title']
     job.description = data['description']
     job.remote = remote
@@ -314,7 +328,37 @@ def JobListingUpdateView(request, pk):
     job.deadline = data['deadline']
 
     job.save()
+
+    required_docs = job.required_docs.all()
+
+    print('required_docs', required_docs)
+
+    for doc, req in docs_dict.items():
+        document = Document.objects.get(document_type=doc)
+        if req is True and job.required_docs:
+            job.required_docs.add(document)
+            job.save()
+        else:
+            job.required_docs.remove(document)
     
+    for doc, req in docs_dict.items():
+        if req is True: 
+            document = Document.objects.all().filter(document_type=doc)
+            if not document.exists():
+                document = Document(document_type=doc)
+                document.save()
+                job.required_docs.add(document)
+                job.save()
+            else:
+                document = Document.objects.get(document_type=doc)
+                job.required_docs.add(document)
+                job.save()
+        if req is False: 
+            document = Document.objects.all().filter(document_type=doc)
+            if document.exists():
+                document = Document.objects.get(document_type=doc)
+                job.required_docs.remove(document)
+
     serializer = JobListingSerializer(job, many=False)
 
     return Response(serializer.data)
@@ -420,7 +464,21 @@ class JobListingCreateView(CreateAPIView):
             remote_ = True
         else:
             remote_ = False
+
+        docs_data = {k: v for k, v in data.items() if k.startswith('required_docs')}
         
+        docs_dict = {}
+
+        for key, value in docs_data.items():
+            print('key:', key, 'value: ', value)
+            if key.endswith('[type]'):
+                req_key = str(key).removesuffix('[type]') + '[required]'
+                
+                if docs_data[req_key] == 'true':
+                    docs_dict[docs_data[key]] = True
+                else:
+                    docs_dict[docs_data[key]] = False
+     
         job = JobListing.objects.create(
             author=User.objects.get(email=request.data['author']),
             title=request.data['title'],
@@ -435,16 +493,45 @@ class JobListingCreateView(CreateAPIView):
             deadline = request.data['deadline']
         )
         job.save()
-        print("DEBUG : job: ", job)
+
+        for doc, req in docs_dict.items():
+            if req is True: 
+                document = Document.objects.all().filter(document_type=doc)
+                if not document.exists():
+                    document = Document(document_type=doc)
+                    document.save()
+                    job.required_docs.add(document)
+                    job.save()
+                else:
+                    document = Document.objects.get(document_type=doc)
+                    job.required_docs.add(document)
+                    job.save()
+
         return Response(status=status.HTTP_200_OK)
 
 class JobListingLatestView(APIView):
     def get(self, request):
         jobs = JobListing.objects.all().order_by('-created_at')[:10]
+        all_docs = Document.objects.all()
         job_list = []
+
         for job in jobs:
             job_comments = []
+            job_documents = []
             image_path = ""
+            
+            if job.required_docs is not None:
+                job_docs = list(job.required_docs.all())
+                for doc in job_docs:
+                    s = {'type': doc.__str__(), 'required': 'true'}
+                    job_documents.append(s)
+            
+            for document in all_docs:
+                if not any(pair['type'] == document.__str__() for pair in job_documents):
+                    s = {'type': document.__str__(), 'required': 'false'}
+                    job_documents.append(s)
+
+            doc_serializer = DocumentSerializer(job_documents, many=True)
 
             if job.comments is not None:
                 job_comments.append({
@@ -473,7 +560,8 @@ class JobListingLatestView(APIView):
                 'comments': job_comments,
                 'job_type': job.job_type,
                 'remote': job.remote,
-                'deadline': job.deadline
+                'deadline': job.deadline,
+                'required_docs': doc_serializer.data
             })
         return JsonResponse(job_list, safe=False)
 

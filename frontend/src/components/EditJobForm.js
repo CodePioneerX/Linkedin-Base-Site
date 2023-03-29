@@ -30,7 +30,7 @@ export const EditJobForm = (job) => {
     const [image, setImage] = useState(job.job.image)
     const [deadline, setDeadline] = useState(job.job.deadline)
     const [requiredDocs, setRequiredDocs] = useState(job.job.required_docs)
-    
+
     // Retrieve the user's login information from the Redux store
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin;
@@ -43,7 +43,7 @@ export const EditJobForm = (job) => {
         e.preventDefault()
         
         // Dispatch an action to update the job details
-        dispatch(update_job(job.job.id, author, title, description, remote, active, company, job_type, image, salary, location, deadline))
+        dispatch(update_job(job.job.id, author, title, description, remote, active, company, job_type, image, salary, location, deadline, requiredDocs))
         
         // Reload the page
         window.location.reload(false)
@@ -167,13 +167,13 @@ export const EditJobForm = (job) => {
                     <Input name='listing-image' type="file" id='customFile' onChange={(e)=> setImage(e.target.files[0])}/>
                 </Col>
             </Row>
-            {possible_docs.map((doc, index) => (
+            {requiredDocs.map((doc, index) => (
                 <Row key={index}>
                     <Col xs='2'>
-                        <Input className='form-doc-input' type='checkbox' name={doc} checked={required_docs[doc]} onChange={() => updateRequiredDocs(doc)} />
+                        <Input className='form-doc-input' type='checkbox' name={doc.type} checked={doc.required} onChange={() => updateRequiredDocs(doc.type)} />
                     </Col>
                     <Col xs='10'>
-                        <Label className='labelE' style={{position:'relative', left:'-100px'}} for={doc}>{`${doc}`} Required</Label>
+                        <Label className='labelE' style={{position:'relative', left:'-100px'}} for={doc.type}>{`${doc.type}`} Required</Label>
                     </Col>
                 </Row>
             ))}

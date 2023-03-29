@@ -45,7 +45,8 @@ export const CreateJobForm = () => {
     const submitHandler = (e) => {
         // Dispatch action to create job listing
         e.preventDefault()
-        dispatch(create_job(userInfo.email, email,title, description, remote, active, company, job_type, image, salary, location, deadline))
+        console.log(requiredDocs)
+        dispatch(create_job(userInfo.email, email, title, description, remote, active, company, job_type, image, salary, location, deadline, requiredDocs))
     }
 
     // on page load, set the min value of the deadline input to current date
@@ -62,6 +63,7 @@ export const CreateJobForm = () => {
         document.getElementById("deadlineInput").setAttribute("min", today);
     }, []);
 
+
     // updates requiredDocs based on checkbox selection
     function updateRequiredDocs(document) {
         const newDocs = requiredDocs.map(doc => {
@@ -75,6 +77,7 @@ export const CreateJobForm = () => {
           }
         })
         setRequiredDocs(newDocs)
+        console.log('newDocs', newDocs)
       }
     
     // Render form for creating job listing

@@ -28,7 +28,7 @@ export default class Jobs extends Component {
   componentDidMount() {
     axios.get('http://localhost:8000/api/jobs/')
       .then(res => this.setState({ jobs: res.data }))
-  }
+    }
 
   handleClick = job => () => {
     this.props.setjob(job)
@@ -53,7 +53,7 @@ export default class Jobs extends Component {
             <h1>Latest Jobs</h1>
         </Row>
         <Row style={{display: "flex", flexDirection: "column", alignItems: "center", marginBottom:"100px"}}>
-            {this.state.jobs.map(job => (
+            {this.state.jobs && Array.isArray(this.state.jobs) && this.state.jobs.map(job => (
               <Row key={job.id} style={{marginBottom: "25px", width: "75%"}}>
               <Container style={{padding: "35px 0 0 35px", paddingBottom: "0" }}>
                 <Col xs={10} style={{ borderRadius: "20px", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "-40px" }}>
@@ -68,7 +68,6 @@ export default class Jobs extends Component {
                 </Row>
                 <Container className='darker'>
                   <p>{job.content}</p>
-                  {/* <img className='img_box' src={('http://localhost:8000/images/'+job.image.split('images/')[1])} /> */}
                   {job.image ? <img src={'http://localhost:8000'+job.image} alt={job.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
                   <p>Description: {job.description}</p>
                   <p>Location: {job.location}</p>
@@ -76,13 +75,23 @@ export default class Jobs extends Component {
                   <p>Position type: {job.job_type}</p>
                   {job.remote ? <p>Remote work possible.</p> : <p>Must be willing to work in person.</p>} 
                   <p>Recruiter: {job.author}</p>
-                  <p>Likes: {job.likes}</p>
                   <p>Posted on: {job.created_at.slice(0, 10)}</p>
                   <p>Application deadline: {job.deadline.slice(0, 10)}</p>
+                  <p>Required documents: </p>
+                  <>{job.required_docs && 
+                    <ul>
+                      {job.required_docs.map((doc, index) => (
+                      <>
+                        {doc.required && 
+                        <li key={index}>
+                          {doc.type}
+                        </li>}
+                      </>
+                      ))}
+                    </ul>}</>
                   <br/>
-
-                {job.comments.length > 0 && <h4>Comments</h4>}
-                {job.comments.length > 0 && job.comments.map(comment => (
+                {job.comments && job.comments.length > 0 && <h4>Comments</h4>}
+                {job.comments && job.comments.length > 0 && job.comments.map(comment => (
                     
                     <Row>
                             <MDBContainer >
