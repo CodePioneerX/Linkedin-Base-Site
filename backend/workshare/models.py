@@ -80,17 +80,68 @@ class JobListing(models.Model):
     description = models.TextField()
     remote = models.BooleanField(default=False)
     company = models.CharField(max_length=255)
-    job_type = models.CharField(max_length=255)
     image = models.ImageField(upload_to='images/', null=True, blank=True)
     comments = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True)
     likes = models.IntegerField(default=0)
-    salary = models.IntegerField(default=0)
     location = models.CharField(max_length=255)
     status = models.BooleanField(default=True)
     required_docs = models.ManyToManyField('Document', default=None, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     deadline = models.DateTimeField(default=get_deadline)
     
+    ANNUALLY = 'ANNUALLY'
+    HOURLY = 'HOURLY'
+    FLATRATE = 'FLATRATE'
+
+    SALARY_TYPE_CHOICES = [
+        (ANNUALLY, 'Annually'),
+        (HOURLY, 'Hourly'),
+        (FLATRATE, 'FlatRate')
+    ]
+
+    salary = models.IntegerField(default=0)
+    salary_type = models.CharField(
+        max_length=8,
+        choices=SALARY_TYPE_CHOICES,
+        default=HOURLY
+    )
+
+    PERMANENT = 'PERMANENT'
+    TEMPORARY = 'TEMPORARY'
+    CONTRACT = 'CONTRACT'
+    CASUAL = 'CASUAL'
+
+    EMPLOYMENT_TERM_CHOICES = [
+        (PERMANENT, 'Permanent'),
+        (TEMPORARY, 'Temporary'),
+        (CONTRACT, 'Contract'),
+        (CASUAL, 'Casual')
+    ]
+
+    employment_term = models.CharField(
+        max_length=9,
+        choices=EMPLOYMENT_TERM_CHOICES,
+        default=PERMANENT
+    )
+
+    FULLTIME = 'FULLTIME'
+    PARTTIME = 'PARTTIME'
+    INTERNSHIP = 'INTERNSHIP'
+    FREELANCE = 'FREELANCE'
+
+    JOB_TYPE_CHOICES = [
+        (FULLTIME, 'FullTime'),
+        (PARTTIME, 'PartTime'),
+        (INTERNSHIP, 'Internship'),
+        (FREELANCE, 'Freelance')
+    ]
+
+    job_type = models.CharField(
+        max_length=10,
+        choices=JOB_TYPE_CHOICES,
+        default=FULLTIME
+    )
+
     INTERNAL = 'INTERNAL'
     EXTERNAL = 'EXTERNAL'
     

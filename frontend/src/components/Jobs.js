@@ -21,6 +21,8 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 
+import { salary_types, employment_terms, job_types } from '../constants/jobConstants';
+
 export default class Jobs extends Component {
   state = {
     jobs: []
@@ -69,19 +71,19 @@ export default class Jobs extends Component {
                 </Row>
                 <Container className='darker'>
                   <p>{job.content}</p>
-                  {console.log(job)}
                   {job.image ? <img src={'http://localhost:8000'+job.image} alt={job.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
-                  <p>Description: {job.description}</p>
+                  <p style={{whiteSpace: 'pre-wrap'}}>Description: {job.description}</p>
                   <p>Location: {job.location}</p>
-                  <p>Salary: {job.salary}$/hour</p>
-                  <p>Position type: {job.job_type}</p>
                   {job.remote ? <p>Remote work possible.</p> : <p>Must be willing to work in person.</p>} 
+                  <p>Salary: ${job.salary} {salary_types.map(type => ((type.value == job.salary_type) && <span key={type.value}>{type.name}</span>))}</p>
+                  <p>Position type: {job_types.map(type => ((type.value == job.job_type) && <span key={type.value}>{type.name}</span>))}</p>
+                  <p>Employment term: {employment_terms.map(type => ((type.value == job.employment_term) && <span key={type.value}>{type.name}</span>))}</p>
                   <p>Recruiter: {job.author}</p>
                   <p>Posted on: {job.created_at.slice(0, 10)}</p>
                   <p>Application deadline: {job.deadline.slice(0, 10)}</p>
                   <p>Status: {job.status ? <>Applications Open</> : <>Applications Closed</>}</p>
                   <p>Application Type: {(job.listing_type == 'INTERNAL') ? <>Internal</> : <a href={job.link}>External</a>}</p>
-                  <p>Required documents: </p>
+                  {job.required_docs.find(doc => doc.required === true) && <p>Required documents: </p>}
                   {job.required_docs && 
                   <>
                     <ul key={job.id}>

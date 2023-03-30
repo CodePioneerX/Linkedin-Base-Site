@@ -17,3 +17,17 @@ export const required_docs_template = [{'type':'CV', 'required': false},
                             {'type':'Transcript', 'required': false}];
 
 export const possible_docs = ['CV', 'Cover Letter', 'Letter of Recommendation', 'Portfolio', 'Transcript'];
+
+export const salary_types = [{name: 'Annually', value: 'ANNUALLY'}, 
+                            {name: 'Hourly', value: 'HOURLY'}, 
+                            {name: 'Flat Rate', value: 'FLATRATE'}];
+
+export const employment_terms = [{name: 'Permanent', value: 'PERMANENT'},
+                                {name: 'Temporary', value: 'TEMPORARY'},
+                                {name: 'Contract', value: 'CONTRACT'},
+                                {name: 'Casual', value: 'CASUAL'}];
+
+export const job_types = [{name: 'Full Time', value: 'FULLTIME'},
+                        {name: 'Part Time', value: 'PARTTIME'},
+                        {name: 'Internship', value: 'INTERNSHIP'},
+                        {name: 'Freelance', value: 'FREELANCE'}];

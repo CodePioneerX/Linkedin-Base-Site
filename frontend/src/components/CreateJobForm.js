@@ -1,15 +1,13 @@
 // Import necessary modules
-import Button from 'react-bootstrap/Button';
 import React, { useState, useEffect} from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import '../Assets/css/Login.css';
-import { Form, FormGroup, Label, Input, Container, Row, Col } from 'reactstrap';
-import axios from 'axios';
+import { Form, Label, Input, Container, Row, Col } from 'reactstrap';
 import Alert from 'react-bootstrap/Alert';
 import{ create_job } from '../actions/jobActions'
 import '../Assets/css/App.css'
-import { required_docs_template, possible_docs } from '../constants/jobConstants';
+import { required_docs_template, possible_docs, salary_types, employment_terms, job_types } from '../constants/jobConstants';
 
 // Define CreateJobForm component
 export const CreateJobForm = () => {
@@ -30,32 +28,29 @@ export const CreateJobForm = () => {
     const [remote, setRemote] = useState('')
     const [status, setStatus] = useState('true')
     const [company, setCompany] = useState('')
-    const [job_type, setJob_type] = useState('')
-    const [salary, setSalary] = useState('')
     const [location, setLocation] = useState('')
     const [image, setImage] = useState('')
     const [deadline, setDeadline] = useState('')
     const [requiredDocs, setRequiredDocs] = useState(required_docs)
+    const [salary, setSalary] = useState('')
+    const [salaryType, setSalaryType] = useState('ANNUALLY')
     const [listingType, setListingType] = useState('INTERNAL')
     const [link, setLink] = useState('')
-
-    const checkListingType = () => {
-        if (listingType == 'Internal')
-            return false;
-        else
-            return true;
-    }
-
+    const [employmentTerm, setEmploymentTerm] = useState('PERMANENT')
+    const [jobType, setJobType] = useState('FULLTIME')
+    
     // Define function to handle form submission
     const submitHandler = (e) => {
         e.preventDefault()
         
         // Dispatch action to create job listing
-        dispatch(create_job(userInfo.email, email, title, description, remote, status, company, job_type, image, salary, location, deadline, requiredDocs, listingType, link)).then(
+        dispatch(create_job(userInfo.email, email, title, description, remote, status, company, image, location, deadline, requiredDocs, salary, salaryType, listingType, link, employmentTerm, jobType)).then(
             (res) => {
                 if (res.success) {
                     navigate('/jobs')
                     window.location.reload(false)
+                } else {
+                    alert(res.message)
                 }
             }
         )
@@ -75,20 +70,20 @@ export const CreateJobForm = () => {
         document.getElementById("deadlineInput").setAttribute("min", today);
         document.getElementById("deadlineInput").setAttribute("value", today);
 
-        console.log(requiredDocs)
+        setDeadline(today);
     }, []);
 
 
     // updates requiredDocs based on checkbox selection
     function updateRequiredDocs(document) {
         const newDocs = requiredDocs.map(doc => {
-          if (doc.type !== document) {
-            return doc;
-          }
           if (doc.type === document) {
             return {
-              ...doc, required: !(doc.required)
-            };
+                ...doc, required: !(doc.required)
+              };
+          }
+          else {
+            return doc;
           }
         })
         setRequiredDocs(newDocs)
@@ -114,37 +109,57 @@ export const CreateJobForm = () => {
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='job-title'>Job Title</Label>
-                        <Input name='job-title' id='form6Example3' required='true' value={title} onChange={(e)=> setTitle(e.target.value)} />
+                        <Input name='job-title' id='form6Example3' required={true} value={title} onChange={(e)=> setTitle(e.target.value)} />
                     </Col>
                     <Col>
                         <Label className='labelE' for='company'>Company</Label>
-                        <Input name='company' id='form6Example5' required='true' value={company} onChange={(e)=> setCompany(e.target.value)}/>
+                        <Input name='company' id='form6Example5' required={true} value={company} onChange={(e)=> setCompany(e.target.value)}/>
                     </Col>
                 </Row>
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='description'>Description</Label>
-                        <Input name='description' type='textarea' rows='4' id='form6Example8' required='true' value={description} onChange={(e)=> setDescription(e.target.value)}/>
+                        <Input name='description' type='textarea' rows='4' id='form6Example8' required={true} value={description} onChange={(e)=> setDescription(e.target.value)}/>
                     </Col>
                 </Row>
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='location'>Location</Label>
-                        <Input name='location' id='form6Example4' required='true' value={location} onChange={(e)=> setLocation(e.target.value)}/>
+                        <Input name='location' id='form6Example4' required={true} value={location} onChange={(e)=> setLocation(e.target.value)}/>
                     </Col>
                     <Col>
                         <Label className='labelE' for='job-type'>Job Type</Label>
-                        <Input name='job-type' id='form6Example6' required='true' value={job_type} onChange={(e)=> setJob_type(e.target.value)}/>
+                        <Input name='job-type' id='job-type' type='select' required={true} value={jobType} onChange={(e)=> setJobType(e.target.value)}>
+                            {job_types.map(type => (
+                                <option key={type.value} value={type.value}>{type.name}</option>
+                            ))}
+                        </Input>
+                    </Col>
+                    <Col>
+                        <Label className='labelE' for='employment-term'>Employment Term</Label>
+                        <Input name='employment-term' id='employment-term' type='select' required={true} value={employmentTerm} onChange={(e)=> setEmploymentTerm(e.target.value)}>
+                            {employment_terms.map(type => (
+                                <option key={type.value} value={type.value}>{type.name}</option>
+                            ))}
+                        </Input>
                     </Col>
                 </Row>
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='salary'>Salary</Label>
-                        <Input id='form6Example7' type='number' label='Salary' required='true'  value={salary} onChange={(e)=> setSalary(e.target.value)}/>    
+                        <Input name='salary' id='salary' type='number' label='Salary' required={true} value={salary} onChange={(e)=> setSalary(e.target.value)}/>    
+                    </Col>
+                    <Col>
+                        <Label className='labelE' for='salary_type'>Salary Type</Label>
+                        <Input name='salary-type' id='salary-type' type='select' required={true} value={salaryType} onChange={(e) => setSalaryType(e.target.value)}>
+                            {salary_types.map(type => (
+                                <option key={type.value} value={type.value}>{type.name}</option>
+                            ))}
+                        </Input>
                     </Col>
                     <Col>
                         <Label className='labelE' for='deadline'>Application Deadline</Label>
-                        <Input type='date' id='deadlineInput' required='true' value={deadline} onChange={(e)=> setDeadline(e.target.value)}/>
+                        <Input type='date' id='deadlineInput' required={true} value={deadline} onChange={(e)=> setDeadline(e.target.value)}/>
                     </Col>
                 </Row>
                 <Row className='mb-4'>
@@ -170,7 +185,7 @@ export const CreateJobForm = () => {
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='link'>Link to Application</Label>
-                        <Input name='link' id='form6Example4' required='true' value={link} onChange={(e) => setLink(e.target.value)}/>
+                        <Input name='link' id='form6Example4' required={true} value={link} onChange={(e) => setLink(e.target.value)}/>
                     </Col>
                 </Row>}
                 <Row className='mb-4'>
@@ -197,7 +212,6 @@ export const CreateJobForm = () => {
           </Container>) : (
           <Row>
           
-          //Banner displaying if you are not logged in
           <Alert  className='alertLogin' key='primary' variant='primary'>
               <h5>You are not signed in! Please <a href="/login">Sign in</a> or <a href="/register">Register</a>!</h5>
           </Alert>

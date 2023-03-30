@@ -331,13 +331,15 @@ def JobListingUpdateView(request, pk):
     job.description = data['description']
     job.remote = remote
     job.company = data['company']
-    job.job_type = data['job_type']
-    job.salary = data['salary']
     job.location = data['location']
     job.status = status
     job.deadline = data['deadline']
+    job.salary = data['salary']
+    job.salary_type = data['salary_type']
     job.listing_type = data['listing_type']
     job.link = data['link']
+    job.employment_term = data['employment_term']
+    job.job_type = data['job_type']
 
     job.save()
 
@@ -517,15 +519,17 @@ class JobListingCreateView(CreateAPIView):
                 title=request.data['title'],
                 description=request.data['description'],
                 image=request.data['image'],
-                salary=salary,
                 company = request.data['company'],
                 location = request.data['location'],
                 status = stat,
-                job_type = request.data['job_type'],
                 remote = remote_,
                 deadline = request.data['deadline'],
+                salary=salary,
+                salary_type = request.data['salary_type'],
                 listing_type = request.data['listing_type'],
-                link = request.data['link']
+                link = request.data['link'],
+                employment_term = request.data['employment_term'],
+                job_type = request.data['job_type']
             )
             job.save()
 
@@ -607,17 +611,19 @@ class JobListingLatestView(APIView):
                 'image': image_path,
                 'likes': job.likes,
                 'created_at': job.created_at,
-                'salary': job.salary,
                 'location': job.location,
                 'status': job.status,
                 'company': job.company,
                 'comments': job_comments,
-                'job_type': job.job_type,
                 'remote': job.remote,
                 'deadline': job.deadline,
                 'required_docs': doc_serializer.data,
+                'salary': job.salary,
+                'salary_type': job.salary_type,
                 'listing_type': job.listing_type,
-                'link': job.link
+                'link': job.link,
+                "employment_term": job.employment_term,
+                "job_type": job.job_type
             })
         return JsonResponse(job_list, safe=False)
 
