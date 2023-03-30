@@ -31,10 +31,12 @@ import{
  * @param location is the city where the job opportunity is located.
  * @param deadline is the last date that applications will be accepted for the Job Listing.
  * @param requiredDocs is a list of documents that are required to apply for the job.
+ * @param listing_type is a choice value describing if the Job Listing is an Internal or External listing.
+ * @param link is the link to apply to the external job listing.
  * @returns the success value of the request and a message providing details.
  * @throws error if there is an error while attempting to create the Job Listing.
  */
-export const create_job = (author, email, title, description, remote, active, company, job_type, image, salary, location, deadline, requiredDocs) => async (dispatch, getState) => {
+export const create_job = (author, email, title, description, remote, active, company, job_type, image, salary, location, deadline, requiredDocs, listing_type, link) => async (dispatch, getState) => {
     try {
         // Dispatching the CREATE_JOB_REQUEST action to inform the state that job creation request has started
         dispatch({
@@ -57,7 +59,7 @@ export const create_job = (author, email, title, description, remote, active, co
         // Sending the request to create a job using the axios.post() method and passing the job details along with the configuration object
         const { data } = await axios.post(
             'http://localhost:8000/api/create_job/',
-            { 'author': author, 'title': title, 'description': description, 'remote':remote ,'status':active ,'company':company ,'job_type':job_type ,'salary':salary ,'location':location, 'image':image, 'deadline': deadline, 'required_docs': requiredDocs },
+            { 'author': author, 'title': title, 'description': description, 'remote':remote ,'status':active ,'company':company ,'job_type':job_type ,'salary':salary ,'location':location, 'image':image, 'deadline': deadline, 'required_docs': requiredDocs, 'listing_type': listing_type, 'link':link },
             config
         )
         
@@ -96,10 +98,12 @@ export const create_job = (author, email, title, description, remote, active, co
  * @param location is the city where the job opportunity is located.
  * @param deadline is the last date that applications will be accepted for the Job Listing.
  * @param requiredDocs is a list of documents that are required to apply for the job.
+ * @param listing_type is a choice value describing if the Job Listing is an Internal or External listing.
+ * @param link is the link to apply to the external job listing.
  * @returns the success value of the request and a message providing details.
  * @throws error if there is an error while attempting to update the Job Listing.
  */
-export const update_job = (jobID, author, title, description, remote, active, company, job_type, image, salary, location, deadline, required_docs) => async (dispatch, getState) => {
+export const update_job = (jobID, author, title, description, remote, active, company, job_type, image, salary, location, deadline, required_docs, listing_type, link) => async (dispatch, getState) => {
     try {
         // Dispatching the UPDATE_JOB_REQUEST action to inform the state that job update request has started
         dispatch({
@@ -130,7 +134,10 @@ export const update_job = (jobID, author, title, description, remote, active, co
         'salary': salary,
         'location': location,
         'deadline': deadline,
-        'required_docs': required_docs }, 
+        'required_docs': required_docs,
+        'listing_type': listing_type,
+        'link': link
+        }, 
         config)
 
          // If the request is successful, update the state with the new job data

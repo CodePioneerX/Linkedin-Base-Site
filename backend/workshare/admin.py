@@ -11,7 +11,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'content', 'image', 'likes', 'author', 'created_at')
 
 class JobListingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'description', 'remote', 'job_type', 'image', 'likes', 'salary', 'location', 'status', 'author', 'get_required_docs', 'created_at', 'deadline')
+    list_display = ('id', 'title', 'description', 'remote', 'job_type', 'image', 'likes', 'salary', 'location', 'status', 'author', 'get_required_docs', 'created_at', 'deadline', 'listing_type')
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('content', 'author', 'created_at')

@@ -68,7 +68,7 @@ class DocumentSerializer(serializers.Serializer):
 class JobListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobListing
-        fields = ('id', 'title', 'description','company', 'remote', 'job_type', 'image', 'comments', 'likes', 'salary', 'location', 'status', 'author', 'created_at', 'deadline')
+        fields = ('id', 'title', 'description','company', 'remote', 'job_type', 'image', 'comments', 'likes', 'salary', 'location', 'status', 'author', 'created_at', 'deadline', 'listing_type', 'link')
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:

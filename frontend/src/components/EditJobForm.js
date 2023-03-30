@@ -16,7 +16,6 @@ export const EditJobForm = (job) => {
     const [description, setDescription] = useState(job.job.description)
     const [remote, setRemote] = useState(job.job.remote)
     const [status, setStatus] = useState(job.job.status)
-    const [active, setActive] = useState(job.job.status)
     const [company, setCompany] = useState(job.job.company)
     const [job_type, setJob_type] = useState(job.job.job_type)
     const [salary, setSalary] = useState(job.job.salary)
@@ -24,6 +23,8 @@ export const EditJobForm = (job) => {
     const [image, setImage] = useState(job.job.image)
     const [deadline, setDeadline] = useState(job.job.deadline)
     const [requiredDocs, setRequiredDocs] = useState(job.job.required_docs)
+    const [listingType, setListingType] = useState(job.job.listing_type)
+    const [link, setLink] = useState(job.job.link)
 
     // Retrieve the user's login information from the Redux store
     const userLogin = useSelector((state) => state.userLogin)
@@ -37,7 +38,7 @@ export const EditJobForm = (job) => {
         e.preventDefault()
         console.log(requiredDocs)
         // Dispatch an action to update the job details
-        dispatch(update_job(job.job.id, author, title, description, remote, active, company, job_type, image, salary, location, deadline, requiredDocs)).then(
+        dispatch(update_job(job.job.id, author, title, description, remote, status, company, job_type, image, salary, location, deadline, requiredDocs, listingType, link)).then(
             (res) => {
                 if (res.success) {
                     window.location.reload(false)            
@@ -82,6 +83,7 @@ export const EditJobForm = (job) => {
         
         document.getElementById("deadlineInput").setAttribute("min", today);
         console.log(requiredDocs)
+        console.log(listingType)
     }, []);
 
     // updates requiredDocs based on checkbox selection
@@ -102,7 +104,7 @@ export const EditJobForm = (job) => {
     // Render the form for editing the job details
     return <div>
         <h2>Edit Your Job Listing</h2>
-        <Form>
+        <Form onSubmit={submitHandler}>
             <Row className='mb-4'>
                 <Col>
                     <Label className='labelE' for='contact-name'>Contact Name</Label>
@@ -116,37 +118,37 @@ export const EditJobForm = (job) => {
             <Row className='mb-4'>
                 <Col>
                     <Label className='labelE' for='job-title'>Job Title</Label>
-                    <Input name='job-title' id='form6Example3' value={title} onChange={(e)=> setTitle(e.target.value)} />
+                    <Input name='job-title' id='form6Example3' required='true' value={title} onChange={(e)=> setTitle(e.target.value)} />
                 </Col>
                 <Col>
                     <Label className='labelE' for='company'>Company</Label>
-                    <Input name='company' id='form6Example5' value={company} onChange={(e)=> setCompany(e.target.value)}/>
+                    <Input name='company' id='form6Example5' required='true' value={company} onChange={(e)=> setCompany(e.target.value)}/>
                 </Col>
             </Row>
             <Row className='mb-4'>
                 <Col>
                     <Label className='labelE' for='description'>Description</Label>
-                    <Input name='description' type='textarea' rows='4' id='form6Example8' value={description} onChange={(e)=> setDescription(e.target.value)}/>
+                    <Input name='description' type='textarea' rows='4' id='form6Example8' required='true' value={description} onChange={(e)=> setDescription(e.target.value)}/>
                 </Col>
             </Row>
             <Row className='mb-4'>
                 <Col>
                     <Label className='labelE' for='location'>Location</Label>
-                    <Input name='location' id='form6Example4' value={location} onChange={(e)=> setLocation(e.target.value)}/>
+                    <Input name='location' id='form6Example4' required='true' value={location} onChange={(e)=> setLocation(e.target.value)}/>
                 </Col>
                 <Col>
                     <Label className='labelE' for='job-type'>Job Type (Full/Part-Time, etc.)</Label>
-                    <Input name='job-type' id='form6Example6' value={job_type} onChange={(e)=> setJob_type(e.target.value)}/>
+                    <Input name='job-type' id='form6Example6' required='true' value={job_type} onChange={(e)=> setJob_type(e.target.value)}/>
                 </Col>
             </Row>
             <Row className='mb-4'>
                 <Col>
                     <Label className='labelE' for='salary'>Salary</Label>
-                    <Input id='form6Example7' type='number' label='Salary' value={salary} onChange={(e)=> setSalary(e.target.value)}/>    
+                    <Input id='form6Example7' type='number' label='Salary' required='true' value={salary} onChange={(e)=> setSalary(e.target.value)}/>    
                 </Col>
                 <Col>
                     <Label className='labelE' for='deadline'>Application Deadline</Label>
-                    <Input type='date' id='deadlineInput' value={deadline} onChange={(e)=> setDeadline(e.target.value)}/>
+                    <Input type='date' id='deadlineInput' required='true' value={deadline} onChange={(e)=> setDeadline(e.target.value)}/>
                 </Col>
             </Row>
             <Row className='mb-4'>
@@ -155,10 +157,26 @@ export const EditJobForm = (job) => {
                     <Label className='labelE' for='remote'>Remote?</Label>
                 </Col>
                 <Col style={{paddingLeft: "40px"}}>
-                    <Input name='active' className='form-checkbox-input' type='checkbox' id='form6Example8' checked={active} onChange={(e)=> setActive(!active)}/>
-                    <Label className='labelE' for='active'>Active?</Label>
+                    <Input name='status' className='form-checkbox-input' type='checkbox' id='form6Example8' checked={status} onChange={(e)=> setStatus(!status)}/>
+                    <Label className='labelE' for='status'>Active?</Label>
+                </Col>
+                <Col style={{paddingLeft: "40px"}}>
+                    <Input name='listing-type' className='form-checkbox-input' type='checkbox' id='form6Example82' checked={(listingType == 'INTERNAL') ? false : true} onChange={(e) => {
+                        (listingType == 'INTERNAL') ? 
+                        setListingType('EXTERNAL')
+                        :
+                        setListingType('INTERNAL')
+                        }}/>
+                    <Label className='labelE' for='listing-type'>External?</Label>
                 </Col>
             </Row>
+            {(listingType == 'EXTERNAL') &&  
+                <Row className='mb-4'>
+                    <Col>
+                        <Label className='labelE' for='link'>Link to Application</Label>
+                        <Input name='link' id='form6Example4' required='true' value={link} onChange={(e) => setLink(e.target.value)}/>
+                    </Col>
+            </Row>}
             <Row className='mb-4'>
                 <Col>
                     <Label className='labelE' for='listing-image'>Listing Image</Label>
@@ -178,7 +196,7 @@ export const EditJobForm = (job) => {
             <Row className='mb-4'></Row>
             <Row className='editButtonContainer'>
                 <Col xs={12} md={4}>
-                    <Button type = 'submit' className='editSaveButton' onClick={submitHandler}> Save </Button>
+                    <Button type = 'submit' className='editSaveButton'> Save </Button>
                 </Col>
                 <Col xs={12} md={4}>
                     <Button className='editCancelButton' onClick={cancelHandler}>Cancel</Button>

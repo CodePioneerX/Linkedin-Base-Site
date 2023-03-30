@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Container, Row, Col, Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios'
@@ -68,6 +69,7 @@ export default class Jobs extends Component {
                 </Row>
                 <Container className='darker'>
                   <p>{job.content}</p>
+                  {console.log(job)}
                   {job.image ? <img src={'http://localhost:8000'+job.image} alt={job.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
                   <p>Description: {job.description}</p>
                   <p>Location: {job.location}</p>
@@ -77,6 +79,8 @@ export default class Jobs extends Component {
                   <p>Recruiter: {job.author}</p>
                   <p>Posted on: {job.created_at.slice(0, 10)}</p>
                   <p>Application deadline: {job.deadline.slice(0, 10)}</p>
+                  <p>Status: {job.status ? <>Applications Open</> : <>Applications Closed</>}</p>
+                  <p>Application Type: {(job.listing_type == 'INTERNAL') ? <>Internal</> : <a href={job.link}>External</a>}</p>
                   <p>Required documents: </p>
                   {job.required_docs && 
                   <>
@@ -141,7 +145,14 @@ export default class Jobs extends Component {
 
                 <Row>
                   <Col>
-                    <Button className='btns' variant="primary">Apply</Button>
+                    {job.listing_type == 'INTERNAL' ? 
+                      <Button className='btns' variant="primary">Apply</Button> : 
+                      <>
+                        <Link to={job.link}>
+                          <Button className='btns' variant="primary">Apply Externally</Button>
+                        </Link>
+                      </>
+                    }
                   </Col>
                   <Col>
                     <Button className='btns' variant="primary">Like</Button>

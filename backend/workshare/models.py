@@ -86,13 +86,35 @@ class JobListing(models.Model):
     likes = models.IntegerField(default=0)
     salary = models.IntegerField(default=0)
     location = models.CharField(max_length=255)
-    status = models.CharField(max_length=255)
+    status = models.BooleanField(default=True)
     required_docs = models.ManyToManyField('Document', default=None, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     deadline = models.DateTimeField(default=get_deadline)
+    
+    INTERNAL = 'INTERNAL'
+    EXTERNAL = 'EXTERNAL'
+    
+    LISTING_TYPE_CHOICES = [
+        (INTERNAL, 'Internal'),
+        (EXTERNAL, 'External')
+    ]
+    
+    listing_type = models.CharField(
+        max_length=8,
+        choices=LISTING_TYPE_CHOICES,
+        default=INTERNAL
+    )
+
+    link = models.TextField(blank=True)
 
     def get_required_docs(self):
         return ",".join([str(p) for p in self.required_docs.all()])
+
+    def save(self, *args, **kwargs):
+        """Override link if listing_type set to Internal"""
+        if self.listing_type == 'INTERNAL':
+            self.link = ''
+        super().save(*args, **kwargs)
 
     #this function defines what will be returned when the class is printed. The code below will return the title.
     def __str__(self):

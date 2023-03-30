@@ -336,6 +336,8 @@ def JobListingUpdateView(request, pk):
     job.location = data['location']
     job.status = status
     job.deadline = data['deadline']
+    job.listing_type = data['listing_type']
+    job.link = data['link']
 
     job.save()
 
@@ -497,11 +499,7 @@ class JobListingCreateView(CreateAPIView):
             else:
                 salary = data['salary']
 
-            print("data", data)
-
             docs_data = {k: v for k, v in data.items() if k.startswith('required_docs')}
-            
-            print("docs_data", docs_data)
             
             docs_dict = {}
             
@@ -513,8 +511,6 @@ class JobListingCreateView(CreateAPIView):
                         docs_dict[docs_data[key]] = True
                     else:
                         docs_dict[docs_data[key]] = False
-        
-            print("docs_dict", docs_dict)
 
             job = JobListing.objects.create(
                 author=User.objects.get(email=request.data['author']),
@@ -527,7 +523,9 @@ class JobListingCreateView(CreateAPIView):
                 status = stat,
                 job_type = request.data['job_type'],
                 remote = remote_,
-                deadline = request.data['deadline']
+                deadline = request.data['deadline'],
+                listing_type = request.data['listing_type'],
+                link = request.data['link']
             )
             job.save()
 
@@ -617,7 +615,9 @@ class JobListingLatestView(APIView):
                 'job_type': job.job_type,
                 'remote': job.remote,
                 'deadline': job.deadline,
-                'required_docs': doc_serializer.data
+                'required_docs': doc_serializer.data,
+                'listing_type': job.listing_type,
+                'link': job.link
             })
         return JsonResponse(job_list, safe=False)
 

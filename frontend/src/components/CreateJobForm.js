@@ -28,8 +28,7 @@ export const CreateJobForm = () => {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [remote, setRemote] = useState('')
-    const [status, setStatus] = useState('')
-    const [active, setActive] = useState('')
+    const [status, setStatus] = useState('true')
     const [company, setCompany] = useState('')
     const [job_type, setJob_type] = useState('')
     const [salary, setSalary] = useState('')
@@ -37,13 +36,22 @@ export const CreateJobForm = () => {
     const [image, setImage] = useState('')
     const [deadline, setDeadline] = useState('')
     const [requiredDocs, setRequiredDocs] = useState(required_docs)
+    const [listingType, setListingType] = useState('INTERNAL')
+    const [link, setLink] = useState('')
+
+    const checkListingType = () => {
+        if (listingType == 'Internal')
+            return false;
+        else
+            return true;
+    }
 
     // Define function to handle form submission
     const submitHandler = (e) => {
         e.preventDefault()
         
         // Dispatch action to create job listing
-        dispatch(create_job(userInfo.email, email, title, description, remote, active, company, job_type, image, salary, location, deadline, requiredDocs)).then(
+        dispatch(create_job(userInfo.email, email, title, description, remote, status, company, job_type, image, salary, location, deadline, requiredDocs, listingType, link)).then(
             (res) => {
                 if (res.success) {
                     navigate('/jobs')
@@ -106,37 +114,37 @@ export const CreateJobForm = () => {
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='job-title'>Job Title</Label>
-                        <Input name='job-title' id='form6Example3' value={title} onChange={(e)=> setTitle(e.target.value)} />
+                        <Input name='job-title' id='form6Example3' required='true' value={title} onChange={(e)=> setTitle(e.target.value)} />
                     </Col>
                     <Col>
                         <Label className='labelE' for='company'>Company</Label>
-                        <Input name='company' id='form6Example5' value={company} onChange={(e)=> setCompany(e.target.value)}/>
+                        <Input name='company' id='form6Example5' required='true' value={company} onChange={(e)=> setCompany(e.target.value)}/>
                     </Col>
                 </Row>
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='description'>Description</Label>
-                        <Input name='description' type='textarea' rows='4' id='form6Example8' value={description} onChange={(e)=> setDescription(e.target.value)}/>
+                        <Input name='description' type='textarea' rows='4' id='form6Example8' required='true' value={description} onChange={(e)=> setDescription(e.target.value)}/>
                     </Col>
                 </Row>
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='location'>Location</Label>
-                        <Input name='location' id='form6Example4' value={location} onChange={(e)=> setLocation(e.target.value)}/>
+                        <Input name='location' id='form6Example4' required='true' value={location} onChange={(e)=> setLocation(e.target.value)}/>
                     </Col>
                     <Col>
                         <Label className='labelE' for='job-type'>Job Type</Label>
-                        <Input name='job-type' id='form6Example6' value={job_type} onChange={(e)=> setJob_type(e.target.value)}/>
+                        <Input name='job-type' id='form6Example6' required='true' value={job_type} onChange={(e)=> setJob_type(e.target.value)}/>
                     </Col>
                 </Row>
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='salary'>Salary</Label>
-                        <Input id='form6Example7' type='number' label='Salary' value={salary} onChange={(e)=> setSalary(e.target.value)}/>    
+                        <Input id='form6Example7' type='number' label='Salary' required='true'  value={salary} onChange={(e)=> setSalary(e.target.value)}/>    
                     </Col>
                     <Col>
                         <Label className='labelE' for='deadline'>Application Deadline</Label>
-                        <Input type='date' id='deadlineInput' value={deadline} onChange={(e)=> setDeadline(e.target.value)}/>
+                        <Input type='date' id='deadlineInput' required='true' value={deadline} onChange={(e)=> setDeadline(e.target.value)}/>
                     </Col>
                 </Row>
                 <Row className='mb-4'>
@@ -145,10 +153,26 @@ export const CreateJobForm = () => {
                         <Label className='labelE' for='remote'>Remote?</Label>
                     </Col>
                     <Col style={{paddingLeft: "40px"}}>
-                        <Input name='active' className='form-checkbox-input' type='checkbox' id='form6Example8' checked={active} onChange={(e)=> setActive(!active)}/>
+                        <Input name='active' className='form-checkbox-input' type='checkbox' id='form6Example8' checked={status} onChange={(e)=> setStatus(!status)}/>
                         <Label className='labelE' for='active'>Active?</Label>
                     </Col>
+                    <Col style={{paddingLeft: "40px"}}>
+                        <Input name='listing-type' className='form-checkbox-input' type='checkbox' id='form6Example82' checked={(listingType == 'INTERNAL') ? false : true} onChange={(e) => {
+                            (listingType == 'INTERNAL') ? 
+                                setListingType('EXTERNAL')
+                            :
+                                setListingType('INTERNAL')
+                            }}/>
+                        <Label className='labelE' for='listing-type'>External?</Label>
+                    </Col>
                 </Row>
+                {(listingType == 'EXTERNAL') &&  
+                <Row className='mb-4'>
+                    <Col>
+                        <Label className='labelE' for='link'>Link to Application</Label>
+                        <Input name='link' id='form6Example4' required='true' value={link} onChange={(e) => setLink(e.target.value)}/>
+                    </Col>
+                </Row>}
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='listing-image'>Listing Image</Label>
