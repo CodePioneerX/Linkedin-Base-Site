@@ -67,8 +67,8 @@ export const CreateJobForm = () => {
         
         let today = `${year}-${month}-${day}`;
         
-        document.getElementById("deadlineInput").setAttribute("min", today);
-        document.getElementById("deadlineInput").setAttribute("value", today);
+        document.getElementById("deadline").setAttribute("min", today);
+        document.getElementById("deadline").setAttribute("value", today);
 
         setDeadline(today);
     }, []);
@@ -99,33 +99,33 @@ export const CreateJobForm = () => {
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='contact-name'>Contact Name</Label>
-                        <Input name='contact-name' disabled id='form6Example1' label='Contact name' value={userLogin.userInfo.username} onChange={(e)=> setAuthor(e.target.value)} />
+                        <Input name='contact-name' disabled id='contact-name' label='Contact name' value={userLogin.userInfo.username} onChange={(e)=> setAuthor(e.target.value)} />
                     </Col>
                     <Col>
                         <Label className='labelE' for='contact-email'>Contact Email</Label>
-                        <Input name='contact-email' disabled id='form6Example2' value={userLogin.userInfo.email} onChange={(e)=> setEmail(e.target.value)}/>
+                        <Input name='contact-email' disabled id='contact-email' value={userLogin.userInfo.email} onChange={(e)=> setEmail(e.target.value)}/>
                     </Col>
                 </Row>
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='job-title'>Job Title</Label>
-                        <Input name='job-title' id='form6Example3' required={true} value={title} onChange={(e)=> setTitle(e.target.value)} />
+                        <Input name='job-title' id='job-title' required={true} value={title} onChange={(e)=> setTitle(e.target.value)} />
                     </Col>
                     <Col>
                         <Label className='labelE' for='company'>Company</Label>
-                        <Input name='company' id='form6Example5' required={true} value={company} onChange={(e)=> setCompany(e.target.value)}/>
+                        <Input name='company' id='company' required={true} value={company} onChange={(e)=> setCompany(e.target.value)}/>
                     </Col>
                 </Row>
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='description'>Description</Label>
-                        <Input name='description' type='textarea' rows='4' id='form6Example8' required={true} value={description} onChange={(e)=> setDescription(e.target.value)}/>
+                        <Input name='description' id='description' type='textarea' rows='4' required={true} value={description} onChange={(e)=> setDescription(e.target.value)}/>
                     </Col>
                 </Row>
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='location'>Location</Label>
-                        <Input name='location' id='form6Example4' required={true} value={location} onChange={(e)=> setLocation(e.target.value)}/>
+                        <Input name='location' id='location' required={true} value={location} onChange={(e)=> setLocation(e.target.value)}/>
                     </Col>
                     <Col>
                         <Label className='labelE' for='job-type'>Job Type</Label>
@@ -150,7 +150,7 @@ export const CreateJobForm = () => {
                         <Input name='salary' id='salary' type='number' label='Salary' required={true} value={salary} onChange={(e)=> setSalary(e.target.value)}/>    
                     </Col>
                     <Col>
-                        <Label className='labelE' for='salary_type'>Salary Type</Label>
+                        <Label className='labelE' for='salary-type'>Salary Type</Label>
                         <Input name='salary-type' id='salary-type' type='select' required={true} value={salaryType} onChange={(e) => setSalaryType(e.target.value)}>
                             {salary_types.map(type => (
                                 <option key={type.value} value={type.value}>{type.name}</option>
@@ -159,20 +159,20 @@ export const CreateJobForm = () => {
                     </Col>
                     <Col>
                         <Label className='labelE' for='deadline'>Application Deadline</Label>
-                        <Input type='date' id='deadlineInput' required={true} value={deadline} onChange={(e)=> setDeadline(e.target.value)}/>
+                        <Input name='deadline' id='deadline' type='date' required={true} value={deadline} onChange={(e)=> setDeadline(e.target.value)}/>
                     </Col>
                 </Row>
                 <Row className='mb-4'>
                     <Col style={{paddingLeft: "40px"}}>
-                        <Input name='remote' className='form-checkbox-input' type="checkbox"  id='form6Example81'  checked={remote} onChange={(e)=> setRemote(!remote)}/>
+                        <Input name='remote' id='remote' className='form-checkbox-input' type="checkbox" checked={remote} onChange={(e)=> setRemote(!remote)}/>
                         <Label className='labelE' for='remote'>Remote?</Label>
                     </Col>
                     <Col style={{paddingLeft: "40px"}}>
-                        <Input name='active' className='form-checkbox-input' type='checkbox' id='form6Example8' checked={status} onChange={(e)=> setStatus(!status)}/>
+                        <Input name='active' id='active' className='form-checkbox-input' type='checkbox' checked={status} onChange={(e)=> setStatus(!status)}/>
                         <Label className='labelE' for='active'>Active?</Label>
                     </Col>
                     <Col style={{paddingLeft: "40px"}}>
-                        <Input name='listing-type' className='form-checkbox-input' type='checkbox' id='form6Example82' checked={(listingType == 'INTERNAL') ? false : true} onChange={(e) => {
+                        <Input name='listing-type' id='listing-type' className='form-checkbox-input' type='checkbox' checked={(listingType == 'INTERNAL') ? false : true} onChange={(e) => {
                             (listingType == 'INTERNAL') ? 
                                 setListingType('EXTERNAL')
                             :
@@ -185,19 +185,19 @@ export const CreateJobForm = () => {
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='link'>Link to Application</Label>
-                        <Input name='link' id='form6Example4' required={true} value={link} onChange={(e) => setLink(e.target.value)}/>
+                        <Input name='link' id='link' required={true} value={link} onChange={(e) => setLink(e.target.value)}/>
                     </Col>
                 </Row>}
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='listing-image'>Listing Image</Label>
-                        <Input name='listing-image' type="file" id='customFile' onChange={(e)=> setImage(e.target.files[0])}/>
+                        <Input name='listing-image' id='listing-image' type="file" onChange={(e)=> setImage(e.target.files[0])}/>
                     </Col>
                 </Row >
                 {possible_docs.map((doc, index) => (
                     <Row key={index}>
                         <Col xs='2'>
-                            <Input className='form-doc-input' type='checkbox' name={doc} checked={required_docs[doc]} onChange={() => updateRequiredDocs(doc)} />
+                            <Input className='form-doc-input' type='checkbox' name={doc} id={doc} checked={required_docs[doc]} onChange={() => updateRequiredDocs(doc)} />
                         </Col>
                         <Col xs='10'>
                             <Label className='labelE' style={{position:'relative', left:'-100px'}} for={doc}>{`${doc}`} Required</Label>
