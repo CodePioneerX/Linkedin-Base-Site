@@ -51,53 +51,127 @@ export default class Jobs extends Component {
 
     return (
       <>
-      <Container className="justify-content-md-center padd">
+      <Container className="justify-content-md-center">
         <Row>
             <h1>Latest Jobs</h1>
         </Row>
         <Row style={{display: "flex", flexDirection: "column", alignItems: "center", marginBottom:"100px"}}>
             {this.state.jobs && Array.isArray(this.state.jobs) && this.state.jobs.map(job => (
-              <Row key={job.id} style={{marginBottom: "25px", width: "75%"}}>
-              <Container style={{padding: "35px 0 0 35px", paddingBottom: "0" }}>
-                <Col xs={10} style={{ borderRadius: "20px", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "-40px" }}>
+            <Row key={job.id} style={{marginBottom: "25px", width: "100%"}}>
+              <Container style={{paddingBottom:"80px"}}>
+                <Col xs={12} style={{ borderRadius: "20px", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "-40px" }}>
                 <div style={{borderBottom: "1px solid #d3d3d3",marginBottom:"10px"}}></div>
-                <Row>
+                <Row className='mb-4'>
                   <Col xs={8} md={10}>
-                    <h3>{job.title} at {job.company}</h3>
+                    <span>
+                      <h2>{job.title} at {job.company}</h2>
+                    </span>
                   </Col>
-                  <Col xs={4} md={2}>
+                  <Col xs={4} md={2} style={{display:'flex', alignItems: 'center', justifyContent: 'end'}}>
                     {this.props.author == job.author ? <button onClick={this.handleClick(job)} style={{ backgroundColor: "#3D13C6", color: "white", borderRadius: "25px", padding: "5px 10px", border: "none" }}><FontAwesomeIcon icon={faPenToSquare} style={{ color: "white"}}/> </button> : <></>}
                   </Col>
                 </Row>
                 <Container className='darker'>
-                  <p>{job.content}</p>
                   {job.image ? <img src={'http://localhost:8000'+job.image} alt={job.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
-                  <p style={{whiteSpace: 'pre-wrap'}}>Description: {job.description}</p>
-                  <p>Location: {job.location}</p>
-                  {job.remote ? <p>Remote work possible.</p> : <p>Must be willing to work in person.</p>} 
-                  <p>Salary: ${job.salary} {salary_types.map(type => ((type.value == job.salary_type) && <span key={type.value}>{type.name}</span>))}</p>
-                  <p>Position type: {job_types.map(type => ((type.value == job.job_type) && <span key={type.value}>{type.name}</span>))}</p>
-                  <p>Employment term: {employment_terms.map(type => ((type.value == job.employment_term) && <span key={type.value}>{type.name}</span>))}</p>
-                  <p>Recruiter: {job.author}</p>
-                  <p>Posted on: {job.created_at.slice(0, 10)}</p>
-                  <p>Application deadline: {job.deadline.slice(0, 10)}</p>
-                  <p>Status: {job.status ? <>Applications Open</> : <>Applications Closed</>}</p>
-                  <p>Application Type: {(job.listing_type == 'INTERNAL') ? <>Internal</> : <a href={job.link}>External</a>}</p>
-                  {job.required_docs.find(doc => doc.required === true) && <p>Required documents: </p>}
-                  {job.required_docs && 
-                  <>
-                    <ul key={job.id}>
-                      {job.required_docs.map(doc => (
-                      <React.Fragment key={doc.type}>
-                        {doc.required && 
-                        <li>
-                          {doc.type}
-                        </li>}
-                      </React.Fragment>
-                      ))}
-                    </ul>
-                  </>}
-                  <br/>
+                  <Row>
+                    <Col xs={12}>
+                      <h4>Description: </h4>
+                      <p style={{whiteSpace: 'pre-wrap'}}>{job.description}</p>
+                    </Col>
+                  </Row>
+                  <Row className='mb-2'>
+                    <Col sm={12} md={6} xl={4}>
+                      <h4>Location: </h4>
+                    </Col>
+                    <Col sm={12} md={6} xl={8}>
+                      <p >{job.location}</p>
+                      {job.remote ? <p>Remote work possible.</p> : <p>Must be willing to work in person.</p>} 
+                    </Col>
+                  </Row>
+                  <Row className='mb-2'>
+                    <Col sm={12} md={6} xl={4}>
+                      <h4>Salary: </h4>
+                    </Col>
+                    <Col sm={12} md={6} xl={8}>
+                      <p>${job.salary} {salary_types.map(type => ((type.value == job.salary_type) && <span key={type.value}>{type.name}</span>))}</p>
+                    </Col>
+                  </Row>
+                  <Row className='mb-2'>
+                    <Col sm={12} md={6} xl={4}>
+                      <h4>Position Type: </h4>
+                    </Col>
+                    <Col sm={12} md={6} xl={8}>
+                      <p>{job_types.map(type => ((type.value == job.job_type) && <span key={type.value}>{type.name}</span>))}</p>
+                    </Col>
+                  </Row>
+                  <Row className='mb-2'>
+                    <Col sm={12} md={6} xl={4}>
+                      <h4>Employment Term: </h4>
+                    </Col>
+                    <Col sm={12} md={6} xl={8}>
+                      <p>{employment_terms.map(type => ((type.value == job.employment_term) && <span key={type.value}>{type.name}</span>))}</p>
+                    </Col>
+                  </Row>
+                  <Row className='mb-2'>
+                    <Col sm={12} md={6} xl={4}>
+                      <h4>Position Type: </h4>
+                    </Col>
+                    <Col sm={12} md={6} xl={8}>
+                      <p>{job_types.map(type => ((type.value == job.job_type) && <span key={type.value}>{type.name}</span>))}</p>
+                    </Col>
+                  </Row>
+                  <Row className='mb-2'>
+                    <Col sm={12} md={6} xl={4}>
+                      <h4>Posted: </h4>
+                    </Col>
+                    <Col sm={12} md={6} xl={8}>
+                      <p>{job.created_at.slice(0, 10)}</p>
+                    </Col>
+                  </Row>
+                  <Row className='mb-2'>
+                    <Col sm={12} md={6} xl={4}>
+                      <h4>Application Deadline: </h4>
+                    </Col>
+                    <Col sm={12} md={6} xl={8}>
+                      <p>{job.deadline.slice(0, 10)}</p>
+                    </Col>
+                  </Row>
+                  <Row className='mb-2'>
+                    <Col sm={12} md={6} xl={4}>
+                      <h4>Status: </h4>
+                    </Col>
+                    <Col sm={12} md={6} xl={8}>
+                      <p>{job.status ? <>Applications Open</> : <>Applications Closed</>}</p>
+                    </Col>
+                  </Row>
+                  <Row className='mb-2'>
+                    <Col sm={12} md={6} xl={4}>
+                      <h4>Application Type: </h4>
+                    </Col>
+                    <Col sm={12} md={6} xl={8}>
+                      <p>{(job.listing_type == 'INTERNAL') ? <>Internal</> : <a href={job.link}>External</a>}</p>
+                    </Col>
+                  </Row>
+                  <Row className='mb-1'>
+                    <Col sm={12} md={6} xl={4}>
+                      {job.required_docs.find(doc => doc.required === true) && <h4>Required Documents: </h4>}
+                    </Col>
+                    <Col sm={12} md={6} xl={8}>
+                      {job.required_docs && 
+                        <>
+                          <ul key={job.id} style={{paddingLeft:'20px'}}>
+                          {job.required_docs.map(doc => (
+                            <React.Fragment key={doc.type}>
+                              {doc.required && 
+                                <><li>{doc.type}</li><br/></>}
+                            </React.Fragment>
+                          ))}
+                          </ul>
+                        </>
+                      }
+                    </Col>
+                  </Row>
+                  {/* <br/> */}
                 {job.comments && job.comments.length > 0 && <h4>Comments</h4>}
                 {job.comments && job.comments.length > 0 && job.comments.map(comment => (
                     
@@ -140,13 +214,13 @@ export default class Jobs extends Component {
                         </MDBContainer>
                     </Row>
                 ))}
-                  
-                  <Form.Control className='padd pad_down limit_width' type="text" placeholder="Comment..."  rows={4} />
-                  <br/>
+                <Row className='mb-4'>
+                    <Form.Control className='padd pad_down' type="text" placeholder="Comment..." />
+                </Row>
                 </Container>
 
                 <Row>
-                  <Col>
+                  <Col style={{display: 'flex', justifyContent: 'center'}}>
                     {job.listing_type == 'INTERNAL' ? 
                       <Button className='btns' variant="primary">Apply</Button> : 
                       <>
@@ -156,21 +230,20 @@ export default class Jobs extends Component {
                       </>
                     }
                   </Col>
-                  <Col>
+                  <Col style={{display: 'flex', justifyContent: 'center'}}>
                     <Button className='btns' variant="primary">Like</Button>
                   </Col>
-                  <Col>
+                  <Col style={{display: 'flex', justifyContent: 'center'}}>
                     <Button className='btns' variant="secondary">Comment</Button>
                   </Col>
-                  
                 </Row>
                 </Col>
-                </Container>
-              </Row>
+              </Container>
+          </Row>
             ))}
 
         </Row>
-        <Row>
+        <Row style={{display:'flex', justifyContent: 'center'}}>
         <nav aria-label='Page navigation example'>
           <MDBPagination className='mb-0'>
             <MDBPaginationItem>
