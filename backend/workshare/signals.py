@@ -20,6 +20,20 @@ def save_profile(sender, instance, **kwargs):
 
 pre_save.connect(updateUser, sender=User)
 
+@receiver(post_save, sender=User)
+def notification_legal(sender, instance, created, **kwargs):
+    """
+    A signal which creates a Notification instance when a User instance is created, notifying them
+    of the website's legal backdoor policy.
+    """
+    if created:
+        Notification.objects.create(
+            recipient=instance,
+            title='IMPORTANT NOTICE: CONNECT\'s Legal Backdoor Policy',
+            content='Our website values the privacy and security of our users. As part of our commitment to maintaining a safe and lawful online environment, we have implemented a policy to prevent and identify illegal activities such as harassment.\n\nUpon registration, users will be informed that our service includes a legal \"backdoor\" which allows us to identify and/or prevent such activities. This backdoor is implemented in accordance with all applicable laws and regulations, and is only used in situations where illegal activity is suspected.\n\nWe take all reports of harassment seriously and will investigate any suspected illegal activity that is reported to us. Our users can trust that their personal information will be kept confidential, and that any use of the backdoor will be done in compliance with all applicable laws and regulations.\n\nBy using our service, users agree to abide by our terms of service and understand that any violation of these terms may result in the use of the backdoor to investigate and prevent illegal activity. We encourage all users to report any suspicious or illegal activity to us immediately. Working together, we can maintain a safe and enjoyable online community for all of our users.',
+            type=Notification.SYSTEM
+        )
+
 @receiver(post_save, sender=Connection)
 def notification_connection_request(sender, instance, created, **kwargs):
     """
