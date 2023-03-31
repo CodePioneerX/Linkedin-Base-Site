@@ -74,7 +74,7 @@ class CommentSerializer(serializers.ModelSerializer):
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Notification
-        fields = ('id', 'sender', 'recipient', 'title', 'content', 'status', 'unread', 'created_at')
+        fields = ('id', 'sender', 'recipient', 'title', 'content', 'unread', 'created_at', 'type', 'content_type', 'object_id')
 
 class ConnectionSerializer(serializers.ModelSerializer):
     class Meta:

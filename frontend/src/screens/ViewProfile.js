@@ -57,7 +57,7 @@ function ViewProfile() {
   useEffect(() => {
     getProfile();
     // dispatch(get_profile(userInfo.id))
-    dispatch(get_notifications(userInfo.id))
+    userInfo && dispatch(get_notifications(userInfo.id))
   }, []);
 
   const editorMode = ()=>{

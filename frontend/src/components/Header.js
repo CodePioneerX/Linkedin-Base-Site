@@ -32,10 +32,14 @@ function Header(){
   }
 
   if (!notifications.loading) {
-    for (const notification of notifications.notifications) {
-      if (notification.unread) {
-        unreadNotifications += 1
+    try {
+      for (const notification of notifications.notifications) {
+        if (notification.unread) {
+          unreadNotifications += 1
+        }
       }
+    } catch (error) {
+      console.log(error)
     }
   }
 

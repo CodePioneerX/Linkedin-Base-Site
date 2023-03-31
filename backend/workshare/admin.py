@@ -20,7 +20,7 @@ class NotificationAdmin(admin.ModelAdmin):
     list_display = ('id', 'sender', 'recipient', 'title', 'content', 'type', 'unread', 'created_at', 'content_type', 'object_id', 'content_object')
 
 class ConnectionAdmin(admin.ModelAdmin):
-    list_display = ('sender', 'recipient', 'status')
+    list_display = ('id', 'sender', 'recipient', 'status')
 
 class RecommendationsAdmin(admin.ModelAdmin):
     list_display = ('id', 'sender', 'recipient', 'description')

@@ -1,7 +1,8 @@
 from django.db.models.signals import pre_save, post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
-from .models import Profile
+from django.contrib.contenttypes.models import ContentType
+from .models import Profile, Connection, Notification
 
 def updateUser(sender, instance, **kwargs):
     user = instance
@@ -18,3 +19,38 @@ def save_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 pre_save.connect(updateUser, sender=User)
+
+@receiver(post_save, sender=Connection)
+def notification_connection_request(sender, instance, created, **kwargs):
+    """
+    A signal which creates a Notification instance when a Connection instance is created.
+    """
+    if created:
+        Notification.objects.create(
+            sender=instance.sender,
+            recipient=instance.recipient, 
+            title=str(instance.sender.first_name) + ' has sent you a connection request.',
+            content='',
+            type=Notification.CONNECTION,
+            object_id=instance.id,
+            content_type=ContentType.objects.get_for_model(sender)
+        )
+
+@receiver(post_save, sender=Connection)
+def notification_connection_accept(sender, instance, created, **kwargs):
+    """
+    A signal which creates a Notification instance when a Connection changes from 'pending' to 'accepted'.
+    Note: in this case the sender of the Notification is the recipient of the Connection request, as the 
+    sender of the Connection request should be notified that the other person has accepted their request.
+    """
+    if not created:
+        if instance.status == 'accepted':
+            Notification.objects.create(
+                sender=instance.recipient,
+                recipient=instance.sender, 
+                title=str(instance.recipient.first_name) + ' has accepted your connection request.',
+                content='',
+                type=Notification.CONNECTION,
+                object_id=instance.id,
+                content_type=ContentType.objects.get_for_model(sender)
+            )
