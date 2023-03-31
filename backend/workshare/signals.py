@@ -2,7 +2,7 @@ from django.db.models.signals import pre_save, post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.contrib.contenttypes.models import ContentType
-from .models import Profile, Connection, Notification
+from .models import Profile, Connection, Notification, Recommendations
 
 def updateUser(sender, instance, **kwargs):
     user = instance
@@ -54,3 +54,24 @@ def notification_connection_accept(sender, instance, created, **kwargs):
                 object_id=instance.id,
                 content_type=ContentType.objects.get_for_model(sender)
             )
+
+@receiver(post_save, sender=Recommendations)
+def notification_recommendation(sender, instance, created, **kwargs):
+    """
+    A signal which creates a Notification instance when a Recommendation instance is created.
+    """
+    if created:
+        rec_content = instance.description
+
+        if len(rec_content) > 255:
+            rec_content = rec_content[:255]
+
+        Notification.objects.create(
+            sender=instance.sender.user,
+            recipient=instance.recipient.user, 
+            title=str(instance.sender.user.first_name) + ' has recommended you.',
+            content='"' + rec_content + '..."',
+            type=Notification.RECOMMENDATION,
+            object_id=instance.id,
+            content_type=ContentType.objects.get_for_model(sender)
+        )
