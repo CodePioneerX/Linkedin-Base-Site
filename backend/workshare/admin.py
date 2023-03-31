@@ -17,7 +17,7 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('content', 'author', 'created_at')
 
 class NotificationAdmin(admin.ModelAdmin):
-    list_display = ('id', 'sender', 'recipient', 'title', 'content', 'status', 'unread', 'created_at')
+    list_display = ('id', 'sender', 'recipient', 'title', 'content', 'type', 'unread', 'created_at', 'content_type', 'object_id', 'content_object')
 
 # Register your models here.
 
