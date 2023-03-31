@@ -64,7 +64,9 @@ export default class Jobs extends Component {
                 <Row className='mb-4'>
                   <Col xs={8} md={10}>
                     <span>
-                      <h2>{job.title} at {job.company}</h2>
+                      <Link to='/job' state={{job_id: job.id}}>
+                        <h2>{job.title} at {job.company}</h2>
+                      </Link>
                     </span>
                   </Col>
                   <Col xs={4} md={2} style={{display:'flex', alignItems: 'center', justifyContent: 'end'}}>

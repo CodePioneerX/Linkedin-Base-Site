@@ -558,6 +558,41 @@ class JobListingCreateView(CreateAPIView):
             message = {'detail':'A problem occurred while creating this Job Listing. Please try again later.'}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def JobListingView(request, pk):
+    """
+    A view to handle the retrieval of one Job Listing.
+    
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of Job Listing to retrieve.
+
+    Returns: 
+    - Response: JSON Response with the Job Listing information.
+    """
+    job = get_object_or_404(JobListing, pk=pk)
+    job_documents = []
+    all_docs = Document.objects.all()
+
+    if job.required_docs is not None:
+        job_docs = list(job.required_docs.all())
+        for doc in job_docs:
+            s = {'type': doc.__str__(), 'required': 'true'}
+            job_documents.append(s)
+            
+    for document in all_docs:
+        if not any(pair['type'] == document.__str__() for pair in job_documents):
+            s = {'type': document.__str__(), 'required': 'false'}
+            job_documents.append(s)
+    
+    job_serializer = JobListingSerializer(job, many=False)
+    doc_serializer = DocumentSerializer(job_documents, many=True)
+
+    serializer_list = [job_serializer.data, doc_serializer.data]
+
+    return Response(serializer_list)
+
+
 class JobListingLatestView(APIView):
     def get(self, request):
         """
