@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import WorkShare, Profile, Post, JobListing, Comment, Notification
+from .models import WorkShare, Profile, Post, JobListing, Comment, Connection, Recommendations, Notification
 
 class WorkShareAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'completed')
@@ -19,6 +19,12 @@ class CommentAdmin(admin.ModelAdmin):
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ('id', 'sender', 'recipient', 'title', 'content', 'type', 'unread', 'created_at', 'content_type', 'object_id', 'content_object')
 
+class ConnectionAdmin(admin.ModelAdmin):
+    list_display = ('sender', 'recipient', 'status')
+
+class RecommendationsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'sender', 'recipient', 'description')
+
 # Register your models here.
 
 admin.site.register(WorkShare, WorkShareAdmin)
@@ -27,3 +33,5 @@ admin.site.register(Post, PostAdmin)
 admin.site.register(JobListing, JobListingAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Notification, NotificationAdmin)
+admin.site.register(Connection,ConnectionAdmin)
+admin.site.register(Recommendations, RecommendationsAdmin)

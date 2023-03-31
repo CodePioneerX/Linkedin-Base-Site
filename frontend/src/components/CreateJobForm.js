@@ -1,3 +1,4 @@
+// Import necessary modules
 import Button from 'react-bootstrap/Button';
 import React, { useState, useEffect} from 'react'
 import { useDispatch, useSelector } from "react-redux";
@@ -8,13 +9,16 @@ import Alert from 'react-bootstrap/Alert';
 import{ create_job } from '../actions/jobActions'
 import '../Assets/css/App.css'
 
+// Define CreateJobForm component
 export const CreateJobForm = () => {
+    // Get user information from Redux store
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
   
     // const navigate = useNavigate();
     const dispatch = useDispatch();
   
+    // Define state variables for form input fields
     const [author, setAuthor] = useState('')
     const [email, setEmail] = useState('')
     const [title, setTitle] = useState('')
@@ -28,12 +32,14 @@ export const CreateJobForm = () => {
     const [location, setLocation] = useState('')
     const [image, setImage] = useState('')
 
+    // Define function to handle form submission
     const submitHandler = (e) => {
-        
+        // Dispatch action to create job listing
         e.preventDefault()
         dispatch(create_job(userInfo.email, email,title, description, remote, active, company, job_type, image, salary, location))
     }
-
+    
+    // Render form for creating job listing
     return (
     <Container className="justify-content-md-center padd">
         {userInfo ? (
@@ -85,11 +91,11 @@ export const CreateJobForm = () => {
                     </Col>
                     <Col>
                         <Label className='labelE' for='remote'>Remote?</Label>
-                        <Input name='remote' type="checkbox" id='form6Example8' checked={remote} onChange={(e)=> setRemote(true)}/>
+                        <Input name='remote' type="checkbox" id='form6Example81'  checked={remote} onChange={(e)=> setRemote(!remote)}/>
                     </Col>
                     <Col>
                         <Label className='labelE' for='active'>Active?</Label>
-                        <Input name='active' type='checkbox' id='form6Example8' checked={active} onChange={(e)=> setActive(e.target.checked)}/>
+                        <Input name='active' type='checkbox' id='form6Example8' checked={active} onChange={(e)=> setActive(!active)}/>
                     </Col>
                 </Row>
                 <Row className='mb-4'>
@@ -98,7 +104,7 @@ export const CreateJobForm = () => {
                         <Input name='listing-image' type="file" id='customFile' onChange={(e)=> setImage(e.target.files[0])}/>
                     </Col>
                 </Row>
-                <Input className='profile-button' 
+                <Input className='profile-button'  
                     type='submit'>
                     Create a Job
                 </Input>
@@ -106,6 +112,7 @@ export const CreateJobForm = () => {
           </Container>) : (
           <Row>
           
+          //Banner displaying if you are not logged in
           <Alert  className='alertLogin' key='primary' variant='primary'>
               <h5>You are not signed in! Please <a href="/login">Sign in</a> or <a href="/register">Register</a>!</h5>
           </Alert>

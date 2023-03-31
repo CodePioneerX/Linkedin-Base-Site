@@ -1,3 +1,9 @@
+#successMessage {
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+/* Styling for home component */
 .homeComponent{
   border-left:  solid #3a0f90;
   background-color: white;
@@ -9,6 +15,8 @@
     flex-direction: column;
     align-items: center;
 }
+
+/* Styling for container that holds the home component */
 .homeContainer{
   background-color: white;
     padding: 20px 60px ;
@@ -20,6 +28,8 @@
     
     align-items: center;
 }
+
+/* Styling for the background of the login form */
 .formBackground{
     background-color: #44599d;
     height: 100vh;
@@ -27,7 +37,8 @@
     align-items: center;
     justify-content: center;  
     }
-  
+
+/* Styling for the login form */  
   .form{
     background-color: white !important;
     padding: 20px 60px ;
@@ -39,30 +50,39 @@
     align-items: center;
   }
   
+
+/* Styling for the logo */
   .logo{
     color: #47449f;
     font-weight: bold;
     font-size: 20px;
   }
   
+/* Styling for the image */
   img{
     height: 50px;
   }
 
+/* Styling for the image used for editing */
   .editImg{
     height: 300px;
     
   }
 
+/* Styling for the title */
   .title{
+    padding-top: 15px;
+    padding-bottom: 15px;
     color: #5d5b8d;
     font-size: 24px;
   }
 
+/* Styling for the heading 2 */
   h2{
     color: #280950b9;
   }
   
+/* Styling for the label used for editing */
   .labelE{
     display: flex;
     align-items: center;
@@ -73,6 +93,7 @@
   }
 
 
+/* Styling for the label used for input fields */
   label{
     display: flex;
     align-items: center;
@@ -81,7 +102,8 @@
     font-size: 12px;
     cursor: pointer;
   }
-  
+ 
+/* Styling for the input fields */
   input{
     padding: 15px;
     border: none;
@@ -89,6 +111,7 @@
     border-bottom: 1px solid #a7bcff;   
   }
 
+/* Styling for the warning message when passwords don't match */
   .warningDifferentPasswords{
     padding: 10px;
     border: none;
@@ -96,19 +119,29 @@
     text-align: center;
   }
 
+/* Styling for the text within the warning message when passwords don't match */
   .warningDifferentPasswords h6{
     padding-top: 5px;
     font-size: 75%;
   }
 
+
+  #infoPasswordLength {
+    background-color:rgb(211, 244, 255);
+    color:rgb(0, 0, 87);
+  }
+
+/* Styling for the placeholder text within the email input field */
   #userEmail::placeholder{
         color: rgb(199, 213, 224);
     }
   
+/* Styling for the placeholder text within the password input field */
   #userPassword::placeholder{
       color: rgb(199, 213, 224);
   }
   
+/* Styling for the login button */
   .loginButton{
     background-color: #639dd7;
     color: white;
@@ -119,6 +152,7 @@
     cursor:pointer;   
   }
 
+/* Styling for the edit button */
   .editButton{
     background-color: #19932a;
     color: white;
@@ -129,6 +163,7 @@
     cursor:pointer;
   }
 
+/* Styling for the save button in edit mode */
   .editSaveButton{
     background-color: #19932a;
     color: white;
@@ -141,6 +176,7 @@
     margin: 10px;
   }
 
+ /* Styling for the cancel button in edit mode */
   .editCancelButton{
     /* background-color: #c80b0b;*/
     background-color: grey;
@@ -154,6 +190,7 @@
     margin: 10px;
   }
 
+/* Styling for the delete button in edit mode */
   .editDeleteButton{
     background-color: #c80b0b;
     color: white;
@@ -166,6 +203,7 @@
     margin: 10px;
   }
 
+ /* Container for the edit buttons */
   .editButtonContainer{
     /* display: flex; */
     /* flex-direction: column; */
@@ -173,6 +211,7 @@
     /* padding: 10px; */
   }
 
+/* Styling for the message displayed after logging in */
  .loginP{
     color: #6574a7;
     font-size: 12px;
@@ -181,10 +220,12 @@
     display: flex;
   }
 
+/* Styling for the placeholder text in the first name input */
   #firstName::placeholder{
     color: rgb(199, 213, 224);
   }
 
+/* Styling for the placeholder text in the last name input */
   #lastName::placeholder{
     color: rgb(199, 213, 224);
   }
