@@ -59,6 +59,11 @@ def notification_connection_accept(sender, instance, created, **kwargs):
 def notification_recommendation(sender, instance, created, **kwargs):
     """
     A signal which creates a Notification instance when a Recommendation instance is created.
+    It takes the first 255 characters of the Recommendation description to provide a preview of 
+    the content in the Notification. 
+    Note: since the Recommendation model uses Profile rather than User to identify sender and recipient, 
+    the Notification instance must be created using 'instance.(sender/receiver).user', the User instance 
+    associated with the Profile.
     """
     if created:
         rec_content = instance.description
@@ -75,3 +80,4 @@ def notification_recommendation(sender, instance, created, **kwargs):
             object_id=instance.id,
             content_type=ContentType.objects.get_for_model(sender)
         )
+
