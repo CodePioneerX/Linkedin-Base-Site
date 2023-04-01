@@ -9,6 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userActions";
 import logo from "../logo.jpg";
 import store from "../store";
+import { TbSearch, TbSettings } from "react-icons/tb";
+import { BiLogIn, BiLogOut, BiNetworkChart, BiMessageDetail } from "react-icons/bi";
+import { AiFillHome } from "react-icons/ai";
+import { BsPersonWorkspace } from "react-icons/bs";
+import { MdNotificationsNone } from "react-icons/md";
+import { CgProfile } from "react-icons/cg";
+import '../Assets/css/Header.css';
 
 function Header(){
   const userLogin = useSelector((state) => state.userLogin);
@@ -53,122 +60,138 @@ function Header(){
     //window.location.href = '/search/name/'+searchValue;
   };
 
-    return (
-      <>
-          <Navbar
-            collapseOnSelect
-            expand="lg"
-            style={{ backgroundColor: "white" }}
-            className="navigation"
-            >
-            <Container>
+return (
+  <div>
+    <div>
+      <Navbar collapseOnSelect expand="xl" style={{ backgroundColor: "white" }} className="navigation" >
+        <Container>
 
-              {userInfo ? 
-                (<Navbar.Brand href="/">
-                  <img
-                    src={logo}
-                    width="230"
-                    className="d-inline-block align-top"
-                    alt="Logo"
-                  />
-                </Navbar.Brand>) 
-                : 
-                (<Navbar.Brand href="/connecthomepage">
-                  <img
-                    src={logo}
-                    width="230"
-                    className="d-inline-block align-top"
-                    alt="Logo"
-                  />
-                </Navbar.Brand>)
-              }
+          {userInfo ? 
+            (
+              <Navbar.Brand href="/">
+                <img src={logo} width="230" className="d-inline-block align-top" alt="Logo"/>
+              </Navbar.Brand>
+            ) 
+            : 
+            (
+              <Navbar.Brand href="/connecthomepage"> 
+                <img src={logo} width="230" className="d-inline-block align-top" alt="Logo" />
+              </Navbar.Brand>
+            )}
 
-              <Form className="d-flex"> 
-                <Form.Control
-                  type="search"
-                  placeholder="Search"
-                  className="me-2"
-                  aria-label="Search"
-                  value={searchValue}
-                  onSubmit={handleSearch}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                />
+          <Form className="d-flex">
+            <Form.Control id="searchInput" type="search" placeholder="Search..." className="me-2" aria-label="Search" value={searchValue} onSubmit={handleSearch} onChange={(e) => setSearchValue(e.target.value)} />
             
-                  <Nav.Link href={`/search/name/${searchValue}`} className="btn btn-success btn-sm p-1" >
-                    Search
-                  </Nav.Link>
-              </Form>
+            <Nav.Link href={`/search/name/${searchValue}`} className="search_button" > <TbSearch className="icon" size={25} color="#3a0f90" /> </Nav.Link>
+          </Form>
 
-              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-              <Navbar.Collapse
-                id="responsive-navbar-nav"
-                className="justify-content-end"
-              >
-                <Nav className="me-auto">
+          <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
+          <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
+          
+            <Nav className="me-auto">
+              
+              {userInfo ?
+              (<Nav.Link href="/" className="option_link d-flex" >
+                <div className="d-flex align-items-center">
+                  <AiFillHome className="icon" size={18}/>
+                  <span className="ms-2">Home</span>
+                </div>
+              </Nav.Link>) 
+              : 
+              (<Nav.Link href="/connecthomepage" className="option_link d-flex" >
+                <div className="d-flex align-items-center">
+                  <AiFillHome className="icon" size={18}/>
+                  <span className="ms-2">Home</span>
+                </div>
+              </Nav.Link>)}
+              
+              {userInfo ? 
+              (<Nav.Link href="/network" className="option_link d-flex" >
+                <div className="d-flex align-items-center">
+                  <BiNetworkChart className="icon" size={18}/>
+                  <span className="ms-2">Network</span>
+                </div>
+              </Nav.Link>) 
+              :
+              (<></>)}
+              
+              <Nav.Link href="/jobs" className="option_link d-flex"  >
+                <div className="d-flex align-items-center">
+                  <BsPersonWorkspace className="icon" size={18}/>
+                  <span className="ms-2">Jobs</span>
+                </div>
+              </Nav.Link>
+              
+              {userInfo ? 
+              (<Nav.Link href="/messaging" className="option_link d-flex"  >
+                <div className="d-flex align-items-center">
+                  <BiMessageDetail className="icon" size={18}/>
+                  <span className="ms-2">Messaging</span>
+                </div>
+              </Nav.Link>) 
+              : 
+              (<></>)}
+                
+              {userInfo ? 
+              (<Nav.Link href="/notifications" className="option_link d-flex">
+                <div className="d-flex align-items-center">
+                  <MdNotificationsNone className="icon" size={21}/>
+                  <span className="ms-2">Notifications</span>
+                </div>
+              </Nav.Link>) 
+              : 
+              (<></>)}
+              
+              {userInfo ? 
+              
+                (<NavDropdown title="Profile" id="collasible-nav-dropdown" className="option_link">
+                
                   {userInfo ? 
-                (<Nav.Link href="/" style={{ paddingRight: "40px" }}>
-                    Home
-                </Nav.Link>) 
+                  (<NavDropdown.Item className="option_link d-flex" href="/profile">
+                    <div className="d-flex align-items-center">
+                      <CgProfile className="icon" size={18}/>
+                      <span className="ms-2">My Profile</span>
+                    </div>
+                  </NavDropdown.Item>) 
+                  : 
+                  (<></>)}
+
+                  {userInfo ? 
+                  (<NavDropdown.Item className="option_link d-flex" href="/settings">
+                    <div className="d-flex align-items-center">
+                      <TbSettings className="icon" size={18}/>
+                      <span className="ms-2">Settings</span>
+                    </div>
+                  </NavDropdown.Item>) 
+                  : 
+                  (<></>)}
+
+                  {userInfo ? 
+                  (<NavDropdown.Item className="option_link d-flex" href="/connecthomepage" onClick={ logoutHandler } id="logout" >
+                    <div className="d-flex align-items-center">
+                      <BiLogOut className="icon" size={18}/>
+                      <span className="ms-2">Logout</span>
+                    </div>
+                  </NavDropdown.Item>) 
+                  : 
+                  (<></>)}
+
+                </NavDropdown>) 
                 : 
-                (<Nav.Link href="/connecthomepage" style={{ paddingRight: "40px" }}>
-                  Home
-                </Nav.Link>)}
-                  {userInfo ? (
-                    <Nav.Link href="/network" style={{ paddingRight: "40px" }}>
-                    Network
-                  </Nav.Link>
-                    ) : (<></>)}
-                  <Nav.Link href="/jobs" style={{ paddingRight: "40px" }} >
-                    Jobs
-                  </Nav.Link>
-                  
-                  {userInfo ? (
-                    <Nav.Link href="/messaging"  style={{ paddingRight: "40px" }} >
-                    Messaging
-                  </Nav.Link>
-                    ) : (<></>)}
-                  {userInfo ? (
-                    <span style={{paddingRight: "40px", position: "relative"}}>
-                      <Nav.Link href="/notifications" style={{position: "relative", paddingRight: "0px" }} >
-                        Notifications
-                      </Nav.Link>
-                      {unreadNotifications ? <p style={{position: "absolute", left: "100px", bottom: "3px" ,backgroundColor: "red", borderRadius: "10px", color: "white", padding: "0 5px"}}>{unreadNotifications}</p> : <></> }
-                    </span>
-                    ) : (<></>)}
-                  {userInfo ? (
-                  <NavDropdown title="Profile" id="collasible-nav-dropdown">
-                  {userInfo ? (
-                    <NavDropdown.Item href="/profile">
-                      My Profile
-                    </NavDropdown.Item>
-                    ) : (<></>)}
-                    {userInfo ? (
-                    <NavDropdown.Item href="/settings">
-                      Settings
-                    </NavDropdown.Item>
-                     ) : (<></>)}
+                (<NavDropdown.Item className="option_link d-flex" href="/connecthomepage" id="login" >
+                  <div className="d-flex align-items-center">
+                      <BiLogIn className="icon" size={18}/>
+                      <span className="ms-2">Log In</span>
+                    </div>
+                </NavDropdown.Item>)}
+                
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </div>  
+  </div>
+);
 
-                    {userInfo ? (
-                      <NavDropdown.Item href="/connecthomepage" onClick={ logoutHandler } id="logout" >
-                        Logout
-                      </NavDropdown.Item> 
-                    ) : (
-                      <NavDropdown.Item href="/connecthomepage" id="logout" >
-                      Login
-                    </NavDropdown.Item> 
-                    )}
-
-                  </NavDropdown>
-                  ) : ( <NavDropdown.Item href="/login" id="logout" >
-                  Sign in
-                </NavDropdown.Item> )}
-                 
-                </Nav>
-              </Navbar.Collapse>
-            </Container>
-          </Navbar>
-      </>
-    );
-  
 }
 export default Header;

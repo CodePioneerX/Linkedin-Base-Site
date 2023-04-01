@@ -231,3 +231,15 @@ footer {
   height: 3rem !important;
   border-radius: 100%;
 }
+
+.form-doc-input {
+  width: 100px;
+  position: absolute;
+  left: -10px;
+}
+
+.form-checkbox-input {
+  width: 100px;
+  position: absolute;
+  left: -10px;
+}
