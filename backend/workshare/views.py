@@ -689,14 +689,6 @@ def getProfileView(request, pk):
 
     return Response(data)
 
-#Search function to look for user profiles.
-@api_view(['GET'])
-def searchProfilesView(request, searchValue, receiver_id):
-    profiles = Profile.objects.filter(name__icontains=searchValue)
-    serializer = ProfileSerializer(profiles, many=True)
-    print("DEBUG: ", profiles)
-    return Response({'receiver_id': receiver_id, 'profile': serializer.data})
-
 # This function is intended to register a user
 @api_view(['POST'])
 def registerUser(request):
@@ -892,6 +884,12 @@ def getConnectionsView(request, pk):
 # This function returns a list of 5 user profiles who the user is NOT connected to
 @api_view(['GET'])
 def getPossibleConnectionsView(request, pk):
+
+    try:
+        user = User.objects.get(pk=pk)
+    except User.DoesNotExist:
+        return Response([])
+
     connections = Connection.objects.all().filter((Q(recipient_id=pk) | Q(sender_id=pk)))
     
     connection_list = []

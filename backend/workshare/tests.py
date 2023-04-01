@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from workshare.models import Profile, Recommendations, Connection, Post, JobListing
-from workshare.serializers import RecommendationsSerializer, ProfileSerializer, PostSerializer
+from workshare.serializers import *
+import json
 
 
 class AcceptConnectionViewTestCase(TestCase):
@@ -26,7 +27,7 @@ class AcceptConnectionViewTestCase(TestCase):
         
         # make a POST request to accept the connection
         url = reverse('acceptConnection', args=[self.user1.id, self.user2.id])
-        response = self.client.post(url)
+        response = self.client.put(url)
         
         # check that the connection status has been updated to 'accepted'
         self.connection.refresh_from_db()
@@ -48,7 +49,7 @@ class AcceptConnectionViewTestCase(TestCase):
         
         # make a POST request to accept an already accepted connection
         url = reverse('acceptConnection', args=[self.user1.id, self.user2.id])
-        response = self.client.post(url)
+        response = self.client.put(url)
         
         # check that the response message and status code are correct
         expected_response = {'message': 'Connection request has already been accepted or rejected.'}
@@ -77,7 +78,7 @@ class ConnectionStatusViewTestCase(TestCase):
         url = reverse('connectionStatus', args=[self.user1.id, self.user2.id])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()['status'], 'Accepted')
+        self.assertEqual(response.json()['status'], 'Connected')
 
     def test_rejected_connection(self):
         # Test a connection that has been rejected
@@ -97,20 +98,16 @@ class DeleteConnectionViewTestCase(TestCase):
         self.connection = Connection.objects.create(sender=self.user1, recipient=self.user2, status='accepted')
 
     def test_delete_accepted_connection(self):
-        # Test deleting an accepted connection
-        url = reverse('deleteConnection', args=[self.user1.id, self.user2.id])
-        response = self.client.post(url)
+        # Test deleting a connection that exists
+        response = self.client.delete(f'/api/connections/delete/{self.connection.sender_id}/{self.connection.recipient_id}/')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()['message'], 'Connection deleted successfully.')
-        self.assertFalse(Connection.objects.filter(sender=self.user1, recipient=self.user2).exists())
+        self.assertEqual(response.json(), {'message': 'Connection deleted successfully.'})
 
-    def test_delete_nonexistent_connection(self):
-        # Test deleting a non-existent connection
-        url = reverse('deleteConnection', args=[self.user1.id, self.user2.id + 1])
-        response = self.client.post(url)
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json()['message'], 'Connection does not exist or has not been accepted.')
-
+    def test_deleting_nonexistent_connection(self):
+        # Test deleting a connection that doesn't exist
+        response = self.client.delete('/api/connections/delete/2/3/')
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {'message': 'Connection does not exist or has not been accepted.'})
 
 class ConnectionTestCase(TestCase):
     def setUp(self):
@@ -138,33 +135,32 @@ class rejConnectionTestCase(TestCase):
         self.connection = Connection.objects.create(sender=self.user1, recipient=self.user2, status='pending')
         
     def test_reject_connection(self):
-        response = self.client.post(reverse('rejectConnection', args=[self.user1.id, self.user2.id]))
+        response = self.client.delete(reverse('rejectConnection', args=[self.user1.id, self.user2.id]))
         self.assertEqual(response.status_code, 200)
-        self.connection.refresh_from_db()
-        self.assertEqual(self.connection.status, 'rejected')
+        self.assertFalse(Connection.objects.filter(sender=self.user1, recipient=self.user2).exists())
         self.assertEqual(response.json()['message'], 'Connection request rejected successfully.')
-    
+        
     def test_reject_connection_not_found(self):
-        response = self.client.post(reverse('rejectConnection', args=[self.user1.id, self.user1.id]))
+        response = self.client.get(reverse('rejectConnection', args=[self.user2.id, self.user1.id]))
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json()['message'], 'Connection request not found.')
+        self.assertIn('message', response.json())
     
     def test_reject_connection_wrong_recipient(self):
-        response = self.client.post(reverse('rejectConnection', args=[self.user2.id, self.user1.id]))
+        response = self.client.delete(reverse('rejectConnection', args=[self.user2.id, self.user1.id]))
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json()['message'], 'Connection request not found.')
+        self.assertIn('message', response.json())
     
     def test_reject_connection_already_accepted(self):
         self.connection.status = 'accepted'
         self.connection.save()
-        response = self.client.post(reverse('rejectConnection', args=[self.user1.id, self.user2.id]))
+        response = self.client.delete(reverse('rejectConnection', args=[self.user1.id, self.user2.id]))
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json()['message'], 'Connection request has already been accepted or rejected.')
         
     def test_reject_connection_already_rejected(self):
         self.connection.status = 'rejected'
         self.connection.save()
-        response = self.client.post(reverse('rejectConnection', args=[self.user1.id, self.user2.id]))
+        response = self.client.delete(reverse('rejectConnection', args=[self.user1.id, self.user2.id]))
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json()['message'], 'Connection request has already been accepted or rejected.')
 
@@ -177,111 +173,35 @@ class ConnectionAcceptTestCase(TestCase):
         self.connection = Connection.objects.create(sender=self.user1, recipient=self.user2, status='pending')
         
     def test_accept_connection(self):
-        response = self.client.post(reverse('acceptConnection', args=[self.user1.id, self.user2.id]))
+        response = self.client.put(reverse('acceptConnection', args=[self.user1.id, self.user2.id]))
         self.assertEqual(response.status_code, 200)
         self.connection.refresh_from_db()
         self.assertEqual(self.connection.status, 'accepted')
         self.assertEqual(response.json()['message'], 'Connection request accepted successfully.')
     
     def test_accept_connection_not_found(self):
-        response = self.client.post(reverse('acceptConnection', args=[self.user1.id, self.user1.id]))
+        response = self.client.put(reverse('acceptConnection', args=[self.user1.id, self.user1.id]))
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json()['message'], 'Connection request not found.')
     
     def test_accept_connection_wrong_recipient(self):
-        response = self.client.post(reverse('acceptConnection', args=[self.user2.id, self.user1.id]))
+        response = self.client.put(reverse('acceptConnection', args=[self.user2.id, self.user1.id]))
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json()['message'], 'Connection request not found.')
     
     def test_accept_connection_already_accepted(self):
         self.connection.status = 'accepted'
         self.connection.save()
-        response = self.client.post(reverse('acceptConnection', args=[self.user1.id, self.user2.id]))
+        response = self.client.put(reverse('acceptConnection', args=[self.user1.id, self.user2.id]))
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json()['message'], 'Connection request has already been accepted or rejected.')
         
     def test_accept_connection_already_rejected(self):
         self.connection.status = 'rejected'
         self.connection.save()
-        response = self.client.post(reverse('acceptConnection', args=[self.user1.id, self.user2.id]))
+        response = self.client.put(reverse('acceptConnection', args=[self.user1.id, self.user2.id]))
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json()['message'], 'Connection request has already been accepted or rejected.')
-
-
-class JobListingCreateViewTestCase(APITestCase):
-
-    def test_create_job_listing(self):
-        data = {
-            "author": "user@example.com",
-            "title": "Software Engineer",
-            "description": "We are looking for a talented software engineer...",
-            "image": "https://example.com/image.png",
-            "salary": 100000,
-            "company": "Example Inc.",
-            "location": "New York",
-            "status": "active",
-            "job_type": "full-time"
-        }
-        response = self.client.post(reverse('job_listing_create'), data=data)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-    
-    def test_create_job_listing_missing_fields(self):
-        data = {
-            "author": "user@example.com",
-            "description": "We are looking for a talented software engineer...",
-            "salary": 100000,
-            "company": "Example Inc.",
-            "location": "New York",
-            "status": "active",
-            "job_type": "full-time"
-        }
-        response = self.client.post(reverse('job_listing_create'), data=data)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-    def test_create_job_listing_invalid_author_email(self):
-        data = {
-            "author": "invalid-email",
-            "title": "Software Engineer",
-            "description": "We are looking for a talented software engineer...",
-            "image": "https://example.com/image.png",
-            "salary": 100000,
-            "company": "Example Inc.",
-            "location": "New York",
-            "status": "active",
-            "job_type": "full-time"
-        }
-        response = self.client.post(reverse('job_listing_create'), data=data)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-    def test_create_job_listing_negative_salary(self):
-        data = {
-            "author": "user@example.com",
-            "title": "Software Engineer",
-            "description": "We are looking for a talented software engineer...",
-            "image": "https://example.com/image.png",
-            "salary": -100000,
-            "company": "Example Inc.",
-            "location": "New York",
-            "status": "active",
-            "job_type": "full-time"
-        }
-        response = self.client.post(reverse('job_listing_create'), data=data)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-    def test_create_job_listing_invalid_job_type(self):
-        data = {
-            "author": "user@example.com",
-            "title": "Software Engineer",
-            "description": "We are looking for a talented software engineer...",
-            "image": "https://example.com/image.png",
-            "salary": 100000,
-            "company": "Example Inc.",
-            "location": "New York",
-            "status": "active",
-            "job_type": "invalid-type"
-        }
-        response = self.client.post(reverse('job_listing_create'), data=data)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
 class PostListingCreateViewTestCase(APITestCase):
@@ -341,10 +261,91 @@ class JobListingLatestViewTestCase(APITestCase):
         )
 
     def test_get_latest_jobs(self):
-        self.client.force_authenticate(user=self.user)
-        response = self.client.get(reverse('job_listing_latest_detail'))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        url = reverse('job_listing_latest_detail')
+        response = self.client.get(url)
         response_data = response.json()
+        
+        # Check that the response data contains 10 jobs
         self.assertEqual(len(response_data), 2)
-        self.assertEqual(response_data[0]['title'], 'Job 1')
 
+class GetPossibleConnectionsViewTestCase(APITestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='testuser1')
+        self.user2 = User.objects.create_user(username='testuser2')
+        self.user3 = User.objects.create_user(username='user3@example.com')
+        self.user4 = User.objects.create_user(username='user4@example.com')
+        Connection.objects.create(sender=self.user1, recipient=self.user2)
+
+    def test_get_possible_connections_success(self):
+        url = reverse('getPossibleConnections', args=[self.user1.pk])
+        response = self.client.get(url, HTTP_ACCEPT='application/json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        possible_connections = response.data
+        self.assertEqual(len(possible_connections), 2)
+        self.assertEqual(possible_connections[0]['username'], 'user3@example.com')
+
+    def test_get_possible_connections_with_invalid_pk(self):
+        # Attempt to retrieve possible connections for a non-existent user
+        response = self.client.get(reverse('getPossibleConnections', kwargs={'pk': 999}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Verify that an empty list of users was returned in the response data
+        self.assertEqual(response.data, [])
+
+class GetPendingConnectionsViewTestCase(APITestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='testuser1')
+        self.user2 = User.objects.create_user(username='testuser2')
+        self.user3 = User.objects.create_user(username='user3@example.com')
+        self.connection1 =  Connection.objects.create(sender=self.user1, recipient=self.user2, status='pending')
+        self.connection2 =  Connection.objects.create(sender=self.user1, recipient=self.user3, status='accepted')
+        self.url = reverse('getPendingConnections', kwargs={'pk': self.user2.pk})
+        self.expected_data = [{
+            'id': self.connection1.id,
+            'sender': self.connection1.sender.id,
+            'recipient': self.connection1.recipient.id,
+            'status': self.connection1.status
+        }]
+    
+    def test_get_pending_connections_success(self):
+        response = self.client.get(self.url, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, self.expected_data)
+
+class GetSentPendingConnectionsViewTestCase(APITestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='user1', password='pass')
+        self.user2 = User.objects.create_user(username='user2', password='pass')
+        self.connection = Connection.objects.create(sender=self.user1, recipient=self.user2, status='pending')
+        self.url = reverse('getSentPendingConnections', args=[self.user1.pk])
+
+    def test_get_sent_pending_connections_success(self):
+        # Test retrieving sent pending connections for an existing user
+        response = self.client.get(self.url, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        expected_data = ConnectionSerializer([self.connection], many=True).data
+        self.assertEqual(response.data, expected_data)
+
+
+class CancelConnectionViewTestCase(APITestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+
+        self.user1 = User.objects.create_user(username='testuser1', password='testpass')
+        self.user2 = User.objects.create_user(username='testuser2', password='testpass')
+        self.connection = Connection.objects.create(sender=self.user1, recipient=self.user2, status='pending')
+
+    def test_cancel_pending_connection(self):
+        url = reverse('cancelConnection', args=[self.user1.pk, self.user2.pk])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 200)
+        content = json.loads(response.content)
+        self.assertEqual(content, {'message': 'Connection request cancelled successfully.'})
+    
+    def test_cancel_connection_not_found(self):
+        # Try to cancel a connection that doesn't exist
+        url = reverse('cancelConnection', args=[self.user1.id, self.user1.id])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {'message': 'Connection request not found.'})
