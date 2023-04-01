@@ -61,7 +61,7 @@ function ConnectHomePage() {
           Log in
         </Button>
         <div>
-          <p className='Link' id='forgotPasswordLink'>Forgot password?&nbsp; <a href='#'> Click here</a> </p>
+          <p className='Link' id='forgotPasswordLink'>Forgot password?&nbsp; <a href='forgotpassword'> Click here</a> </p>
         </div>
       </Form>
       </div>
