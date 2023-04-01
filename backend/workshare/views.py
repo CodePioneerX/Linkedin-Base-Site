@@ -944,20 +944,22 @@ def deleteRecommendationView(request, sender_id, receiver_id):
 #Search function for users and jobs.
 @api_view(['GET'])
 def searchFunction(request):
-    search_value = request.GET.get('searchValue', None)
-    company = request.GET.get('company', None)
-    job_type = request.GET.get('jobType', None)
-    salary_min = request.GET.get('salaryMin', None)
-    salary_max = request.GET.get('salaryMax', None)
-    salary_type = request.GET.get('salaryType', None)
-    location = request.GET.get('location', None)
-    employment_term = request.GET.get('employmentTerm', None)
-    listing_type = request.GET.get('listingType', None)
-    is_remote = request.GET.get('remote', None)
+    search_value = request.GET.get('searchValue')
+    company = request.GET.get('company')
+    job_type = request.GET.get('jobType')
+    salary_min = request.GET.get('salaryMin')
+    salary_max = request.GET.get('salaryMax')
+    salary_type = request.GET.get('salaryType')
+    location = request.GET.get('location')
+    employment_term = request.GET.get('employmentTerm')
+    listing_type = request.GET.get('listingType')
+    is_remote = request.GET.get('remote')
 
-    jobs = JobListing.objects.all()
-    if search_value:
-        jobs = jobs.filter(title__icontains=search_value)
+    if search_value is not None:
+        jobs = JobListing.objects.filter(title__icontains=search_value)
+    else:
+        jobs = JobListing.objects.all()
+
     if company:
         jobs = jobs.filter(company = company)
     if job_type:
@@ -979,9 +981,10 @@ def searchFunction(request):
     if is_remote == 'true':
         jobs = jobs.filter(remote=True)
     
-    users = User.objects.all()
-    if search_value:
-        users = users.filter(first_name__icontains=search_value)
+    if search_value is None:
+        users = []
+    else:
+        users = User.objects.filter(first_name__icontains =search_value)
 
     user_serializer = UserSerializer(users, many=True)
     jobs_serializer = JobListingSerializer(jobs, many=True)
