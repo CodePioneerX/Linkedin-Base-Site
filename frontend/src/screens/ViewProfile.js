@@ -13,10 +13,14 @@ import { EditProfileForm } from '../components/EditProfileForm';
 import { EditPostForm } from '../components/EditPostForm';
 import '../Assets/css/App.css'
 import { get_profile } from '../actions/userActions'
+import ConnectionCard from '../components/ConnectionCard';
+import RecommendationCard from "../components/RecommendationCard";
 
 
 function ViewProfile() {
   const [profile, setProfile] = useState("");
+  const [recommendation, setRecommendation] = useState("");    //Holds and sets the value
+  const [receivedRecommendations, setReceivedRec]= useState(""); 
   const [editor, setEditor] = useState(false)
   const [postEditor, setPostEditor] = useState(false)
   
@@ -30,14 +34,21 @@ function ViewProfile() {
   useEffect(() => {
     if (!userInfo) {
       navigate("/");
-    }
+    } else {
+    getProfile();
+  }
   }, [userInfo, navigate]);
 
   const getProfile = async () => {
     const { data } = await axios.get(
       `http://localhost:8000/api/profile/` + userInfo.id
     );
-    setProfile(data);
+    setProfile(data.profile);
+    setRecommendation(data.sent_recommendations);
+    // console.log(data)
+    setReceivedRec(data.received_recommendations);
+
+    // console.log(data)
   };
 
   useEffect(() => {
@@ -66,7 +77,9 @@ function ViewProfile() {
   }
 
   return (
+    
     <Container className="justify-content-md-center padd">
+     
       {userInfo ? (
         <div className="profile-page">
           <div style={{ display: "flex" }}>
@@ -113,16 +126,23 @@ function ViewProfile() {
 
                             <div className="profile-card">
                               <h2 className="padd_small"><b>Recommendations</b></h2>
+                              
+                     
                               <Tabs style={{paddingTop:"1rem"}}
                                 defaultActiveKey="recieved"
-                                id="recievedRecommendations"
+                                id="receivedRecommendations"
                                 className="mb-3">
-                                <Tab eventKey="recieved" title="Recieved">
-                                  <p>This where the recieved recommendations will show</p>
-                                </Tab>
-                                <Tab eventKey="recommended" title="Recommended">
-                                    <p>This where the recommended will show</p>
-                                </Tab>
+                  
+                              <Tab eventKey="received" title="Received">
+                                {receivedRecommendations && Array.isArray(receivedRecommendations) && receivedRecommendations.map((rec, index) => (
+                                  <RecommendationCard key={rec.id} senderId={rec.sender} recipientId={rec.recipient} description={rec.description} type={'received'}/>
+                                ))}
+                              </Tab>
+                              <Tab eventKey="recommended" title="Recommended">
+                                {recommendation && Array.isArray(recommendation) && recommendation.map((rec, index) => (
+                                  <RecommendationCard key={rec.id} senderId={rec.sender} recipientId={rec.recipient} description={rec.description} type={'sent'}/> 
+                                ))}
+                              </Tab>
                             </Tabs>             
                             </div>
 

@@ -30,7 +30,10 @@ export const EditProfileForm =(profile)=>{
     
     const submitHandler = (e)=>{
         e.preventDefault()
-    
+        if (name ===""){
+            alert("Name cannot be empty!")
+            return;
+        }
         dispatch(update_profile(userInfo.id, name, title, city, about, experience, education, image, work, volunteering, courses, projects, awards, languages))
         
         window.location.reload(false);

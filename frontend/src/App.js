@@ -10,22 +10,33 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { Container } from 'react-bootstrap';
+import { ProfileScreen } from "./screens/ProfileScreen";
 import LoginPage from './screens/LoginPage';
+import ForgotPassword from './screens/ForgotPassword';
+import PasswordReset from './screens/PasswordReset';
+import ConnectHomePage from './screens/ConnectHomePage';
 import RegisterPage from './screens/RegisterPage';
 import ViewProfile from "./screens/ViewProfile";
-import CreateJob from './screens/CreateJob';
+import CreateJobForm from './components/CreateJobForm';
 import CreatePost from './screens/CreatePost';
-import MyNetwork from './screens/MyNetwork';
-import Job from './screens/Job';
+import {MyNetwork} from './screens/MyNetwork';
+import JobScreen from './screens/JobScreen';
+import JobsScreen from './screens/JobsScreen';
 import Messaging from './screens/Messaging';
 import Notification from './screens/Notification';
 import Settings from "./screens/Settings";
 import Home from './screens/Home';
+import SearchScreen from "./screens/SearchScreen";
 import  {Provider} from 'react-redux';
 import userInfoFromStorage from './store'
 import store from './store';
 
+
 const router = createBrowserRouter([
+  {
+    path: "/connecthomepage",
+    element: <ConnectHomePage/>,
+  },
   {
     path: "/",
     element: <Home/>,
@@ -33,6 +44,14 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element:<LoginPage/>,
+  },
+  {
+    path: "/forgotpassword",
+    element:<ForgotPassword/>,
+  },
+  {
+    path: "/password_reset_form/:uidb64/:token",
+    element:<PasswordReset/>,
   },
   {
     path: "/register",
@@ -45,7 +64,10 @@ const router = createBrowserRouter([
     element: <MyNetwork/>,
   },{
     path: "/jobs",
-    element: <Job/>,
+    element: <JobsScreen/>,
+  },{
+    path: "/job",
+    element: <JobScreen/>,
   },{
     path: "/messaging",
     element: <Messaging/>,
@@ -55,12 +77,19 @@ const router = createBrowserRouter([
   },{
     path: "/settings",
     element: <Settings/>,
-  },{
+  },
+  {
     path: "/create/job/",
-    element: <CreateJob/>
+    element: <CreateJobForm/>
+  },{
+    path: "search/name/:name",
+    element: <SearchScreen/>
   },{
     path: "create/post/",
     element: <CreatePost/>
+  },{
+    path: "/profileScreen",
+    element: <ProfileScreen/>
   }
 
 ]);

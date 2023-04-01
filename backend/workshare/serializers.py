@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
-from .models import WorkShare, Profile, Post, JobListing, Comment
+from .models import WorkShare, Profile, Post, JobListing, Comment, Recommendations, Connection
 
 class WorkShareSerializer(serializers.ModelSerializer):
     class Meta:
@@ -61,12 +61,26 @@ class UserSerializerWithToken(UserSerializer):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
 
+class DocumentSerializer(serializers.Serializer):
+    type = serializers.CharField(max_length=200)
+    required = serializers.BooleanField()
+        
 class JobListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobListing
-        fields = ('id', 'title', 'description','company', 'remote', 'job_type', 'image', 'comments', 'likes', 'salary', 'location', 'status', 'author')
+        fields = ('id', 'title', 'description','company', 'remote', 'image', 'comments', 'likes', 'location', 'status', 'author', 'created_at', 'deadline', 'salary', 'salary_type', 'listing_type', 'link', 'employment_term', 'job_type')
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id', 'content', 'author')
+
+class ConnectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Connection
+        fields = '__all__'
+
+class RecommendationsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recommendations
+        fields = '__all__'
