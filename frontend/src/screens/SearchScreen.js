@@ -34,7 +34,17 @@ function SearchScreen() {
   useEffect(() => {
     if (name) {
         console.log(name)
-      axios.get('http://localhost:8000/api/search/'+name)
+      axios.get('http://localhost:8000/api/search/',
+      {'searchValue': name, 
+            'company': company,
+            'location': location, 
+            'jobType': jobType,
+            'employmentTerm': employmentTerm, 
+            'salaryMin': salaryMin,
+            'salaryMax': salaryMax,
+            'salaryType': salaryType, 
+            'listingType': listingType,
+            'remote': remote})
         .then(response => {
             setSearchPeople(response.data.users);
             setSearchJob(response.data.jobs);
@@ -76,7 +86,7 @@ function SearchScreen() {
                     'Content-type': 'application/json'
                 }
             }
-            const { data } = await axios.get(`http://localhost:8000/api/search/` + name, 
+            const { data } = await axios.get(`http://localhost:8000/api/search/`, 
             {'searchValue': name, 
             'company': company,
             'location': location, 
@@ -88,9 +98,11 @@ function SearchScreen() {
             'listingType': listingType,
             'remote': remote}, 
             config)
+            console.log(data)
             console.log('filter success')
             //set the job arrays with new returned value
-        
+            setSearchPeople(data.users);
+            setSearchJob(data.jobs);
           }catch(error){
             console.log(error.response && error.response.data.detail
                 ? error.response.data.detail
