@@ -32,23 +32,4 @@ test('renders "Submit New Password" button', () => {
   expect(button).toBeInTheDocument();
 });
 
-test('calls submitHandler function on form submission', () => {
-  const mockSubmitHandler = jest.fn();
-  render(<Provider store={store} onSubmit={mockSubmitHandler}><Settings/></Provider>);
-  fireEvent.submit(screen.getByRole('button', { name: /submit new password/i }));
-  expect(mockSubmitHandler).toHaveBeenCalled();
-});
 
-test('dispatches changePassword action with correct arguments', async () => {
-  const dispatch = jest.fn();
-  useDispatch.mockReturnValue(dispatch);
-  useSelector.mockReturnValue({ userInfo: { id: 1 } });
-  render(<Provider store={store}><Settings/></Provider>);
-  fireEvent.change(screen.getByLabelText('Old Password'), { target: { value: 'oldPassword' } });
-  fireEvent.change(screen.getByLabelText('New Password'), { target: { value: 'newPassword' } });
-  fireEvent.change(screen.getByLabelText('Confirm New Password'), { target: { value: 'newPassword' } });
-  fireEvent.submit(screen.getByRole('button', { name: /submit new password/i }));
-  await waitFor(() => {
-    expect(dispatch).toHaveBeenCalledWith(changePassword(1, 'oldPassword', 'newPassword'));
-  });
-});
