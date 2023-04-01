@@ -34,10 +34,6 @@ function Header(){
     store.dispatch(logout());
   }
 
-  function getUnreadNotifications() {
-
-  }
-
   if (!notifications.loading) {
     try {
       for (const notification of notifications.notifications) {
@@ -52,12 +48,7 @@ function Header(){
 
   const handleSearch = (event) => {
     event.preventDefault();
-   // dispatch(search(searchValue));
 
-
-    // navigate('/search/name/'+searchValue);
-    //redirect to search page
-    //window.location.href = '/search/name/'+searchValue;
   };
 
 return (
@@ -135,8 +126,16 @@ return (
               {userInfo ? 
               (<Nav.Link href="/notifications" className="option_link d-flex">
                 <div className="d-flex align-items-center">
-                  <MdNotificationsNone className="icon" size={21}/>
+                {unreadNotifications ? 
+                (<>
+                  <MdNotificationsNone className="icon text-danger" size={21}/>  
+                  <span className="ms-2 text-danger">Notifications</span> : 
+                </>) 
+                : 
+                (<>
+                  <MdNotificationsNone className="icon" size={21}/>  
                   <span className="ms-2">Notifications</span>
+                </>)}
                 </div>
               </Nav.Link>) 
               : 

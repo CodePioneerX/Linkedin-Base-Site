@@ -34,3 +34,7 @@ span {
     }
 
 }
+
+.unread_notifications {
+    color: danger
+}
