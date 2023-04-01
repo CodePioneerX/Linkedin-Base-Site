@@ -19,15 +19,15 @@ function SearchScreen() {
   //variable for entering filter form
   const [filterForm, setFilterForm] = useState(false);
   //variables for filter feature
-  const [company, setCompany] = useState('select an option');
-  const [jobType, setJobType] = useState('select an option');
+  const [company, setCompany] = useState('');
+  const [jobType, setJobType] = useState('');
   const [salaryMin, setSalaryMin] = useState(0);
   const [salaryMax, setSalaryMax] = useState(99999999);
-  const [salaryType, setSalaryType] = useState('select an option');
-  const [location, setLocation] = useState('select an option');
-  const [employmentTerm, setEmploymentTerm] = useState('select an option');
-  const [listingType, setListingType] = useState('select an option');
-  const [remote, setRemote] = useState('select an option');
+  const [salaryType, setSalaryType] = useState('');
+  const [location, setLocation] = useState('');
+  const [employmentTerm, setEmploymentTerm] = useState('');
+  const [listingType, setListingType] = useState('');
+  const [remote, setRemote] = useState('');
 
 
 //get the original searched result without applying any filters
@@ -65,15 +65,15 @@ function SearchScreen() {
 //Apply the filter value and update the search result
   const applyFilter = async (e)=>{
     e.preventDefault()
-    console.log(company)
-    console.log(location)
-    console.log(jobType)
-    console.log(employmentTerm)
-    console.log(salaryMin)
-    console.log(salaryMax)
-    console.log(salaryType)
-    console.log(listingType)
-    console.log(remote)
+    // console.log(company)
+    // console.log(location)
+    // console.log(jobType)
+    // console.log(employmentTerm)
+    // console.log(salaryMin)
+    // console.log(salaryMax)
+    // console.log(salaryType)
+    // console.log(listingType)
+    // console.log(remote)
     //constraints on salary input, make sure the data sent to backend is valid
     if(salaryMax < 0 || salaryMin < 0){
       alert("salary cannot be negative!")
@@ -102,17 +102,26 @@ function SearchScreen() {
             'listingType': listingType,
             'remote': remote}}, 
             config)
-            console.log(data)
-            console.log('filter success')
+            // console.log(data)
+            // console.log('filter success')
             //set the job arrays with new returned value
             setSearchPeople(data.users);
             setSearchJob(data.jobs);
+            setCompany('');
+            setJobType('');
+            setSalaryMin(0);
+            setSalaryMax(99999999);
+            setSalaryType('');
+            setLocation('');
+            setEmploymentTerm('');
+            setListingType('');
+            setRemote('');
           }catch(error){
             console.log(error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.message)
         }
-    setFilterForm(false) 
+        setFilterForm(false) 
 }
 
 //save the search filter value for Job alert
@@ -204,7 +213,7 @@ const quitFilter = (e) => {
                 <Label className='labelE' for="Job Type">Job Type</Label>
                     <Input  name="Job Type" id="Job Type" type='select'
                     onChange={(e)=> setJobType(e.target.value)}>
-                    <option key={"select an option"} value={"select an option"}>select an option</option>
+                    <option key={"select an option"} value={""}>select an option</option>
                        <option key={"FULLTIME"} value={"FULLTIME"}>Full Time</option>
                        <option key={"PARTTIME"} value={"PARTTIME"}>Part Time</option>
                        <option key={"INTERNSHIP"} value={"INTERNSHIP"}>Internship</option>
@@ -215,7 +224,7 @@ const quitFilter = (e) => {
                 <Label className='labelE' for="Employment Term">Employment Term</Label>
                     <Input  name="Employment Term" id="Employment Term" type='select'
                     onChange={(e)=> setEmploymentTerm(e.target.value)}>
-                     <option key={"select an option"} value={"select an option"}>select an option</option>
+                     <option key={"select an option"} value={""}>select an option</option>
                        <option key={"PERMANENT"} value={"PERMANENT"}>Permanent</option>
                        <option key={"TEMPORARY"} value={"TEMPORARY"}>Temporary</option>
                        <option key={"CONTRACT"} value={"CONTRACT"}>Contract</option>
@@ -241,7 +250,7 @@ const quitFilter = (e) => {
                 <Label className='labelE' for="SalaryType">Salary Type</Label>
                     <Input  type="select" name="SalaryType" value={salaryType} id="SalaryType" 
                     onChange={(e)=> setSalaryType(e.target.value)}>
-                      <option key={"select an option"} value={"select an option"}>select an option</option>
+                      <option key={"select an option"} value={""}>select an option</option>
                        <option key={"ANNUALLY"} value={"ANNUALLY"}>Annually</option>
                        <option key={"HOURLY"} value={"HOURLY"}>Hourly</option>
                        <option key={"FLATRATE"} value={"FLATRATE"}>Flat rate</option>
@@ -256,7 +265,7 @@ const quitFilter = (e) => {
                 <Label className='labelE' for="Listing Type">External?</Label>
                     <Input  name="Listing Type" id="Listing Type" type='select'
                     onChange={(e)=> setListingType(e.target.value)}>
-                    <option key={"select an option"} value={"select an option"}>select an option</option>
+                    <option key={"select an option"} value={""}>select an option</option>
                        <option key={'EXTERNAL'} value={'EXTERNAL'}>Yes</option>
                        <option key={'INTERNAL'} value={'INTERNAL'}>No</option>
                     </Input>
@@ -265,7 +274,7 @@ const quitFilter = (e) => {
                 <Label className='labelE' for="Remote">Remote?</Label>
                     <Input  name="Remote" id="Remote" type='select'
                     onChange={(e)=> setRemote(e.target.value)}>
-                    <option key={"select an option"} value={"select an option"}>select an option</option>
+                    <option key={"select an option"} value={""}>select an option</option>
                        <option key={'true'} value={'true'}>Yes</option>
                        <option key={'false'} value={'false'}>No</option>  
                     </Input>
