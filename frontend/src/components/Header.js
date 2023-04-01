@@ -125,7 +125,7 @@ return (
               
               {userInfo ? 
               
-                (<NavDropdown title="Profile" id="collasible-nav-dropdown" classname="option_link">
+                (<NavDropdown title="Profile" id="collasible-nav-dropdown" className="option_link">
                 
                   {userInfo ? 
                   (<NavDropdown.Item className="option_link d-flex" href="/profile">
