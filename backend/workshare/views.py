@@ -940,3 +940,51 @@ def deleteRecommendationView(request, sender_id, receiver_id):
     
     recommendation.delete()
     return Response({"message": "Recommendation deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+#Search function for users and jobs.
+@api_view(['GET'])
+def searchFunction(request):
+    search_value = request.GET.get('searchValue', None)
+    job_type = request.GET.get('jobType', None)
+    salary_min = request.GET.get('salaryMin', None)
+    salary_max = request.GET.get('salaryMax', None)
+    salary_type = request.GET.get('salaryType', None)
+    location = request.GET.get('location', None)
+    employment_term = request.GET.get('employmentTerm', None)
+    listing_type = request.GET.get('listingType', None)
+    is_remote = request.GET.get('remote', None)
+
+    jobs = JobListing.objects.all()
+    if search_value:
+        jobs = jobs.filter(title__icontains=search_value)
+    if job_type:
+        jobs = jobs.filter(job_type=job_type)
+    if salary_min and salary_max:
+        jobs = jobs.filter(salary__range=(salary_min, salary_max))
+    elif salary_min:
+        jobs = jobs.filter(salary__gte=salary_min)
+    elif salary_max:
+        jobs = jobs.filter(salary__lte=salary_max)
+    if salary_type:
+        jobs = jobs.filter(salary_type=salary_type)
+    if location:
+        jobs = jobs.filter(location__icontains=location)
+    if employment_term:
+        jobs = jobs.filter(employment_term=employment_term)
+    if listing_type:
+        jobs = jobs.filter(listing_type=listing_type)
+    if is_remote == 'true':
+        jobs = jobs.filter(remote=True)
+    
+    users = User.objects.all()
+    if search_value:
+        users = users.filter(first_name__icontains=search_value)
+
+    user_serializer = UserSerializer(users, many=True)
+    jobs_serializer = JobListingSerializer(jobs, many=True)
+    
+    data = {
+        "users": user_serializer.data,
+        "jobs": jobs_serializer.data}
+    
+    return Response(data)
