@@ -945,6 +945,7 @@ def deleteRecommendationView(request, sender_id, receiver_id):
 @api_view(['GET'])
 def searchFunction(request):
     search_value = request.GET.get('searchValue', None)
+    company = request.GET.get('company', None)
     job_type = request.GET.get('jobType', None)
     salary_min = request.GET.get('salaryMin', None)
     salary_max = request.GET.get('salaryMax', None)
@@ -957,6 +958,8 @@ def searchFunction(request):
     jobs = JobListing.objects.all()
     if search_value:
         jobs = jobs.filter(title__icontains=search_value)
+    if company:
+        jobs = jobs.filter(company = company)
     if job_type:
         jobs = jobs.filter(job_type=job_type)
     if salary_min and salary_max:
