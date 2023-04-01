@@ -18,6 +18,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import Q
 import datetime
+from itertools import chain
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -260,6 +261,22 @@ def updateUserProfile(request, pk):
 
     return Response(serializer.data)
     
+@api_view(['GET'])
+def PostNewsfeedView(request, pk):
+    """
+    A view to handle retrieving a user's newsfeed, consisting of their posts and the posts of any other user who they are connected with. 
+    """
+    sent = Connection.objects.all().filter(sender__id = pk).values_list('recipient', flat=True)
+    received = Connection.objects.all().filter(recipient__id = pk).values_list('sender', flat=True)
+
+    connections = list(chain(sent, received, [pk]))
+
+    posts = Post.objects.all().filter(author__id__in=connections).order_by('-created_at')
+
+    serializer = PostSerializer(posts, many=True)
+
+    return Response(serializer.data)
+
 # This function is intended to allow the user to update an existing post that they posted
 @api_view(['PUT'])    
 def PostUpdateView(request, pk):

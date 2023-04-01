@@ -14,7 +14,7 @@ export default class Newsfeed extends Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:8000/api/posts/`)
+        axios.get(`http://localhost:8000/api/newsfeed/${this.props.id}`)
             .then(res => this.setState({ posts: res.data }))
     }
 

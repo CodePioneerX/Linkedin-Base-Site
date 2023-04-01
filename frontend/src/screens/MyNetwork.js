@@ -17,6 +17,8 @@ export const MyNetwork =()=> {
     const [pendingConnectionList, setPendingConnectionList] = useState("");
     const [pendingSentConnectionList, setPendingSentConnectionList] = useState("");
     const [unconnectedList, setUnconnectedList] = useState("");
+    const [postEditor, setPostEditor] = useState(false);
+    const [post, setPost] = useState('');
     
     //retrieve the connection list from the back end
     const getConnections = async () => {
@@ -72,6 +74,14 @@ export const MyNetwork =()=> {
           ? error.response.data.detail
           : error.message)
       }
+    }
+
+    const postEditorMode = () => {
+      setPostEditor(true)
+    }
+  
+    const quitPostEditor = () => {
+      setPostEditor(false)
     }
 
     useEffect(() => {
@@ -136,7 +146,7 @@ export const MyNetwork =()=> {
                   Create a Post
                 </Link>
           </Container>
-          <Newsfeed/>
+          <Newsfeed id={userInfo.id} author={userInfo.email} edit={postEditorMode} quit={quitPostEditor} setpost={setPost} />
           </div>
           :
           <Container className="justify-content-md-center padd">

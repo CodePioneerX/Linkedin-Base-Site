@@ -48,7 +48,7 @@ function Home() {
                   Create a Post
                 </Link>
               </Container>
-              <Newsfeed author={userInfo.email} edit={postEditorMode} quit={quitPostEditor} setpost={setPost} />
+              <Newsfeed id={userInfo.id} author={userInfo.email} edit={postEditorMode} quit={quitPostEditor} setpost={setPost} />
               <Jobs edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.email}/>
           </>}
         </div>
