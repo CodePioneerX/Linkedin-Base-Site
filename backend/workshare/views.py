@@ -960,9 +960,9 @@ def searchFunction(request):
     else:
         jobs = JobListing.objects.all()
 
-    if company and company != "select an option":
+    if company and company != "":
         jobs = jobs.filter(company = company)
-    if job_type and job_type != "select an option":
+    if job_type and job_type != "":
         jobs = jobs.filter(job_type=job_type)
     if salary_min and salary_max:
         jobs = jobs.filter(salary__range=(salary_min, salary_max))
@@ -970,15 +970,15 @@ def searchFunction(request):
         jobs = jobs.filter(salary__gte=salary_min)
     elif salary_max:
         jobs = jobs.filter(salary__lte=salary_max)
-    if salary_type and salary_type != "select an option":
+    if salary_type and salary_type != "":
         jobs = jobs.filter(salary_type=salary_type)
-    if location and location != "select an option":
+    if location and location != "":
         jobs = jobs.filter(location__icontains=location)
-    if employment_term and employment_term != "select an option":
+    if employment_term and employment_term != "":
         jobs = jobs.filter(employment_term=employment_term)
-    if listing_type and listing_type != "select an option":
+    if listing_type and listing_type != "":
         jobs = jobs.filter(listing_type=listing_type)
-    if is_remote and is_remote != "select an option":
+    if is_remote and is_remote != "":
         if is_remote != 'true':
             jobs = jobs.filter(remote=False)
         if is_remote != 'false':
