@@ -35,7 +35,8 @@ function SearchScreen() {
     if (name) {
         console.log(name)
       axios.get('http://localhost:8000/api/search/',
-      {'searchValue': name, 
+      { params:{   
+            'searchValue': name, 
             'company': company,
             'location': location, 
             'jobType': jobType,
@@ -44,10 +45,12 @@ function SearchScreen() {
             'salaryMax': salaryMax,
             'salaryType': salaryType, 
             'listingType': listingType,
-            'remote': remote})
+            'remote': remote}}
+            )
         .then(response => {
             setSearchPeople(response.data.users);
             setSearchJob(response.data.jobs);
+            console.log(response.data)
         }
         )
         .catch(error => {
@@ -87,7 +90,8 @@ function SearchScreen() {
                 }
             }
             const { data } = await axios.get(`http://localhost:8000/api/search/`, 
-            {'searchValue': name, 
+            {params:{
+              'searchValue': name, 
             'company': company,
             'location': location, 
             'jobType': jobType,
@@ -96,7 +100,7 @@ function SearchScreen() {
             'salaryMax': salaryMax,
             'salaryType': salaryType, 
             'listingType': listingType,
-            'remote': remote}, 
+            'remote': remote}}, 
             config)
             console.log(data)
             console.log('filter success')
