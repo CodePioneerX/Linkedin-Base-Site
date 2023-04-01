@@ -979,7 +979,10 @@ def searchFunction(request):
     if listing_type and listing_type != "select an option":
         jobs = jobs.filter(listing_type=listing_type)
     if is_remote and is_remote != "select an option":
-        jobs = jobs.filter(remote=is_remote)
+        if is_remote != 'true':
+            jobs = jobs.filter(remote=False)
+        if is_remote != 'false':
+            jobs = jobs.filter(remote=True)
     
     if search_value is None:
         users = []
