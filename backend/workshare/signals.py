@@ -2,7 +2,9 @@ from django.db.models.signals import pre_save, post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.contrib.contenttypes.models import ContentType
-from .models import Profile, Connection, Notification, Recommendations
+from django.shortcuts import get_object_or_404
+from .models import Profile, Connection, Notification, Recommendations, JobAlert, JobListing
+from django.db.models import Q, F, Value, CharField, Count
 
 def updateUser(sender, instance, **kwargs):
     user = instance
@@ -95,3 +97,36 @@ def notification_recommendation(sender, instance, created, **kwargs):
             content_type=ContentType.objects.get_for_model(sender)
         )
 
+@receiver(post_save, sender=JobListing)
+def job_alert_notification(sender, instance, created, **kwargs):
+    """
+    A signal which creates a Notification instance when a JobListing is created, and when Users
+    exist who are associated with a JobAlert with parameters that match the JobListing's attributes.
+    """
+    if created:
+        job_alerts = JobAlert.objects.all() \
+            .annotate(search=Value(instance.title, output_field=CharField())) \
+            .filter(Q(search__icontains=F('search_term')) &
+            (Q(company__isnull=True) | Q(company__iexact=instance.company)) &
+            (Q(location__isnull=True) | Q(location__iexact=instance.location)) &
+            (Q(job_type__isnull=True) | Q(job_type__iexact=instance.job_type)) &
+            (Q(employment_term__isnull=True) | Q(employment_term__iexact=instance.employment_term)) &
+            (Q(salary_type__isnull=True) | Q(salary_type__iexact=instance.salary_type)) &
+            (Q(listing_type__isnull=True) | Q(listing_type__exact=instance.listing_type)) &
+            (Q(remote__isnull=True)) | Q(remote__exact=instance.remote))
+
+        distinct_users = job_alerts.values('user').annotate(Count('user'))
+        
+        for user in distinct_users:
+            try:
+                recipient = User.objects.get(id=user['user'])
+                Notification.objects.create(
+                    recipient=recipient, 
+                    title='A job has been posted that matches one of your saved searches.',
+                    content='Details: ' + instance.title + ' at ' + instance.company + ' in ' + instance.location + '.',
+                    type=Notification.JOBALERT,
+                    object_id=instance.id,
+                    content_type=ContentType.objects.get_for_model(sender)
+                )
+            except User.DoesNotExist:
+                print('Requested user does not exist.')
