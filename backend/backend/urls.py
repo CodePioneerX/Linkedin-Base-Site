@@ -51,6 +51,7 @@ urlpatterns = [
     path('api/job/update/<int:pk>', JobListingUpdateView, name='job_listing_update'),
     path('api/job/delete/<int:pk>', JobListingDeleteView, name='job_listing_delete'),
     path('api/jobs/', JobListingLatestView.as_view(), name='job_listing_latest_detail'),
+    path('api/job/<int:pk>', views.JobListingView, name='job_detail'),
     path('api/register/' , views.registerUser, name='register'),
     path('api/connections/create/<int:sender_id>/<int:recipient_id>/', createConnection, name='createConnection'),
     path('api/connections/status/<int:user1_id>/<int:user2_id>/', connectionStatus, name='connectionStatus'),

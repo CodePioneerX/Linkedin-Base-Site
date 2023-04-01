@@ -1,16 +1,20 @@
 import React, { useState } from 'react'
 import {Container, Row} from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom'
 import Jobs from '../components/Jobs';
 import { EditJobForm } from '../components/EditJobForm';
 import Alert from 'react-bootstrap/Alert';
 
-function Job() {
+function JobsScreen() {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   const [jobEditor, setJobEditor ] = useState('')
   const [job, setJob] = useState('')
+
+  const navigate = useNavigate()
 
   const jobEditorMode = () => {
     setJobEditor(true)
@@ -25,7 +29,10 @@ function Job() {
         {userInfo ? (
           <div>
             {jobEditor ? 
-              <EditJobForm edit={jobEditorMode} quit={quitJobEditor} job={job} /> : 
+              <>
+                <Button className='mb-4' variant='secondary' onClick={() => {navigate(-1)}}>Back</Button>
+                <EditJobForm edit={jobEditorMode} quit={quitJobEditor} job={job} />  
+              </>:
               <Container>
                 <a className='btn btn-primary' href='/create/job' role='button'>
                   Create a job listing
@@ -45,4 +52,4 @@ function Job() {
   )
 
 }
-export default Job;
+export default JobsScreen;
