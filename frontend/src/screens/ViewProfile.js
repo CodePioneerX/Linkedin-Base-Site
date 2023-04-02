@@ -104,11 +104,11 @@ function ViewProfile() {
     <Container className="justify-content-md-center padd">
     
     
-     // check if user info is available
+    {/* check if user info is available */}
       {userInfo ? ( 
         <div className="profile-page">
     
-    //Some  styling 
+    {/*Some  styling */} 
           <div style={{ display: "flex" }}>
             <div style={{ flex: 5}}>
             {editor ? <EditProfileForm profile={profile} quitEditor={quitEditor}/> : 
