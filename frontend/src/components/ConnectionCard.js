@@ -7,11 +7,15 @@ import { faGripVertical } from "@fortawesome/free-solid-svg-icons";
 const ConnectionCard = (props) => {
 
 // const shortAbout = about.split(".")[0] + '...';
+    
+// Define state variables
 const [profile, setProfile] = useState("");
 
+// Function to get user profile information
 const getProfile = async () => {
     var userId;
 
+    // Set userId based on connection type
     switch(props.type) {
       case 'received':
         userId = props.senderId;
@@ -27,29 +31,36 @@ const getProfile = async () => {
         break;
     }
 
+    // Send GET request to retrieve user profile information
     const {data} = await axios.get(
       `http://localhost:8000/api/profile/${userId}`
     );
+    // Update state with retrieved profile information
     setProfile(data.profile);
     
   };
 
+  // Function to handle accepting a connection request
   const acceptHandler = async () => {
     // accept connection request
     const response = await axios.put(
       `http://localhost:8000/api/connections/accept/${props.senderId}/${props.recipientId}/`
     )
+    // Reload the page to show updated connection status
     window.location.reload()
   }
 
+  // Function to handle rejecting a connection request
   const rejectHandler = async () => {
-    // reject connection request
+   // Send DELETE request to delete connection request
     const response = await axios.delete(
       `http://localhost:8000/api/connections/reject/${props.senderId}/${props.recipientId}/`
     )
+    // Reload the page to show deleted connection request
     window.location.reload()
   }
 
+  // Function to handle cancelling a sent connection request
   const cancelHandler = async () => {
     // cancel sent connection request
     const response = await axios.delete(
@@ -58,20 +69,25 @@ const getProfile = async () => {
     window.location.reload()
   }
 
+  
+  // Function to handle sending a connection request
   const sendConnectionRequestHandler = async () => {
-    // send connection request
+  // Send POST request to create new connection request
     const response = await axios.post(
       `http://localhost:8000/api/connections/create/${props.senderId}/${props.recipientId}/`  
     )
+    // Reload the page to show newly created connection request
     window.location.reload()
   }
 
+  // Call getProfile() function when component mounts
   useEffect(() => {
      getProfile(); 
   }, []);
 
   return (
     <>
+      //Card displaying the profile name, option to view profile, buttons to accept, reject, send conection request
       <Card >
         <Row>
           <Card.Body className='card_body'style={{ height:'90px'}} >
