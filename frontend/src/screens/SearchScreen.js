@@ -29,6 +29,8 @@ function SearchScreen() {
   const [listingType, setListingType] = useState('');
   const [remote, setRemote] = useState('');
 
+  //variable for showing if the user use the filter function
+  const [useFilter, setUseFilter] = useState(false);
 
 //get the original searched result without applying any filters
   useEffect(() => {
@@ -51,6 +53,7 @@ function SearchScreen() {
             setSearchPeople(response.data.users);
             setSearchJob(response.data.jobs);
             console.log(response.data)
+            setUseFilter(false)
         }
         )
         .catch(error => {
@@ -107,6 +110,7 @@ function SearchScreen() {
             //set the job arrays with new returned value
             setSearchPeople(data.users);
             setSearchJob(data.jobs);
+            setUseFilter(true)
             setCompany('');
             setJobType('');
             setSalaryMin(0);
@@ -200,13 +204,12 @@ const quitFilter = (e) => {
                 <FormGroup className='mb-4'>
                 <Label className='labelE' for="Location">Location</Label>
                     <Input  className= 'form-control' 
-                    name="Location" id="Location" placeholder="enter Location"
+                    name="Location" id="Location" placeholder="enter location"
                     onChange={(e)=> setLocation(e.target.value)}/>
                 </FormGroup>
                 </Col>
               </Row>
 
-               
               <FormGroup className='mb-4'>
                  <Row> 
                   <Col> 
@@ -238,12 +241,12 @@ const quitFilter = (e) => {
                 <Row>
                 <Col>
                 <Label className='labelE' for="SalaryMin">Minimum Salary</Label>
-                    <Input  type="number" name="SalaryMin" value={salaryMin} id="SalaryMin" placeholder="enter Salary"
+                    <Input  type="number" name="SalaryMin" value={salaryMin} id="SalaryMin" placeholder="Enter Salary"
                     onChange={(e)=> setSalaryMin(e.target.value)}/>                    
                 </Col>
                 <Col>
                 <Label className='labelE' for="SalaryMax">Maximum Salary</Label>
-                    <Input  type="number" name="SalaryMax" value={salaryMax} id="SalaryMax" placeholder="enter Salary"
+                    <Input  type="number" name="SalaryMax" value={salaryMax} id="SalaryMax" placeholder="Enter Salary"
                     onChange={(e)=> setSalaryMax(e.target.value)}/>
                 </Col>   
                 <Col>
@@ -284,7 +287,7 @@ const quitFilter = (e) => {
 
                 <Row className='editButtonContainer'>
                 <Col xs={12} md={4}>
-                    <Button type = 'submit' className='editSaveButton' onClick={applyFilter}> Apply </Button>
+                    <Button type = 'submit' className='editSaveButton' onClick={applyFilter}> Apply Filter</Button>
                 </Col>
                 
                 <Col xs={12} md={4}>
@@ -334,7 +337,14 @@ const quitFilter = (e) => {
               ))
               }    
                 </>
-                : <p>No results for jobs</p>}
+                : <>
+                {useFilter?<><p>No matching jobs for the current filter </p>
+                </>
+                :<><p>No results for jobs</p>
+                </>}
+                
+                </>
+                }
                  
                 
                  

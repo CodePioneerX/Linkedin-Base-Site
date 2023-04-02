@@ -19,7 +19,7 @@ const JobCard = (props) => {
           
             
             <Link to='/job' state={{job_id: props.job.id}}>
-              <Button variant="primary">View Detail </Button>
+              <Button variant="primary">View Details </Button>
             </Link> 
           </Col>
         </div>
