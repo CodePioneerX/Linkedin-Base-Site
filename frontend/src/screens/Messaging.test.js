@@ -18,6 +18,6 @@ describe('Messaging Page', () => {
     const { getByRole } = render(<Messaging />);
     const headingElement = getByRole('heading');
     expect(headingElement).toBeInTheDocument();
-    expect(headingElement).toHaveTextContent(/Notification/i);
+    expect(headingElement).toHaveTextContent(/Messaging/i);
   });
 });
