@@ -7,7 +7,7 @@ import LoginPage from './LoginPage';
 import store from '../store';
 
 describe('LoginPage', () => {
-  it('should render login form and handle submit', async () => {
+  it('should render login form and handle submit', () => {
     render(
       <Provider store={store}>
         <Router>
@@ -24,8 +24,10 @@ describe('LoginPage', () => {
     user.type(passwordInput, 'testpassword');
     user.click(submitButton);
 
-    await waitFor(() =>
-      expect(screen.getByText(/new to connect/i)).toBeInTheDocument()
-    );
+    expect(emailInput).toBeInTheDocument()
+    expect(passwordInput).toBeInTheDocument()
+    expect(submitButton).toBeInTheDocument()
+    expect(screen.getByText(/new to connect/i)).toBeInTheDocument()
+    
   });
 });
