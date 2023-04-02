@@ -86,8 +86,9 @@ const getProfile = async () => {
   }, []);
 
   return (
+      
+    //Card displaying the profile name, option to view profile, buttons to accept, reject, send conection request
     <>
-      //Card displaying the profile name, option to view profile, buttons to accept, reject, send conection request
       <Card >
         <Row>
           <Card.Body className='card_body'style={{ height:'90px'}} >
