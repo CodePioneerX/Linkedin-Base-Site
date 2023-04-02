@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import Messaging from './Messaging';
 
-describe('Messaging PAge', () => {
+describe('Messaging Page', () => {
   it('renders a message to sign in or register if user is not logged in', () => {
     localStorage.removeItem('userInfo'); // Ensure user is not logged in
     const { getByText } = render(<Messaging />);
