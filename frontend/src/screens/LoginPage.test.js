@@ -18,7 +18,7 @@ describe('LoginPage', () => {
 
     const emailInput = screen.getByLabelText('Email');
     const passwordInput = screen.getByLabelText('Password');
-    const submitButton = screen.getByRole('button', { name: 'Submit' });
+    const submitButton = screen.getByRole('button', { name: 'Log in' });
 
     user.type(emailInput, 'test@test.com');
     user.type(passwordInput, 'testpassword');
