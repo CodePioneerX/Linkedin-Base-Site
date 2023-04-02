@@ -31,6 +31,20 @@ function SearchScreen() {
 
   //variable for showing if the user use the filter function
   const [useFilter, setUseFilter] = useState(false);
+  const [jobMode, setJobMode] = useState(false);
+
+  function handleClick(e) {
+    if(e =='People'){
+    setJobMode(false);}
+    if(e =='Jobs'){
+    setJobMode(true);}
+    
+    //result will be the eventKey of the tab you clicked on.
+    
+    // `homeTab` (when clicked on home tab)
+    // `profileTab` (when clicked on profile tab)
+    // `constactTab` (when clicked on Contact tab)
+}
 
 //get the original searched result without applying any filters
   useEffect(() => {
@@ -185,8 +199,11 @@ const quitFilter = (e) => {
             <div>
               {name?
               <>
+              {jobMode?<>
               <Button onClick={enterFilter}>Add Filter for Job Search</Button>
-              <hr></hr></>
+              <hr></hr>
+              </>:<></>}
+              </>
               :<></>}
               {filterForm?
               
@@ -301,18 +318,31 @@ const quitFilter = (e) => {
               :<></>}
               
             </div>
-        
-        
-        <h1>Search Results for {name}</h1>    
+           
+            {jobMode?<>
+             {useFilter?<>
+            <h1> Filtered Job Search Results for '{name}'</h1> 
+            </>
+                :<> <h1> job Search Results for '{name}'</h1>  
+                </>}
+            </>
+              
+              
+              :<><h1> User Search Results for '{name}'</h1> 
+              </>}
+            
+                
+           
         
         <div className="profile-card">
             <Tabs style={{paddingTop:"1rem"}}
              defaultActiveKey="People"
              id="recievedRecommendations"
-              className="mb-3">
+              className="mb-3"
+              onSelect={(e) => handleClick(e)}>
 
               {/* searched users   */}
-             <Tab eventKey="People" title="People">
+             <Tab eventKey="People" title="People" >
                <Container>
                 <h2>Names</h2>
                 {(searchPeople.length > 0) ? 
@@ -327,7 +357,8 @@ const quitFilter = (e) => {
              </Tab>
 
               {/* searched job */}
-             <Tab eventKey="job" title="Jobs">
+             <Tab eventKey="Jobs" title="Jobs">
+              
              <Container>
                 <h2>Job Title</h2>
                 {(searchJob.length > 0) ? 
