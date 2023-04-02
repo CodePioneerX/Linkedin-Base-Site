@@ -126,36 +126,36 @@ function SearchScreen() {
 
 //save the search filter value for Job alert
 const saveSearch = async (e)=>{
-  if(salaryMax < 0 || salaryMin < 0){
-    alert("salary cannot be negative!")
-    return;
-  }
-  if(salaryMax < salaryMin){
-    alert("maximum salary must be equal or greater than minimum salary!")
-    return;
-  }
-  try 
-      {const config = {
-              headers: {
-                  'Content-type': 'application/json'
-            }}
-          const { data } = await axios.get(`http://localhost:8000/api/jobAlert` + name, 
-          {'search': name, 
-          'company': company,
-          'location': location, 
-          'jobType': jobType,
-          'employmentTerm': employmentTerm, 
-          'salaryMin': salaryMin,
-          'salaryMax': salaryMax,
-          'salaryType': salaryType, 
-          'listingType': listingType,
-          'remote': remote}, 
-          config)
-        }catch(error){
-          console.log(error.response && error.response.data.detail
-              ? error.response.data.detail
-              : error.message)
-      }
+  // if(salaryMax < 0 || salaryMin < 0){
+  //   alert("salary cannot be negative!")
+  //   return;
+  // }
+  // if(salaryMax < salaryMin){
+  //   alert("maximum salary must be equal or greater than minimum salary!")
+  //   return;
+  // }
+  // try 
+  //     {const config = {
+  //             headers: {
+  //                 'Content-type': 'application/json'
+  //           }}
+  //         const { data } = await axios.post(`http://localhost:8000/api/` + name, 
+  //         {'search': name, 
+  //         'company': company,
+  //         'location': location, 
+  //         'jobType': jobType,
+  //         'employmentTerm': employmentTerm, 
+  //         'salaryMin': salaryMin,
+  //         'salaryMax': salaryMax,
+  //         'salaryType': salaryType, 
+  //         'listingType': listingType,
+  //         'remote': remote}, 
+  //         config)
+  //       }catch(error){
+  //         console.log(error.response && error.response.data.detail
+  //             ? error.response.data.detail
+  //             : error.message)
+  //     }
 }
 
 //show the filter form
