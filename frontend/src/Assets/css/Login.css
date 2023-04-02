@@ -154,10 +154,8 @@
 
 /* Styling for the edit button */
   .editButton{
-    border-color: #3a0f90;
-    border-width: 2px;
-    background-color: white;
-    color:#3a0f90;
+    background-color: #19932a;
+    color: white;
     width: 10%;
     padding: 10px;
     font-weight: bold;
@@ -167,10 +165,8 @@
 
 /* Styling for the save button in edit mode */
   .editSaveButton{
-    border-color: #3a0f90;
-    border-width: 2px;
-    background-color: white;
-    color:#3a0f90;
+    background-color: #19932a;
+    color: white;
     width: 70%;
     padding: 10px;
     font-weight: bold;

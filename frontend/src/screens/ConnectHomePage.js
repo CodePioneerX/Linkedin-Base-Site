@@ -47,7 +47,7 @@ function ConnectHomePage() {
       </div>
       {error && <Message variant='danger'>{error}</Message>}
       <Form id='userLoginForm' className='userLoginForm' onSubmit={submitHandler}>
-      <div id='loginTitleHome' className="loginTitleHome"><h2>Log in</h2></div>
+      <div id='loginTitleHome' className="loginTitleHome"><h2>Log in to your account</h2></div>
         <FormGroup className='loginFormGroup'>
             <Input type="email" name="email" id="emailHome" placeholder="Enter your email..." required
             value={email} onChange={(e)=> setEmail(e.target.value)}/>
@@ -61,13 +61,13 @@ function ConnectHomePage() {
           Log in
         </Button>
         <div>
-          <p className='Link' id='forgotPasswordLink'>Forgot password?&nbsp; <a href='#'> Click here</a> </p>
+          <p className='Link' id='forgotPasswordLink'>Forgot password?&nbsp;<a href='forgotpassword'> Click here</a> </p>
         </div>
       </Form>
       </div>
       <hr/>
       <div id='registerNow'>
-      <p className="newToConnect">New to CONNECT? </p>
+      <p className="newToConnect">New to CONNECT?</p>
       <Button id='registerNowButton' className='submitLoginButton' href='register/' >
         Register Now
       </Button>
