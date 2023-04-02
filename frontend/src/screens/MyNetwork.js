@@ -146,7 +146,7 @@ export const MyNetwork =()=> {
                   Create a Post
                 </Link>
           </Container>
-          <Newsfeed id={userInfo.id} author={userInfo.email} edit={postEditorMode} quit={quitPostEditor} setpost={setPost} />
+          <Newsfeed id={userInfo.id} author={userInfo.id} edit={postEditorMode} quit={quitPostEditor} setpost={setPost} />
           </div>
           :
           <Container className="justify-content-md-center padd">
