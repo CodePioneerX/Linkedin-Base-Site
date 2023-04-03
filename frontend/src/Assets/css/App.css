@@ -64,7 +64,7 @@ footer {
 
 /* Add padding, a slightly darker background color, and reduce the padding-top to a section */
 footer {
-  position: relative;
+  position: fixed;
   bottom: 0;
   width: 100%;
   padding-top: 0.5rem;
@@ -230,4 +230,16 @@ footer {
   width: 3rem !important;
   height: 3rem !important;
   border-radius: 100%;
+}
+
+.form-doc-input {
+  width: 100px;
+  position: absolute;
+  left: -10px;
+}
+
+.form-checkbox-input {
+  width: 100px;
+  position: absolute;
+  left: -10px;
 }

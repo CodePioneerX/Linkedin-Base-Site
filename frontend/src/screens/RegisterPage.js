@@ -11,51 +11,55 @@ import Alert from 'react-bootstrap/Alert';
 
 
 function RegisterPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [message, setMessage] = useState('')
-  const [name, setName] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const [name, setName] = useState('');
 
   const dispatch = useDispatch();
-  const userRegister = useSelector(state => state.userRegister)
-  const {error, loading, userInfo} = userRegister
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (userInfo) {
-        navigate('/login')
-        alert('An email will be sent to you from your CONNECT team. Click the activation link in the email to activate your account and complete the registration process.\n\nIf you do not see an email from us in your email inbox, please check your spam folder. ')
-    }
-  }, [userInfo, navigate]);
-
+  const [showAlert, setShowAlert] = useState(false);
+  const userRegister = useSelector(state => state.userRegister);
+  const {error, loading} = userRegister;
 
   const submitHandler = (e) => {
     e.preventDefault()
-    if (password != confirmPassword) {
-        setMessage('Passwords do not match')
-    } else {
-        dispatch(register(name, email, password))
+    if (password !== confirmPassword) {
+      setMessage('Passwords do not match.');
+    } 
+    else if (password.length < 8) {
+      setMessage('Password should be at least 8 characters in length. ');
+    }
+    else {
+        dispatch(register(name, email, password));
+        setTimeout(setShowAlert, 1250, true);
     }
   }
-
 
   return (
    <div className='formBackground'>
     <div className='form'>
     <span>
-      <Alert  className='warningDifferentPasswords' key='warning' variant='warning' show={Boolean((password!='') && (confirmPassword!='') && (password != confirmPassword))}>
+      <Alert  className='warningDifferentPasswords' key='warning' variant='warning' show={Boolean((password!== '') && (confirmPassword!=='') && (password !== confirmPassword))}>
         <h6>The passwords entered do not match!</h6>
       </Alert>
-      </span>
+      <Alert  className='warningDifferentPasswords' id="infoPasswordLength" key='info' variant='warning' show={Boolean(password.length < 8 && password === confirmPassword && password.length > 0)}>
+        <h6>Be sure to choose a password that is at least 8 characters in length.</h6>
+      </Alert>
+    </span>
     <span className="logo">
-        <img src={process.env.PUBLIC_URL+'/logo.png'} alt="logo" ></img>
+        <a href='/login'> <img src={process.env.PUBLIC_URL+'/logo.png'} alt="logo" ></img></a>
     </span>
      <span className="title">Sign Up</span>
      {error && <Message variant='danger'>{error}</Message>}
       {loading && <Loader />}
-    <Form className='signupForm' onSubmit={submitHandler}>
+      <div>
+      {showAlert &&
+      <Alert  id='successMessage' className='success' key='success' variant='success'>
+        <h6>An email will be sent to you from your CONNECT team. <br/><br/>Click the activation link in the email to activate your account and complete the registration process. <br/><br/>If you do not see an email from us in your email inbox, please check your spam folder or try registering again.</h6>
+      </Alert>}
+    </div>
+    {!showAlert && <Form className='signupForm' onSubmit={submitHandler}>
     <FormGroup >
       <Label for="name">Name</Label>
           <Input type="name" name="name" id="name" placeholder="Enter your name" required
@@ -88,7 +92,7 @@ function RegisterPage() {
        </div>
        <div>
        </div>
-    </Form>
+    </Form>}
     </div>
   </div>
   );
