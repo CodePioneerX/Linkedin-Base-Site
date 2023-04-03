@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
-from .models import WorkShare, Profile, Post, JobListing, Comment, Recommendations, Connection, Notification
+from .models import WorkShare, Profile, Post, JobListing, Comment, Recommendations, Connection, Notification, JobAlert
 
 class WorkShareSerializer(serializers.ModelSerializer):
     class Meta:
@@ -88,4 +88,9 @@ class ConnectionSerializer(serializers.ModelSerializer):
 class RecommendationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recommendations
+        fields = '__all__'
+
+class JobAlertSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobAlert
         fields = '__all__'

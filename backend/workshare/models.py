@@ -267,7 +267,8 @@ class JobAlert(models.Model):
         blank=True,
         null=True
     )
-    salary = models.IntegerField(default=0)
+    min_salary = models.IntegerField(blank=True, null=True)
+    max_salary = models.IntegerField(blank=True, null=True)
     listing_type = models.CharField(
         max_length=8,
         choices=LISTING_TYPE_CHOICES,

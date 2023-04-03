@@ -72,6 +72,8 @@ urlpatterns = [
     path('api/connections/possible/<int:pk>', views.getPossibleConnectionsView, name='getPossibleConnections'),
     path('api/create_recommendation/<int:sender_id>/<int:receiver_id>', createRecommendationView, name='create_recommendation'),
     path('api/delete_recommendation/<int:sender_id>/<int:receiver_id>', deleteRecommendationView, name='delete_recommendation'),
+    path('api/job_alerts/<int:pk>/', views.getJobAlertsView, name='get_job_alerts'),
+    path('api/job_alerts/delete/<int:pk>/', views.deleteJobAlertView, name='get_job_alerts'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

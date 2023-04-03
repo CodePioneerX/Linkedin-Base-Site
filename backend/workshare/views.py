@@ -10,9 +10,9 @@ from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
 from .serializers import WorkShareSerializer
 from .models import WorkShare
-from .models import Profile, Post, JobListing, Comment, Recommendations, Connection, Document, Notification
+from .models import Profile, Post, JobListing, Comment, Recommendations, Connection, Document, Notification, JobAlert
 from django.contrib.auth.models import User
-from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer, ConnectionSerializer, DocumentSerializer, NotificationSerializer
+from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer, ConnectionSerializer, DocumentSerializer, NotificationSerializer, JobAlertSerializer
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -1027,3 +1027,26 @@ def deleteRecommendationView(request, sender_id, receiver_id):
     
     recommendation.delete()
     return Response({"message": "Recommendation deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def getJobAlertsView(request, pk):
+    """
+    Retrieves all of a specific user's Job Alerts.
+    """
+    job_alerts = JobAlert.objects.all().filter(user__id=pk)
+
+    serializer = JobAlertSerializer(job_alerts, many=True)
+
+    return Response(serializer.data)
+
+@api_view(['DELETE', 'GET'])
+def deleteJobAlertView(request, pk):
+    """
+    Deletes a specific Job Alert instance.
+    """
+    try:
+        job_alert = JobAlert.objects.get(id=pk)
+        job_alert.delete()
+        return Response({"message": "Job Alert deleted."}, status=status.HTTP_200_OK)
+    except JobAlert.DoesNotExist:
+        return Response({"error": "Job Alert not found."}, status=status.HTTP_404_NOT_FOUND)

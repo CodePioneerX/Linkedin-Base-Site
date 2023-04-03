@@ -29,7 +29,7 @@ class DocumentAdmin(admin.ModelAdmin):
     list_display = ('id', 'document_type')
 
 class JobAlertAdmin(admin.ModelAdmin):
-    list_display = ('user', 'search_term', 'company', 'location', 'job_type', 'employment_term', 'salary_type', 'salary', 'listing_type', 'remote')
+    list_display = ('user', 'search_term', 'company', 'location', 'job_type', 'employment_term', 'salary_type', 'min_salary', 'max_salary', 'listing_type', 'remote')
 
 # Register your models here.
 
