@@ -222,7 +222,7 @@ def passwordResetConfirm(request, uidb64, token):
         if user is not None and token_generator.check_token(user, token):
             # If the token is valid, redirect the user to the password reset form
             ###CHANGE THIS PATH ONCE HOSTED
-            reset_url = f'http://localhost:3000/password_reset_form/{uidb64}/{token}'
+            reset_url = f'http://insightwearai.sytes.net:3000/password_reset_form/{uidb64}/{token}'
             return redirect(reset_url)
         else:
             message = {'detail':'The password reset link is invalid or has expired. Please request a new link.'}

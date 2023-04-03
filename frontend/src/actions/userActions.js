@@ -134,7 +134,7 @@ export const changePasswordForReset = (id, newPassword) => async (dispatch) => {
       };
   
       const { data } = await axios.put(
-        `http://localhost:8000/api/changePasswordForReset/${id}`,
+        `http://insightwearai.sytes.net:8000/api/changePasswordForReset/${id}`,
         { newPassword },
         config
       );
@@ -162,7 +162,7 @@ export const changePasswordForReset = (id, newPassword) => async (dispatch) => {
 
 
 /**
- * Sends a PUT request containing oldPassword and newPassword to the following url: `http://localhost:8000/api/changePassword/${id}`.
+ * Sends a PUT request containing oldPassword and newPassword to the following url: `http://insightwearai.sytes.net:8000/api/changePassword/${id}`.
  * This method can be used when a user is logged in. 
  * 
  * @param {int} id 
@@ -184,7 +184,7 @@ export const changePassword = (id, oldPassword, newPassword) => async (dispatch)
       };
   
       const { data } = await axios.put(
-        `http://localhost:8000/api/changePassword/${id}`,
+        `http://insightwearai.sytes.net:8000/api/changePassword/${id}`,
         { oldPassword, newPassword },
         config
       );
@@ -230,7 +230,7 @@ try {
     };
 
     const { data } = await axios.put(
-    `http://localhost:8000/api/password_reset/`,
+    `http://insightwearai.sytes.net:8000/api/password_reset/`,
     { email },
     config
     );
