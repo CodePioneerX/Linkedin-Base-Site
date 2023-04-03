@@ -55,7 +55,7 @@ function ViewProfile() {
 
   const getProfile = async () => {
     const { data } = await axios.get(
-      `http://localhost:8000/api/profile/` + userInfo.id
+      `http://insightwearai.sytes.net:8000/api/profile/` + userInfo.id
     );
     setProfile(data.profile);
     setRecommendation(data.sent_recommendations);

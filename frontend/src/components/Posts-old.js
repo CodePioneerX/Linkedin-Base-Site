@@ -23,7 +23,7 @@ export default class Posts extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:8000/api/posts/user/` + this.props.u_id)
+    axios.get(`http://insightwearai.sytes.net:8000/api/posts/user/` + this.props.u_id)
       .then(res => this.setState({ posts: res.data }))
   }
   
@@ -40,7 +40,7 @@ export default class Posts extends Component {
                           <div style={{borderBottom: "1px solid #d3d3d3",marginBottom:"10px"}}></div>
                         <Row style={{ display: "flex", alignItems: "center"}}>
                           {/* <img src={post.image} alt={post.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> */}
-                          {post.image ? <img src={'http://localhost:8000/'+post.image} alt="post image" style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <p>test</p>}
+                          {post.image ? <img src={'http://insightwearai.sytes.net:8000/'+post.image} alt="post image" style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <p>test</p>}
                           <Row>
                           <Col>
                             <p>{post.author}</p>

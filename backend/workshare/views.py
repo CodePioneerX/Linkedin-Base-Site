@@ -750,12 +750,12 @@ def activate(request, uidb64, token):
         messages.success(request, 'Thank you for your email confirmation. Now you can login your account.')
 
         ###REDIRECTION LINK NEEDS TO BE CHANGED ONCE SITE GETS HOSTED
-        return redirect("http://localhost:3000/login")
+        return redirect("http://insightwearai.sytes.net:3000/login")
     else:
         messages.error(request, 'Activation link is invalid!')
     
     ###REDIRECTION LINK NEEDS TO BE CHANGED ONCE SITE GETS HOSTED
-    return redirect("http://localhost:3000")
+    return redirect("http://insightwearai.sytes.net:3000")
 
 
 # A function to create a connection between users.

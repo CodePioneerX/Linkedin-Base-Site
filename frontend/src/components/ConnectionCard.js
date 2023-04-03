@@ -33,7 +33,7 @@ const getProfile = async () => {
 
     // Send GET request to retrieve user profile information
     const {data} = await axios.get(
-      `http://localhost:8000/api/profile/${userId}`
+      `http://insightwearai.sytes.net:8000/api/profile/${userId}`
     );
     // Update state with retrieved profile information
     setProfile(data.profile);
@@ -44,7 +44,7 @@ const getProfile = async () => {
   const acceptHandler = async () => {
     // accept connection request
     const response = await axios.put(
-      `http://localhost:8000/api/connections/accept/${props.senderId}/${props.recipientId}/`
+      `http://insightwearai.sytes.net:8000/api/connections/accept/${props.senderId}/${props.recipientId}/`
     )
     // Reload the page to show updated connection status
     window.location.reload()
@@ -54,7 +54,7 @@ const getProfile = async () => {
   const rejectHandler = async () => {
    // Send DELETE request to delete connection request
     const response = await axios.delete(
-      `http://localhost:8000/api/connections/reject/${props.senderId}/${props.recipientId}/`
+      `http://insightwearai.sytes.net:8000/api/connections/reject/${props.senderId}/${props.recipientId}/`
     )
     // Reload the page to show deleted connection request
     window.location.reload()
@@ -64,7 +64,7 @@ const getProfile = async () => {
   const cancelHandler = async () => {
     // cancel sent connection request
     const response = await axios.delete(
-      `http://localhost:8000/api/connections/cancel/${props.senderId}/${props.recipientId}/`  
+      `http://insightwearai.sytes.net:8000/api/connections/cancel/${props.senderId}/${props.recipientId}/`  
     )
     window.location.reload()
   }
@@ -74,7 +74,7 @@ const getProfile = async () => {
   const sendConnectionRequestHandler = async () => {
   // Send POST request to create new connection request
     const response = await axios.post(
-      `http://localhost:8000/api/connections/create/${props.senderId}/${props.recipientId}/`  
+      `http://insightwearai.sytes.net:8000/api/connections/create/${props.senderId}/${props.recipientId}/`  
     )
     // Reload the page to show newly created connection request
     window.location.reload()

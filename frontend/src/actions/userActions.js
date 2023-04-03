@@ -58,7 +58,7 @@ export const getProfileDetails = (id) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.get(
-            `http://localhost:8000/api/profile/${id}`, // Send a GET request to the backend API to get the user's profile details with the given ID
+            `http://insightwearai.sytes.net:8000/api/profile/${id}`, // Send a GET request to the backend API to get the user's profile details with the given ID
             config
         )
 
@@ -91,7 +91,7 @@ export const login = (email,password) => async (dispatch) => {
         }
 
         const { data } = await axios.post(
-            'http://localhost:8000/api/login/', // Send a POST request to the backend API to log in the user
+            'http://insightwearai.sytes.net:8000/api/login/', // Send a POST request to the backend API to log in the user
             { 'username': email, 'password': password },
             config
         )
@@ -275,7 +275,7 @@ export const register = (name, email, password) => async (dispatch) => {
         }
         
         const { data } = await axios.post(
-            'http://localhost:8000/api/register/',
+            'http://insightwearai.sytes.net:8000/api/register/',
             { 'name': name, 'username': email, 'password': password },
             config
         )
@@ -321,7 +321,7 @@ export const get_profile = (id) => async (dispatch, getState) => {
 
         // Sends a GET request to the server to get the profile by ID
         const { data } = await axios.get(
-            `http://localhost:8000/api/profile/` + id, 
+            `http://insightwearai.sytes.net:8000/api/profile/` + id, 
             config
         )
 
@@ -362,7 +362,7 @@ export const update_profile = (uID, name, title, city, about, experience, educat
         }
         
         // Sends a PUT request to the server to update the user's profile
-        const { data } = await axios.put(`http://localhost:8000/api/profile/update/` + uID, 
+        const { data } = await axios.put(`http://insightwearai.sytes.net:8000/api/profile/update/` + uID, 
             {'name': name, 
             'title': title, 
             'city': city, 
