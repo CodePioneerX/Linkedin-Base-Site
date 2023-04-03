@@ -37,7 +37,6 @@ urlpatterns = [
     path('api/password_reset/', views.password_reset_request, name='password_reset'),
     path('reset/<uidb64>/<token>', views.passwordResetConfirm, name='passwordResetConfirm'),
     path('api/profile/<int:pk>', getProfileView, name='profile_detail'),
-    path('api/search-profile/<searchValue>/<receiver_id>/', searchProfilesView, name='profile_detail'),
     path('api/profile/', ProfileCreateView.as_view(), name='profile_create'),
     path('api/profile/update/<int:pk>', updateUserProfile, name='profile_update'),
     path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),
@@ -65,6 +64,7 @@ urlpatterns = [
     path('api/connections/possible/<int:pk>', views.getPossibleConnectionsView, name='getPossibleConnections'),
     path('api/create_recommendation/<int:sender_id>/<int:receiver_id>', createRecommendationView, name='create_recommendation'),
     path('api/delete_recommendation/<int:sender_id>/<int:receiver_id>', deleteRecommendationView, name='delete_recommendation'),
+    path('api/search/', views.searchFunction, name='search'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

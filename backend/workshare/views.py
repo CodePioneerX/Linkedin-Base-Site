@@ -689,14 +689,6 @@ def getProfileView(request, pk):
 
     return Response(data)
 
-#Search function to look for user profiles.
-@api_view(['GET'])
-def searchProfilesView(request, searchValue, receiver_id):
-    profiles = Profile.objects.filter(name__icontains=searchValue)
-    serializer = ProfileSerializer(profiles, many=True)
-    print("DEBUG: ", profiles)
-    return Response({'receiver_id': receiver_id, 'profile': serializer.data})
-
 # This function is intended to register a user
 @api_view(['POST'])
 def registerUser(request):
@@ -892,6 +884,12 @@ def getConnectionsView(request, pk):
 # This function returns a list of 5 user profiles who the user is NOT connected to
 @api_view(['GET'])
 def getPossibleConnectionsView(request, pk):
+
+    try:
+        user = User.objects.get(pk=pk)
+    except User.DoesNotExist:
+        return Response([])
+
     connections = Connection.objects.all().filter((Q(recipient_id=pk) | Q(sender_id=pk)))
     
     connection_list = []
@@ -940,3 +938,60 @@ def deleteRecommendationView(request, sender_id, receiver_id):
     
     recommendation.delete()
     return Response({"message": "Recommendation deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+#Search function for users and jobs.
+@api_view(['GET'])
+def searchFunction(request):
+    search_value = request.GET.get('searchValue')
+    company = request.GET.get('company')
+    job_type = request.GET.get('jobType')
+    salary_min = request.GET.get('salaryMin')
+    salary_max = request.GET.get('salaryMax')
+    salary_type = request.GET.get('salaryType')
+    location = request.GET.get('location')
+    employment_term = request.GET.get('employmentTerm')
+    listing_type = request.GET.get('listingType')
+    is_remote = request.GET.get('remote')
+
+    if search_value is not None:
+        jobs = JobListing.objects.filter(title__icontains=search_value)
+    else:
+        jobs = JobListing.objects.all()
+
+    if company and company != "":
+        jobs = jobs.filter(company = company)
+    if job_type and job_type != "":
+        jobs = jobs.filter(job_type=job_type)
+    if salary_min and salary_max:
+        jobs = jobs.filter(salary__range=(salary_min, salary_max))
+    elif salary_min:
+        jobs = jobs.filter(salary__gte=salary_min)
+    elif salary_max:
+        jobs = jobs.filter(salary__lte=salary_max)
+    if salary_type and salary_type != "":
+        jobs = jobs.filter(salary_type=salary_type)
+    if location and location != "":
+        jobs = jobs.filter(location__icontains=location)
+    if employment_term and employment_term != "":
+        jobs = jobs.filter(employment_term=employment_term)
+    if listing_type and listing_type != "":
+        jobs = jobs.filter(listing_type=listing_type)
+    if is_remote and is_remote != "":
+        if is_remote != 'true':
+            jobs = jobs.filter(remote=False)
+        if is_remote != 'false':
+            jobs = jobs.filter(remote=True)
+    
+    if search_value is None:
+        users = []
+    else:
+        users = User.objects.filter(first_name__icontains =search_value)
+
+    user_serializer = UserSerializer(users, many=True)
+    jobs_serializer = JobListingSerializer(jobs, many=True)
+    
+    data = {
+        "users": user_serializer.data,
+        "jobs": jobs_serializer.data}
+    
+    return Response(data)
