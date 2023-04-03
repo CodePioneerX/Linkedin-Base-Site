@@ -43,7 +43,7 @@ function ConnectHomePage() {
       <div id='welcomeTitle' className='welcomeTitle'><br/>Unlock Your <br/>Professional Potential</div>
       <hr/>
       <div>
-        <img classname='officeWorker' id='officeWorker' src={OfficeWorker}></img>
+        <img className='officeWorker' id='officeWorker' src={OfficeWorker}></img>
       </div>
       {error && <Message variant='danger'>{error}</Message>}
       <Form id='userLoginForm' className='userLoginForm' onSubmit={submitHandler}>

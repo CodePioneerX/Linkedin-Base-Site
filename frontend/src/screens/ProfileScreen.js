@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import '../Assets/css/App.css'
-
+import RecommendationCard from '../components/RecommendationCard';
 import { Link, useLocation } from "react-router-dom";
 import { sendRecommendation } from "../actions/recommendAction";
 
@@ -14,6 +14,8 @@ export const ProfileScreen =()=>{
 
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
+    const [recommendation, setRecommendation] = useState("");    //Holds and sets the value
+    const [receivedRecommendations, setReceivedRec]= useState("");
     
     const dispatch = useDispatch();
 
@@ -199,6 +201,8 @@ export const ProfileScreen =()=>{
           `http://insightwearai.sytes.net:8000/api/profile/` + otherUserId
         );
         setProfile(data.profile);
+        setRecommendation(data.sent_recommendations);
+        setReceivedRec(data.received_recommendations)
       };
 
       //page set up
@@ -307,18 +311,25 @@ export const ProfileScreen =()=>{
                           </div>
 
                           <div className="profile-card">
-                            <h2 className="padd_small"><b>Recommendations</b></h2>
-                            <Tabs style={{paddingTop:"1rem"}}
-                              defaultActiveKey="recieved"
-                              id="recievedRecommendations"
-                              className="mb-3">
-                              <Tab eventKey="recieved" title="Recieved">
-                                <p>This where the recieved recommendations will show</p>
+                              <h2 className="padd_small"><b>Recommendations</b></h2>
+                              
+                     
+                              <Tabs style={{paddingTop:"1rem"}}
+                                defaultActiveKey="recieved"
+                                id="receivedRecommendations"
+                                className="mb-3">
+                  
+                              <Tab eventKey="received" title="Received">
+                                {receivedRecommendations && Array.isArray(receivedRecommendations) && receivedRecommendations.map((rec, index) => (
+                                  <RecommendationCard key={rec.id} senderId={rec.sender} recipientId={rec.recipient} description={rec.description} type={'received'}/>
+                                ))}
                               </Tab>
                               <Tab eventKey="recommended" title="Recommended">
-                                  <p>This where the recommended will show</p>
+                                {recommendation && Array.isArray(recommendation) && recommendation.map((rec, index) => (
+                                  <RecommendationCard key={rec.id} senderId={rec.sender} recipientId={rec.recipient} description={rec.description} type={'sent'}/> 
+                                ))}
                               </Tab>
-                          </Tabs>             
+                            </Tabs>             
                           </div>
 
                           <div className="profile-card">

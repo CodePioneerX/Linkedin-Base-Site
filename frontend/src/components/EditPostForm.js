@@ -5,35 +5,53 @@ import '../Assets/css/Login.css';
 import {  Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { delete_post, update_post } from '../actions/postActions'
 
+// Define the EditPostForm component
 export const EditPostForm = (post) => {
+
+    // Define state variables for the title and content fields
     const [title, setTitle] = useState(post.post.title)
     const [content, setContent] = useState(post.post.content)
-
+    
+    // Get the user login state from Redux
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin;
 
+    // Get the dispatch function from Redux
     const dispatch = useDispatch();
-
+    
+     // Handle the submit event for the form
     const submitHandler = (e) =>{
         e.preventDefault()
         
+        // Dispatch an action to update the post
         dispatch(update_post(post.post.id, title, content))
-
+        
+         // Reload the page to reflect the updated post
         window.location.reload(false);
     }
-
+    
+    // Handle the cancel event for the form
     const cancelHandler = (e) => {
         e.preventDefault()
-        window.location.reload(false)
-    }
-
-    const deleteHandler = (e) => {
-        e.preventDefault()
-        alert('Are you sure you want to delete this post?')
-        dispatch(delete_post(post.post.id))
+          // Reload the page to discard any changes made to the post
         window.location.reload(false)
     }
     
+    // Handle the delete event for the form
+    const deleteHandler = (e) => {
+        e.preventDefault()
+        
+        // Confirm with the user before deleting the post
+        alert('Are you sure you want to delete this post?')
+        
+        // Dispatch an action to delete the post
+        dispatch(delete_post(post.post.id))
+        
+         // Reload the page to reflect the deleted post
+        window.location.reload(false)
+    }
+    
+    // Render the form to edit the post
     return <div>
         <h2>Edit Your Post</h2>
         <Form>

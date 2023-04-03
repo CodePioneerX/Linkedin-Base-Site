@@ -1,3 +1,6 @@
+
+// Importing required dependencies and components from libraries and files
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
@@ -13,39 +16,66 @@ import { EditProfileForm } from '../components/EditProfileForm';
 import { EditPostForm } from '../components/EditPostForm';
 import '../Assets/css/App.css'
 import { get_profile } from '../actions/userActions'
+import ConnectionCard from '../components/ConnectionCard';
+import RecommendationCard from "../components/RecommendationCard";
 
 
 function ViewProfile() {
+  
+  // Setting initial state variables using React's `useState` hook
+  
   const [profile, setProfile] = useState("");
+  const [recommendation, setRecommendation] = useState("");    //Holds and sets the value
+  const [receivedRecommendations, setReceivedRec]= useState(""); 
   const [editor, setEditor] = useState(false)
   const [postEditor, setPostEditor] = useState(false)
   
-  const [post, setPost] = useState('')
+  const [post, setPost] = useState('') // Holds and sets the value of user's post data
 
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const navigate = useNavigate();
 
+  
+  
+ // If user is not logged in, redirect to the login page, else call the `getProfile` function
+  
+  
   useEffect(() => {
     if (!userInfo) {
       navigate("/");
-    }
+    } else {
+    getProfile();
+  }
   }, [userInfo, navigate]);
+  
+  
+  
 
   const getProfile = async () => {
     const { data } = await axios.get(
       `http://insightwearai.sytes.net:8000/api/profile/` + userInfo.id
     );
     setProfile(data.profile);
-    console.log(data)
+    setRecommendation(data.sent_recommendations);
+    // console.log(data)
+    setReceivedRec(data.received_recommendations);
+
+    // console.log(data)
   };
 
+  
+  
+   // If user is not logged in, redirect to the login page, else call the `getProfile` function
   useEffect(() => {
-    getProfile();
+    getProfile(); //getProfile function call 
     // dispatch(get_profile(userInfo.id))
   }, []);
 
+  
+  
+  
   const editorMode = ()=>{
     setEditor(true)
   }
@@ -65,11 +95,20 @@ function ViewProfile() {
   const createPost = () => {
     navigate('/create/post/')
   }
+  
+  
+  
 
   return (
+    
     <Container className="justify-content-md-center padd">
-      {userInfo ? (
+    
+    
+    {/* check if user info is available */}
+      {userInfo ? ( 
         <div className="profile-page">
+    
+    {/*Some  styling */} 
           <div style={{ display: "flex" }}>
             <div style={{ flex: 5}}>
             {editor ? <EditProfileForm profile={profile} quitEditor={quitEditor}/> : 
@@ -89,9 +128,7 @@ function ViewProfile() {
                           <h1 className="profile-name">{profile.name}</h1>
                           <h4 className="profile-title">{profile.title}</h4>
                           <h6 className="profile-city" style={{paddingBottom:"10px"}}>{profile.city}</h6>
-                          <Link to='/network'>
                           <button className="profile-button">Connections</button>
-                          </Link>
                           <button className="profile-button" onClick={editorMode}>Edit Profile</button>
                           <button className="profile-button">Contact Info</button>
                         </div>
@@ -116,16 +153,23 @@ function ViewProfile() {
 
                             <div className="profile-card">
                               <h2 className="padd_small"><b>Recommendations</b></h2>
+                              
+                     
                               <Tabs style={{paddingTop:"1rem"}}
                                 defaultActiveKey="recieved"
-                                id="recievedRecommendations"
+                                id="receivedRecommendations"
                                 className="mb-3">
-                                <Tab eventKey="recieved" title="Recieved">
-                                  <p>This where the recieved recommendations will show</p>
-                                </Tab>
-                                <Tab eventKey="recommended" title="Recommended">
-                                    <p>This where the recommended will show</p>
-                                </Tab>
+                  
+                              <Tab eventKey="received" title="Received">
+                                {receivedRecommendations && Array.isArray(receivedRecommendations) && receivedRecommendations.map((rec, index) => (
+                                  <RecommendationCard key={rec.id} senderId={rec.sender} recipientId={rec.recipient} description={rec.description} type={'received'}/>
+                                ))}
+                              </Tab>
+                              <Tab eventKey="recommended" title="Recommended">
+                                {recommendation && Array.isArray(recommendation) && recommendation.map((rec, index) => (
+                                  <RecommendationCard key={rec.id} senderId={rec.sender} recipientId={rec.recipient} description={rec.description} type={'sent'}/> 
+                                ))}
+                              </Tab>
                             </Tabs>             
                             </div>
 

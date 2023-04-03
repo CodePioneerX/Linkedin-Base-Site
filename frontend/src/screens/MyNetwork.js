@@ -126,7 +126,7 @@ export const MyNetwork =()=> {
               <>
                 <h1 style={{marginTop:'1rem'}}>People You May Know</h1>
                 {unconnectedList.map(user => (
-                  <ConnectionCard recipientId={user.id} senderId={userInfo.id} type={'possible'}/>
+                  <ConnectionCard key={user.id} recipientId={user.id} senderId={userInfo.id} type={'possible'}/>
                 ))}
               </> 
               }

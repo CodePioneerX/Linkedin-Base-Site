@@ -12,13 +12,16 @@ import {
 import { Container } from 'react-bootstrap';
 import { ProfileScreen } from "./screens/ProfileScreen";
 import LoginPage from './screens/LoginPage';
+import ForgotPassword from './screens/ForgotPassword';
+import PasswordReset from './screens/PasswordReset';
 import ConnectHomePage from './screens/ConnectHomePage';
 import RegisterPage from './screens/RegisterPage';
 import ViewProfile from "./screens/ViewProfile";
-import CreateJob from './screens/CreateJob';
+import CreateJobForm from './components/CreateJobForm';
 import CreatePost from './screens/CreatePost';
 import {MyNetwork} from './screens/MyNetwork';
-import Job from './screens/Job';
+import JobScreen from './screens/JobScreen';
+import JobsScreen from './screens/JobsScreen';
 import Messaging from './screens/Messaging';
 import Notification from './screens/Notification';
 import Settings from "./screens/Settings";
@@ -43,6 +46,14 @@ const router = createBrowserRouter([
     element:<LoginPage/>,
   },
   {
+    path: "/forgotpassword",
+    element:<ForgotPassword/>,
+  },
+  {
+    path: "/password_reset_form/:uidb64/:token",
+    element:<PasswordReset/>,
+  },
+  {
     path: "/register",
     element: <RegisterPage/>,
   },{
@@ -53,7 +64,10 @@ const router = createBrowserRouter([
     element: <MyNetwork/>,
   },{
     path: "/jobs",
-    element: <Job/>,
+    element: <JobsScreen/>,
+  },{
+    path: "/job",
+    element: <JobScreen/>,
   },{
     path: "/messaging",
     element: <Messaging/>,
@@ -63,9 +77,10 @@ const router = createBrowserRouter([
   },{
     path: "/settings",
     element: <Settings/>,
-  },{
+  },
+  {
     path: "/create/job/",
-    element: <CreateJob/>
+    element: <CreateJobForm/>
   },{
     path: "search/name/:name",
     element: <SearchScreen/>
