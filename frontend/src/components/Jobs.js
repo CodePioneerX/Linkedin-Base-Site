@@ -26,7 +26,7 @@ export default class Jobs extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:8000/api/jobs/')
+    axios.get('http://insightwearai.sytes.net:8000/api/jobs/')
       .then(res => this.setState({ jobs: res.data }))
   }
 
@@ -68,8 +68,8 @@ export default class Jobs extends Component {
                 </Row>
                 <Container className='darker'>
                   <p>{job.content}</p>
-                  {/* <img className='img_box' src={('http://localhost:8000/images/'+job.image.split('images/')[1])} /> */}
-                  {job.image ? <img src={'http://localhost:8000'+job.image} alt={job.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
+                  {/* <img className='img_box' src={('http://insightwearai.sytes.net:8000/images/'+job.image.split('images/')[1])} /> */}
+                  {job.image ? <img src={'http://insightwearai.sytes.net:8000'+job.image} alt={job.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
                   <p>Description: {job.description}</p>
                   <p>Location: {job.location}</p>
                   <p>Salary: {job.salary}$/hour</p>
@@ -96,7 +96,7 @@ export default class Jobs extends Component {
                                             <div className="d-flex flex-row align-items-center">
                                             <MDBCardImage
                                                 className="rounded-circle"
-                                                src='http://localhost:8000/images/default.png'
+                                                src='http://insightwearai.sytes.net:8000/images/default.png'
                                                 alt="avatar"
                                             />
                                             <p className="tiny">{comment.author}</p>

@@ -54,7 +54,7 @@ export const ProfileScreen =()=>{
             }
     
             const { data } = await axios.get(
-              `http://localhost:8000/api/connections/status/` + myUserId +`/`+ otherUserId +`/`,
+              `http://insightwearai.sytes.net:8000/api/connections/status/` + myUserId +`/`+ otherUserId +`/`,
                 config
             )
             
@@ -94,7 +94,7 @@ export const ProfileScreen =()=>{
             }
     
             const { data } = await axios.post(
-              `http://localhost:8000/api/connections/create/` + myUserId +`/`+ otherUserId +`/`,
+              `http://insightwearai.sytes.net:8000/api/connections/create/` + myUserId +`/`+ otherUserId +`/`,
                 config
             )
             window.location.reload(false)  
@@ -121,7 +121,7 @@ export const ProfileScreen =()=>{
             }
     
             const { data } = await axios.delete(
-              `http://localhost:8000/api/connections/delete/` + myUserId +`/`+ otherUserId +`/`,
+              `http://insightwearai.sytes.net:8000/api/connections/delete/` + myUserId +`/`+ otherUserId +`/`,
                 config
             )
             window.location.reload(false)  
@@ -145,7 +145,7 @@ export const ProfileScreen =()=>{
     //check if the current logged in user has recommended the searched user
     const checkRecommendation = async () =>{
       const { data } = await axios.get(
-        `http://localhost:8000/api/profile/` + myUserId
+        `http://insightwearai.sytes.net:8000/api/profile/` + myUserId
       );
       // console.log(data)
       // console.log(data.sent_recommendations)
@@ -182,7 +182,7 @@ export const ProfileScreen =()=>{
             }
     
             const { data } = await axios.delete(
-              `http://localhost:8000/api/delete_recommendation/` + myUserId +`/`+ otherUserId,
+              `http://insightwearai.sytes.net:8000/api/delete_recommendation/` + myUserId +`/`+ otherUserId,
                 config
             )
             window.location.reload(false)  
@@ -196,7 +196,7 @@ export const ProfileScreen =()=>{
     //get the data of the searched user's profile
     const getProfile = async () => {
         const { data } = await axios.get(
-          `http://localhost:8000/api/profile/` + otherUserId
+          `http://insightwearai.sytes.net:8000/api/profile/` + otherUserId
         );
         setProfile(data.profile);
       };

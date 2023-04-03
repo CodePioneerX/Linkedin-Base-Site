@@ -28,7 +28,7 @@ const getProfile = async () => {
     }
 
     const {data} = await axios.get(
-      `http://localhost:8000/api/profile/${userId}`
+      `http://insightwearai.sytes.net:8000/api/profile/${userId}`
     );
     setProfile(data.profile);
     
@@ -37,7 +37,7 @@ const getProfile = async () => {
   const acceptHandler = async () => {
     // accept connection request
     const response = await axios.put(
-      `http://localhost:8000/api/connections/accept/${props.senderId}/${props.recipientId}/`
+      `http://insightwearai.sytes.net:8000/api/connections/accept/${props.senderId}/${props.recipientId}/`
     )
     window.location.reload()
   }
@@ -45,7 +45,7 @@ const getProfile = async () => {
   const rejectHandler = async () => {
     // reject connection request
     const response = await axios.delete(
-      `http://localhost:8000/api/connections/reject/${props.senderId}/${props.recipientId}/`
+      `http://insightwearai.sytes.net:8000/api/connections/reject/${props.senderId}/${props.recipientId}/`
     )
     window.location.reload()
   }
@@ -53,7 +53,7 @@ const getProfile = async () => {
   const cancelHandler = async () => {
     // cancel sent connection request
     const response = await axios.delete(
-      `http://localhost:8000/api/connections/cancel/${props.senderId}/${props.recipientId}/`  
+      `http://insightwearai.sytes.net:8000/api/connections/cancel/${props.senderId}/${props.recipientId}/`  
     )
     window.location.reload()
   }
@@ -61,7 +61,7 @@ const getProfile = async () => {
   const sendConnectionRequestHandler = async () => {
     // send connection request
     const response = await axios.post(
-      `http://localhost:8000/api/connections/create/${props.senderId}/${props.recipientId}/`  
+      `http://insightwearai.sytes.net:8000/api/connections/create/${props.senderId}/${props.recipientId}/`  
     )
     window.location.reload()
   }

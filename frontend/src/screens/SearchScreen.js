@@ -16,7 +16,7 @@ function SearchScreen() {
 
   useEffect(() => {
     if (name) {
-        axios.get('http://localhost:8000/api/search-profile/'+name)
+        axios.get('http://insightwearai.sytes.net:8000/api/search-profile/'+name)
         .then(response => {
             setSearchResults(response.data);
         }

@@ -180,13 +180,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = [
-     "http://localhost:8080",
-     "http://localhost:3000",
+     "http://insightwearai.sytes.net:8080",
+     "http://insightwearai.sytes.net:3000",
 ]
 
 CORS_ALLOWED_ORIGINS = [
-     "http://localhost:8080",
-     "http://localhost:3000",
+     "http://insightwearai.sytes.net:8080",
+     "http://insightwearai.sytes.net:3000",
 ]
 
 CORS_ALLOWED_METHODS= [

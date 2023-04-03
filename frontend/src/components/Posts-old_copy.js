@@ -10,7 +10,7 @@ export default class Posts extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:8000/api/posts/')
+    axios.get('http://insightwearai.sytes.net:8000/api/posts/')
       .then(res => this.setState({ posts: res.data }))
   }
 

@@ -32,7 +32,7 @@ export const sendRecommendation = (myUserId, otherUserId,description) => async (
         }
 
         const { data } = await axios.post(
-            `http://localhost:8000/api/create_recommendation/` + myUserId +`/`+ otherUserId,
+            `http://insightwearai.sytes.net:8000/api/create_recommendation/` + myUserId +`/`+ otherUserId,
             { 
             'text': description},
             config
