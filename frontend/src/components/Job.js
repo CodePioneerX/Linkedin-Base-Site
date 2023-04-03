@@ -25,21 +25,24 @@ import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { salary_types, employment_terms, job_types } from '../constants/jobConstants';
 
 export default class Job extends Component {
+// Define the initial state
     state = {
         job: [],
         error: ''
     }
 
+// Fetching data from API when component mounts
     componentDidMount() {
         try {
             axios.get(`http://localhost:8000/api/job/${this.props.job_id}`)
-                .then(res => this.setState({ job: res.data[0], required_docs: res.data[1], ready: true }))
-                .catch(() => this.setState({error: true}))
+                .then(res => this.setState({ job: res.data[0], required_docs: res.data[1], ready: true })) // Update the state with the job details and required documents
+                .catch(() => this.setState({error: true})) // If there's an error fetching the data, set the error state to true
        } catch(error) {
         console.log(error)
        }
     }
 
+// Handling clicking on a job item
     handleClick = job => () => {
         let required_docs = this.state.required_docs
 
@@ -49,7 +52,9 @@ export default class Job extends Component {
         this.props.edit()
     }
 
+// Rendering the job details and comments
   render() {
+// Defining a Comment component to display individual comments
       const Comment = ({ author, content, createdAt }) => {
           return (
             <div style={{ marginBottom: 20 }}>
@@ -182,6 +187,8 @@ export default class Job extends Component {
                     }
                 </Col>
                 </Row>
+
+// display comments section if job has comments
             {this.state.job.comments && this.state.job.comments.length > 0 && <h4>Comments</h4>}
             {this.state.job.comments && this.state.job.comments.length > 0 && this.state.job.comments.map(comment => (
                 
