@@ -33,9 +33,9 @@ function Header(){
   const dispatch = useDispatch();
 
   // on load, check the user's count of unread notifications
+  // empty dependency array ensures this effect only runs on load
   useEffect(() => {
     if (userInfo) {
-      // dispatch(get_notifications(userInfo.id))
       dispatch(count_notifications(userInfo.id))
     }
   }, [])
@@ -44,7 +44,7 @@ function Header(){
     store.dispatch(logout());
   }
 
-  // using a timer, poll to check if the user has new notifications
+  // using a timer, poll every 5000 ms to check if the user has new notifications
   useEffect(() => {
       if (userInfo) {
         const timer = setTimeout(() => check(), 5000)
@@ -53,6 +53,8 @@ function Header(){
     }
   })
   
+  // dispatch the check_new_notifications action with the previous datetime and save new datetime
+  // if there are new notifications to be loaded, dispatch the count_notifications action
   const check = () => {
     var datetime = new Date(time)
     dispatch(check_new_notifications(userInfo.id, datetime.toISOString()))
@@ -61,7 +63,6 @@ function Header(){
     setTime(currentdatetime)
 
     if (!new_notif_loading && new_notifications) {
-      // dispatch(get_notifications(userInfo.id))
       dispatch(count_notifications(userInfo.id))
     }
   }

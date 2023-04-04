@@ -37,7 +37,13 @@ import{
     CLEAR_NOTIFICATIONS_SUCCESS,
     CLEAR_NOTIFICATIONS_FAIL,
 } from '../constants/notificationConstants'
- 
+
+/** 
+ * A function that sends a request to retrieve a specific user's Notifications.
+ * @param id is the ID of the user whose Notifications need to be fetched.
+ * @returns the success value of the request and the user's Notifications.
+ * @throws error if there is an error while attempting to retrieve the user's Notifications. 
+ */ 
 export const get_notifications = (id) => async (dispatch, getState) => {
     try {
         dispatch({
@@ -68,6 +74,13 @@ export const get_notifications = (id) => async (dispatch, getState) => {
     }
 }
 
+/** 
+ * A functions that checks if a user has received new Notifications since the last check time.
+ * @param id is the ID of the user whose Notifications are being checked.
+ * @param datetime is a datetime string representing the last time that the user's Notifications were checked. 
+ * @returns the success value of the request and a boolean value representing if the user has new Notifications.
+ * @throws error if there is an error while attempting to check the user's Notifications. 
+ */ 
 export const check_new_notifications = (id, datetime) => async (dispatch, getState) => {
     try {
         dispatch({
@@ -100,6 +113,12 @@ export const check_new_notifications = (id, datetime) => async (dispatch, getSta
     }
 }
 
+/** 
+ * A function that sends a request to retrieve the count of a specific user's unread Notifications.
+ * @param id is the ID of the user whose notifications need to be fetched.
+ * @returns the success value of the request and the user's unread Notification count.
+ * @throws error if there is an error while attempting to retrieve the user's unread Notification count. 
+ */ 
 export const count_notifications = (id) => async (dispatch, getState) => {
     try {
         dispatch({
@@ -130,6 +149,12 @@ export const count_notifications = (id) => async (dispatch, getState) => {
     }
 }
 
+/** 
+ * A function that sends a request to delete a specific Notification.
+ * @param id is the ID of the Notification that should be deleted.
+ * @returns the success value of the request and a message stating if the Notification was deleted.
+ * @throws error if there is an error while attempting to delete the Notification. 
+ */ 
 export const delete_notification = (id) => async (dispatch, getState) => {
     try {
         dispatch({
@@ -162,6 +187,12 @@ export const delete_notification = (id) => async (dispatch, getState) => {
     }
 }
 
+/** 
+ * A function that sends a request to clear (delete) all of a specific user's Notifications.
+ * @param id is the ID of the user whose Notifications need to be cleared.
+ * @returns the success value of the request and a message stating if the Notifications were cleared.
+ * @throws error if there is an error while attempting to clear the Notifications. 
+ */ 
 export const clear_notifications = (id) => async (dispatch, getState) => {
     try {
         dispatch({
@@ -193,6 +224,12 @@ export const clear_notifications = (id) => async (dispatch, getState) => {
     }
 }
 
+/** 
+ * A function that sends a request to toggle a specific Notification's unread value.
+ * @param id is the ID of the Notification that should be updated.
+ * @returns the success value of the request and a message stating if the Notification was updated.
+ * @throws error if there is an error while attempting to update the Notification. 
+ */ 
 export const read_notification = (id) => async (dispatch, getState) => {
     try {
         dispatch({
@@ -225,6 +262,12 @@ export const read_notification = (id) => async (dispatch, getState) => {
     }
 }
 
+/** 
+ * A function that sends a request to mark all of a specific user's Notifications as read.
+ * @param id is the ID of the user whose Notifications should be updated.
+ * @returns the success value of the request and a message stating if the Notifications were updated.
+ * @throws error if there is an error while attempting to update the Notifications. 
+ */ 
 export const read_all_notifications = (id) => async (dispatch, getState) => {
     try {
         dispatch({

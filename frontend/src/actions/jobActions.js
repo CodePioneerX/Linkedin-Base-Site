@@ -247,7 +247,6 @@ export const delete_job = (id) => async (dispatch, getState) => {
  * @returns the success value of the request and a message providing details.
  * @throws error if there is an error while attempting to create the Job Listing.
  */
-
 export const create_job_alert = (userId, search_value, company, location, job_type, employment_term, salary_min, salary_max, salary_type, listing_type, remote) => async (dispatch, getState) => {
     try {
         dispatch({

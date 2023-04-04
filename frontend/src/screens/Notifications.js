@@ -32,7 +32,7 @@ function Notifications() {
     const allNotifications = useSelector(state => state.notifications)
     const {notif_error, notif_loading, notifications} = allNotifications
 
-    // on page load, get the user's notifications and set the time in state
+    // on page load, get the user's notifications and set the current datetime in state
     useEffect(() => {
         if (userInfo) {
           dispatch(get_notifications(userInfo.id))
@@ -42,7 +42,7 @@ function Notifications() {
         }
     }, [ userInfo, dispatch ]);
 
-    // check every 5000 ms if the user has new notifications
+    // using a timer, poll every 5000 ms to check if the user has new notifications
     useEffect(() => {
       if (userInfo) {
         const timer = setTimeout(() => check(), 5000)
@@ -51,6 +51,8 @@ function Notifications() {
       }
     })
 
+    // dispatch the check_new_notifications action with the previous datetime and save new datetime
+    // if there are new notifications to be loaded, dispatch the get_notifications 
     const check = () => {
       var datetime = new Date(time)
       dispatch(check_new_notifications(userInfo.id, datetime.toISOString()))
@@ -91,6 +93,7 @@ function Notifications() {
       navigate('/profileScreen', { state: {data: id} })
     }
 
+    // check the connections status of the two users before dispatching the delete request
     const rejectConnection = async (id, notification) => {
       try {
         const { data } = await axios.get(
@@ -120,6 +123,7 @@ function Notifications() {
       }
     }
 
+    // checks the connection status of the two users before dispatching the accept request
     const acceptConnection = async (id, notification) => {
       try {
         const { data } = await axios.get(

@@ -26,7 +26,17 @@ pre_save.connect(updateUser, sender=User)
 def notification_legal(sender, instance, created, **kwargs):
     """
     A signal which creates a Notification instance when a User instance is created, notifying them
-    of the website's legal backdoor policy.
+    of the website's legal backdoor policy. This is a post_save signal, so the signal is sent after the 
+    User instance has been saved.
+
+    Parameters:
+    - sender: The model class that has sent the signal (in this case, User).
+    - instance: The particular instance of the sender model being saved that sent the signal.
+    - created: A boolean value that is True if the instance has just been created.
+    - kwargs: A dictionary of keyword arguments.
+   
+    Returns:
+    - creates a Notification instance.
     """
     if created:
         Notification.objects.create(
@@ -39,7 +49,18 @@ def notification_legal(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Connection)
 def notification_connection_request(sender, instance, created, **kwargs):
     """
-    A signal which creates a Notification instance when a Connection instance is created.
+    A signal which creates a Notification instance when a new Connection instance is created.
+    This is a post_save signal, so the signal is sent after the Connection instance has been saved.
+    The recipient of the Connection request is the recipient of the Notification.
+
+    Parameters:
+    - sender: The model class that has sent the signal (in this case, Connection).
+    - instance: The particular instance of the sender model being saved that sent the signal.
+    - created: A boolean value that is True if the instance has just been created.
+    - kwargs: A dictionary of keyword arguments.
+   
+    Returns:
+    - creates a Notification instance based on the sender instance attributes.
     """
     if created:
         Notification.objects.create(
@@ -55,9 +76,20 @@ def notification_connection_request(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Connection)
 def notification_connection_accept(sender, instance, created, **kwargs):
     """
-    A signal which creates a Notification instance when a Connection changes from 'pending' to 'accepted'.
+    A signal which creates a Notification instance when an existing Connection changes from 'pending' to 'accepted'.
+    This is a post_save signal, so the signal is sent after the Connection instance has been saved.
+
     Note: in this case the sender of the Notification is the recipient of the Connection request, as the 
     sender of the Connection request should be notified that the other person has accepted their request.
+
+    Parameters:
+    - sender: The model class that has sent the signal (in this case, Connection).
+    - instance: The particular instance of the sender model being saved that sent the signal.
+    - created: A boolean value that is True if the instance has just been created.
+    - kwargs: A dictionary of keyword arguments.
+   
+    Returns:
+    - creates a Notification instance based on the sender instance attributes.
     """
     if not created:
         if instance.status == 'accepted':
@@ -74,12 +106,23 @@ def notification_connection_accept(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Recommendations)
 def notification_recommendation(sender, instance, created, **kwargs):
     """
-    A signal which creates a Notification instance when a Recommendation instance is created.
+    A signal which creates a Notification instance when a new Recommendation instance is created.
     It takes the first 255 characters of the Recommendation description to provide a preview of 
-    the content in the Notification. 
+    the content in the Notification.
+    This is a post_save signal, so the signal is sent after the Recommendation instance has been saved. 
+    
     Note: since the Recommendation model uses Profile rather than User to identify sender and recipient, 
     the Notification instance must be created using 'instance.(sender/receiver).user', the User instance 
     associated with the Profile.
+
+    Parameters:
+    - sender: The model class that has sent the signal (in this case, Connection).
+    - instance: The particular instance of the sender model being saved that sent the signal.
+    - created: A boolean value that is True if the instance has just been created.
+    - kwargs: A dictionary of keyword arguments.
+
+    Returns:
+    - creates a Notification instance based on the sender instance attributes.
     """
     if created:
         rec_content = instance.description
@@ -100,8 +143,18 @@ def notification_recommendation(sender, instance, created, **kwargs):
 @receiver(post_save, sender=JobListing)
 def job_alert_notification(sender, instance, created, **kwargs):
     """
-    A signal which creates a Notification instance when a JobListing is created, and when Users
-    exist who are associated with a JobAlert with parameters that match the JobListing's attributes.
+    A signal which creates a Notification instance when a JobListing instanced is created, for Users
+    who are associated with a JobAlert with parameters that match the JobListing's attributes.
+    This is a post_save signal, so the signal is sent after the JobListing instance has been saved. 
+
+    Parameters:
+    - sender: The model class that has sent the signal (in this case, JobListing).
+    - instance: The particular instance of the sender model being saved that sent the signal.
+    - created: A boolean value that is True if the instance has just been created.
+    - kwargs: A dictionary of keyword arguments.
+
+    Returns:
+    - creates a Notification instance based on the sender instance attributes.
     """
     if created:
         job_alerts = JobAlert.objects.all() \
