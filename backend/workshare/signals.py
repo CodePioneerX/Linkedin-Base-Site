@@ -165,9 +165,11 @@ def job_alert_notification(sender, instance, created, **kwargs):
             (Q(job_type__isnull=True) | Q(job_type__iexact=instance.job_type)) &
             (Q(employment_term__isnull=True) | Q(employment_term__iexact=instance.employment_term)) &
             (Q(salary_type__isnull=True) | Q(salary_type__iexact=instance.salary_type)) &
+            (Q(min_salary__lte=instance.salary)) &
+            (Q(max_salary__gte=instance.salary)) &
             (Q(listing_type__isnull=True) | Q(listing_type__exact=instance.listing_type)) &
-            (Q(remote__isnull=True)) | Q(remote__exact=instance.remote))
-
+            (Q(remote__exact='')) | Q(remote__exact=instance.remote))
+        
         distinct_users = job_alerts.values('user').annotate(Count('user'))
         
         for user in distinct_users:

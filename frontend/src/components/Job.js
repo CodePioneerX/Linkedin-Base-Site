@@ -188,7 +188,6 @@ export default class Job extends Component {
                 </Col>
                 </Row>
 
-// display comments section if job has comments
             {this.state.job.comments && this.state.job.comments.length > 0 && <h4>Comments</h4>}
             {this.state.job.comments && this.state.job.comments.length > 0 && this.state.job.comments.map(comment => (
                 

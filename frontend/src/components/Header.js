@@ -7,7 +7,7 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userActions";
-import { check_new_notifications, count_notifications } from '../actions/notificationActions'
+import { check_new_notifications, count_notifications, get_notifications } from '../actions/notificationActions'
 import logo from "../logo.jpg";
 import store from "../store";
 import { TbSearch, TbSettings } from "react-icons/tb";
@@ -64,6 +64,7 @@ function Header(){
 
     if (!new_notif_loading && new_notifications) {
       dispatch(count_notifications(userInfo.id))
+      dispatch(get_notifications(userInfo.id))
     }
   }
 
@@ -151,7 +152,7 @@ return (
                     <MdNotificationsNone className="icon" size={21}/>  
                     <span className="ms-2">Notifications</span>
                   </>}
-                  {(!notif_count_loading && notif_count !== 0) &&
+                  {(!notif_count_loading) && (notif_count > 0) &&
                   <>
                     <MdNotificationsNone className="icon text-danger" size={21}/>  
                     <span className="ms-2 text-danger">Notifications</span>

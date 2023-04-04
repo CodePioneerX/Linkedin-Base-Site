@@ -1137,9 +1137,16 @@ def createJobAlertView(request, pk):
     - Reponse: Response containing serialized JobAlert data, or error message.
     """
     data = request.data
-
+    
     try: 
         user = get_object_or_404(User, pk=pk)
+
+        if data['remote'] == 'true':
+            remote_ = True
+        elif data['remote'] == 'false':
+            remote_ = False
+        else:
+            remote_ = ''
 
         job_alert = JobAlert.objects.create(
             user=user,
@@ -1152,7 +1159,7 @@ def createJobAlertView(request, pk):
             max_salary=data['salary_max'],
             salary_type=data['salary_type'],
             listing_type=data['listing_type'],
-            remote=data['remote']
+            remote=remote_
         )
 
         serializer = JobAlertSerializer(job_alert, many=False)

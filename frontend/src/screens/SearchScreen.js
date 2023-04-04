@@ -277,8 +277,8 @@ const quitFilter = (e) => {
                     <Input  name="Remote" id="Remote" type='select'
                     onChange={(e)=> setRemote(e.target.value)}>
                     <option key={"select an option"} value={""}>select an option</option>
-                       <option key={'true'} value={'true'}>Yes</option>
-                       <option key={'false'} value={'false'}>No</option>  
+                       <option key={'true'} value={true}>Yes</option>
+                       <option key={'false'} value={false}>No</option>  
                     </Input>
                   </Col>  
                 </Row>

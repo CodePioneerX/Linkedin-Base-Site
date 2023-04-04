@@ -41,30 +41,7 @@ function Notifications() {
           setTime(currentdatetime)
         }
     }, [ userInfo, dispatch ]);
-
-    // using a timer, poll every 5000 ms to check if the user has new notifications
-    useEffect(() => {
-      if (userInfo) {
-        const timer = setTimeout(() => check(), 5000)
-
-        return () => clearTimeout(timer)
-      }
-    })
-
-    // dispatch the check_new_notifications action with the previous datetime and save new datetime
-    // if there are new notifications to be loaded, dispatch the get_notifications 
-    const check = () => {
-      var datetime = new Date(time)
-      dispatch(check_new_notifications(userInfo.id, datetime.toISOString()))
-      
-      var currentdatetime = new Date()
-      setTime(currentdatetime)
-
-      if (!new_notif_loading && new_notifications) {
-        dispatch(get_notifications(userInfo.id))
-      }
-    }
-
+    
     const deleteHandler = (notification_id) => {
         dispatch(delete_notification(notification_id))
         window.location.reload()
