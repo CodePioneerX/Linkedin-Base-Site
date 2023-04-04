@@ -683,6 +683,39 @@ def getNotificationsView(request, pk):
 
     return Response(serializer.data)
 
+@api_view(['GET'])
+def checkNewNotificationsView(request, pk):
+    """
+    A view that checks if a specific user has received new notifications since the last check.
+    The request contains the datetime of the last check, and if notifications have been created since the last check,
+    the view returns a Reponse stating that the user does have new notifications. 
+    """
+
+    date_time = request.GET.get('datetime')
+
+    if date_time.endswith('Z'):
+        dt = datetime.datetime.fromisoformat(date_time[:-1])
+        
+        notifications = Notification.objects.all().filter(Q(recipient__id = pk) & Q(created_at__gt=dt))
+
+        if notifications.__len__() > 0:
+            return Response(True)
+        else:
+            return Response(False)
+    else:
+        message = {'message':'A problem occurred while checking for new notifications.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def countUnreadNotificationsView(request, pk):
+    """
+    A view that retrieves the count of the user's unread notifications.
+    """
+
+    notifications = Notification.objects.all().filter(Q(recipient__id = pk) & Q(unread__exact=True))
+
+    return Response(notifications.__len__())
+
 @api_view(['POST', 'GET'])
 def createNotificationView(request):
     '''Creates a notification using the request data'''

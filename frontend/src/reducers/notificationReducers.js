@@ -6,10 +6,18 @@ import{
     GET_NOTIFICATIONS_REQUEST,
     GET_NOTIFICATIONS_SUCCESS,
     GET_NOTIFICATIONS_FAIL,
+
+    CHECK_NEW_NOTIFICATIONS_REQUEST,
+    CHECK_NEW_NOTIFICATIONS_SUCCESS,
+    CHECK_NEW_NOTIFICATIONS_FAIL,
     
     NOTIFICATION_DETAILS_REQUEST,
     NOTIFICATION_DETAILS_SUCCESS,
     NOTIFICATION_DETAILS_FAIL,
+
+    COUNT_UNREAD_NOTIFICATIONS_REQUEST,
+    COUNT_UNREAD_NOTIFICATIONS_SUCCESS,
+    COUNT_UNREAD_NOTIFICATIONS_FAIL,
     
     CREATE_NOTIFICATION_REQUEST,
     CREATE_NOTIFICATION_SUCCESS,
@@ -40,6 +48,22 @@ export const notificationsReducer = (state = { notifications: [] }, action) => {
         case GET_NOTIFICATIONS_FAIL:
             return { loading: false, error: action.payload }
 
+        default:
+            return state
+    }
+}
+
+export const notificationsCheckNewReducer = (state = {new_notifications: false}, action) => {
+    switch(action.type) {
+        case CHECK_NEW_NOTIFICATIONS_REQUEST:
+            return { loading: true }
+    
+        case CHECK_NEW_NOTIFICATIONS_SUCCESS:
+            return { loading: false, new_notifications: action.payload }
+        
+        case CHECK_NEW_NOTIFICATIONS_FAIL:
+            return { loading: false, error: action.payload }
+        
         default:
             return state
     }
@@ -77,3 +101,34 @@ export const notificationClearReducer = (state = {}, action) => {
     }
 }
 
+export const notificationReadReducer = (state = {}, action) => {
+    switch (action.type) {
+        case UPDATE_NOTIFICATION_REQUEST:
+            return { loading: true }
+
+        case UPDATE_NOTIFICATION_SUCCESS:
+            return { loading: false, success: true }
+
+        case UPDATE_NOTIFICATION_FAIL:
+            return { loading: false, error: action.payload }
+
+        default:
+            return state
+    }   
+}
+
+export const notificationCountReducer = (state = {}, action) => {
+    switch (action.type) {
+        case COUNT_UNREAD_NOTIFICATIONS_REQUEST:
+            return { loading: true }
+
+        case COUNT_UNREAD_NOTIFICATIONS_SUCCESS:
+            return { loading: false, notif_count: action.payload }
+
+        case COUNT_UNREAD_NOTIFICATIONS_FAIL:
+            return { loading: false, error: action.payload }
+
+        default:
+            return state
+    }   
+}

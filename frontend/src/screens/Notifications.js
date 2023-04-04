@@ -1,32 +1,67 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Row, Col } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { get_notifications, delete_notification, clear_notifications, read_notification, read_all_notifications } from '../actions/notificationActions'
+import { get_notifications, delete_notification, clear_notifications, read_notification, read_all_notifications, check_new_notifications } from '../actions/notificationActions'
 import Alert from 'react-bootstrap/Alert';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import Message from '../components/Message'
 import '../Assets/css/Notifications.css';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashAlt, faEnvelopeOpen, faEnvelope } from '@fortawesome/free-regular-svg-icons';
 
 function Notifications() {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    const [time, setTime] = useState(new Date())
+
     const userLogin = useSelector(state => state.userLogin)
     const {error, loading, userInfo} = userLogin
     
+    const newNotifications = useSelector(state => state.notificationsCheckNew)
+    const {new_notif_error, new_notif_loading, new_notifications} = newNotifications
+
+    const clearNotifications = useSelector(state => state.notificationClear)
+    const {clear_notif_error, clear_notif_loading, clear_notif_success} = clearNotifications
+
+    const readNotifications = useSelector(state => state.notificationRead)
+    const {read_notif_error, read_notif_loading, read_notif_success} = readNotifications
+
+    const allNotifications = useSelector(state => state.notifications)
+    const {notif_error, notif_loading, notifications} = allNotifications
+
+    // on page load, get the user's notifications and set the time in state
     useEffect(() => {
         if (userInfo) {
-            dispatch(get_notifications(userInfo.id))
+          dispatch(get_notifications(userInfo.id))
+          
+          var currentdatetime = new Date();
+          setTime(currentdatetime)
         }
     }, [ userInfo, dispatch ]);
 
-    const notifications = useSelector((state) => state.notifications.notifications)
+    // check every 5000 ms if the user has new notifications
+    useEffect(() => {
+      if (userInfo) {
+        const timer = setTimeout(() => check(), 5000)
+
+        return () => clearTimeout(timer)
+      }
+    })
+
+    const check = () => {
+      var datetime = new Date(time)
+      dispatch(check_new_notifications(userInfo.id, datetime.toISOString()))
+      
+      var currentdatetime = new Date()
+      setTime(currentdatetime)
+
+      if (!new_notif_loading && new_notifications) {
+        dispatch(get_notifications(userInfo.id))
+      }
+    }
 
     const deleteHandler = (notification_id) => {
         dispatch(delete_notification(notification_id))
@@ -56,16 +91,62 @@ function Notifications() {
       navigate('/profileScreen', { state: {data: id} })
     }
 
-    const rejectConnection = async (id) => {
-      const response = await axios.delete(
-        `http://localhost:8000/api/connections/reject/${id}/${userInfo.id}/`
-      )
+    const rejectConnection = async (id, notification) => {
+      try {
+        const { data } = await axios.get(
+          `http://localhost:8000/api/connections/status/${userInfo.id}/${id}/`)
+          
+        const connected = data.status
+        
+        if (connected === 'Connected') {
+          return
+        }
+  
+        else if (connected === 'Confirm') {
+          const response = await axios.delete(
+            `http://localhost:8000/api/connections/reject/${id}/${userInfo.id}/`
+          )
+          dispatch(read_notification(notification))
+          dispatch(get_notifications(userInfo.id))
+        }
+  
+        else {
+          return
+        }
+      } catch (error) {
+        console.log(error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message)
+      }
     }
 
-    const acceptConnection = async (id) => {
-      const response = await axios.put(
-        `http://localhost:8000/api/connections/accept/${id}/${userInfo.id}/`
-      )
+    const acceptConnection = async (id, notification) => {
+      try {
+        const { data } = await axios.get(
+          `http://localhost:8000/api/connections/status/${userInfo.id}/${id}/`)
+          
+        const connected = data.status
+
+        if (connected === 'Connected') {
+          return
+        }
+  
+        else if (connected === 'Confirm') {
+          const response = await axios.put(
+            `http://localhost:8000/api/connections/accept/${id}/${userInfo.id}/`
+          )
+          dispatch(read_notification(notification))
+          dispatch(get_notifications(userInfo.id))
+        }
+
+        else {
+          return
+        }
+      } catch (error) {
+        console.log(error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message)
+      }
     }
 
     return (
@@ -140,10 +221,10 @@ function Notifications() {
                               {notification.type == "CONNECTION" &&
                                 <Dropdown.Item as="button" onClick={() => viewProfile(notification.sender)}>View profile</Dropdown.Item>
                               }
-                              {notification.type == "CONNECTION" && notification.title.includes("sent") &&
+                              {notification.type == "CONNECTION" && notification.title.includes("sent") && 
                               <>
-                                <Dropdown.Item as="button" onClick={() => acceptConnection(notification.sender)}>Accept connection</Dropdown.Item>
-                                <Dropdown.Item as="button" onClick={() => rejectConnection(notification.sender)}>Reject connection</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => acceptConnection(notification.sender, notification.id)}>Accept connection</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => rejectConnection(notification.sender, notification.id)}>Reject connection</Dropdown.Item>
                               </>
                               }
                               {notification.type == "RECOMMENDATION" &&

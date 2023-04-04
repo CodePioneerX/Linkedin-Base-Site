@@ -6,8 +6,11 @@ import { userRegisterReducer,
         userProfileReducer } from './reducers/userReducers'
 
 import {notificationsReducer,
+        notificationsCheckNewReducer,
         notificationClearReducer,
-        notificationDeleteReducer
+        notificationCountReducer,
+        notificationDeleteReducer,
+        notificationReadReducer
     } from './reducers/notificationReducers'
 
 const reducer = combineReducers({
@@ -16,7 +19,10 @@ const reducer = combineReducers({
     userProfile: userProfileReducer,
     
     notifications: notificationsReducer,
+    notificationsCheckNew: notificationsCheckNewReducer,
     notificationClear: notificationClearReducer,
+    notificationCount: notificationCountReducer,
+    notificationRead: notificationReadReducer,
     notificationDelete: notificationDeleteReducer
 })
 

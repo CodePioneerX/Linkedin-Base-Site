@@ -36,5 +36,6 @@ span {
 }
 
 .unread_notifications {
-    color: danger
+    position: relative;
+    right:9px;
 }
