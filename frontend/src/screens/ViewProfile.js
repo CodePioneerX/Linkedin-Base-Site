@@ -1,3 +1,6 @@
+
+// Importing required dependencies and components from libraries and files
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
@@ -19,13 +22,16 @@ import RecommendationCard from "../components/RecommendationCard";
 
 
 function ViewProfile() {
+  
+  // Setting initial state variables using React's `useState` hook
+  
   const [profile, setProfile] = useState("");
   const [recommendation, setRecommendation] = useState("");    //Holds and sets the value
   const [receivedRecommendations, setReceivedRec]= useState(""); 
   const [editor, setEditor] = useState(false)
   const [postEditor, setPostEditor] = useState(false)
   
-  const [post, setPost] = useState('')
+  const [post, setPost] = useState('') // Holds and sets the value of user's post data
 
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
@@ -34,6 +40,11 @@ function ViewProfile() {
   const { userInfo } = userLogin;
   const navigate = useNavigate();
 
+  
+  
+ // If user is not logged in, redirect to the login page, else call the `getProfile` function
+  
+  
   useEffect(() => {
     if (!userInfo) {
       navigate("/");
@@ -41,6 +52,9 @@ function ViewProfile() {
     getProfile();
   }
   }, [userInfo, navigate]);
+  
+  
+  
 
   const getProfile = async () => {
     const { data } = await axios.get(
@@ -54,12 +68,18 @@ function ViewProfile() {
     // console.log(data)
   };
 
+  
+  
+   // If user is not logged in, redirect to the login page, else call the `getProfile` function
   useEffect(() => {
-    getProfile();
+    getProfile(); //getProfile function call 
     // dispatch(get_profile(userInfo.id))
     userInfo && dispatch(get_notifications(userInfo.id))
   }, []);
 
+  
+  
+  
   const editorMode = ()=>{
     setEditor(true)
   }
@@ -79,13 +99,20 @@ function ViewProfile() {
   const createPost = () => {
     navigate('/create/post/')
   }
+  
+  
+  
 
   return (
     
     <Container className="justify-content-md-center padd">
-     
-      {userInfo ? (
+    
+    
+    {/* check if user info is available */}
+      {userInfo ? ( 
         <div className="profile-page">
+    
+    {/*Some  styling */} 
           <div style={{ display: "flex" }}>
             <div style={{ flex: 5}}>
             {editor ? <EditProfileForm profile={profile} quitEditor={quitEditor}/> : 
