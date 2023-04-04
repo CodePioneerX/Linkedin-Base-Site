@@ -12,7 +12,7 @@ class WorkShareSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('name', 'email', 'city', 'title', 'about', 'image', 'experience', 'education', 'work', 'volunteering', 'courses', 'projects', 'awards', 'languages')
+        fields = ('user', 'name', 'email', 'city', 'title', 'about', 'image', 'experience', 'education', 'work', 'volunteering', 'courses', 'projects', 'awards', 'languages')
         
 class ProfileSerializerWithToken(ProfileSerializer):
     token = serializers.SerializerMethodField(read_only=True)
@@ -30,7 +30,7 @@ class PostSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        fields = ('id', 'title', 'content', 'image', 'likes', 'author')
+        fields = ('id', 'title', 'content', 'image', 'likes', 'author', 'created_at')
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
