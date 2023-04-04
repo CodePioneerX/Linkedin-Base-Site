@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Button, Col} from 'react-bootstrap';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from 'react-router-dom';
 import ProfileCard from '../components/ProfileCard';
 import JobCard from '../components/JobCard';
@@ -9,8 +9,10 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Alert from 'react-bootstrap/Alert';
 import {  Form, FormGroup, Label, Input} from 'reactstrap';
+import { create_job_alert } from '../actions/jobActions';
 
 function SearchScreen() {
+  const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const { name } = useParams();
@@ -142,38 +144,18 @@ function SearchScreen() {
         setFilterForm(false) 
 }
 
-//save the search filter value for Job alert
-const saveSearch = async (e)=>{
-  // if(salaryMax < 0 || salaryMin < 0){
-  //   alert("salary cannot be negative!")
-  //   return;
-  // }
-  // if(salaryMax < salaryMin){
-  //   alert("maximum salary must be equal or greater than minimum salary!")
-  //   return;
-  // }
-  // try 
-  //     {const config = {
-  //             headers: {
-  //                 'Content-type': 'application/json'
-  //           }}
-  //         const { data } = await axios.post(`http://localhost:8000/api/` + name, 
-  //         {'search': name, 
-  //         'company': company,
-  //         'location': location, 
-  //         'jobType': jobType,
-  //         'employmentTerm': employmentTerm, 
-  //         'salaryMin': salaryMin,
-  //         'salaryMax': salaryMax,
-  //         'salaryType': salaryType, 
-  //         'listingType': listingType,
-  //         'remote': remote}, 
-  //         config)
-  //       }catch(error){
-  //         console.log(error.response && error.response.data.detail
-  //             ? error.response.data.detail
-  //             : error.message)
-  //     }
+// save the search filter values as a Job alert
+const saveSearch = () => {
+  if(salaryMax < 0 || salaryMin < 0){
+    alert("salary cannot be negative!")
+    return;
+  }
+  if(salaryMax < salaryMin){
+    alert("maximum salary must be equal or greater than minimum salary!")
+    return;
+  }
+  
+  dispatch(create_job_alert(userInfo.id, name, company, location, jobType, employmentTerm, salaryMin, salaryMax, salaryType, listingType, remote))
 }
 
 //show the filter form
@@ -308,7 +290,7 @@ const quitFilter = (e) => {
                 </Col>
                 
                 <Col xs={12} md={4}>
-                    <Button type = 'submit' className='editSaveButton' onClick={saveSearch}> Save Search </Button>
+                    <Button type = 'submit' className='editSaveButton' onClick={() => saveSearch()}> Save Search </Button>
                 </Col>
                 <Col xs={12} md={4}>
                     <Button className='editCancelButton' onClick={quitFilter}>Cancel</Button>

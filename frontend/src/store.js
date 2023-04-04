@@ -13,6 +13,8 @@ import {notificationsReducer,
         notificationReadReducer
     } from './reducers/notificationReducers'
 
+import { createJobAlertReducer } from './reducers/jobReducers'
+
 const reducer = combineReducers({
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
@@ -23,7 +25,9 @@ const reducer = combineReducers({
     notificationClear: notificationClearReducer,
     notificationCount: notificationCountReducer,
     notificationRead: notificationReadReducer,
-    notificationDelete: notificationDeleteReducer
+    notificationDelete: notificationDeleteReducer,
+
+    createJobAlert: createJobAlertReducer
 })
 
 const userInfoFromStorage = localStorage.getItem("userInfo") ? 

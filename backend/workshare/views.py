@@ -1070,6 +1070,43 @@ def getJobAlertsView(request, pk):
 
     return Response(serializer.data)
 
+@api_view(['POST', 'GET'])
+def createJobAlertView(request, pk):
+    """
+    Creates a Job Alert instance for the specified user.
+    """
+    data = request.data
+    
+    print(data)
+
+    try: 
+        # user = get_object_or_404(User, pk=data['user_id'])
+        user = User.objects.get(pk=pk)
+        print(user)
+
+        job_alert = JobAlert.objects.create(
+            user=user,
+            search_term=data['search_value'],
+            company=data['company'],
+            location=data['location'],
+            job_type=data['job_type'],
+            employment_term=data['employment_term'],
+            min_salary=data['salary_min'],
+            max_salary=data['salary_max'],
+            salary_type=data['salary_type'],
+            listing_type=data['listing_type'],
+            remote=data['remote']
+        )
+        
+        print(job_alert)
+        # job_alert.save()
+
+        serializer = JobAlertSerializer(job_alert, many=False)
+        print(serializer.data)
+        return Response(serializer.data)
+    except:
+        return Response({"error": "Job Alert could not be created"}, status=status.HTTP_404_NOT_FOUND)
+
 @api_view(['DELETE', 'GET'])
 def deleteJobAlertView(request, pk):
     """

@@ -93,4 +93,4 @@ class RecommendationsSerializer(serializers.ModelSerializer):
 class JobAlertSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobAlert
-        fields = '__all__'
+        fields = ('id', 'user', 'search_term', 'company', 'location', 'job_type', 'employment_term', 'salary_type', 'min_salary', 'max_salary', 'listing_type', 'remote')

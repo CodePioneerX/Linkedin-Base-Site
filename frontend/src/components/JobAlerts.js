@@ -23,7 +23,11 @@ const JobAlerts = (props) => {
 	}
 
   const formatString = (string) => {
-    return string[0].toUpperCase() + string.slice(1).toLowerCase();
+    try {
+      return string[0].toUpperCase() + string.slice(1).toLowerCase();
+    } catch (error) {
+      return ""
+    }
   }
   
 	useEffect(() => {
@@ -33,7 +37,7 @@ const JobAlerts = (props) => {
 return (
 		<>
       {jobAlerts.length !== 0 && <h1>Manage Job Alerts</h1>}
-			{jobAlerts && jobAlerts.map(jobAlert => (
+			{jobAlerts && jobAlerts?.map(jobAlert => (
 				<Row key={jobAlert.id} className="jobAlertCard mb-4">
 					<Container>
 						<Col xs={12} >
@@ -54,7 +58,7 @@ return (
                   {jobAlert.location && 
                     <Col xs={6} md={3} lg={2}>
                       <h4>Location: </h4>
-                      <h6>{formatString(jobAlert.location)}</h6>
+                      <h6>{jobAlert.location}</h6>
                     </Col>
                   }
                   {jobAlert.job_type && 
@@ -69,16 +73,16 @@ return (
                       <h6>{formatString(jobAlert.employment_term)}</h6>
                     </Col>
                   }
-                  {jobAlert.min_salary && 
+                  {jobAlert.min_salary == 0 && 
                     <Col xs={6} md={3} lg={2}>
-                     <h4>Max Salary: </h4>
-                     <h6>{formatString(jobAlert.min_salary)}</h6>
+                     <h4>Min Salary: </h4>
+                     <h6>{jobAlert.min_salary}</h6>
                     </Col>
                   }
                   {jobAlert.max_salary &&
                     <Col xs={6} md={3} lg={2}>
                       <h4>Max Salary: </h4>
-                      <h6>{formatString(jobAlert.max_salary)}</h6>
+                      <h6>{jobAlert.max_salary}</h6>
                     </Col>
                   }
                   {jobAlert.salary_type && 

@@ -74,8 +74,9 @@ urlpatterns = [
     path('api/create_recommendation/<int:sender_id>/<int:receiver_id>', createRecommendationView, name='create_recommendation'),
     path('api/delete_recommendation/<int:sender_id>/<int:receiver_id>', deleteRecommendationView, name='delete_recommendation'),
     path('api/job_alerts/<int:pk>/', views.getJobAlertsView, name='get_job_alerts'),
-    path('api/job_alerts/delete/<int:pk>/', views.deleteJobAlertView, name='get_job_alerts'),
-    path('api/search/', views.searchFunction, name='search'),
+    path('api/job_alerts/delete/<int:pk>/', views.deleteJobAlertView, name='delete_job_alert'),
+    path('api/job_alerts/<int:pk>/create/', views.createJobAlertView, name='create_job_alert'),
+    path('api/search/', views.searchFunction, name='search')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
