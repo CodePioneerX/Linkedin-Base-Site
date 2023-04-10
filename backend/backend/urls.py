@@ -53,6 +53,14 @@ urlpatterns = [
     path('api/jobs/', JobListingLatestView.as_view(), name='job_listing_latest_detail'),
     path('api/job/<int:pk>', views.JobListingView, name='job_detail'),
     path('api/register/' , views.registerUser, name='register'),
+    path('api/notification/delete/<int:pk>', views.deleteNotificationView, name='notification_delete'),
+    path('api/notification/read/<int:pk>', views.readNotificationView, name='notifications_read'),
+    path('api/notification/<int:pk>', views.getNotificationView, name='get_notification'),
+    path('api/notifications/user/<int:pk>', views.getNotificationsView, name='get_notifications'),
+    path('api/notifications/new/user/<int:pk>', views.checkNewNotificationsView, name='check_new_notifications'),
+    path('api/notifications/unread/user/<int:pk>', views.countUnreadNotificationsView, name='count_unread_notifications'),
+    path('api/notifications/user/clear/<int:pk>', views.clearNotificationsView, name='notifications_clear'),
+    path('api/notifications/user/read_all/<int:pk>', views.readAllNotificationsView, name='notifications_read_all'),
     path('api/connections/create/<int:sender_id>/<int:recipient_id>/', createConnection, name='createConnection'),
     path('api/connections/status/<int:user1_id>/<int:user2_id>/', connectionStatus, name='connectionStatus'),
     path('api/connections/accept/<int:user1_id>/<int:user2_id>/', acceptConnection, name='acceptConnection'),
@@ -65,7 +73,10 @@ urlpatterns = [
     path('api/connections/possible/<int:pk>', views.getPossibleConnectionsView, name='getPossibleConnections'),
     path('api/create_recommendation/<int:sender_id>/<int:receiver_id>', createRecommendationView, name='create_recommendation'),
     path('api/delete_recommendation/<int:sender_id>/<int:receiver_id>', deleteRecommendationView, name='delete_recommendation'),
-    path('api/search/', views.searchFunction, name='search'),
+    path('api/job_alerts/<int:pk>/', views.getJobAlertsView, name='get_job_alerts'),
+    path('api/job_alerts/delete/<int:pk>/', views.deleteJobAlertView, name='delete_job_alert'),
+    path('api/job_alerts/<int:pk>/create/', views.createJobAlertView, name='create_job_alert'),
+    path('api/search/', views.searchFunction, name='search')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

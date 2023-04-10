@@ -16,6 +16,7 @@ import { EditProfileForm } from '../components/EditProfileForm';
 import { EditPostForm } from '../components/EditPostForm';
 import '../Assets/css/App.css'
 import { get_profile } from '../actions/userActions'
+import { get_notifications } from "../actions/notificationActions";
 import ConnectionCard from '../components/ConnectionCard';
 import RecommendationCard from "../components/RecommendationCard";
 
@@ -34,6 +35,8 @@ function ViewProfile() {
 
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
+  const notifications = useSelector((state) => state.notifications);
+
   const { userInfo } = userLogin;
   const navigate = useNavigate();
 
@@ -71,6 +74,7 @@ function ViewProfile() {
   useEffect(() => {
     getProfile(); //getProfile function call 
     // dispatch(get_profile(userInfo.id))
+    userInfo && dispatch(get_notifications(userInfo.id))
   }, []);
 
   

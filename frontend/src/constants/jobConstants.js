@@ -10,6 +10,10 @@ export const DELETE_JOB_REQUEST = "DELETE_JOB_REQUEST";
 export const DELETE_JOB_SUCCESS = "DELETE_JOB_SUCCESS";
 export const DELETE_JOB_FAIL = "DELETE_JOB_FAIL";
 
+export const CREATE_JOB_ALERT_REQUEST = "CREATE_JOB_ALERT_REQUEST";
+export const CREATE_JOB_ALERT_SUCCESS = "CREATE_JOB_ALERT_SUCCESS";
+export const CREATE_JOB_ALERT_FAIL = "CREATE_JOB_ALERT_FAIL";
+
 export const required_docs_template = [{'type':'CV', 'required': false}, 
                             {'type':'Cover Letter','required': false}, 
                             {'type':'Letter of Recommendation', 'required': false}, 

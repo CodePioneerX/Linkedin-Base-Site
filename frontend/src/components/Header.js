@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Form from 'react-bootstrap/Form';
@@ -7,6 +7,7 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userActions";
+import { check_new_notifications, count_notifications, get_notifications } from '../actions/notificationActions'
 import logo from "../logo.jpg";
 import store from "../store";
 import { TbSearch, TbSettings } from "react-icons/tb";
@@ -20,25 +21,54 @@ import '../Assets/css/Header.css';
 function Header(){
   const userLogin = useSelector((state) => state.userLogin);
   const [searchValue, setSearchValue] = useState('');
+  const [time, setTime] = useState(new Date())
   const { userInfo } = userLogin;
 
-  // const navigate = useNavigate();
+  const notificationCount = useSelector((state) => state.notificationCount)
+  const {notif_count_error, notif_count_loading, notif_count} = notificationCount
+
+  const notificationsCheckNew = useSelector((state) => state.notificationsCheckNew)
+  const {new_notif_error, new_notif_loading, new_notifications} = notificationsCheckNew
+  
   const dispatch = useDispatch();
-  
-  
-  
+
+  // on load, check the user's count of unread notifications
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(count_notifications(userInfo.id))
+    }
+  }, [userInfo])
+
   function logoutHandler(){
     store.dispatch(logout());
   }
 
+  // using a timer, poll every 5000 ms to check if the user has new notifications
+  useEffect(() => {
+      if (userInfo) {
+        const timer = setTimeout(() => check(), 5000)
+
+        return () => clearTimeout(timer)
+    }
+  })
+  
+  // dispatch the check_new_notifications action with the previous datetime and save new datetime
+  // if there are new notifications to be loaded, dispatch the count_notifications action
+  const check = () => {
+    var datetime = new Date(time)
+    dispatch(check_new_notifications(userInfo.id, datetime.toISOString()))
+    
+    var currentdatetime = new Date()
+    setTime(currentdatetime)
+
+    if (!new_notif_loading && new_notifications) {
+      dispatch(count_notifications(userInfo.id))
+      dispatch(get_notifications(userInfo.id))
+    }
+  }
+
   const handleSearch = (event) => {
     event.preventDefault();
-   // dispatch(search(searchValue));
-
-
-    // navigate('/search/name/'+searchValue);
-    //redirect to search page
-    //window.location.href = '/search/name/'+searchValue;
   };
 
 return (
@@ -116,8 +146,17 @@ return (
               {userInfo ? 
               (<Nav.Link href="/notifications" className="option_link d-flex">
                 <div className="d-flex align-items-center">
-                  <MdNotificationsNone className="icon" size={21}/>
-                  <span className="ms-2">Notifications</span>
+                  {(notif_count_loading || notif_count === 0) &&
+                  <>
+                    <MdNotificationsNone className="icon" size={21}/>  
+                    <span className="ms-2">Notifications</span>
+                  </>}
+                  {(!notif_count_loading) && (notif_count > 0) &&
+                  <>
+                    <MdNotificationsNone className="icon text-danger" size={21}/>  
+                    <span className="ms-2 text-danger">Notifications</span>
+                    <span className="unread_notifications text-danger">({notif_count})</span> 
+                  </>} 
                 </div>
               </Nav.Link>) 
               : 

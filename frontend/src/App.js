@@ -23,7 +23,7 @@ import {MyNetwork} from './screens/MyNetwork';
 import JobScreen from './screens/JobScreen';
 import JobsScreen from './screens/JobsScreen';
 import Messaging from './screens/Messaging';
-import Notification from './screens/Notification';
+import Notifications from './screens/Notifications';
 import Settings from "./screens/Settings";
 import Home from './screens/Home';
 import SearchScreen from "./screens/SearchScreen";
@@ -73,7 +73,7 @@ const router = createBrowserRouter([
     element: <Messaging/>,
   },{
     path: "/notifications",
-    element: <Notification/>,
+    element: <Notifications/>,
   },{
     path: "/settings",
     element: <Settings/>,
