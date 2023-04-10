@@ -4,7 +4,7 @@ import { Card, Button, Row, Col } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import { faGripVertical } from "@fortawesome/free-solid-svg-icons";
 
-const ConnectionCard = (props) => {
+const AdminUserCard = (props) => {
     
 // Define state variables
 const [profile, setProfile] = useState("");
@@ -92,4 +92,4 @@ const getProfile = async () => {
   );
 };
 
-export default ConnectionCard;
+export default AdminUserCard;

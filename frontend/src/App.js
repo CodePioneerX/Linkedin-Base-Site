@@ -28,6 +28,7 @@ import Settings from "./screens/Settings";
 import Home from './screens/Home';
 import SearchScreen from "./screens/SearchScreen";
 import AdminUserScreen from "./screens/AdminUserScreen";
+import AdminPostScreen from "./screens/AdminPostScreen";
 import  {Provider} from 'react-redux';
 import userInfoFromStorage from './store'
 import store from './store';
@@ -97,6 +98,9 @@ const router = createBrowserRouter([
   },{
     path: "/admin/moderate/users",
     element: <AdminUserScreen/>
+  },{
+    path: "/admin/moderate/posts",
+    element: <AdminPostScreen/>
   }
 
 ]);

@@ -115,7 +115,9 @@ class PostReportSerializer(serializers.ModelSerializer):
     post_id = serializers.CharField(read_only=True, source="post.id")
     post_title = serializers.CharField(read_only=True, source="post.title")
     post_content = serializers.CharField(read_only=True, source="post.content")
+    author_id = serializers.CharField(read_only=True, source="post.author.id")
+    author_name = serializers.CharField(read_only=True, source="post.author.first_name")
     
     class Meta:
         model = PostReport
-        fields = ('id', 'sender_id', 'sender_email', 'sender_name', 'post_id', 'post_title', 'post_content', 'message')
+        fields = ('id', 'sender_id', 'sender_email', 'sender_name', 'post_id', 'post_title', 'post_content', 'message', 'author_id', 'author_name')
