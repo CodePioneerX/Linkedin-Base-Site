@@ -15,6 +15,8 @@ import { AiFillHome } from "react-icons/ai";
 import { BsPersonWorkspace } from "react-icons/bs";
 import { MdNotificationsNone } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import '../Assets/css/Header.css';
 
 function Header(){
@@ -45,7 +47,7 @@ return (
   <div>
     <div>
       <Navbar collapseOnSelect expand="xl" style={{ backgroundColor: "white" }} className="navigation" >
-        <Container>
+        <Container style={{display: "flex", justifyContent: "space-around"}}>
 
           {userInfo ? 
             (
@@ -123,6 +125,38 @@ return (
               : 
               (<></>)}
               
+              
+              {userInfo && userInfo.isAdmin && 
+              
+              (<NavDropdown title="Admin" id="collasible-nav-dropdown" className="option_link">
+              
+                {userInfo.isAdmin && 
+                (<NavDropdown.Item className="option_link d-flex" href="/admin/moderate/posts" id="moderate-posts">
+                  <div className="d-flex align-items-center">
+                    <FontAwesomeIcon icon={faPenToSquare} className="icon"/>
+                    <span className="ms-2">Moderate Posts</span>
+                  </div>
+                </NavDropdown.Item>)}
+
+                {userInfo.isAdmin && 
+                (<NavDropdown.Item className="option_link d-flex" href="/admin/moderate/jobs" id="moderate-jobs">
+                  <div className="d-flex align-items-center">
+                    <BsPersonWorkspace className="icon" size={18}/>
+                    <span className="ms-2">Moderate Jobs</span>
+                  </div>
+                </NavDropdown.Item>)}
+
+                {userInfo.isAdmin && 
+                (<NavDropdown.Item className="option_link d-flex" href="/admin/moderate/users" id="moderate-users" >
+                  <div className="d-flex align-items-center">
+                    <CgProfile className="icon" size={18}/>
+                    <span className="ms-2">Moderate Users</span>
+                  </div>
+                </NavDropdown.Item>)}
+
+              </NavDropdown>) 
+              }
+
               {userInfo ? 
               
                 (<NavDropdown title="Profile" id="collasible-nav-dropdown" className="option_link">
