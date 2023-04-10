@@ -10,9 +10,9 @@ from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
 from .serializers import WorkShareSerializer
 from .models import WorkShare
-from .models import Profile, Post, JobListing, Comment, Recommendations, Connection, Document, UserReport, PostReport
+from .models import Profile, Post, JobListing, Comment, Recommendations, Connection, Document, Notification, JobAlert, UserReport, PostReport
 from django.contrib.auth.models import User, Group
-from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer, ConnectionSerializer, DocumentSerializer, UserReportSerializer, PostReportSerializer
+from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer, ConnectionSerializer, DocumentSerializer, NotificationSerializer, JobAlertSerializer, UserReportSerializer, PostReportSerializer
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -889,7 +889,174 @@ class JobListingLatestView(APIView):
             })
         return JsonResponse(job_list, safe=False)
 
-# This function is intended to allow us to get the user profile
+@api_view(['GET'])
+def getNotificationView(request, pk):
+    """
+    A view that retrieves a specific notification.
+    
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of Notification to retrieve.
+
+    Returns: 
+    - Response: Response containing the serialized Notification data.
+    """
+
+    notification = get_object_or_404(Notification, pk=pk)
+    
+    serializer = NotificationSerializer(notification, many=False)
+
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getNotificationsView(request, pk):
+    """
+    A view that retrieves a specific user's 10 most recent notifications.
+    
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of User whose notifications must be retrieved.
+
+    Returns: 
+    - Response: Response containing the serialized Notification data.
+    """
+
+    notifications = Notification.objects.all().filter(recipient__id = pk).order_by('-created_at')[:10]
+
+    serializer = NotificationSerializer(notifications, many=True)
+
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def checkNewNotificationsView(request, pk):
+    """
+    A view that checks if a specific user has received new notifications since the last check.
+    
+    Parameters:
+    - request: HTTP request object (contains the datetime of the last check).
+    - pk: Primary key of user whose notifications must be checked.
+     
+    Returns:
+    - Response: Response stating if the user does have new notifications, or an error message. 
+    """
+
+    date_time = request.GET.get('datetime')
+
+    if date_time.endswith('Z'):
+        dt = datetime.datetime.fromisoformat(date_time[:-1])
+        
+        notifications = Notification.objects.all().filter(Q(recipient__id = pk) & Q(created_at__gt=dt))
+
+        if notifications.__len__() > 0:
+            return Response(True)
+        else:
+            return Response(False)
+    else:
+        message = {'message':'A problem occurred while checking for new notifications.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def countUnreadNotificationsView(request, pk):
+    """
+    A view that retrieves the count of a specific user's unread notifications.
+
+    Parameters: 
+    - request: HTTP request object.
+    - pk: Primary key of user whose unread notifications must be counted.
+
+    Returns: 
+    - Response: Response containing the number of unread notifications that the user has.
+    """
+
+    notifications = Notification.objects.all().filter(Q(recipient__id = pk) & Q(unread__exact=True))
+
+    return Response(notifications.__len__())
+
+@api_view(['PUT'])
+def readNotificationView(request, pk):
+    """
+    A view that toggles a notification's unread value. 
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of Notification that must be updated.
+
+    Returns:
+    - Reponse: Response containing the serialized Notification data.
+    """
+
+    notification = get_object_or_404(Notification, pk=pk)
+    notification.unread = not(notification.unread)
+    notification.save()
+    
+    serializer = NotificationSerializer(notification, many=False)
+
+    return Response(serializer.data)
+
+@api_view(['PUT'])
+def readAllNotificationsView(request, pk):
+    """
+    A view that marks all of a specific user's notifications as read.
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of user whose notifications must be updated.
+
+    Returns:
+    - Reponse: Response containing the serialized Notification data.
+    """
+    
+    notifications = Notification.objects.all().filter(recipient__id = pk)
+
+    for notification in notifications:
+        notification.unread = False
+        notification.save()
+    
+    serializer = NotificationSerializer(notifications, many=True)
+
+    return Response(serializer.data)
+
+@api_view(['DELETE', 'GET'])
+def deleteNotificationView(request, pk):
+    """
+    A view that deletes a specific Notification.
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of Notification that must be deleted.
+
+    Returns:
+    - Reponse: Response containing success message or error message.
+    """
+
+    notification = get_object_or_404(Notification, pk=pk)
+    notification.delete()
+
+    return Response('Notification Deleted')
+
+@api_view(['DELETE', 'GET'])
+def clearNotificationsView(request, pk):
+    """
+    A view that clears (deletes) all of a specific user's notifications.
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of user whose notifications must be cleared.
+
+    Returns:
+    - Reponse: Response containing success message or error message.
+    """
+
+    notifications = Notification.objects.all().filter(recipient__id = pk)
+
+    if notifications.__len__() == 0:
+        return Response('No notifications to clear')
+    
+    for notification in notifications:
+        notification.delete()
+
+    return Response('Notifications Cleared')
+
 @api_view(['GET'])
 def getUserProfile(request):
     user = request.user
@@ -1165,6 +1332,87 @@ def deleteRecommendationView(request, sender_id, receiver_id):
     
     recommendation.delete()
     return Response({"message": "Recommendation deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def getJobAlertsView(request, pk):
+    """
+    A view that retrieves all of a specific user's Job Alerts.
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of user whose JobAlerts should must be retrieved.
+
+    Returns:
+    - Reponse: Response containing serialized JobAlert data.
+    """
+    job_alerts = JobAlert.objects.all().filter(user__id=pk)
+
+    serializer = JobAlertSerializer(job_alerts, many=True)
+
+    return Response(serializer.data)
+
+@api_view(['POST', 'GET'])
+def createJobAlertView(request, pk):
+    """
+    A view that creates a Job Alert instance for the specified user.
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of user who the JobAlert is being created for.
+
+    Returns:
+    - Reponse: Response containing serialized JobAlert data, or error message.
+    """
+    data = request.data
+    
+    try: 
+        user = get_object_or_404(User, pk=pk)
+
+        if data['remote'] == 'true':
+            remote_ = True
+        elif data['remote'] == 'false':
+            remote_ = False
+        else:
+            remote_ = ''
+
+        job_alert = JobAlert.objects.create(
+            user=user,
+            search_term=data['search_value'],
+            company=data['company'],
+            location=data['location'],
+            job_type=data['job_type'],
+            employment_term=data['employment_term'],
+            min_salary=data['salary_min'],
+            max_salary=data['salary_max'],
+            salary_type=data['salary_type'],
+            listing_type=data['listing_type'],
+            remote=remote_
+        )
+
+        serializer = JobAlertSerializer(job_alert, many=False)
+
+        return Response(serializer.data)
+    except:
+        return Response({"error": "Job Alert could not be created"}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['DELETE', 'GET'])
+def deleteJobAlertView(request, pk):
+    """
+    A view that deletes a specific Job Alert instance.
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of the JobAlert that is being deleted.
+
+    Returns:
+    - Reponse: Response containing success message or error.
+    """
+    try:
+        job_alert = JobAlert.objects.get(id=pk)
+        job_alert.delete()
+        return Response({"message": "Job Alert deleted."}, status=status.HTTP_200_OK)
+    except JobAlert.DoesNotExist:
+        return Response({"error": "Job Alert not found."}, status=status.HTTP_404_NOT_FOUND)
 
 #Search function for users and jobs.
 @api_view(['GET'])

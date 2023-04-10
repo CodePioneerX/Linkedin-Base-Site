@@ -9,6 +9,7 @@ import { EditPostForm } from '../components/EditPostForm';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios'
 import Alert from 'react-bootstrap/Alert';
+import { get_notifications } from "../actions/notificationActions";
 
 function Home() {
   const userLogin = useSelector((state) => state.userLogin);
@@ -19,6 +20,8 @@ function Home() {
 
   const [postEditor, setPostEditor] = useState(false)
   const [post, setPost] = useState('')
+
+  const dispatch = useDispatch();
 
   const jobEditorMode = () => {
     setJobEditor(true)
@@ -35,6 +38,10 @@ function Home() {
   const quitPostEditor = () => {
     setPostEditor(false)
   }
+
+  useEffect(() => {
+    dispatch(get_notifications(userInfo.id))
+  })
 
   return (
       <Container className="justify-content-md-center padd">

@@ -14,6 +14,10 @@ import{
     DELETE_JOB_REQUEST,
     DELETE_JOB_SUCCESS,
     DELETE_JOB_FAIL,
+
+    CREATE_JOB_ALERT_REQUEST,
+    CREATE_JOB_ALERT_SUCCESS,
+    CREATE_JOB_ALERT_FAIL,
 } from '../constants/jobConstants'
 
 /**
@@ -224,5 +228,68 @@ export const delete_job = (id) => async (dispatch, getState) => {
                 : error.message,
         })
         return { success: false, message: "There was an error while deleting the Job Listing." };
+    }
+}
+
+/**
+ * A function that sends a request to create a new Job Alert for a specific user in the database.
+ * @param userId is the ID of the user who is creating the Job Alert.
+ * @param search_value is the keyword that is being searched by the user.
+ * @param company is the company that the user is searching for job opportunities from.
+ * @param location is the city where the user wants the job opportunity to be located.
+ * @param job_type specifies the type of position that is available (full-time, part-time, etc.).
+ * @param employment_term specifies the employment term of the position that the user wants to find (permanent, contract, etc.).
+ * @param salary_min is the minimum salary that the user wants to find.
+ * @param salary_max is the maximum salary that the user wants to find.
+ * @param salary_type is the type of salary associated with the job that the user wants (hourly or annually).
+ * @param listing_type is a choice value describing if the Job Listing is an Internal or External listing.
+ * @param remote is the boolean value describing if the user wants to find a remote opportunity.
+ * @returns the success value of the request and a message providing details.
+ * @throws error if there is an error while attempting to create the Job Listing.
+ */
+export const create_job_alert = (userId, search_value, company, location, job_type, employment_term, salary_min, salary_max, salary_type, listing_type, remote) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: CREATE_JOB_ALERT_REQUEST
+        })
+          
+        const { 
+            userLogin: { userInfo },
+        } = getState()
+
+        const config = {
+            headers: {
+                'Content-type': 'multipart/form-data', 
+            } 
+        }
+
+        const { data } = await axios.post(
+            `http://localhost:8000/api/job_alerts/${userId}/create/`,
+            {'search_value': search_value, 
+            'company': company,
+            'location': location, 
+            'job_type': job_type,
+            'employment_term': employment_term, 
+            'salary_min': salary_min,
+            'salary_max': salary_max,
+            'salary_type': salary_type, 
+            'listing_type': listing_type,
+            'remote': remote},
+            config
+        )
+        
+        dispatch({
+            type: CREATE_JOB_ALERT_SUCCESS,
+            payload: data
+        })
+        return { success: true, message: "Job Alert successfully created." };
+    } catch (error) {
+        dispatch({
+            type: CREATE_JOB_ALERT_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+        return { success: false, message: "There was an error while creating the Job Alert." };
     }
 }

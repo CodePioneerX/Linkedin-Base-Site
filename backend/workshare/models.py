@@ -1,6 +1,51 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 import datetime
+
+# definition of global variables that will be reused in more than one model
+ANNUALLY = 'ANNUALLY'
+HOURLY = 'HOURLY'
+FLATRATE = 'FLATRATE'
+
+SALARY_TYPE_CHOICES = [
+    (ANNUALLY, 'Annually'),
+    (HOURLY, 'Hourly'),
+    (FLATRATE, 'FlatRate')
+]
+
+PERMANENT = 'PERMANENT'
+TEMPORARY = 'TEMPORARY'
+CONTRACT = 'CONTRACT'
+CASUAL = 'CASUAL'
+
+EMPLOYMENT_TERM_CHOICES = [
+    (PERMANENT, 'Permanent'),
+    (TEMPORARY, 'Temporary'),
+    (CONTRACT, 'Contract'),
+    (CASUAL, 'Casual')
+]
+
+FULLTIME = 'FULLTIME'
+PARTTIME = 'PARTTIME'
+INTERNSHIP = 'INTERNSHIP'
+FREELANCE = 'FREELANCE'
+
+JOB_TYPE_CHOICES = [
+    (FULLTIME, 'FullTime'),
+    (PARTTIME, 'PartTime'),
+    (INTERNSHIP, 'Internship'),
+    (FREELANCE, 'Freelance')
+]
+
+INTERNAL = 'INTERNAL'
+EXTERNAL = 'EXTERNAL'
+
+LISTING_TYPE_CHOICES = [
+    (INTERNAL, 'Internal'),
+    (EXTERNAL, 'External')
+]
 
 # Create your models here.
 
@@ -89,74 +134,27 @@ class JobListing(models.Model):
     required_docs = models.ManyToManyField('Document', default=None, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     deadline = models.DateTimeField(default=get_deadline)
-    
-    ANNUALLY = 'ANNUALLY'
-    HOURLY = 'HOURLY'
-    FLATRATE = 'FLATRATE'
-
-    SALARY_TYPE_CHOICES = [
-        (ANNUALLY, 'Annually'),
-        (HOURLY, 'Hourly'),
-        (FLATRATE, 'FlatRate')
-    ]
-
     salary = models.IntegerField(default=0)
     salary_type = models.CharField(
         max_length=8,
         choices=SALARY_TYPE_CHOICES,
         default=HOURLY
     )
-
-    PERMANENT = 'PERMANENT'
-    TEMPORARY = 'TEMPORARY'
-    CONTRACT = 'CONTRACT'
-    CASUAL = 'CASUAL'
-
-    EMPLOYMENT_TERM_CHOICES = [
-        (PERMANENT, 'Permanent'),
-        (TEMPORARY, 'Temporary'),
-        (CONTRACT, 'Contract'),
-        (CASUAL, 'Casual')
-    ]
-
     employment_term = models.CharField(
         max_length=9,
         choices=EMPLOYMENT_TERM_CHOICES,
         default=PERMANENT
     )
-
-    FULLTIME = 'FULLTIME'
-    PARTTIME = 'PARTTIME'
-    INTERNSHIP = 'INTERNSHIP'
-    FREELANCE = 'FREELANCE'
-
-    JOB_TYPE_CHOICES = [
-        (FULLTIME, 'FullTime'),
-        (PARTTIME, 'PartTime'),
-        (INTERNSHIP, 'Internship'),
-        (FREELANCE, 'Freelance')
-    ]
-
     job_type = models.CharField(
         max_length=10,
         choices=JOB_TYPE_CHOICES,
         default=FULLTIME
     )
-
-    INTERNAL = 'INTERNAL'
-    EXTERNAL = 'EXTERNAL'
-    
-    LISTING_TYPE_CHOICES = [
-        (INTERNAL, 'Internal'),
-        (EXTERNAL, 'External')
-    ]
-    
     listing_type = models.CharField(
         max_length=8,
         choices=LISTING_TYPE_CHOICES,
         default=INTERNAL
     )
-
     link = models.TextField(blank=True)
 
     # reported = models.BooleanField(default=False, blank=False, null=False)
@@ -194,6 +192,96 @@ class Connection(models.Model):
     # This class makes sure that every sender and recipient pair is unique in the database. 
     class Meta:
         unique_together = ('sender', 'recipient')
+
+class Notification(models.Model):
+    """
+    Stores a single notification.
+    Attribute sender may be blank/null, as not every notification has a User sender (such as system notifications).
+    """
+
+    COMMENT = 'COMMENT'
+    CONNECTION = 'CONNECTION'
+    JOBALERT = 'JOBALERT'
+    LIKE = 'LIKE'
+    MESSAGE = 'MESSAGE'
+    RECOMMENDATION = 'RECOMMENDATION'
+    SYSTEM = 'SYSTEM'
+
+    TYPE_CHOICES = [
+        (COMMENT, 'Comment'),
+        (CONNECTION, 'Connection'),
+        (JOBALERT, 'Job Alert'),
+        (LIKE, 'Like'),
+        (MESSAGE, 'Message'),
+        (RECOMMENDATION, 'Recommendation'),
+        (SYSTEM, 'System')
+    ]
+
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender_notifcation_set', blank=True, null=True)
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipient_notifcation_set', blank=False, null=False)
+    title = models.CharField(max_length=255, blank=False)
+    content = models.TextField(blank=False)
+    unread = models.BooleanField(default=True, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True, blank=False, null=False)
+    type = models.CharField(
+        max_length=14,
+        choices=TYPE_CHOICES,
+        default=SYSTEM,
+        blank=False
+    )
+
+    # mandatory fields for generic relation
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, blank=True, null=True)
+    object_id = models.PositiveIntegerField(blank=True, null=True)
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["content_type", "object_id"]),
+        ]
+
+class JobAlert(models.Model):
+    """
+    Stores a single JobAlert associated with a User.
+    The JobAlert will be based on a saved Search and filter.
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    search_term = models.CharField(max_length=255)
+    company = models.CharField(max_length=255, blank=True, null=True)
+    location = models.CharField(max_length=255, blank=True, null=True)
+    job_type = models.CharField(
+        max_length=10,
+        choices=JOB_TYPE_CHOICES,
+        blank=True,
+        null=True
+    )
+    employment_term = models.CharField(
+        max_length=9,
+        choices=EMPLOYMENT_TERM_CHOICES,
+        blank=True,
+        null=True
+    )
+    salary_type = models.CharField(
+        max_length=8,
+        choices=SALARY_TYPE_CHOICES,
+        blank=True,
+        null=True
+    )
+    min_salary = models.IntegerField(blank=True, null=True)
+    max_salary = models.IntegerField(blank=True, null=True)
+    listing_type = models.CharField(
+        max_length=8,
+        choices=LISTING_TYPE_CHOICES,
+        blank=True,
+        null=True
+    )
+    remote = models.BooleanField(blank=True, null=True)
+
+    def __str__(self):
+        return self.search_term + ' ' + self.user.first_name
 
 class UserReport(models.Model):
     sender = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE)

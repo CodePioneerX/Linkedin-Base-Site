@@ -1,0 +1,14 @@
+.read {
+    color: lightslategray;
+}
+
+.notif-title {
+    text-align: 'left';
+    padding-bottom: '5px'; 
+    padding-top:'6px';
+}
+
+.notif-content {
+    text-align: 'left';
+    padding:'15px 0';
+}

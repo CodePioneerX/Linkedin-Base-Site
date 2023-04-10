@@ -34,3 +34,8 @@ span {
     }
 
 }
+
+.unread_notifications {
+    position: relative;
+    right:9px;
+}

@@ -4,10 +4,11 @@ import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import Alert from 'react-bootstrap/Alert';
 import { useDispatch, useSelector } from 'react-redux';
 import{ changePassword } from '../actions/userActions';
+import JobAlerts from '../components/JobAlerts'
 
 /*
 More settings functionalities likely to be implemented. 
-Currently, the Settings page only consists of a form which allows uses to reset their passwords. 
+Currently, the Settings page only consists of a form which allows uses to reset their passwords, and allows them to manage their Job Alerts. 
 */
 function Settings() {
 
@@ -84,6 +85,10 @@ function Settings() {
       </Button>
       </Form>
       
+      </div>
+      <div className='mb-5'></div>
+      <div className='settingsForm mb-5'>
+        <JobAlerts userId={userInfo.id}/>
       </div>
       </div>
 
