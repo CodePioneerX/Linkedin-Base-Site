@@ -8,6 +8,7 @@ const ConnectionCard = (props) => {
     
 // Define state variables
 const [profile, setProfile] = useState("");
+const [reportMessages, setReportMessages] = useState("");
 
 // Function to get user profile information
 const getProfile = async () => {
@@ -23,24 +24,38 @@ const getProfile = async () => {
     setProfile(data.profile);
   };
 
+  const getReportMessages = async () => {
+    var userId;
+
+    userId = props.userId
+
+    // Send GET request to retrieve user report messages
+    const {data} = await axios.get(
+      `http://localhost:8000/api/users/reports/${props.userId}`
+    );
+    // Update state with retrieved report messages
+    setReportMessages(data);
+  }
+
   const banHandler = async () => {
     const response = await axios.put(`http://localhost:8000/api/users/ban/${props.userId}`)
     window.location.reload()
   }
 
   const dismissReportHandler = async () => {
-    const response = await axios.put(`http://localhost:8000/api/users/report/dismiss/${props.userId}`)
+    const response = await axios.delete(`http://localhost:8000/api/users/report/dismiss/${props.userId}`)
     window.location.reload()
   }
 
   // Call getProfile() function when component mounts
   useEffect(() => {
-     getProfile(); 
+    getProfile();
+    getReportMessages();
   }, []);
 
   return (
     <>
-      <Card >
+      <Card className='mb-3'>
         <Row>
           <Card.Body className='card_body' >
             <div style={{display:'flex', justifyContent:'left'}}>
@@ -60,9 +75,16 @@ const getProfile = async () => {
                 <Button style={{height: '38px'}} onClick={banHandler} variant="danger">Ban User</Button>
               </Col>
             </div>
-            {/* <div className="pt-3 ml-3">
-              <p>Body of report message will go here.</p>
-            </div> */}
+            <div className="pt-3 ml-3">
+              {reportMessages && reportMessages.length > 0 && reportMessages.map(report => (
+                <div className='pb-4' key={report.id}>
+                  <span> 
+                    <strong>{report.sender_name}</strong> ({report.sender_email}): "{report.message}"
+                  </span>
+                </div>
+              ))
+              }
+            </div>
           </Card.Body>
         </Row>
       </Card>

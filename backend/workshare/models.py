@@ -194,3 +194,11 @@ class Connection(models.Model):
     # This class makes sure that every sender and recipient pair is unique in the database. 
     class Meta:
         unique_together = ('sender', 'recipient')
+
+class UserReport(models.Model):
+    sender = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE)
+    recipient = models.ForeignKey(User, related_name='recipient', on_delete=models.CASCADE)
+    message = models.TextField(blank=False, null=False)
+
+    def __str__(self):
+        return self.sender.email + ' reported ' + self.recipient.email 

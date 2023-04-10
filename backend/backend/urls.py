@@ -66,9 +66,10 @@ urlpatterns = [
     path('api/create_recommendation/<int:sender_id>/<int:receiver_id>', createRecommendationView, name='create_recommendation'),
     path('api/delete_recommendation/<int:sender_id>/<int:receiver_id>', deleteRecommendationView, name='delete_recommendation'),
     path('api/search/', views.searchFunction, name='search'),
-    path('api/users/report/<int:pk>', views.reportUserView, name='report-user'),
+    path('api/users/report/', views.reportUserView, name='report-user'),
     path('api/users/report/dismiss/<int:pk>', views.dismissUserReportView, name='dismiss-user-report'),
     path('api/users/reported', views.getReportedUsersView, name='get-reported-users'),
+    path('api/users/reports/<int:pk>', views.getUserReportMessagesView, name='get-reported-user-messages'),
     path('api/users/ban/<int:pk>', views.banUserView, name='ban-user'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

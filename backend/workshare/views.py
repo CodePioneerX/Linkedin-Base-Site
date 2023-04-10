@@ -10,9 +10,9 @@ from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
 from .serializers import WorkShareSerializer
 from .models import WorkShare
-from .models import Profile, Post, JobListing, Comment, Recommendations, Connection, Document
+from .models import Profile, Post, JobListing, Comment, Recommendations, Connection, Document, UserReport
 from django.contrib.auth.models import User, Group
-from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer, ConnectionSerializer, DocumentSerializer
+from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer, ConnectionSerializer, DocumentSerializer, UserReportSerializer
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -234,23 +234,33 @@ def passwordResetConfirm(request, uidb64, token):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['PUT'])
-def reportUserView(request, pk):
+@api_view(['POST'])
+def reportUserView(request):
     """
     A view function that allows a user to report another user. 
     This is accomplished by adding the user to the 'Reported' User Group.
 
     Parameters:
-    - request: HTTP request object.
-    - pk: Primary key of User to be reported.
+    - request: HTTP request object, containing sender of request, recipient of request, and request message.
 
     Returns:
     - Response: HTTP Response with a success/error message.
     """
     try:
-        user = get_object_or_404(User, pk=pk)
+        data = request.data
+
+        print(data)
+
+        sender = get_object_or_404(User, pk=data['sender'])
+        recipient = get_object_or_404(User, pk=data['recipient'])
+        message = data['message']
+
         reported = Group.objects.get(name='Reported')
-        reported.user_set.add(user)
+        reported.user_set.add(recipient)
+
+        report = UserReport(sender=sender, recipient=recipient, message=message)
+
+        report.save()
 
         message = {'detail':'The user has been reported.'}
         return Response(message, status=status.HTTP_200_OK)
@@ -258,7 +268,7 @@ def reportUserView(request, pk):
         message = {'detail':'The user could not be reported at this time.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['PUT', 'GET'])
+@api_view(['DELETE'])
 def dismissUserReportView(request, pk):
     """
     A view function that allows an admin to dismiss a report made against a user. 
@@ -276,7 +286,12 @@ def dismissUserReportView(request, pk):
         reported = Group.objects.get(name='Reported')
         user.groups.remove(reported)
 
-        message = {'detail':'The report against this user has been dismissed.'}
+        reports = UserReport.objects.all().filter(recipient__id=pk)
+
+        for report in reports:
+            report.delete()
+
+        message = {'detail':'The reports against this user have been dismissed.'}
         return Response(message, status=status.HTTP_200_OK)
     except:
         message = {'detail':'The report could not be dismissed at this time.'}
@@ -285,7 +300,7 @@ def dismissUserReportView(request, pk):
 @api_view(['GET'])
 def getReportedUsersView(request):
     """
-    A view function that allows an Admin to retrieve a list of all reported Users. 
+    A view function that allows an Admin to retrieve a list of all reported Users (who have not yet been banned). 
 
     Parameters:
     - request: HTTP request object.
@@ -296,7 +311,29 @@ def getReportedUsersView(request):
     try: 
         reported = Group.objects.get(name="Reported")
         users = reported.user_set.all()
+        users = users.filter(Q(is_active=True))
         serializer = UserSerializer(users, many=True)
+
+        return Response(serializer.data)
+    except:
+        message = {'detail':'The reported users could not be retrieved at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def getUserReportMessagesView(request, pk):
+    """
+    A view function that allows an Admin to retrieve all of the report messages associated with a certain reported User. 
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: The primary key of the reported user.
+
+    Returns:
+    - Response: HTTP Response containing serialized user report data, or an error message.
+    """
+    try: 
+        reports = UserReport.objects.all().filter(recipient__id=pk)
+        serializer = UserReportSerializer(reports, many=True)
 
         return Response(serializer.data)
     except:
