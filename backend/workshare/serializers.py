@@ -35,13 +35,17 @@ class PostSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
     isAdmin = serializers.SerializerMethodField(read_only=True)
+    isActive = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'name', 'isAdmin']
+        fields = ['id', 'username', 'email', 'name', 'isAdmin', 'isActive']
 
     def get_isAdmin(self, obj):
         return obj.is_staff
+    
+    def get_isActive(self, obj):
+        return obj.is_active
 
     def get_name(self, obj):
         name = obj.first_name
@@ -55,7 +59,7 @@ class UserSerializerWithToken(UserSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'name', 'isAdmin', 'token']
+        fields = ['id', 'username', 'email', 'name', 'isAdmin', 'isActive', 'token']
 
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)

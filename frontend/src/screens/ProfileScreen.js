@@ -205,6 +205,16 @@ export const ProfileScreen =()=>{
         setReceivedRec(data.received_recommendations)
       };
 
+      const reportUser = async () => {
+        try {
+          const { data } = await axios.put(`http://localhost:8000/api/users/report/${otherUserId}`)
+        } catch(error) {
+          console.log(error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message)
+        }
+      }
+
       //page set up
       useEffect(() => {
         getProfile();
@@ -244,6 +254,7 @@ export const ProfileScreen =()=>{
                             :
                             <button className="profile-button" onClick ={enterRecommendation}>Recommend</button>}
                         <button className="profile-button">Message</button>
+                        <button className="profile-button" onClick={reportUser}>Report User</button>
                         </div>
                         :  
                             (connectPending? 
@@ -261,6 +272,7 @@ export const ProfileScreen =()=>{
                             <div>
                             <button className="profile-button" onClick={sendConnection}>Connect</button>
                             <button className="profile-button">Message</button>
+                            <button className="profile-button" onClick={reportUser}>Report User</button>
                             </div>)
                         }
 

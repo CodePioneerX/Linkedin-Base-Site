@@ -62,6 +62,7 @@ class Post(models.Model):
     comments = models.ManyToManyField('Comment', blank=True)
     likes = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    # reported = models.BooleanField(default=False, blank=False, null=False)
     
     #this function defines what will be returned when the class is printed. The code below will return the author's email.
     def __str__(self):
@@ -157,6 +158,8 @@ class JobListing(models.Model):
     )
 
     link = models.TextField(blank=True)
+
+    # reported = models.BooleanField(default=False, blank=False, null=False)
 
     def get_required_docs(self):
         return ",".join([str(p) for p in self.required_docs.all()])

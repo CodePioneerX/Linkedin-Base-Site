@@ -11,13 +11,14 @@ from rest_framework import viewsets
 from .serializers import WorkShareSerializer
 from .models import WorkShare
 from .models import Profile, Post, JobListing, Comment, Recommendations, Connection, Document
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer, ConnectionSerializer, DocumentSerializer
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import Q
 import datetime
+
 from itertools import chain
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -232,6 +233,99 @@ def passwordResetConfirm(request, uidb64, token):
         message = {'detail':'The password reset link is invalid or has expired. Please request a new link.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['PUT'])
+def reportUserView(request, pk):
+    """
+    A view function that allows a user to report another user. 
+    This is accomplished by adding the user to the 'Reported' User Group.
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of User to be reported.
+
+    Returns:
+    - Response: HTTP Response with a success/error message.
+    """
+    try:
+        user = get_object_or_404(User, pk=pk)
+        reported = Group.objects.get(name='Reported')
+        reported.user_set.add(user)
+
+        message = {'detail':'The user has been reported.'}
+        return Response(message, status=status.HTTP_200_OK)
+    except:
+        message = {'detail':'The user could not be reported at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT', 'GET'])
+def dismissUserReportView(request, pk):
+    """
+    A view function that allows an admin to dismiss a report made against a user. 
+    This is accomplished by removing the user from the 'Reported' User Group.
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of User to be removed from the reported list.
+
+    Returns:
+    - Response: HTTP Response with a success/error message.
+    """
+    try:
+        user = get_object_or_404(User, pk=pk)
+        reported = Group.objects.get(name='Reported')
+        user.groups.remove(reported)
+
+        message = {'detail':'The report against this user has been dismissed.'}
+        return Response(message, status=status.HTTP_200_OK)
+    except:
+        message = {'detail':'The report could not be dismissed at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def getReportedUsersView(request):
+    """
+    A view function that allows an Admin to retrieve a list of all reported Users. 
+
+    Parameters:
+    - request: HTTP request object.
+
+    Returns:
+    - Response: HTTP Response containing serialized user data, or an error message.
+    """
+    try: 
+        reported = Group.objects.get(name="Reported")
+        users = reported.user_set.all()
+        serializer = UserSerializer(users, many=True)
+
+        return Response(serializer.data)
+    except:
+        message = {'detail':'The reported users could not be retrieved at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT', 'GET'])
+def banUserView(request, pk):
+    """
+    A view function that allows an admin to ban a user. 
+    This is accomplished by setting their account's is_active attribute to False, preventing the user from logging in.
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of User to be banned.
+
+    Returns:
+    - Response: HTTP Response with a success/error message.
+    """
+    try:
+        user = get_object_or_404(User, pk=pk)
+        user.is_active = False
+        user.save()
+        
+        message = {'detail':'The user has been banned.'}
+        return Response(message, status=status.HTTP_200_OK)
+    except:
+        message = {'detail':'The user could not be banned at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 # TO-DO: finalize implementation of user authentication
 @api_view(['PUT'])

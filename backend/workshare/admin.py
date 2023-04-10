@@ -1,5 +1,8 @@
 from django.contrib import admin
+from django.contrib.auth.models import User, Group
 from .models import WorkShare, Profile, Post, JobListing, Comment, Connection, Recommendations, Document
+
+Reported, created = Group.objects.get_or_create(name='Reported')
 
 class WorkShareAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'completed')
