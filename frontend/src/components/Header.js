@@ -33,12 +33,11 @@ function Header(){
   const dispatch = useDispatch();
 
   // on load, check the user's count of unread notifications
-  // empty dependency array ensures this effect only runs on load
   useEffect(() => {
     if (userInfo) {
       dispatch(count_notifications(userInfo.id))
     }
-  }, [])
+  }, [userInfo])
 
   function logoutHandler(){
     store.dispatch(logout());
