@@ -71,6 +71,9 @@ urlpatterns = [
     path('api/users/reported', views.getReportedUsersView, name='get-reported-users'),
     path('api/users/reports/<int:pk>', views.getUserReportMessagesView, name='get-reported-user-messages'),
     path('api/users/ban/<int:pk>', views.banUserView, name='ban-user'),
+    path('api/posts/report/', views.reportPostView, name='report-post'),
+    path('api/posts/report/dismiss/<int:pk>', views.dismissPostReportView, name='dismiss-post-report'),
+    path('api/posts/reported', views.getPostReportsView, name='get-reported-posts'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

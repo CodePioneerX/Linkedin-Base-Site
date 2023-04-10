@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
-from .models import WorkShare, Profile, Post, JobListing, Comment, Recommendations, Connection, UserReport
+from .models import WorkShare, Profile, Post, JobListing, Comment, Recommendations, Connection, UserReport, PostReport
 
 class WorkShareSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,7 +30,7 @@ class PostSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        fields = ('id', 'title', 'content', 'image', 'likes', 'author', 'created_at')
+        fields = ('id', 'title', 'content', 'image', 'likes', 'author', 'created_at', 'reported')
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
@@ -97,3 +97,15 @@ class UserReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserReport
         fields = ('id', 'sender_id', 'sender_email', 'sender_name', 'recipient', 'message')
+
+class PostReportSerializer(serializers.ModelSerializer):
+    sender_id = serializers.CharField(read_only=True, source="sender.id")
+    sender_email = serializers.CharField(read_only=True, source="sender.email")
+    sender_name = serializers.CharField(read_only=True, source="sender.first_name")
+    post_id = serializers.CharField(read_only=True, source="post.id")
+    post_title = serializers.CharField(read_only=True, source="post.title")
+    post_content = serializers.CharField(read_only=True, source="post.content")
+    
+    class Meta:
+        model = PostReport
+        fields = ('id', 'sender_id', 'sender_email', 'sender_name', 'post_id', 'post_title', 'post_content', 'message')

@@ -10,9 +10,9 @@ from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
 from .serializers import WorkShareSerializer
 from .models import WorkShare
-from .models import Profile, Post, JobListing, Comment, Recommendations, Connection, Document, UserReport
+from .models import Profile, Post, JobListing, Comment, Recommendations, Connection, Document, UserReport, PostReport
 from django.contrib.auth.models import User, Group
-from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer, ConnectionSerializer, DocumentSerializer, UserReportSerializer
+from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer, ConnectionSerializer, DocumentSerializer, UserReportSerializer, PostReportSerializer
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -362,6 +362,78 @@ def banUserView(request, pk):
         return Response(message, status=status.HTTP_200_OK)
     except:
         message = {'detail':'The user could not be banned at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+def getPostReportsView(request):
+    """
+    A view function that allows an Admin to retrieve a list of all reported Posts. 
+
+    Parameters:
+    - request: HTTP request object.
+
+    Returns:
+    - Response: HTTP Response containing serialized post data, or an error message.
+    """
+    try: 
+        post_reports = PostReport.objects.all().order_by('-post__id')
+        serializer = PostReportSerializer(post_reports, many=True)
+
+        return Response(serializer.data)
+    except:
+        message = {'detail':'The reported posts could not be retrieved at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE', 'GET'])
+def dismissPostReportView(request, pk):
+    """
+    A view function that allows an admin to dismiss a report made against a post. 
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of Post Report to be dismissed from the reported list.
+
+    Returns:
+    - Response: HTTP Response with a success/error message.
+    """
+    try:
+        post_report = get_object_or_404(PostReport, pk=pk)
+        post_report.delete()
+
+        message = {'detail':'This post report has been dismissed.'}
+        return Response(message, status=status.HTTP_200_OK)
+    except:
+        message = {'detail':'The post report could not be dismissed at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def reportPostView(request):
+    """
+    A view function that allows a user to report a post. 
+
+    Parameters:
+    - request: HTTP request object, containing sender of request, a specific post, and the request message.
+
+    Returns:
+    - Response: HTTP Response with a success/error message.
+    """
+    try:
+        data = request.data
+
+        sender = get_object_or_404(User, pk=data['sender'])
+        post = get_object_or_404(Post, pk=data['post'])
+        message = data['message']
+
+        post.reported = True
+        post.save()
+
+        report = PostReport(sender=sender, post=post, message=message)
+        report.save()
+
+        message = {'detail':'The post has been reported.'}
+        return Response(message, status=status.HTTP_200_OK)
+    except:
+        message = {'detail':'The post could not be reported at this time.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 # TO-DO: finalize implementation of user authentication
