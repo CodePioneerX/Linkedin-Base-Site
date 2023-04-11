@@ -19,7 +19,7 @@ import { get_profile } from '../actions/userActions'
 import { get_notifications } from "../actions/notificationActions";
 import ConnectionCard from '../components/ConnectionCard';
 import RecommendationCard from "../components/RecommendationCard";
-
+import FileForm from "../components/FileForm";
 
 function ViewProfile() {
   
@@ -30,6 +30,7 @@ function ViewProfile() {
   const [receivedRecommendations, setReceivedRec]= useState(""); 
   const [editor, setEditor] = useState(false)
   const [postEditor, setPostEditor] = useState(false)
+  const [fileForm, setFileForm] = useState(false);
   
   const [post, setPost] = useState('') // Holds and sets the value of user's post data
 
@@ -40,7 +41,9 @@ function ViewProfile() {
   const { userInfo } = userLogin;
   const navigate = useNavigate();
 
-  
+  const openFileForm = () => {
+    setFileForm(prev => !prev);
+  };
   
  // If user is not logged in, redirect to the login page, else call the `getProfile` function
   
@@ -118,6 +121,7 @@ function ViewProfile() {
             {editor ? <EditProfileForm profile={profile} quitEditor={quitEditor}/> : 
             postEditor ? <EditPostForm post={post} quitPostEditor={quitPostEditor}/> : 
               <Container>
+                <FileForm fileForm={fileForm} setFileForm={setFileForm} />
                 <Row>
                   {/* Bio + Resume Column  */}
                   <Col sm={12} md={12} lg={8}>
@@ -132,8 +136,11 @@ function ViewProfile() {
                           <h1 className="profile-name">{profile.name}</h1>
                           <h4 className="profile-title">{profile.title}</h4>
                           <h6 className="profile-city" style={{paddingBottom:"10px"}}>{profile.city}</h6>
+                          <Link to='/network'>
                           <button className="profile-button">Connections</button>
+                          </Link>
                           <button className="profile-button" onClick={editorMode}>Edit Profile</button>
+                          <button className="profile-button" onClick={openFileForm}>Upload Documents</button>
                           <button className="profile-button">Contact Info</button>
                         </div>
                       </Row>
