@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom'
+import { Container} from 'react-bootstrap';
 import {  Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import '../Assets/css/App.css';
 import { MdClose } from 'react-icons/md';
+import JobApplicationCard from '../components/JobApplicationCard';
 
 
 
@@ -15,10 +17,11 @@ const { userInfo } = userLogin;
 const navigate = useNavigate()
 
 return (
-   <>
+   <Container>
    <Button className='mb-4' variant='secondary' onClick={() => {navigate(-1)}}>Back</Button>
   <p>Job Application page</p>
-   </>
+  <JobApplicationCard/>
+   </Container>
 );
 };
 
