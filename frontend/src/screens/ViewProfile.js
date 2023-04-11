@@ -75,7 +75,8 @@ function ViewProfile() {
   
    // If user is not logged in, redirect to the login page, else call the `getProfile` function
   useEffect(() => {
-    getProfile(); //getProfile function call 
+    getProfile(); 
+    //getProfile function call 
     // dispatch(get_profile(userInfo.id))
     userInfo && dispatch(get_notifications(userInfo.id))
   }, []);
@@ -133,6 +134,9 @@ function ViewProfile() {
 
                       <Row style={{background:"white",display: "flex", flexDirection: "column", alignItems: "center"}}>
                         <div style={{textAlign: "center", padding: "1rem"}}>
+                        <Link to='/jobApplication'>
+                          <button className="profile-button">View Job Application</button>
+                          </Link>
                           <h1 className="profile-name">{profile.name}</h1>
                           <h4 className="profile-title">{profile.title}</h4>
                           <h6 className="profile-city" style={{paddingBottom:"10px"}}>{profile.city}</h6>
