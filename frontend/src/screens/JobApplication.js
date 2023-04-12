@@ -43,8 +43,6 @@ const [transcript, setTranscript] = useState(null);
 
 const submitHandler = (e) => {
    e.preventDefault()
-   //dispatch(login(email, password))
-
 }
 
 const handleResumeChange = (event) => {
