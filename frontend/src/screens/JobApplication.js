@@ -39,7 +39,7 @@ const JobApplication = () => {
    const [portfolio, setPortfolio] = useState(null);
    const [transcript, setTranscript] = useState(null);
    const [otherDocuments, setOtherDocuments] = useState(null);
-   const [profile, setProfile] = useState("");
+   const [profile, setProfile] = useState('');
 
    //Event handlers that get triggered when the user selects files for uploading
    const handleResumeChange = (event) => {
@@ -149,7 +149,7 @@ const JobApplication = () => {
                   <FormGroup>
                      <Label className='education' for="education"><h3>Education</h3></Label>
                      <textarea  className= 'form-control'
-                     name="education" id="education" required value = {education} placeholder='For each education entry you would like to include, enter the information using the following format:&#13;&#10;Major / Area of Study&#13;&#10;Degree&#13;&#10;School Name&#13;&#10;City, State/Province, Country&#13;&#10;Additional Information' rows='5'
+                     name="education" id="education" required value = {education} placeholder='For each education entry you would like to include, enter the information using the following format:&#13;&#10;Major / Area of Study&#13;&#10;Degree&#13;&#10;School Name&#13;&#10;City, State/Province, Country&#13;&#10;Additional Information' rows='6'
                      onChange={(e)=> setEducation(e.target.value)}/>
                   </FormGroup>
                   <hr/>
