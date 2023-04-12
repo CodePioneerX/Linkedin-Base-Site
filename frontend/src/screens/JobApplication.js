@@ -7,6 +7,7 @@ import '../Assets/css/JobApplication.css';
 import { MdClose } from 'react-icons/md';
 import { TiArrowBack } from "react-icons/ti";
 import JobApplicationCard from '../components/JobApplicationCard';
+import axios from "axios";
 
 
 
@@ -38,10 +39,7 @@ const [coverLetter, setCoverLetter] = useState(null);
 const [recommendationLetter, setRecommendationLetter] = useState(null);
 const [portfolio, setPortfolio] = useState(null);
 const [transcript, setTranscript] = useState(null);
-
-const submitHandler = (e) => {
-   e.preventDefault()
-}
+const [profile, setProfile] = useState("");
 
 const handleResumeChange = (event) => {
    setResume(event.target.files[0]);
@@ -59,14 +57,45 @@ const handleTranscriptChange = (event) => {
    setTranscript(event.target.files[0]);
 };
 
+const getProfile = async () => {
+   const { data } = await axios.get(
+     `http://localhost:8000/api/profile/` + userInfo.id
+   );
+   setProfile(data.profile);
+ };
+
+// If user is not logged in, redirect to the login page, else call the `getProfile` function
+useEffect(() => {
+   getProfile(); 
+}, []);
+
+const autofillHandler = (e) => {
+
+   setEmail(userInfo.email);
+   setCity(profile.city)
+   setName(userInfo.name);
+   setExperience(profile.experience);
+   setWork(profile.work);
+   setEducation(profile.education);
+   setVolunteering(profile.volunteering);
+   setCourses(profile.courses);
+   setProjects(profile.projects);
+   setAwards(profile.awards);
+   setLanguages(profile.languages);
+}
+
+const submitHandler = (e) => {
+   e.preventDefault()
+}
+
 return (
    <div className='formBackground'>
       <div className='jobApplicationsPage'>
          <Button className='customButton ' variant='secondary' onClick={() => {navigate(-1)}}><TiArrowBack className='icon'/><span className='backText'>Back</span></Button>
          <div className='jobApplicationsPageForm'>
             <h1>Job Application Form</h1>
-            <Button className='customButton' id='autoFillButton' variant='secondary'>Autofill using my profile information</Button>
-            <Form className='jobApplicationForm' onSubmit={submitHandler}>
+            <Button className='customButton' id='autoFillButton' variant='secondary' onClick={autofillHandler}>Autofill using my profile information</Button>
+            <Form className='jobApplicationForm'>
                <hr/>
                <Label className='personalInformation' for="personalInformation"><h3>Personal Information</h3></Label>
                <FormGroup>
@@ -173,7 +202,7 @@ return (
                </FormGroup>
                <hr/>
                <p>Before submitting your application, please verify that the information provided above is both accurate and genuine.</p>
-               <Button id='apply' className='customButton' type='submit' >Send Application Now</Button>
+               <Button id='apply' className='customButton' type='submit' onClick={submitHandler}>Send Application Now</Button>
             </Form>
             
          </div>
