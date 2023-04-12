@@ -2,6 +2,7 @@ import React, { useState, useEffect, Component } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom'
 import { Container} from 'react-bootstrap';
+import Alert from 'react-bootstrap/Alert';
 import {  Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import '../Assets/css/JobApplication.css';
 import { MdClose } from 'react-icons/md';
@@ -21,6 +22,7 @@ const JobApplication = () => {
 
    //form submission status
    const [submitStatus, setSubmitStatus] = useState(null); 
+   const dispatch = useDispatch();
 
    //State variables that store the information inputted by the user
    const [email, setEmail] = useState('');
@@ -103,7 +105,7 @@ const JobApplication = () => {
            if (res.success) {
             setSubmitStatus(res.message);
            } else {
-            setSubmitStatus("Failed to submit application\nPlease try again.");
+            setSubmitStatus("Failed to submit application. Please try again.");
          }
          }
        );
@@ -115,11 +117,6 @@ const JobApplication = () => {
          <div className='jobApplicationsPage'>
             <Button className='customButton ' variant='secondary' onClick={() => {navigate(-1)}}><TiArrowBack className='icon'/><span className='backText'>Back</span></Button>
             <div className='jobApplicationsPageForm'>
-               {submitStatus && (
-               <Alert className={`submitStatusAlert ${submitStatus.includes("successfully") ? "alert-success" : "alert-danger" }`} variant={ submitStatus.includes("successfully") ? "success" : "danger" } onClose={() => setSubmitStatus(null)}>
-                  {" "}
-                  {submitStatus}{" "}
-               </Alert>)}
                <h1>Job Application Form</h1>
                <Button className='customButton' id='autoFillButton' variant='secondary' onClick={autofillHandler}>Autofill using my profile information</Button>
                <Form className='jobApplicationForm'>
@@ -238,6 +235,11 @@ const JobApplication = () => {
                      <Input type="file" name="otherDocuments" id="otherDocuments" onChange={handleOtherDocumentsChange} multiple/>
                   </FormGroup>
                   <hr/>
+                  {submitStatus && (
+                  <Alert className={`submitStatusAlert ${submitStatus.includes("successfully") ? "alert-success" : "alert-danger" }`} variant={ submitStatus.includes("successfully") ? "success" : "danger" } onClose={() => setSubmitStatus(null)}>
+                     {" "}
+                     {submitStatus}{" "}
+                  </Alert>)}
                   <p>Before submitting your application, please verify that the information provided above is both accurate and genuine.</p>
                   <Button id='apply' className='customButton' type='submit' onClick={submitHandler}>Send Application Now</Button>
                </Form>
