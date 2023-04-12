@@ -133,34 +133,37 @@ const JobApplication = () => {
                   <hr/>
                   <FormGroup >
                      <Label for="experience"><h3>Current Employment</h3></Label>
+                     <p>If you are not currently employed, please enter 'N/A' in the text box provided below.</p>
                      <textarea className= 'form-control'
-                     name="experience" id="experience" value= {experience} placeholder='Enter your current employment information using the following format:&#13;&#10;Role&#13;&#10;Employer Name&#13;&#10;City, State/Province, Country&#13;&#10;Role Description' rows='5'
+                     name="experience" id="experience" required value= {experience} placeholder='Enter your current employment information using the following format:&#13;&#10;Role&#13;&#10;Employer Name&#13;&#10;City, State/Province, Country&#13;&#10;Role Description' rows='5'
                      onChange={(e)=> setExperience(e.target.value)}/>
                   </FormGroup>
                   <hr/>
                   <FormGroup >
                      <Label className='employmentHistory' for="work"><h3>Employment History</h3></Label>
                      <textarea  className= 'form-control'
-                     name="work" id="work" value = {work} placeholder='For each job entry you would like to include, enter the employment information using the following format:&#13;&#10;Role&#13;&#10;Employer Name&#13;&#10;City, State/Province, Country&#13;&#10;Role Description' rows='5'
+                     name="work" id="work" required value = {work} placeholder='For each job entry you would like to include, enter the employment information using the following format:&#13;&#10;Role&#13;&#10;Employer Name&#13;&#10;City, State/Province, Country&#13;&#10;Role Description' rows='5'
                      onChange={(e)=> setWork(e.target.value)}/>
                   </FormGroup>
                   <hr/>
                   <FormGroup>
                      <Label className='education' for="education"><h3>Education</h3></Label>
                      <textarea  className= 'form-control'
-                     name="education" id="education" value = {education} placeholder='For each education entry you would like to include, enter the information using the following format:&#13;&#10;Major / Area of Study&#13;&#10;Degree&#13;&#10;School Name&#13;&#10;City, State/Province, Country&#13;&#10;Additional Information' rows='5'
+                     name="education" id="education" required value = {education} placeholder='For each education entry you would like to include, enter the information using the following format:&#13;&#10;Major / Area of Study&#13;&#10;Degree&#13;&#10;School Name&#13;&#10;City, State/Province, Country&#13;&#10;Additional Information' rows='5'
                      onChange={(e)=> setEducation(e.target.value)}/>
                   </FormGroup>
                   <hr/>
                   <FormGroup>
                      <Label className='projects' for="projects"><h3>Personal Projects</h3></Label>
+                     <p>If you do not have any personal projects that you would like to include, please enter 'N/A' in the text box provided below.</p>
                      <textarea  className= 'form-control'
-                     name="projects" id="projects" value = {projects} placeholder='For each project entry you would like to include, enter the information using the following format:&#13;&#10;Project Name&#13;&#10;Project Description' rows='3'
+                     name="projects" id="projects" required value = {projects} placeholder='For each project entry you would like to include, enter the information using the following format:&#13;&#10;Project Name&#13;&#10;Project Description' rows='3'
                      onChange={(e)=> setProjects(e.target.value)}/>
                   </FormGroup>
                   <hr/>
                   <FormGroup>
                      <Label className='volunteering' for="volunteering"><h3>Volunteer Experience</h3></Label>
+                     <p>If you do not have any volunteer experience that you would like to include, please enter 'N/A' in the text box provided below.</p>
                      <textarea  className= 'form-control'
                      name="volunteering" id="volunteering" value = {volunteering} placeholder='For each volunteer experience entry you would like to include, enter the information using the following format:&#13;&#10;Role&#13;&#10;Organization Name&#13;&#10;City, State/Province, Country&#13;&#10;Role Description' rows='5'
                      onChange={(e)=> setVolunteering(e.target.value)}/>
@@ -168,45 +171,47 @@ const JobApplication = () => {
                   <hr/>
                   <FormGroup>
                      <Label className='courses' for="courses"><h3>Courses</h3></Label>
+                     <p>If you do not have any courses that you would like to include, please enter 'N/A' in the text box provided below.</p>
                      <textarea  className= 'form-control'
-                     name="courses" id="courses" value = {courses} placeholder='For each course entry you would like to include, enter the information using the following format:&#13;&#10;Course Name&#13;&#10;Organisation Name&#13;&#10;City, State/Province, Country&#13;&#10;Course Description' rows='5'
+                     name="courses" id="courses" required value = {courses} placeholder='For each course entry you would like to include, enter the information using the following format:&#13;&#10;Course Name&#13;&#10;Organisation Name&#13;&#10;City, State/Province, Country&#13;&#10;Course Description' rows='5'
                      onChange={(e)=> setCourses(e.target.value)}/>
                   </FormGroup>
                   <hr/>
                   <FormGroup>
                      <Label className='awards' for="awards"><h3>Awards</h3></Label>
+                     <p>If you do not have any awards or certifications that you would like to include, please enter 'N/A' in the text box provided below.</p>
                      <textarea  className= 'form-control'
-                     name="awards" id="awards" value = {awards} placeholder='For each award entry you would like to include, enter the information using the following format:&#13;&#10;Award Name&#13;&#10;Organisation Name&#13;&#10;City, State/Province, Country&#13;&#10;Award Description' rows='5'
+                     name="awards" id="awards" required value = {awards} placeholder='For each award entry you would like to include, enter the information using the following format:&#13;&#10;Award Name&#13;&#10;Organisation Name&#13;&#10;City, State/Province, Country&#13;&#10;Award Description' rows='5'
                      onChange={(e)=> setAwards(e.target.value)}/>
                   </FormGroup>
                   <hr/>               
                   <FormGroup>
                      <Label className='languages' for="languages"><h3>Languages</h3></Label>
                      <textarea  className= 'form-control'
-                     name="languages" id="languages" value = {languages} placeholder='For each language entry you would like to include, enter the information using the following format:&#13;&#10;Language&#13;&#10;Level of Fluency' rows='3'
+                     name="languages" id="languages" required value = {languages} placeholder='For each language entry you would like to include, enter the information using the following format:&#13;&#10;Language&#13;&#10;Level of Fluency' rows='3'
                      onChange={(e)=> setLanguages(e.target.value)}/>
                   </FormGroup>
                   <hr/>
                   <h2>Documents</h2>
                   <FormGroup>
                      <Label className='resume' for="resume"><h3>Resume</h3></Label>
-                     <Input type="file" name="resume" id="resume" onChange={handleResumeChange}/>
+                     <Input type="file" name="resume" id="resume" onChange={handleResumeChange} required/>
                   </FormGroup>
                   <FormGroup>
                      <Label className='coverLetter' for="coverLetter"><h3>Cover Letter</h3></Label>
-                     <Input type="file" name="coverLetter" id="coverLetter" onChange={handleCoverLetterChange}/>
+                     <Input type="file" name="coverLetter" id="coverLetter" onChange={handleCoverLetterChange} required/>
                   </FormGroup>
                   <FormGroup>
                      <Label className='recommendationLetter' for="recommendationLetter"><h3>Letter of Recommendation</h3></Label>
-                     <Input type="file" name="recommendationLetter" id="recommendationLetter" onChange={handleRecommendationLetterChange}/>
+                     <Input type="file" name="recommendationLetter" id="recommendationLetter" onChange={handleRecommendationLetterChange} required/>
                   </FormGroup>
                   <FormGroup>
                      <Label className='portfolio' for="portfolio"><h3>Portfolio</h3></Label>
-                     <Input type="file" name="portfolio" id="portfolio" onChange={handlePortfolioChange}/>
+                     <Input type="file" name="portfolio" id="portfolio" onChange={handlePortfolioChange} required/>
                   </FormGroup>
                   <FormGroup>
                      <Label className='transcript' for="transcript"><h3>Transcript</h3></Label>
-                     <Input type="file" name="transcript" id="transcript" onChange={handleTranscriptChange}/>
+                     <Input type="file" name="transcript" id="transcript" onChange={handleTranscriptChange} required/>
                   </FormGroup>
                   <FormGroup>
                      <Label className='otherDocuments' for="otherDocuments"><h3>Other Documents</h3></Label>
