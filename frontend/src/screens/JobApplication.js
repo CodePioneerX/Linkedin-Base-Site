@@ -39,6 +39,7 @@ const [coverLetter, setCoverLetter] = useState(null);
 const [recommendationLetter, setRecommendationLetter] = useState(null);
 const [portfolio, setPortfolio] = useState(null);
 const [transcript, setTranscript] = useState(null);
+const [otherDocuments, setOtherDocuments] = useState(null);
 const [profile, setProfile] = useState("");
 
 const handleResumeChange = (event) => {
@@ -56,6 +57,10 @@ const handlePortfolioChange = (event) => {
 const handleTranscriptChange = (event) => {
    setTranscript(event.target.files[0]);
 };
+const handleOtherDocumentsChange = (event) => {
+   setOtherDocuments(event.target.files);
+ };
+ 
 
 const getProfile = async () => {
    const { data } = await axios.get(
@@ -191,7 +196,7 @@ return (
                   <Input type="file" name="coverLetter" id="coverLetter" onChange={handleCoverLetterChange}/>
                </FormGroup>
                <FormGroup>
-                  <Label className='recommendationLetter' for="recommendationLetter"><h3>Recommendation Letter</h3></Label>
+                  <Label className='recommendationLetter' for="recommendationLetter"><h3>Letter of Recommendation</h3></Label>
                   <Input type="file" name="recommendationLetter" id="recommendationLetter" onChange={handleRecommendationLetterChange}/>
                </FormGroup>
                <FormGroup>
@@ -201,6 +206,11 @@ return (
                <FormGroup>
                   <Label className='transcript' for="transcript"><h3>Transcript</h3></Label>
                   <Input type="file" name="transcript" id="transcript" onChange={handleTranscriptChange}/>
+               </FormGroup>
+               <FormGroup>
+                  <Label className='otherDocuments' for="otherDocuments"><h3>Other Documents</h3></Label>
+                  <p>In this section, you can upload any extra documents that the employer may have requested in the job description, including but not limited to writing samples, certifications, proof of citizenship, and references.</p>
+                  <Input type="file" name="otherDocuments" id="otherDocuments" onChange={handleOtherDocumentsChange} multiple/>
                </FormGroup>
                <hr/>
                <p>Before submitting your application, please verify that the information provided above is both accurate and genuine.</p>
