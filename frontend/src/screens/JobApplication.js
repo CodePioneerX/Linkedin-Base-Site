@@ -94,6 +94,7 @@ const JobApplication = () => {
 
    const submitHandler = (e) => {
       e.preventDefault()
+      create_job_application(email, name, telephone, city, provinceState, country, experience, work, education, volunteering, courses, projects, awards, languages, resume, coverLetter, recommendationLetter, portfolio, transcript, otherDocuments, profile);
    }
 
    return (
