@@ -1,10 +1,12 @@
 import React, { useState, useEffect, Component } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom'
+import { Container} from 'react-bootstrap';
 import {  Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import '../Assets/css/JobApplication.css';
 import { MdClose } from 'react-icons/md';
 import { TiArrowBack } from "react-icons/ti";
+import JobApplicationCard from '../components/JobApplicationCard';
 
 
 
