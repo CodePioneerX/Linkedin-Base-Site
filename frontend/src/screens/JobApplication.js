@@ -82,6 +82,8 @@ const autofillHandler = (e) => {
    setProjects(profile.projects);
    setAwards(profile.awards);
    setLanguages(profile.languages);
+   //setResume(profile.resume);
+   //setCoverLetter(profile.coverLetter);
 }
 
 const submitHandler = (e) => {
