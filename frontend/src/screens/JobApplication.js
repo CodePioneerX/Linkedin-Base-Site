@@ -18,8 +18,6 @@ const JobApplication = () => {
 const userLogin = useSelector((state) => state.userLogin);
 const { userInfo } = userLogin;
 const navigate = useNavigate()
-const [autoFill, setAutoFillChecked] = useState(false);
-const toggleAutoFillChecked = () => setAutoFillChecked(value => !value);
 
 const [email, setEmail] = useState('');
 const [name, setName] = useState('');
