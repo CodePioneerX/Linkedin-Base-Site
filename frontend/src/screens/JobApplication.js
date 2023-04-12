@@ -19,6 +19,9 @@ const JobApplication = () => {
    const { userInfo } = userLogin;
    const navigate = useNavigate()
 
+   //form submission status
+   const [submitStatus, setSubmitStatus] = useState(null); 
+
    //State variables that store the information inputted by the user
    const [email, setEmail] = useState('');
    const [name, setName] = useState('');
@@ -95,7 +98,16 @@ const JobApplication = () => {
 
    const submitHandler = (e) => {
       e.preventDefault()
-      create_job_application(email, name, telephone, city, provinceState, country, experience, work, education, volunteering, courses, projects, awards, languages, resume, coverLetter, recommendationLetter, portfolio, transcript, otherDocuments, profile);
+      dispatch(create_job_application(email, name, telephone, city, provinceState, country, experience, work, education, volunteering, courses, projects, awards, languages, resume, coverLetter, recommendationLetter, portfolio, transcript, otherDocuments, profile)).then(
+         (res) => {
+           if (res.success) {
+            setSubmitStatus(res.message);
+           } else {
+            setSubmitStatus("Failed to submit application\nPlease try again.");
+         }
+         }
+       );
+
    }
 
    return (
@@ -103,6 +115,11 @@ const JobApplication = () => {
          <div className='jobApplicationsPage'>
             <Button className='customButton ' variant='secondary' onClick={() => {navigate(-1)}}><TiArrowBack className='icon'/><span className='backText'>Back</span></Button>
             <div className='jobApplicationsPageForm'>
+               {submitStatus && (
+               <Alert className={`submitStatusAlert ${submitStatus.includes("successfully") ? "alert-success" : "alert-danger" }`} variant={ submitStatus.includes("successfully") ? "success" : "danger" } onClose={() => setSubmitStatus(null)}>
+                  {" "}
+                  {submitStatus}{" "}
+               </Alert>)}
                <h1>Job Application Form</h1>
                <Button className='customButton' id='autoFillButton' variant='secondary' onClick={autofillHandler}>Autofill using my profile information</Button>
                <Form className='jobApplicationForm'>

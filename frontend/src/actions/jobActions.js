@@ -375,7 +375,7 @@ export const create_job_application = (email, name, telephone, city, provinceSta
             type: CREATE_JOB_APPLICATION_SUCCESS,
             payload: data
         })
-        return { success: true, message: "Job Application submitted successfully." };
+        return { success: true, message: "Job Application submitted successfully!" };
     } catch (error) {
         dispatch({
             type: CREATE_JOB_APPLICATION_FAIL,
