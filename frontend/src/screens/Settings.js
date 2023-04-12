@@ -45,8 +45,7 @@ function Settings() {
   };
 
     return (
-      <div>
-      <h1>Settings</h1>
+      <div className='settingsPage'>
       <div className='settingsForm'>
         <Form className='changePasswordForm' onSubmit={submitHandler}>
           <span>
@@ -64,6 +63,7 @@ function Settings() {
                 {passwordChangeSuccess}{" "}
               </Alert>)}
           </span>
+          <h1>Settings</h1>
           <h3>Reset Password</h3>
         <FormGroup>
           <Label for="oldPassword">Old Password</Label>

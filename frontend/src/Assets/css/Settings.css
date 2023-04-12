@@ -1,6 +1,9 @@
-h1 {
-    padding: 50px 10px 50px 30px;
+.settingsPage {
+    background-color: #44599d;
+    height:100vh;
+    padding-top: 5%;
 }
+
 
 h3 {
     padding-top: 15px;
@@ -9,7 +12,7 @@ h3 {
 
 .changePasswordForm {
     width: 95%;
-    padding: 30px;
+    padding: 5%;
     max-width: 1200px;
     background-color: white;
     height: 70%;
@@ -18,7 +21,6 @@ h3 {
     justify-content: center;
     border-radius: 25px;
     display:block;
-    padding-bottom: 30px;
     margin: auto;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
