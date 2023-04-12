@@ -17,9 +17,10 @@ const { userInfo } = userLogin;
 const navigate = useNavigate()
 
 return (
-   <Container>
+   <Container className="justify-content-md-center padd">
    <Button className='mb-4' variant='secondary' onClick={() => {navigate(-1)}}>Back</Button>
-  <p>Job Application page</p>
+  <h2>Applications to your job posts:</h2>
+  <JobApplicationCard/>
   <JobApplicationCard/>
    </Container>
 );
