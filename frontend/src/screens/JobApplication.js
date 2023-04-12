@@ -21,26 +21,47 @@ const navigate = useNavigate()
 const [autoFill, setAutoFillChecked] = useState(false);
 const toggleAutoFillChecked = () => setAutoFillChecked(value => !value);
 
-const [email, setEmail] = useState('')
-const [name, setName] = useState('')
-const [telephone, setTelephone] = useState('')
-const [city, setCity] = useState('')
-const [provinceState, setProvinceState] = useState('')
-const [country, setCountry] = useState('')
-const [experience, setExperience] = useState('')
-const [work, setWork] = useState('')
-const [education, setEducation] = useState('')
-const [volunteering, setVolunteering] = useState('')
-const [courses, setCourses] = useState('')
-const [projects, setProjects] = useState('')
-const [awards, setAwards] = useState('')
-const [languages, setLanguages] = useState('')
+const [email, setEmail] = useState('');
+const [name, setName] = useState('');
+const [telephone, setTelephone] = useState('');
+const [city, setCity] = useState('');
+const [provinceState, setProvinceState] = useState('');
+const [country, setCountry] = useState('');
+const [experience, setExperience] = useState('');
+const [work, setWork] = useState('');
+const [education, setEducation] = useState('');
+const [volunteering, setVolunteering] = useState('');
+const [courses, setCourses] = useState('');
+const [projects, setProjects] = useState('');
+const [awards, setAwards] = useState('');
+const [languages, setLanguages] = useState('');
+const [resume, setResume] = useState(null);
+const [coverLetter, setCoverLetter] = useState(null);
+const [recommendationLetter, setRecommendationLetter] = useState(null);
+const [portfolio, setPortfolio] = useState(null);
+const [transcript, setTranscript] = useState(null);
 
 const submitHandler = (e) => {
    e.preventDefault()
    //dispatch(login(email, password))
 
- }
+}
+
+const handleResumeChange = (event) => {
+   setResume(event.target.files[0]);
+};
+const handleCoverLetterChange = (event) => {
+   setCoverLetter(event.target.files[0]);
+};
+const handleRecommendationLetterChange = (event) => {
+   setRecommendationLetter(event.target.files[0]);
+};
+const handlePortfolioChange = (event) => {
+   setPortfolio(event.target.files[0]);
+};
+const handleTranscriptChange = (event) => {
+   setTranscript(event.target.files[0]);
+};
 
 return (
    <div className='formBackground'>
@@ -131,6 +152,28 @@ return (
                   <textarea  className= 'form-control'
                   name="languages" id="languages" value = {languages} placeholder='For each language entry you would like to include, enter the information using the following format:&#13;&#10;Language&#13;&#10;Level of Fluency' rows='3'
                   onChange={(e)=> setLanguages(e.target.value)}/>
+               </FormGroup>
+               <hr/>
+               <h2>Documents</h2>
+               <FormGroup>
+                  <Label className='resume' for="resume"><h3>Resume</h3></Label>
+                  <Input type="file" name="resume" id="resume" onChange={handleResumeChange}/>
+               </FormGroup>
+               <FormGroup>
+                  <Label className='coverLetter' for="coverLetter"><h3>Cover Letter</h3></Label>
+                  <Input type="file" name="coverLetter" id="coverLetter" onChange={handleCoverLetterChange}/>
+               </FormGroup>
+               <FormGroup>
+                  <Label className='recommendationLetter' for="recommendationLetter"><h3>Recommendation Letter</h3></Label>
+                  <Input type="file" name="recommendationLetter" id="recommendationLetter" onChange={handleRecommendationLetterChange}/>
+               </FormGroup>
+               <FormGroup>
+                  <Label className='portfolio' for="portfolio"><h3>Portfolio</h3></Label>
+                  <Input type="file" name="portfolio" id="portfolio" onChange={handlePortfolioChange}/>
+               </FormGroup>
+               <FormGroup>
+                  <Label className='transcript' for="transcript"><h3>Transcript</h3></Label>
+                  <Input type="file" name="transcript" id="transcript" onChange={handleTranscriptChange}/>
                </FormGroup>
                <hr/>
                <p>Before submitting your application, please verify that the information provided above is both accurate and genuine.</p>
