@@ -8,6 +8,7 @@ import { MdClose } from 'react-icons/md';
 import { TiArrowBack } from "react-icons/ti";
 import JobApplicationCard from '../components/JobApplicationCard';
 import axios from "axios";
+import{ create_job_application } from '../actions/jobActions'
 
 
 
