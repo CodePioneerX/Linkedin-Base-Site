@@ -133,8 +133,10 @@ return (
                   onChange={(e)=> setLanguages(e.target.value)}/>
                </FormGroup>
                <hr/>
+               <p>Before submitting your application, please verify that the information provided above is both accurate and genuine.</p>
+               <Button id='apply' className='customButton' type='submit' >Send Application Now</Button>
             </Form>
-            <Button id='apply' className='customButton' type='submit' >Apply Now</Button>
+            
          </div>
       </div>
    </div>
