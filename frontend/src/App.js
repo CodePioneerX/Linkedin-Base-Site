@@ -28,6 +28,7 @@ import Settings from "./screens/Settings";
 import Home from './screens/Home';
 import SearchScreen from "./screens/SearchScreen";
 import JobApplication from "./screens/JobApplication";
+import JobApplicationReview from "./screens/JobApplicationReview";
 import  {Provider} from 'react-redux';
 import userInfoFromStorage from './store'
 import store from './store';
@@ -97,6 +98,9 @@ const router = createBrowserRouter([
   },{
     path: "/jobApplication",
     element: <JobApplication/>
+  },{
+    path: "/jobApplicationReview",
+    element: <JobApplicationReview/>
   }
 
 ]);

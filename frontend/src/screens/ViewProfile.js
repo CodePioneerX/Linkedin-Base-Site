@@ -134,8 +134,8 @@ function ViewProfile() {
 
                       <Row style={{background:"white",display: "flex", flexDirection: "column", alignItems: "center"}}>
                         <div style={{textAlign: "center", padding: "1rem"}}>
-                        <Link to='/jobApplication'>
-                          <button className="profile-button">View Job Application</button>
+                        <Link to='/jobApplicationReview'>
+                          <button className="profile-button">View Job Applications</button>
                           </Link>
                           <h1 className="profile-name">{profile.name}</h1>
                           <h4 className="profile-title">{profile.title}</h4>
