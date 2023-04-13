@@ -59,7 +59,7 @@ export default class Jobs extends Component {
             {this.state.jobs && Array.isArray(this.state.jobs) && this.state.jobs.map(job => (
             <Row key={job.id} style={{marginBottom: "25px", width: "100%"}}>
               <Container style={{paddingBottom:"80px"}}>
-                <Col xs={12} style={{ borderRadius: "20px", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "-40px" }}>
+                <Col xs={12} style={{ borderRadius: "20px", boxShadow: "0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "-40px" }}>
                 <div style={{borderBottom: "1px solid #d3d3d3",marginBottom:"10px"}}></div>
                 <Row className='mb-4'>
                   <Col xs={8} md={10}>

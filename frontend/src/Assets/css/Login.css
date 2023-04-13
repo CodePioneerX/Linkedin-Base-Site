@@ -166,34 +166,48 @@
   }
 
 /* Styling for the save button in edit mode */
-  .editSaveButton{
+  .editSaveButton {
     border-color: #3a0f90;
     border-width: 2px;
     background-color: white;
     color:#3a0f90;
-    width: 70%;
-    padding: 10px;
+    border-radius: 100px;
+    width: 45%;
+    box-shadow: 4px 4px 10px #c5c5c5,
+        -4px -4px 10px #ffffff;
     font-weight: bold;
-    border:none;
-    border-radius: 20px; 
-    cursor:pointer;
-    margin: 10px;
+  }
+
+  .editSaveButton:hover {
+    background-color: #3a0f90;
+    border-color: #3a0f90;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+    transition: background-color 0.5s ease-out;
   }
 
  /* Styling for the cancel button in edit mode */
   .editCancelButton{
-    /* background-color: #c80b0b;*/
-    background-color: grey;
+    background-color: #3a0f90;
+    border-color: #3a0f90;
     color: white;
-    width: 70%;
-    padding: 10px;
+    border-width: 2px;
+    border-radius: 100px;
+    width: 45%;
+    box-shadow: 4px 4px 10px #c5c5c5,
+        -4px -4px 10px #ffffff;
     font-weight: bold;
-    border:none;
-    border-radius: 20px; 
-    cursor:pointer;
-    margin: 10px;
   }
 
+  .editCancelButton:hover {
+    border-color: #3a0f90;
+    border-width: 2px;
+    background-color: white;
+    color:#3a0f90;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+    transition: background-color 0.5s ease-out;
+  }
 /* Styling for the delete button in edit mode */
   .editDeleteButton{
     background-color: #c80b0b;
@@ -232,4 +246,10 @@
 /* Styling for the placeholder text in the last name input */
   #lastName::placeholder{
     color: rgb(199, 213, 224);
+  }
+
+  #editProfileForm {
+    background-color: white;
+    border-radius: 20px;
+    padding: 5%
   }

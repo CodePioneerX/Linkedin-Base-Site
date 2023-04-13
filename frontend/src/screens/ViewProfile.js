@@ -105,14 +105,13 @@ function ViewProfile() {
 
   return (
     
-    <Container className="justify-content-md-center padd">
-    
-    
-    {/* check if user info is available */}
+    <div id="profilePage">
+      <Container id='profileContainer' className="justify-content-md-center padd"> 
+      {/* check if user info is available */}
       {userInfo ? ( 
         <div className="profile-page">
-    
-    {/*Some  styling */} 
+
+      {/*Some  styling */} 
           <div style={{ display: "flex" }}>
             <div style={{ flex: 5}}>
             {editor ? <EditProfileForm profile={profile} quitEditor={quitEditor}/> : 
@@ -158,7 +157,7 @@ function ViewProfile() {
                             <div className="profile-card">
                               <h2 className="padd_small"><b>Recommendations</b></h2>
                               
-                     
+                      
                               <Tabs style={{paddingTop:"1rem"}}
                                 defaultActiveKey="recieved"
                                 id="receivedRecommendations"
@@ -215,13 +214,11 @@ function ViewProfile() {
                   {/* Activity Column */}
                   <Col sm={12} md={12} lg={4}>
                     <Row>
-                        <div className="profile-header" style={{ backgroundColor: "white", borderRadius: "7px", borderBottom: "1px solid #ccc", boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)", padding: "1.5rem"}}>
+                        <div className="profile-header" style={{ backgroundColor: "white", borderRadius: "7px", border: "1px solid #ccc", boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)", padding: "1.5rem"}}>
                           <Row>
                             <Col md={8}><h2>Activities</h2></Col>
                             <Col md={4}>
-                              <Link className='profile-button' to='/create/post/' state={{from: "/profile/"}}>
-                                <button style={{ backgroundColor: "#3D13C6", color: "white", borderRadius: "25px", padding: "5px 10px", border: "none" }}><FontAwesomeIcon icon={faPenToSquare} style={{ color: "white"}}/> </button>
-                              </Link>
+                              <Link className='profile-button' id='edit_profile_link' to='/create/post/' state={{from: "/profile/"}}> <FontAwesomeIcon icon={faPenToSquare} id="edit_icon"/></Link>
                             </Col>
                           </Row>
                           <Posts u_id={userLogin.userInfo.id} edit={postEditorMode} quit={quitPostEditor} setpost={setPost}/>
@@ -238,7 +235,7 @@ function ViewProfile() {
           <Container className="justify-content-md-center pd-5 padd_small"></Container>
         </div>
       </Row>
-    </div>
+      </div>
       ) : (
         <Alert className="alertLogin" key="primary" variant="primary">
           <h5>
@@ -247,7 +244,8 @@ function ViewProfile() {
           </h5>
         </Alert>
       )}
-    </Container>
+      </Container>
+    </div>
   );
 }
 export default ViewProfile;
