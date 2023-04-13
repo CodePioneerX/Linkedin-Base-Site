@@ -77,6 +77,7 @@ urlpatterns = [
     path('api/job_alerts/<int:pk>/create/', views.createJobAlertView, name='create_job_alert'),
     path('api/search/', views.searchFunction, name='search'),
     path('api/my_job_applications/', views.getMyApplicationsView, name='my_job_applications'),
+    path('api/job/apply/', views.jobApplicationView, name='create_job_application'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

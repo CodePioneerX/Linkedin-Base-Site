@@ -1272,3 +1272,49 @@ def getMyApplicationsView(request):
     serializer = JobApplicationSerializer(job_applications, many=True)
     return Response(serializer.data)
 
+@api_view(['POST'])
+def jobApplicationView(request):
+    data = request.data
+    
+    try:
+        job = get_object_or_404(JobListing, pk=data['job_id'])
+    except JobListing.DoesNotExist:
+        return Response({"error":"The job you are trying to apply for cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        user = get_object_or_404(User, pk=data['user_id'])
+    except User.DoesNotExist:
+        return Response({"error":"The user account you are applying with cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    try: 
+        job_application = JobApplication.objects.create(
+            user=user,
+            job_post=job,
+            name=data['name'],
+            email=data['email'],
+            city=data['city'],
+            province=data['provinceState'],
+            country=data['country'],
+            phone=data['telephone'],
+            experience=data['experience'],
+            work=data['work'],
+            education=data['education'],
+            volunteering=data['volunteering'],
+            projects=data['projects'],
+            courses=data['courses'],
+            awards=data['awards'],
+            languages=data['languages'],
+            # resume=data['resume'],
+            # cover_letter=data['coverLetter'],
+            # letter_of_recommendation=data['recommendationLetter'],
+            # portfolio=data['portfolio'],
+            # transcript=data['transcript'],
+            # other_documents=data['otherDocuments']
+        )
+        
+        serializer = JobApplicationSerializer(job_application, many=False)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({"error":"Job Application could not be created"}, status=status.HTTP_404_NOT_FOUND)

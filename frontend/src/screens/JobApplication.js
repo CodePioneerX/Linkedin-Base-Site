@@ -111,7 +111,7 @@ const JobApplication = () => {
 
    const submitHandler = (e) => {
       e.preventDefault()
-      dispatch(create_job_application(job_id, email, name, telephone, city, provinceState, country, experience, work, education, volunteering, courses, projects, awards, languages, resume, coverLetter, recommendationLetter, portfolio, transcript, otherDocuments, profile)).then(
+      dispatch(create_job_application(userInfo.id, job_id, email, name, telephone, city, provinceState, country, experience, work, education, volunteering, courses, projects, awards, languages, resume, coverLetter, recommendationLetter, portfolio, transcript, otherDocuments, profile)).then(
          (res) => {
            if (res.success) {
             setSubmitStatus(res.message);

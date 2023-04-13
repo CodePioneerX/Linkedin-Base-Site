@@ -327,7 +327,7 @@ Creates a job application and submits it to the server.
 @param {string} profile - The profile of the applicant.
 @returns {Object} Returns an object with a success flag and a message indicating whether the job application was submitted successfully or not.
 */
-export const create_job_application = (job_id, email, name, telephone, city, provinceState, country, experience, work, education, volunteering, courses, projects, awards, languages, resume, coverLetter, recommendationLetter, portfolio, transcript, otherDocuments, profile) => async (dispatch, getState) => {
+export const create_job_application = (user_id, job_id, email, name, telephone, city, provinceState, country, experience, work, education, volunteering, courses, projects, awards, languages, resume, coverLetter, recommendationLetter, portfolio, transcript, otherDocuments, profile) => async (dispatch, getState) => {
     try {
         dispatch({
             type: CREATE_JOB_APPLICATION_REQUEST
@@ -344,8 +344,9 @@ export const create_job_application = (job_id, email, name, telephone, city, pro
         }
 
         const { data } = await axios.post(
-            `http://localhost:8000/api/jobapplication`,
-            {
+            `http://localhost:8000/api/job/apply/`,
+            {   
+                'user_id': user_id,
                 'job_id': job_id,
                 'email': email, 
                 'name': name, 
