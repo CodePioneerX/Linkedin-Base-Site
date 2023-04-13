@@ -64,6 +64,7 @@ function Settings() {
               </Alert>)}
           </span>
           <h1>Settings</h1>
+          <hr style={{ width: "100%" }}/>
           <h3>Reset Password</h3>
         <FormGroup>
           <Label for="oldPassword">Old Password</Label>
