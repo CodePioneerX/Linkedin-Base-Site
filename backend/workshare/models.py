@@ -308,6 +308,5 @@ class JobApplication(models.Model):
     STATUS_CHOICES = (
         ('true', 'Applied'),
         ('reject', 'Inactive'),
-        ('accept', 'In-progress'),
     )
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='true')
