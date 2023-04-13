@@ -57,7 +57,7 @@ export default class Newsfeed extends Component {
                 <Row key={post.id} style={{marginBottom: "0%", width: "100%"}}>
                   <Container style={{padding: "2%", paddingBottom: "0"}}>
                     <Col xs={12} style={{ borderRadius: "20px", boxShadow: "0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "0.5%", width: "auto"}}>
-                      <div style={{borderBottom: "1px solid #d3d3d3",marginBottom:"1%"}}></div>
+                      <div style={{marginBottom:"1%"}}></div>
                       <Row style={{ display: "flex", alignItems: "center"}}>
                         <Col xs={2} md={2}>
                           {/* <img src={post.image} alt={post.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> */}

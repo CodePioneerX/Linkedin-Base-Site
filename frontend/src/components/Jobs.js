@@ -76,7 +76,7 @@ export default class Jobs extends Component {
             <Row key={job.id} style={{marginBottom: "2%", width: "100%"}}>
               <Container style={{paddingBottom:"4%"}}>
                 <Col xs={12} style={{ borderRadius: "20px", boxShadow: "0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "3%px" }}>
-                <div style={{borderBottom: "1px solid #d3d3d3",marginBottom:"2%"}}></div>
+                <div style={{marginBottom:"2%"}}></div>
                 <Row className='mb-4'>
                   <Col xs={8} md={10}>
                     <span>
@@ -189,7 +189,7 @@ export default class Jobs extends Component {
                       }
                     </Col>
                   </Row>
-                  {/* <br/> */}
+                <hr style={{width: "100%"}}/>
                 {job.comments && job.comments.length > 0 && <h4>Comments</h4>}
                 {job.comments && job.comments.length > 0 && job.comments.map(comment => (
                     
