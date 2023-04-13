@@ -6,7 +6,10 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios'
 import Comment from './Comment';
 import { FiPlus } from 'react-icons/fi';
+import { BiLike } from 'react-icons/bi';
 import { FaBackward, FaForward } from 'react-icons/fa';
+import { TfiCommentAlt } from 'react-icons/tfi';
+import '../Assets/css/Newsfeed.css';
 import {
     MDBCard,
     MDBCardBody,
@@ -237,19 +240,14 @@ export default class Jobs extends Component {
                 <Row>
                   <Col style={{display: 'flex', justifyContent: 'center'}}>
                     {job.listing_type == 'INTERNAL' ? 
-                      <Button className='btns' variant="primary">Apply</Button> : 
+                      <Button className='jobButton' id='applyLink' variant="primary">Apply</Button> : 
                       <>
-                        <Link to={job.link}>
-                          <Button className='btns' variant="primary">Apply Externally</Button>
-                        </Link>
+                        <Button href={job.link} className='jobButton'> Apply Externally</Button>
                       </>
                     }
                   </Col>
                   <Col style={{display: 'flex', justifyContent: 'center'}}>
-                    <Button className='btns' variant="primary">Like</Button>
-                  </Col>
-                  <Col style={{display: 'flex', justifyContent: 'center'}}>
-                    <Button className='btns' variant="secondary">Comment</Button>
+                    <Button className='jobButton' variant="secondary"><TfiCommentAlt className='icon'/><span style={{marginLeft: "3%"}}>Comment</span></Button>
                   </Col>
                 </Row>
                 </Col>

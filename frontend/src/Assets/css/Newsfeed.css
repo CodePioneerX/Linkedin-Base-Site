@@ -39,3 +39,47 @@ span {
     cursor: pointer;
     transition: background-color 0.5s ease-out;
 }
+
+.jobButton {
+    border-color: #3a0f90;
+    border-width: 2px;
+    padding:1.5%;
+    width:90%;
+    background-color: white;
+    color:#3a0f90;
+    border-radius: 100px;
+    box-shadow: 4px 4px 10px #aeaeae,
+        -4px -4px 10px #ffffff;
+}
+
+.jobButton:hover {
+    text-decoration: none;
+    background-color: #3a0f90;
+    color:white;
+    border-color: #3a0f90;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+    transition: background-color 0.5s ease-out;
+}
+
+#applyLink {
+    text-align: center;
+    border-width:2px;
+    padding:1.5%;
+    width:90%;
+    background-color: #3a0f90;
+    border-color: #3a0f90;
+    color:white;
+    border-radius: 100px;
+    box-shadow: 4px 4px 10px #aeaeae,
+        -4px -4px 10px #ffffff;
+}
+
+#applyLink:hover {
+    text-decoration: none;
+    background-color: white;
+    color:#3a0f90;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+    transition: background-color 0.5s ease-out;
+}

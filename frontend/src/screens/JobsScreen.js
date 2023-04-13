@@ -25,18 +25,15 @@ function JobsScreen() {
   }
 
   return (
-      <Container className="justify-content-md-center padd">
+      <div style={{backgroundColor: "#44599d"}}>
+        <Container className="justify-content-md-center padd" id='userHomePage'>
         {userInfo ? (
           <div>
-            {jobEditor ? 
-              <>
-                <Button className='mb-4' variant='secondary' onClick={() => {navigate(-1)}}>Back</Button>
-                <EditJobForm edit={jobEditorMode} quit={quitJobEditor} job={job} />  
-              </>:
-              <Container>
-                <Jobs edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.email}/>
-            </Container>}
-          </div>
+            {jobEditor ? <EditJobForm edit={jobEditorMode} quit={quitJobEditor} job={job} /> :
+            <>
+              <Jobs edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.email}/>
+          </>}
+        </div>
         ) : (        
         <Row>
           
@@ -46,6 +43,7 @@ function JobsScreen() {
 
         </Row>)}
       </Container>
+      </div>
   )
 
 }

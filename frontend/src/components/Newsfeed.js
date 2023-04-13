@@ -9,6 +9,8 @@ import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { Link } from 'react-router-dom';
 import { FiPlus } from 'react-icons/fi';
+import { TfiCommentAlt } from 'react-icons/tfi';
+import { FaThumbsUp } from 'react-icons/fa';
 import '../Assets/css/Newsfeed.css';
 
 export default class Newsfeed extends Component {
@@ -85,10 +87,10 @@ export default class Newsfeed extends Component {
                       </Row>
                       <Row>
                         <Col style={{display: 'flex', justifyContent: 'center'}}>
-                          <Button className='btns' variant="primary">Like</Button>
+                          <Button id='applyLink' variant="secondary"><FaThumbsUp className='icon'/><span style={{marginLeft: "3%"}}>Like</span></Button>
                         </Col>
                         <Col style={{display: 'flex', justifyContent: 'center'}}>
-                          <Button className='btns' variant="secondary">Comment</Button>
+                          <Button className='jobButton' variant="secondary"><TfiCommentAlt className='icon'/><span style={{marginLeft: "3%"}}>Comment</span></Button>
                         </Col>
                       </Row>
                     </Col>
