@@ -1,12 +1,10 @@
-import React, { Component, useState, useEffect } from 'react'
-import {Container, Row, Col} from 'react-bootstrap';
+import React, { useState, useEffect } from 'react'
+import { Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import Jobs from '../components/Jobs';
 import Newsfeed from '../components/Newsfeed';
 import { EditJobForm } from '../components/EditJobForm';
 import { EditPostForm } from '../components/EditPostForm';
-import Button from 'react-bootstrap/Button';
-import axios from 'axios'
 import Alert from 'react-bootstrap/Alert';
 import { get_notifications } from "../actions/notificationActions";
 import '../Assets/css/HomePage.css';

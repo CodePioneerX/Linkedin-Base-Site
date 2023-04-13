@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, Button, Row, Col } from 'react-bootstrap';
 import { Link } from "react-router-dom";
-import { faGripVertical } from "@fortawesome/free-solid-svg-icons";
 
 const ConnectionCard = (props) => {
 

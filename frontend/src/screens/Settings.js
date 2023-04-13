@@ -1,5 +1,5 @@
 import '../Assets/css/Settings.css';
-import React, {useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import Alert from 'react-bootstrap/Alert';
 import { useDispatch, useSelector } from 'react-redux';

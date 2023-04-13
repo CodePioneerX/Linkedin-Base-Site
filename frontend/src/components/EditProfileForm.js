@@ -1,10 +1,9 @@
 
 import Button from 'react-bootstrap/Button';
-import React, { useState, useEffect} from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import '../Assets/css/Login.css';
 import {  Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
-import axios from 'axios';
 import { update_profile } from '../actions/userActions'
 
 export const EditProfileForm =(profile)=>{

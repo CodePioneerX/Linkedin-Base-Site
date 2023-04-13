@@ -4,9 +4,7 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios'
-import Comment from './Comment';
 import { FiPlus } from 'react-icons/fi';
-import { BiLike } from 'react-icons/bi';
 import { FaBackward, FaForward } from 'react-icons/fa';
 import { TfiCommentAlt } from 'react-icons/tfi';
 import '../Assets/css/Newsfeed.css';
@@ -14,10 +12,8 @@ import {
     MDBCard,
     MDBCardBody,
     MDBCardImage,
-    MDBCol,
     MDBContainer,
     MDBIcon,
-    MDBInput,
     MDBRow,
     MDBPagination, 
     MDBPaginationItem, 

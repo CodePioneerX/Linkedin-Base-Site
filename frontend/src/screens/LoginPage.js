@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import '../Assets/css/Login.css';
-import { Container, Button, Form, FormGroup, Label, Input} from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import { useDispatch, useSelector} from 'react-redux';
 import { useNavigate} from 'react-router-dom';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import{ login } from '../actions/userActions'
-import {Link} from 'react-router-dom'
 
 
 function LoginPage() {

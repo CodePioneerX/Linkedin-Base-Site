@@ -28,7 +28,6 @@ import Settings from "./screens/Settings";
 import Home from './screens/Home';
 import SearchScreen from "./screens/SearchScreen";
 import  {Provider} from 'react-redux';
-import userInfoFromStorage from './store'
 import store from './store';
 
 

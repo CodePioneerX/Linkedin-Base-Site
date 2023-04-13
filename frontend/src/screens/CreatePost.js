@@ -3,13 +3,12 @@ import {
     MDBRow,
     MDBCol,
     MDBInput,
-    MDBCheckbox,
     MDBBtn,
     MDBFile
   } from 'mdb-react-ui-kit';
 import { useDispatch, useSelector} from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {Container, Row, Col} from 'react-bootstrap';
+import {Container, Row} from 'react-bootstrap';
 import { Form } from 'reactstrap';
 import Alert from 'react-bootstrap/Alert';
 import{ create_post } from '../actions/postActions'
