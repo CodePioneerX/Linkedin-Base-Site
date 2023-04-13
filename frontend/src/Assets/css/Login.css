@@ -7,249 +7,271 @@
 .homeComponent{
   border-left:  solid #3a0f90;
   background-color: white;
-    padding: 20px 60px ;
-   height: 70%;
-   width: 50%;
-    gap: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  padding: 20px 60px ;
+  height: 70%;
+  width: 50%;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Styling for container that holds the home component */
 .homeContainer{
-  background-color: white;
-    padding: 20px 60px ;
-    height: 90vh;
-    width: 95%;
-    border-radius: 10px;
-    gap: 10px;
-    display: flex;
-    
-    align-items: center;
+background-color: white;
+  padding: 20px 60px ;
+  height: 90vh;
+  width: 95%;
+  border-radius: 10px;
+  gap: 10px;
+  display: flex;
+  align-items: center;
 }
 
 /* Styling for the background of the login form */
-.formBackground{
-    background-color: #44599d;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;  
-    }
+.formBackground {
+  background-color: #44599d;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+}
 
 /* Styling for the login form */  
-  .form{
-    background-color: white !important;
-    padding: 20px 60px ;
-    /* width: 50%; */
-    border-radius: 10px;
-    gap: 10px;
+.form {
+  background-color: white !important;
+  padding: 20px 60px ;
+  border-radius: 10px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* Styling for the logo */
+.logo{
+  color: #47449f;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* Styling for the image */
+img{
+  height: 50px;
+}
+
+/* Styling for the image used for editing */
+.editImg{
+  height: 300px;
+  
+}
+
+/* Styling for the title */
+.title{
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: #5d5b8d;
+  font-size: 24px;
+}
+
+/* Styling for the heading 2 */
+h2{
+  color: #280950b9;
+}
+
+/* Styling for the label used for editing */
+.labelE{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #2f0d5ca7;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+
+/* Styling for the label used for input fields */
+label{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #391aa1;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* Styling for the input fields */
+input{
+  padding: 15px;
+  border: none;
+  width: 250px;
+  border-bottom: 1px solid #a7bcff;   
+}
+
+/* Styling for the warning message when passwords don't match */
+.warningDifferentPasswords{
+  padding: 10px;
+  border: none;
+  width: 250px; 
+  text-align: center;
+}
+
+/* Styling for the text within the warning message when passwords don't match */
+.warningDifferentPasswords h6{
+  padding-top: 5px;
+  font-size: 75%;
+}
+
+
+#infoPasswordLength {
+  background-color:rgb(211, 244, 255);
+  color:rgb(0, 0, 87);
+}
+
+/* Styling for the placeholder text within the email input field */
+#userEmail::placeholder {
+  color: rgb(199, 213, 224);
+}
+
+/* Styling for the placeholder text within the password input field */
+#userPassword::placeholder {
+  color: rgb(199, 213, 224);
+}
+
+/* Styling for the login button */
+.loginButton{
+  background-color: #639dd7;
+  color: white;
+  width: 100%;
+  padding: 10px;
+  font-weight: bold;
+  border:none;
+  cursor:pointer;   
+}
+
+.editPostContainer {
+  background-color: white;
+  padding: 5%;
+  border-radius: 10px;
+}
+/* Styling for the edit button */
+.editButton{
+  border-color: #3a0f90;
+  border-width: 2px;
+  background-color: white;
+  color:#3a0f90;
+  width: 10%;
+  padding: 10px;
+  font-weight: bold;
+  border:none;
+  cursor:pointer;
+}
+
+/* Styling for the save button in edit mode */
+.editSaveButton {
+  margin:1%;
+  border-color: #3a0f90;
+  border-width: 2px;
+  background-color: white;
+  color:#3a0f90;
+  border-radius: 100px;
+  width: 80%;
+  box-shadow: 4px 4px 10px #c5c5c5,
+      -4px -4px 10px #ffffff;
+  font-weight: bold;
+}
+
+.editSaveButton:hover {
+  background-color: #3a0f90;
+  border-color: #3a0f90;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+  transition: background-color 0.5s ease-out;
+}
+
+/* Styling for the cancel button in edit mode */
+.editCancelButton{
+  margin:1%;
+  background-color: #3a0f90;
+  border-color: #3a0f90;
+  color: white;
+  border-width: 2px;
+  border-radius: 100px;
+  width: 80%;
+  box-shadow: 4px 4px 10px #c5c5c5,
+      -4px -4px 10px #ffffff;
+  font-weight: bold;
+}
+
+.editCancelButton:hover {
+  border-color: #3a0f90;
+  border-width: 2px;
+  background-color: white;
+  color:#3a0f90;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+  transition: background-color 0.5s ease-out;
+}
+/* Styling for the delete button in edit mode */
+.editDeleteButton{
+  margin:1%;
+  background-color: #3a0f90;
+  border-color: #3a0f90;
+  color: white;
+  border-width: 2px;
+  border-radius: 100px;
+  width: 80%;
+  box-shadow: 4px 4px 10px #c5c5c5,
+      -4px -4px 10px #ffffff;
+  font-weight: bold;
+}
+
+/* Styling for the delete button in edit mode */
+.editDeleteButton:hover{
+  background-color: #c80b0b;
+  border-color: #c80b0b;
+  color: white;
+  cursor:pointer;
+}
+
+/* Container for the edit buttons */
+.editButtonContainer{
+  /* display: flex; */
+  /* flex-direction: column; */
+  align-items: center;
+  /* padding: 10px; */
+}
+
+/* Styling for the message displayed after logging in */
+.loginP{
+  color: #6574a7;
+  font-size: 12px;
+  margin-top: 10px;
+  justify-content: center;
+  display: flex;
+}
+
+/* Styling for the placeholder text in the first name input */
+#firstName::placeholder{
+  color: rgb(199, 213, 224);
+}
+
+/* Styling for the placeholder text in the last name input */
+#lastName::placeholder{
+  color: rgb(199, 213, 224);
+}
+
+#editProfileForm {
+  background-color: white;
+  border-radius: 20px;
+  padding: 5%;
+}
+
+@media (max-width: 767px) {
+  #button_column{
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  
-
-/* Styling for the logo */
-  .logo{
-    color: #47449f;
-    font-weight: bold;
-    font-size: 20px;
-  }
-  
-/* Styling for the image */
-  img{
-    height: 50px;
-  }
-
-/* Styling for the image used for editing */
-  .editImg{
-    height: 300px;
-    
-  }
-
-/* Styling for the title */
-  .title{
-    padding-top: 15px;
-    padding-bottom: 15px;
-    color: #5d5b8d;
-    font-size: 24px;
-  }
-
-/* Styling for the heading 2 */
-  h2{
-    color: #280950b9;
-  }
-  
-/* Styling for the label used for editing */
-  .labelE{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #2f0d5ca7;
-    font-size: 24px;
-    cursor: pointer;
-  }
-
-
-/* Styling for the label used for input fields */
-  label{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #391aa1;
-    font-size: 12px;
-    cursor: pointer;
-  }
- 
-/* Styling for the input fields */
-  input{
-    padding: 15px;
-    border: none;
-    width: 250px;
-    border-bottom: 1px solid #a7bcff;   
-  }
-
-/* Styling for the warning message when passwords don't match */
-  .warningDifferentPasswords{
-    padding: 10px;
-    border: none;
-    width: 250px; 
-    text-align: center;
-  }
-
-/* Styling for the text within the warning message when passwords don't match */
-  .warningDifferentPasswords h6{
-    padding-top: 5px;
-    font-size: 75%;
-  }
-
-
-  #infoPasswordLength {
-    background-color:rgb(211, 244, 255);
-    color:rgb(0, 0, 87);
-  }
-
-/* Styling for the placeholder text within the email input field */
-  #userEmail::placeholder{
-        color: rgb(199, 213, 224);
-    }
-  
-/* Styling for the placeholder text within the password input field */
-  #userPassword::placeholder{
-      color: rgb(199, 213, 224);
-  }
-  
-/* Styling for the login button */
-  .loginButton{
-    background-color: #639dd7;
-    color: white;
-    width: 100%;
-    padding: 10px;
-    font-weight: bold;
-    border:none;
-    cursor:pointer;   
-  }
-
-/* Styling for the edit button */
-  .editButton{
-    border-color: #3a0f90;
-    border-width: 2px;
-    background-color: white;
-    color:#3a0f90;
-    width: 10%;
-    padding: 10px;
-    font-weight: bold;
-    border:none;
-    cursor:pointer;
-  }
-
-/* Styling for the save button in edit mode */
-  .editSaveButton {
-    border-color: #3a0f90;
-    border-width: 2px;
-    background-color: white;
-    color:#3a0f90;
-    border-radius: 100px;
-    width: 45%;
-    box-shadow: 4px 4px 10px #c5c5c5,
-        -4px -4px 10px #ffffff;
-    font-weight: bold;
-  }
-
-  .editSaveButton:hover {
-    background-color: #3a0f90;
-    border-color: #3a0f90;
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
-    cursor: pointer;
-    transition: background-color 0.5s ease-out;
-  }
-
- /* Styling for the cancel button in edit mode */
-  .editCancelButton{
-    background-color: #3a0f90;
-    border-color: #3a0f90;
-    color: white;
-    border-width: 2px;
-    border-radius: 100px;
-    width: 45%;
-    box-shadow: 4px 4px 10px #c5c5c5,
-        -4px -4px 10px #ffffff;
-    font-weight: bold;
-  }
-
-  .editCancelButton:hover {
-    border-color: #3a0f90;
-    border-width: 2px;
-    background-color: white;
-    color:#3a0f90;
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
-    cursor: pointer;
-    transition: background-color 0.5s ease-out;
-  }
-/* Styling for the delete button in edit mode */
-  .editDeleteButton{
-    background-color: #c80b0b;
-    color: white;
-    width: 70%;
-    padding: 10px;
-    font-weight: bold;
-    border:none;
-    border-radius: 20px; 
-    cursor:pointer;
-    margin: 10px;
-  }
-
- /* Container for the edit buttons */
-  .editButtonContainer{
-    /* display: flex; */
-    /* flex-direction: column; */
-    align-items: center;
-    /* padding: 10px; */
-  }
-
-/* Styling for the message displayed after logging in */
- .loginP{
-    color: #6574a7;
-    font-size: 12px;
-    margin-top: 10px;
-    justify-content: center;
-    display: flex;
-  }
-
-/* Styling for the placeholder text in the first name input */
-  #firstName::placeholder{
-    color: rgb(199, 213, 224);
-  }
-
-/* Styling for the placeholder text in the last name input */
-  #lastName::placeholder{
-    color: rgb(199, 213, 224);
-  }
-
-  #editProfileForm {
-    background-color: white;
-    border-radius: 20px;
-    padding: 5%
-  }
+}

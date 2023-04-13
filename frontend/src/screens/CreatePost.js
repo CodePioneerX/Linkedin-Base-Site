@@ -38,7 +38,7 @@ function CreatePost() {
   }
 
   return (
-      <Container className="justify-content-md-center padd">
+      <Container className="justify-content-md-center padd" styling={{minHeight: "100vh"}}>
         {userInfo ? (
           <Container className='padd'>
             <h1>Create a Post</h1>

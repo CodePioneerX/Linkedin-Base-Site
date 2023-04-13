@@ -52,31 +52,39 @@ export const EditPostForm = (post) => {
     }
     
     // Render the form to edit the post
-    return <div>
-        <h2>Edit Your Post</h2>
+    return (
+        <div style={{minHeight: "100vh"}}>
+            <div className='editPostContainer'>
+        <h1>Edit Your Post</h1>
+        <hr style={{ width: "100%", marginTop: "3%", marginBottom: "3%"}}/>
         <Form>
             <FormGroup className='mb-4'>
-            <Label className='labelE' for="title" >Title</Label>
+            <Label className='labelE' for="title" >Post Title</Label>
                 <Input  name="title" value = {title} id="name" 
                 onChange={(e)=> setTitle(e.target.value)}/>
             </FormGroup>
             <FormGroup className='mb-4'>
-            <Label className='labelE' for="content">Content</Label>
-                <Input  name="content" value = {content} id="content"
-                onChange={(e)=> setContent(e.target.value)}/>
+            <Label className='labelE' for="content">Post Contents</Label>
+                <textarea name="content" value = {content} id="content" onChange={(e)=> setContent(e.target.value)} rows="4" style={{width: "100%", borderColor:"#D3D3D3", borderRadius:"5px"}}></textarea>
             </FormGroup>
         
-            <Row className='editButtonContainer'>
-                <Col xs={12} md={4}>
-                    <Button type = 'submit' className='editSaveButton' onClick={submitHandler}> Save </Button>
-                </Col>
-                <Col xs={12} md={4}>
-                    <Button className='editCancelButton' onClick={cancelHandler}>Cancel</Button>
-                </Col>
-                <Col xs={12} md={4}>
-                    <Button className='editDeleteButton' onClick={deleteHandler}>Delete</Button>
-                </Col>
-            </Row>
+            <div id='button_column' >
+                <Row className='editButtonContainer justify-content-center'>
+                    <Col xs={12} md={4} className='buttonCol' style={{paddingRight: "0px"}}>
+                        <Button type='submit' className='editSaveButton' onClick={submitHandler}> Save </Button>
+                    </Col>
+                    <Col xs={12} md={4} className='buttonCol' style={{paddingRight: "0px"}}>
+                        <Button className='editCancelButton' onClick={cancelHandler}>Cancel</Button>
+                    </Col>
+                    <Col xs={12} md={4} className='buttonCol' style={{paddingRight: "0px"}}>
+                        <Button className='editDeleteButton' onClick={deleteHandler}>Delete</Button>
+                    </Col>
+                </Row>
+            </div>
         </Form>
     </div>
+
+        </div>
+    );
+
 }

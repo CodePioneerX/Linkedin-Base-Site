@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios'
 import Alert from 'react-bootstrap/Alert';
 import { get_notifications } from "../actions/notificationActions";
+import '../Assets/css/HomePage.css';
 
 function Home() {
   const userLogin = useSelector((state) => state.userLogin);
@@ -44,7 +45,7 @@ function Home() {
 
   return (
     <div style={{backgroundColor: "#44599d"}}>
-      <Container className="justify-content-md-center padd">
+      <Container className="justify-content-md-center padd" id='userHomePage'>
         {userInfo ? (
           <div>
             {jobEditor ? <EditJobForm edit={jobEditorMode} quit={quitJobEditor} job={job} /> : 
