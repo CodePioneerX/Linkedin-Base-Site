@@ -1,7 +1,6 @@
 import React, { Component, useState, useEffect } from 'react'
 import {Container, Row, Col} from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from 'react-router-dom';
 import Jobs from '../components/Jobs';
 import Newsfeed from '../components/Newsfeed';
 import { EditJobForm } from '../components/EditJobForm';
@@ -44,17 +43,13 @@ function Home() {
   })
 
   return (
+    <div style={{backgroundColor: "#44599d"}}>
       <Container className="justify-content-md-center padd">
         {userInfo ? (
           <div>
             {jobEditor ? <EditJobForm edit={jobEditorMode} quit={quitJobEditor} job={job} /> : 
             postEditor ? <EditPostForm edit={postEditorMode} quitPostEditor={quitPostEditor} post={post} /> : 
             <>
-              <Container>
-                <Link className='btn btn-primary' to='/create/post/' state={{from: "/"}}>
-                  Create a Post
-                </Link>
-              </Container>
               <Newsfeed id={userInfo.id} author={userInfo.id} edit={postEditorMode} quit={quitPostEditor} setpost={setPost} />
               <Jobs edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.email}/>
           </>}
@@ -68,6 +63,8 @@ function Home() {
 
         </Row>)}
       </Container>
+
+    </div>
   )
 
 }

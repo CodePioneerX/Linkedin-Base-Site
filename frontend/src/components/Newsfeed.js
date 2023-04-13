@@ -7,6 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import { Link } from 'react-router-dom';
+import { FiPlus } from 'react-icons/fi';
+import '../Assets/css/Newsfeed.css';
 
 export default class Newsfeed extends Component {
     state = {
@@ -29,18 +32,30 @@ export default class Newsfeed extends Component {
       const posts = this.state.data[0]
       const profiles = this.state.data[1]
     
-        return (
-        <Container className="justify-content-md-center padd">
-            <Row>
-                <h1>Latest Posts</h1>
+    return (
+      <div id='newsfeedCDiv'>
+        <Container id='container' className="justify-content-md-center padd">
+            <Row className='networkPosts' style={{marginLeft: "20px", marginBottom: "25px", width: "100%"}}>
+              <Col xs={12} md={6} className='text-left'>
+                <h1>Network Post Activity</h1>
+              </Col>
+              <Col xs={12} md={6} className='text-right'>
+              <Container>
+                <Link className='create_post_button' to='/create/post/' state={{from: "/"}}>
+                  <FiPlus className='icon'/><span>Create Post</span>
+                </Link>
+              </Container>
+              </Col>
             </Row>
-            <Row style={{display: "flex", flexDirection: "column", alignItems: "center", marginBottom:"100px"}}>  
+            <hr style={{ width: "96%" }}/>
+
+            <Row className='newsFeedContainer' style={{display: "flex", flexDirection: "column", alignItems: "center", marginBottom:"3%"}}>  
 
               {posts && posts.map(post => (
-                <Row key={post.id} style={{marginBottom: "25px", width: "100%"}}>
-                  <Container style={{padding: "35px 0 0 35px", paddingBottom: "0"}}>
-                    <Col xs={12} style={{ borderRadius: "20px", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "-40px", width: "auto"}}>
-                      <div style={{borderBottom: "1px solid #d3d3d3",marginBottom:"10px"}}></div>
+                <Row key={post.id} style={{marginBottom: "0%", width: "100%"}}>
+                  <Container style={{padding: "2%", paddingBottom: "0"}}>
+                    <Col xs={12} style={{ borderRadius: "20px", boxShadow: "0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "0.5%", width: "auto"}}>
+                      <div style={{borderBottom: "1px solid #d3d3d3",marginBottom:"1%"}}></div>
                       <Row style={{ display: "flex", alignItems: "center"}}>
                         <Col xs={2} md={2}>
                           {/* <img src={post.image} alt={post.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> */}
@@ -57,7 +72,7 @@ export default class Newsfeed extends Component {
                       </Row>
                       <h4 style={{ textAlign: "left",paddingBottom: "5px", paddingTop:"6px"}}>{post.title}</h4>
                       <p style={{padding: "15px 0"}}>{post.content}</p>
-                      <Row style={{ justifyContent: "space-between", borderBottom: "1px solid #D3D3D3", marginBottom:"10px" }}>
+                      <Row style={{ justifyContent: "space-between", borderBottom: "1px solid #D3D3D3", marginBottom:"1%" }}>
                         <div style={{ marginLeft: "10px", fontSize: "14px", color: "#808080" }}>
                           <FontAwesomeIcon icon={faHeart} style={{ color: "red", fontSize: "19px" }}/> {post.likes} Likes
                         </div>
@@ -81,7 +96,9 @@ export default class Newsfeed extends Component {
                 </Row>
               ))}
           </Row>
-      </Container>
-        )
+        </Container>
+      </div>
+      
+    )
     }
 }

@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios'
 import Comment from './Comment';
+import { FiPlus } from 'react-icons/fi';
+import { FaBackward, FaForward } from 'react-icons/fa';
 import {
     MDBCard,
     MDBCardBody,
@@ -51,16 +53,27 @@ export default class Jobs extends Component {
 
     return (
       <>
-      <Container className="justify-content-md-center">
-        <Row>
-            <h1>Latest Jobs</h1>
+      <Container id='container' className="justify-content-md-center" style={{marginTop: "5%", padding: "4%", paddingBottom: "0%"}}>
+        <Row className='networkPosts' style={{marginLeft: "20px", marginBottom: "2%", width: "100%"}}>
+          <Col xs={12} md={6} className='text-left'>
+            <h1>Job Post Activity</h1>
+          </Col>
+          <Col xs={12} md={6} className='text-right'>
+          <Container>
+            <Link className='create_post_button' to='/create/job/' state={{from: "/"}}>
+              <FiPlus className='icon'/><span>Create Job Post</span>
+            </Link>
+          </Container>
+          </Col>
         </Row>
+        <hr style={{ width: "96%", marginBottom: "4%" }}/>
+
         <Row style={{display: "flex", flexDirection: "column", alignItems: "center", marginBottom:"100px"}}>
             {this.state.jobs && Array.isArray(this.state.jobs) && this.state.jobs.map(job => (
-            <Row key={job.id} style={{marginBottom: "25px", width: "100%"}}>
-              <Container style={{paddingBottom:"80px"}}>
-                <Col xs={12} style={{ borderRadius: "20px", boxShadow: "0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "-40px" }}>
-                <div style={{borderBottom: "1px solid #d3d3d3",marginBottom:"10px"}}></div>
+            <Row key={job.id} style={{marginBottom: "2%", width: "100%"}}>
+              <Container style={{paddingBottom:"4%"}}>
+                <Col xs={12} style={{ borderRadius: "20px", boxShadow: "0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "3%px" }}>
+                <div style={{borderBottom: "1px solid #d3d3d3",marginBottom:"2%"}}></div>
                 <Row className='mb-4'>
                   <Col xs={8} md={10}>
                     <span>
@@ -245,28 +258,28 @@ export default class Jobs extends Component {
             ))}
 
         </Row>
-        <Row style={{display:'flex', justifyContent: 'center'}}>
+      </Container>
+      <Row style={{display:'flex', justifyContent: 'center', marginTop: "4%"}}>
         <nav aria-label='Page navigation example'>
           <MDBPagination className='mb-0'>
             <MDBPaginationItem>
-              <MDBPaginationLink href='#'>Previous</MDBPaginationLink>
+              <MDBPaginationLink href='#'><FaBackward className='icon' style={{color: "#3a0f90"}}/></MDBPaginationLink>
             </MDBPaginationItem>
             <MDBPaginationItem>
-              <MDBPaginationLink href='#'>1</MDBPaginationLink>
+              <MDBPaginationLink href='#' style={{color: "#3a0f90"}}>1</MDBPaginationLink>
             </MDBPaginationItem>
             <MDBPaginationItem>
-              <MDBPaginationLink href='#'>2</MDBPaginationLink>
+              <MDBPaginationLink href='#' style={{color: "#3a0f90"}}>2</MDBPaginationLink>
             </MDBPaginationItem>
             <MDBPaginationItem>
-              <MDBPaginationLink href='#'>3</MDBPaginationLink>
+              <MDBPaginationLink href='#' style={{color: "#3a0f90"}}>3</MDBPaginationLink>
             </MDBPaginationItem>
             <MDBPaginationItem>
-              <MDBPaginationLink href='#'>Next</MDBPaginationLink>
+              <MDBPaginationLink href='#'><FaForward className='icon' style={{color: "#3a0f90"}}/></MDBPaginationLink>
             </MDBPaginationItem>
           </MDBPagination>
         </nav>
         </Row>
-      </Container>
     </>
     )
   }

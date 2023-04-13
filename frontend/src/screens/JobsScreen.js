@@ -34,9 +34,6 @@ function JobsScreen() {
                 <EditJobForm edit={jobEditorMode} quit={quitJobEditor} job={job} />  
               </>:
               <Container>
-                <a className='btn btn-primary' href='/create/job' role='button'>
-                  Create a job listing
-                </a>
                 <Jobs edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.email}/>
             </Container>}
           </div>
