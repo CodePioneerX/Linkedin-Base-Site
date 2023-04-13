@@ -18,9 +18,9 @@ const JobApplicationCard = (props) => {
                   <Card.Img className='img-fluid rounded-pill' 
                   style={{width:'50px'}}
                   src='#' />  
-                  <Card.Title style={{marginLeft:'1rem',marginTop:'.7rem'}}>Job.title</Card.Title>             
+                  <Card.Title style={{marginLeft:'1rem'}}>Job.title</Card.Title>             
               </Col>
-              <Card.Text style={{marginLeft:'5rem'}}>Job.company</Card.Text> 
+              <Card.Text style={{marginLeft:'5rem',marginTop:'.7rem'}}>Job.company</Card.Text> 
             </div>
               <Col style={{display:'flex', justifyContent:'right'}}>
                 <Link to='/job' >
@@ -28,7 +28,7 @@ const JobApplicationCard = (props) => {
                 </Link> 
               </Col>
             </Row> 
-            <hr/>
+            <hr style={{margin:'1rem'}}/>
             
             <Row>
                 <div>
@@ -36,10 +36,10 @@ const JobApplicationCard = (props) => {
                     <Card.Img className='img-fluid rounded-pill' 
                     style={{width:'50px'}}
                     src='#' />  
-                    <Card.Title style={{marginLeft:'1rem',marginTop:'.7rem'}}>profile.name</Card.Title>   
+                    <Card.Title style={{marginLeft:'1rem'}}>profile.name</Card.Title>   
                              
                 </Col>
-                    <Card.Text style={{marginLeft:'5rem'}}>profile.title</Card.Text> 
+                    <Card.Text style={{marginLeft:'5rem',marginTop:'.7rem'}}>profile.title</Card.Text> 
                 </div>
 
                 <Col style={{display:'flex', justifyContent:'right'}}>
@@ -48,7 +48,7 @@ const JobApplicationCard = (props) => {
                     </Link> 
                 </Col>
             </Row> 
-            <hr/>
+            <hr style={{margin:'1rem'}}/>
 
             <Row style={{display:'flex', justifyContent:'right'}}>
                 <Col style={{display:'flex', justifyContent:'right'}}>
