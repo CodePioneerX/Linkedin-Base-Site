@@ -303,7 +303,7 @@ export const create_job_alert = (userId, search_value, company, location, job_ty
 /**
 
 Creates a job application and submits it to the server.
-
+@param {Number} job_id - The id corresponding to the Job that the application is for.
 @param {string} email - The email of the applicant.
 @param {string} name - The name of the applicant.
 @param {string} telephone - The telephone number of the applicant.
@@ -327,7 +327,7 @@ Creates a job application and submits it to the server.
 @param {string} profile - The profile of the applicant.
 @returns {Object} Returns an object with a success flag and a message indicating whether the job application was submitted successfully or not.
 */
-export const create_job_application = (email, name, telephone, city, provinceState, country, experience, work, education, volunteering, courses, projects, awards, languages, resume, coverLetter, recommendationLetter, portfolio, transcript, otherDocuments, profile) => async (dispatch, getState) => {
+export const create_job_application = (job_id, email, name, telephone, city, provinceState, country, experience, work, education, volunteering, courses, projects, awards, languages, resume, coverLetter, recommendationLetter, portfolio, transcript, otherDocuments, profile) => async (dispatch, getState) => {
     try {
         dispatch({
             type: CREATE_JOB_APPLICATION_REQUEST
@@ -346,6 +346,7 @@ export const create_job_application = (email, name, telephone, city, provinceSta
         const { data } = await axios.post(
             `http://localhost:8000/api/jobapplication`,
             {
+                'job_id': job_id,
                 'email': email, 
                 'name': name, 
                 'telephone': telephone, 
