@@ -238,7 +238,11 @@ export default class Job extends Component {
             <Row>
                 <Col style={{display: 'flex', justifyContent: 'center'}}>
                 {this.state.job.listing_type == 'INTERNAL' ? 
-                    <Button className='btns' variant="primary">Apply</Button> : 
+                <>
+                <Link to="/jobApplication" state={{job_id:this.state.job.id}}>
+                    <Button className='btns' variant="primary">Apply</Button> 
+                </Link>
+                </> : 
                     <>
                     <Link to={this.state.job.link}>
                         <Button className='btns' variant="primary">Apply Externally</Button>

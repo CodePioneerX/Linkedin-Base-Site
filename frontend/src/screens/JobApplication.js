@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Component } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Container} from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert';
 import {  Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
@@ -19,6 +19,9 @@ const JobApplication = () => {
    const userLogin = useSelector((state) => state.userLogin);
    const { userInfo } = userLogin;
    const navigate = useNavigate()
+
+   const location = useLocation()
+   const job_id = location.state?.job_id
 
    //form submission status
    const [submitStatus, setSubmitStatus] = useState(null); 
@@ -46,6 +49,7 @@ const JobApplication = () => {
    const [transcript, setTranscript] = useState(null);
    const [otherDocuments, setOtherDocuments] = useState(null);
    const [profile, setProfile] = useState('');
+   const [job, setJob] = useState('')
 
    //Event handlers that get triggered when the user selects files for uploading
    const handleResumeChange = (event) => {
@@ -76,9 +80,16 @@ const JobApplication = () => {
       setProfile(data.profile);
    };
 
+   const getJob = async () => {
+      const { data } = await axios.get(`http://localhost:8000/api/job/${job_id}`);
+      setJob(data[0]);
+   }
 
    //Calls the getProfile function once when the component mounts
-   useEffect(() => {getProfile();}, []);
+   useEffect(() => {
+      getProfile();
+      getJob();
+   }, []);
 
    //Fills in the form fields with the user's profile information
    const autofillHandler = (e) => {
@@ -100,7 +111,7 @@ const JobApplication = () => {
 
    const submitHandler = (e) => {
       e.preventDefault()
-      dispatch(create_job_application(email, name, telephone, city, provinceState, country, experience, work, education, volunteering, courses, projects, awards, languages, resume, coverLetter, recommendationLetter, portfolio, transcript, otherDocuments, profile)).then(
+      dispatch(create_job_application(job_id, email, name, telephone, city, provinceState, country, experience, work, education, volunteering, courses, projects, awards, languages, resume, coverLetter, recommendationLetter, portfolio, transcript, otherDocuments, profile)).then(
          (res) => {
            if (res.success) {
             setSubmitStatus(res.message);
@@ -118,6 +129,11 @@ const JobApplication = () => {
             <Button className='customButton ' variant='secondary' onClick={() => {navigate(-1)}}><TiArrowBack className='icon'/><span className='backText'>Back</span></Button>
             <div className='jobApplicationsPageForm'>
                <h1>Job Application Form</h1>
+               <div className="jobInformation">
+                  <h2>{job.title}</h2>
+                  <h2>at</h2>
+                  <h2>{job.company}</h2>
+               </div>
                <Button className='customButton' id='autoFillButton' variant='secondary' onClick={autofillHandler}>Autofill using my profile information</Button>
                <Form className='jobApplicationForm'>
                   <hr/>
