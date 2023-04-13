@@ -34,7 +34,7 @@ export default class Posts extends Component {
                 <Row  key={post.id} style={{marginBottom: "25px"}}>
                   <Container style={{padding: "35px 0 0 35px", paddingBottom: "0" }}>
                   <Col xs={10} style={{ borderRadius: "20px", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "-40px" }}>
-                          <div style={{borderBottom: "1px solid #d3d3d3",marginBottom:"10px"}}></div>
+                          <div style={{marginBottom:"10px"}}></div>
                         <Row style={{ display: "flex", alignItems: "center"}}>
                           {/* <img src={post.image} alt={post.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> */}
                           {post.image ? <img src={'http://localhost:8000/'+post.image} alt="post image" style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <p>test</p>}

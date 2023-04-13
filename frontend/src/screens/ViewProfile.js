@@ -216,7 +216,7 @@ function ViewProfile() {
                     <Row>
                         <div className="profile-header" style={{ backgroundColor: "white", borderRadius: "7px", border: "1px solid #ccc", boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)", padding: "1.5rem"}}>
                           <Row>
-                            <Col md={8}><h2>Activities</h2></Col>
+                            <Col md={8}><h2>My Posts</h2></Col>
                             <Col md={4}>
                               <Link className='profile-button' id='edit_profile_link' to='/create/post/' state={{from: "/profile/"}}> <FontAwesomeIcon icon={faPenToSquare} id="edit_icon"/></Link>
                             </Col>

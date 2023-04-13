@@ -91,6 +91,7 @@ export default class Jobs extends Component {
                     <Col xs={12}>
                       <h4>Description: </h4>
                       <p style={{whiteSpace: 'pre-wrap'}}>{job.description}</p>
+                      <hr style={{width: "100%"}}/>
                     </Col>
                   </Row>
                   <Row className='mb-2'>
@@ -101,6 +102,7 @@ export default class Jobs extends Component {
                       <p >{job.location}</p>
                       {job.remote ? <p>Remote work possible.</p> : <p>Must be willing to work in person.</p>} 
                     </Col>
+                    <hr style={{width: "100%"}}/>
                   </Row>
                   <Row className='mb-2'>
                     <Col sm={12} md={6} xl={4}>
@@ -109,6 +111,7 @@ export default class Jobs extends Component {
                     <Col sm={12} md={6} xl={8}>
                       <p>${job.salary} {salary_types.map(type => ((type.value == job.salary_type) && <span key={type.value}>{type.name}</span>))}</p>
                     </Col>
+                    <hr style={{width: "100%"}}/>
                   </Row>
                   <Row className='mb-2'>
                     <Col sm={12} md={6} xl={4}>
@@ -117,6 +120,7 @@ export default class Jobs extends Component {
                     <Col sm={12} md={6} xl={8}>
                       <p>{job_types.map(type => ((type.value == job.job_type) && <span key={type.value}>{type.name}</span>))}</p>
                     </Col>
+                    <hr style={{width: "100%"}}/>
                   </Row>
                   <Row className='mb-2'>
                     <Col sm={12} md={6} xl={4}>
@@ -125,6 +129,7 @@ export default class Jobs extends Component {
                     <Col sm={12} md={6} xl={8}>
                       <p>{employment_terms.map(type => ((type.value == job.employment_term) && <span key={type.value}>{type.name}</span>))}</p>
                     </Col>
+                    <hr style={{width: "100%"}}/>
                   </Row>
                   <Row className='mb-2'>
                     <Col sm={12} md={6} xl={4}>
@@ -133,6 +138,7 @@ export default class Jobs extends Component {
                     <Col sm={12} md={6} xl={8}>
                       <p>{job_types.map(type => ((type.value == job.job_type) && <span key={type.value}>{type.name}</span>))}</p>
                     </Col>
+                    <hr style={{width: "100%"}}/>
                   </Row>
                   <Row className='mb-2'>
                     <Col sm={12} md={6} xl={4}>
@@ -141,6 +147,7 @@ export default class Jobs extends Component {
                     <Col sm={12} md={6} xl={8}>
                       <p>{job.created_at.slice(0, 10)}</p>
                     </Col>
+                    <hr style={{width: "100%"}}/>
                   </Row>
                   <Row className='mb-2'>
                     <Col sm={12} md={6} xl={4}>
@@ -149,6 +156,7 @@ export default class Jobs extends Component {
                     <Col sm={12} md={6} xl={8}>
                       <p>{job.deadline.slice(0, 10)}</p>
                     </Col>
+                    <hr style={{width: "100%"}}/>
                   </Row>
                   <Row className='mb-2'>
                     <Col sm={12} md={6} xl={4}>
@@ -157,6 +165,7 @@ export default class Jobs extends Component {
                     <Col sm={12} md={6} xl={8}>
                       <p>{job.status ? <>Applications Open</> : <>Applications Closed</>}</p>
                     </Col>
+                    <hr style={{width: "100%"}}/>
                   </Row>
                   <Row className='mb-2'>
                     <Col sm={12} md={6} xl={4}>
@@ -165,6 +174,7 @@ export default class Jobs extends Component {
                     <Col sm={12} md={6} xl={8}>
                       <p>{(job.listing_type == 'INTERNAL') ? <>Internal</> : <a href={job.link}>External</a>}</p>
                     </Col>
+                    <hr style={{width: "100%"}}/>
                   </Row>
                   <Row className='mb-1'>
                     <Col sm={12} md={6} xl={4}>
