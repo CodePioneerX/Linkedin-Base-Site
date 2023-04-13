@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from workshare.views import *
-from workshare.views import *
 from django.conf import settings
 from django.conf.urls.static import static
 from workshare import views
@@ -76,7 +75,8 @@ urlpatterns = [
     path('api/job_alerts/<int:pk>/', views.getJobAlertsView, name='get_job_alerts'),
     path('api/job_alerts/delete/<int:pk>/', views.deleteJobAlertView, name='delete_job_alert'),
     path('api/job_alerts/<int:pk>/create/', views.createJobAlertView, name='create_job_alert'),
-    path('api/search/', views.searchFunction, name='search')
+    path('api/search/', views.searchFunction, name='search'),
+    path('api/my_job_applications/', views.getMyApplicationsView, name='my_job_applications'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

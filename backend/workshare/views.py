@@ -1,20 +1,16 @@
-import time
-import json
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.http import JsonResponse
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
 from .serializers import WorkShareSerializer
 from .models import WorkShare
-from .models import Profile, Post, JobListing, Comment, Recommendations, Connection, Document, Notification, JobAlert
+from .models import *
 from django.contrib.auth.models import User
-from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer, ConnectionSerializer, DocumentSerializer, NotificationSerializer, JobAlertSerializer
+from .serializers import *
 from django.contrib.auth.hashers import make_password
-from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import Q
 import datetime
@@ -53,16 +49,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 class WorkShareView(viewsets.ModelViewSet):
     serializer_class = WorkShareSerializer
     queryset = WorkShare.objects.all()
-    
-    
-    
-class ProfileView(APIView):
-    def get(self, request, pk):
-        profile = get_object_or_404(Profile, pk=pk)
-        serializer = ProfileSerializer(profile)
-        return Response(serializer.data)
-    
-    
+
 
 class ProfileCreateView(CreateAPIView):
     queryset = Profile.objects.all()
@@ -1267,3 +1254,21 @@ def searchFunction(request):
         "jobs": jobs_serializer.data}
     
     return Response(data)
+
+@api_view(['PUT'])
+def rejectJobApplication(request, pk):
+    job_application = get_object_or_404(JobApplication, id=pk)
+    
+    if not job_application:
+        return Response({'message': 'Job application request not found.'}, status=status.HTTP_404_NOT_FOUND)
+    
+    job_application.status = 'reject'
+    job_application.save()
+    return Response({'message': 'Job application request rejected successfully.'}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def getMyApplicationsView(request):
+    job_applications = JobApplication.objects.filter(user=request.user)
+    serializer = JobApplicationSerializer(job_applications, many=True)
+    return Response(serializer.data)
+

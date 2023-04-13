@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
-from .models import WorkShare, Profile, Post, JobListing, Comment, Recommendations, Connection, Notification, JobAlert
+from .models import *
 
 class WorkShareSerializer(serializers.ModelSerializer):
     class Meta:
@@ -94,3 +94,15 @@ class JobAlertSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobAlert
         fields = ('id', 'user', 'search_term', 'company', 'location', 'job_type', 'employment_term', 'salary_type', 'min_salary', 'max_salary', 'listing_type', 'remote')
+
+class JobApplicationSerializer(serializers.ModelSerializer):
+    resume = serializers.FileField(source='resume.url')
+    cover_letter = serializers.FileField(source='cover_letter.url')
+    letter_of_recommendation = serializers.FileField(source='letter_of_recommendation.url')
+    portfolio = serializers.FileField(source='portfolio.url')
+    transcript = serializers.FileField(source='transcript.url')
+    other_documents = serializers.FileField(source='other_documents.url')
+    
+    class Meta:
+        model = JobApplication
+        fields = '__all__'
