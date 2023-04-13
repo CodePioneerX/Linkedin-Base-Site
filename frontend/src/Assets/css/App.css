@@ -309,6 +309,20 @@ footer {
   margin: 10px;
   }
 
+  .file-form-clear-button {
+    cursor:pointer;
+    border-color: #b91313;
+    border-width: 2px;
+    border-radius: 20px;
+    border:none;
+    background-color:#b91313;
+    color:white;
+    font-weight: bold;
+    width: 150px;
+    padding: 10px;
+    margin: 10px;
+    }
+
 
 .close-file-form-button{
   cursor: pointer;
