@@ -603,6 +603,29 @@ def JobListingView(request, pk):
 
     return Response(serializer_list)
 
+@api_view(['GET'])
+def getUserJobListingsView(request, pk):
+    """
+    A view to handle the retrieval of all of a specific user's Job Listings.
+    
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of User whose Job Listings must be retrieved.
+
+    Returns: 
+    - Response: Response with the serialized Job Listing information, or error if user is not found.
+    """
+    try:
+        user = get_object_or_404(User, pk=pk)
+    except User.DoesNotExist:
+        return Response({"error":"The job author cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    jobs = JobListing.objects.filter(author=user)
+
+    serializer = JobListingSerializer(jobs, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class JobListingLatestView(APIView):
     def get(self, request):
@@ -1272,10 +1295,40 @@ def getMyApplicationsView(request):
     serializer = JobApplicationSerializer(job_applications, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def getJobApplicationsView(request, pk):
+    """
+    A view to handle the retrieval of all the applications submitted for a specific Job.
+    
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of Job for which the Job Applications must be retrieved.
+
+    Returns: 
+    - Response: Response with the serialized Job Application information, or error if the job is not found.
+    """
+    try:
+        job = get_object_or_404(JobListing, pk=pk)
+    except JobListing.DoesNotExist:
+        return Response({"error":"The job cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    job_applications = JobApplication.objects.filter(job_post=job)
+    serializer = SimpleJobApplicationSerializer(job_applications, many=True)
+    return Response(serializer.data)
+
 @api_view(['POST'])
 def jobApplicationView(request):
-    data = request.data
+    """
+    A view to handle the posting of a Job Application.
     
+    Parameters:
+    - request: HTTP request object.
+
+    Returns: 
+    - Response: Response with the serialized Job Application information, or error if job/user is not found.
+    """
+    data = request.data
+
     try:
         job = get_object_or_404(JobListing, pk=data['job_id'])
     except JobListing.DoesNotExist:
@@ -1303,7 +1356,7 @@ def jobApplicationView(request):
             projects=data['projects'],
             courses=data['courses'],
             awards=data['awards'],
-            languages=data['languages'],
+            languages=data['languages']
             # resume=data['resume'],
             # cover_letter=data['coverLetter'],
             # letter_of_recommendation=data['recommendationLetter'],
@@ -1312,7 +1365,7 @@ def jobApplicationView(request):
             # other_documents=data['otherDocuments']
         )
         
-        serializer = JobApplicationSerializer(job_application, many=False)
+        serializer = SimpleJobApplicationSerializer(job_application, many=False)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 

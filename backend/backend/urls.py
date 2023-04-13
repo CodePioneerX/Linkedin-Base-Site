@@ -50,6 +50,7 @@ urlpatterns = [
     path('api/job/update/<int:pk>', JobListingUpdateView, name='job_listing_update'),
     path('api/job/delete/<int:pk>', JobListingDeleteView, name='job_listing_delete'),
     path('api/jobs/', JobListingLatestView.as_view(), name='job_listing_latest_detail'),
+    path('api/jobs/user/<int:pk>', views.getUserJobListingsView, name='get_users_jobs'),
     path('api/job/<int:pk>', views.JobListingView, name='job_detail'),
     path('api/register/' , views.registerUser, name='register'),
     path('api/notification/delete/<int:pk>', views.deleteNotificationView, name='notification_delete'),
@@ -78,6 +79,7 @@ urlpatterns = [
     path('api/search/', views.searchFunction, name='search'),
     path('api/my_job_applications/', views.getMyApplicationsView, name='my_job_applications'),
     path('api/job/apply/', views.jobApplicationView, name='create_job_application'),
+    path('api/job/applications/<int:pk>', views.getJobApplicationsView, name='create_job_application'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
