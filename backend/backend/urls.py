@@ -77,10 +77,12 @@ urlpatterns = [
     path('api/job_alerts/delete/<int:pk>/', views.deleteJobAlertView, name='delete_job_alert'),
     path('api/job_alerts/<int:pk>/create/', views.createJobAlertView, name='create_job_alert'),
     path('api/search/', views.searchFunction, name='search'),
+    path('api/job_applications//reject/<int:pk>/', rejectJobApplication, name='reject_job_application'),
     path('api/my_job_applications/', views.getMyApplicationsView, name='my_job_applications'),
     path('api/job/apply/', views.jobApplicationView, name='create_job_application'),
     path('api/job/applications/<int:pk>', views.getJobApplicationsView, name='create_job_application'),
-    path('api/jobs_applications/user/<int:pk>', views.getUserJobsWithApplicationsView, name='get_users_jobs_with_applications')
+    path('api/jobs_applications/user/<int:pk>', views.getUserJobsWithApplicationsView, name='get_users_jobs_with_applications'),
+    path('api/my_job_applications/cancel/<int:pk>/', cancelMyJobApplication, name='cancel_my_job_application'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

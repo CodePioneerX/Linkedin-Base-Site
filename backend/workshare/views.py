@@ -1278,6 +1278,7 @@ def searchFunction(request):
     
     return Response(data)
 
+#This function allows the recurtier to reject an application.
 @api_view(['PUT'])
 def rejectJobApplication(request, pk):
     job_application = get_object_or_404(JobApplication, id=pk)
@@ -1289,6 +1290,7 @@ def rejectJobApplication(request, pk):
     job_application.save()
     return Response({'message': 'Job application request rejected successfully.'}, status=status.HTTP_200_OK)
 
+#This function allows the user to view all the jobs they applied to.
 @api_view(['GET'])
 def getMyApplicationsView(request):
     job_applications = JobApplication.objects.filter(user=request.user)
@@ -1401,3 +1403,14 @@ def jobApplicationView(request):
 
     except Exception as e:
         return Response({"error":"Job Application could not be created"}, status=status.HTTP_404_NOT_FOUND)
+
+#This function allows a user to cancel a sent application.
+@api_view(['DELETE', 'GET'])
+def cancelMyJobApplication(request, pk):
+    job_application = get_object_or_404(JobApplication, id=pk)
+    if not job_application:
+        return Response({'message': 'Job application not found.'}, status=status.HTTP_404_NOT_FOUND)
+    if job_application.status != 'true':
+        return JsonResponse({'message': 'Job application has already been deleted or rejected.'}, status=status.HTTP_400_BAD_REQUEST)
+    job_application.delete()
+    return Response({'message': 'Job application request cancelled successfully.'}, status=status.HTTP_200_OK)
