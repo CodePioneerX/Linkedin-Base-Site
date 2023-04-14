@@ -15,7 +15,7 @@ function JobsScreen() {
   const [jobEditor, setJobEditor ] = useState('')
   const [job, setJob] = useState('')
 
-  const [reportEditor, setReportEditor] = useState(false)
+  const [jobReportEditor, setJobReportEditor] = useState(false)
 
   const navigate = useNavigate()
 
@@ -27,12 +27,12 @@ function JobsScreen() {
     setJobEditor(false)
   }
 
-  const reportEditorMode = () => {
-    setReportEditor(true)
+  const jobReportEditorMode = () => {
+    setJobReportEditor(true)
   }
 
-  const quitReportEditor = () => {
-    setReportEditor(false)
+  const quitJobReportEditor = () => {
+    setJobReportEditor(false)
   }
 
   return (
@@ -44,12 +44,12 @@ function JobsScreen() {
                 <Button className='mb-4' variant='secondary' onClick={() => {navigate(-1)}}>Back</Button>
                 <EditJobForm edit={jobEditorMode} quit={quitJobEditor} job={job} />  
               </>:
-              reportEditor ? <ReportJobForm edit={reportEditorMode} quitReportEditor={quitReportEditor} job={job}/> :
+              jobReportEditor ? <ReportJobForm edit={jobReportEditorMode} quitReportEditor={quitJobReportEditor} job={job}/> :
               <Container>
                 <a className='btn btn-primary' href='/create/job' role='button'>
                   Create a job listing
                 </a>
-                <Jobs edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.email} report={reportEditorMode}/>
+                <Jobs edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.email} report={jobReportEditorMode}/>
             </Container>}
           </div>
         ) : (        

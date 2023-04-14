@@ -131,7 +131,7 @@ class JobReportSerializer(serializers.ModelSerializer):
     job_company = serializers.CharField(read_only=True, source="job.company")
     job_location = serializers.CharField(read_only=True, source="job.location")
     author_id = serializers.CharField(read_only=True, source="job.author.id")
-    author_name = serializers.CharField(read_only=True, source="post.author.first_name")
+    author_name = serializers.CharField(read_only=True, source="job.author.first_name")
 
     class Meta:
         model = JobReport

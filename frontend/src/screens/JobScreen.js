@@ -15,7 +15,7 @@ function JobScreen() {
   const [jobEditor, setJobEditor ] = useState('')
   const [job, setJob] = useState('')
 
-  const [reportEditor, setReportEditor] = useState(false)
+  const [jobReportEditor, setJobReportEditor] = useState(false)
 
   const location = useLocation()
   const { job_id } = location.state
@@ -30,12 +30,12 @@ function JobScreen() {
     setJobEditor(false)
   }
 
-  const reportEditorMode = () => {
-    setReportEditor(true)
+  const jobReportEditorMode = () => {
+    setJobReportEditor(true)
   }
 
-  const quitReportEditor = () => {
-    setReportEditor(false)
+  const quitJobReportEditor = () => {
+    setJobReportEditor(false)
   }
 
   return (
@@ -46,9 +46,9 @@ function JobScreen() {
           <div>
             {jobEditor ? 
               <EditJobForm edit={jobEditorMode} quit={quitJobEditor} job={job} /> : 
-            reportEditor ? <ReportJobForm edit={reportEditorMode} quitReportEditor={quitReportEditor} job={job}/> :
+            jobReportEditor ? <ReportJobForm edit={jobReportEditorMode} quitReportEditor={quitJobReportEditor} job={job}/> :
             <Container>
-              <Job edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.id} job_id={job_id} navigate={navigate} report={reportEditorMode}/>
+              <Job edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.id} job_id={job_id} navigate={navigate} report={jobReportEditorMode}/>
             </Container>}
           </div>
         </>

@@ -7,6 +7,7 @@ import Newsfeed from '../components/Newsfeed';
 import { EditJobForm } from '../components/EditJobForm';
 import { EditPostForm } from '../components/EditPostForm';
 import { ReportPostForm } from '../components/ReportPostForm';
+import { ReportJobForm } from '../components/ReportJobForm';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios'
 import Alert from 'react-bootstrap/Alert';
@@ -23,6 +24,8 @@ function Home() {
   const [post, setPost] = useState('')
 
   const [reportEditor, setReportEditor] = useState(false)
+
+  const [jobReportEditor, setJobReportEditor] = useState(false)
 
   const dispatch = useDispatch();
 
@@ -50,6 +53,14 @@ function Home() {
     setReportEditor(false)
   }
 
+  const jobReportEditorMode = () => {
+    setJobReportEditor(true)
+  }
+
+  const quitJobReportEditor = () => {
+    setJobReportEditor(false)
+  }
+
   useEffect(() => {
     dispatch(get_notifications(userInfo.id))
   })
@@ -61,6 +72,7 @@ function Home() {
             {jobEditor ? <EditJobForm edit={jobEditorMode} quit={quitJobEditor} job={job} /> : 
             postEditor ? <EditPostForm edit={postEditorMode} quitPostEditor={quitPostEditor} post={post} /> : 
             reportEditor ? <ReportPostForm edit={reportEditorMode} quitReportEditor={quitReportEditor} post={post}/> :
+            jobReportEditor ? <ReportJobForm edit={jobReportEditorMode} quitReportEditor={quitJobReportEditor} job={job}/> :
             <>
               <Container>
                 <Link className='btn btn-primary' to='/create/post/' state={{from: "/"}}>
@@ -68,7 +80,7 @@ function Home() {
                 </Link>
               </Container>
               <Newsfeed id={userInfo.id} author={userInfo.id} edit={postEditorMode} quit={quitPostEditor} report={reportEditorMode} setpost={setPost}/>
-              <Jobs edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.email}/>
+              <Jobs edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.email} report={jobReportEditorMode}/>
           </>}
         </div>
         ) : (        
