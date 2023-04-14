@@ -452,7 +452,7 @@ def reportJobView(request):
         job = get_object_or_404(JobListing, pk=data['job'])
         message = data['message']
 
-        report = PostReport(sender=sender, job=job, message=message)
+        report = JobReport(sender=sender, job=job, message=message)
         report.save()
 
         message = {'detail':'The job has been reported.'}
@@ -481,7 +481,7 @@ def getJobReportsView(request):
         message = {'detail':'The reported posts could not be retrieved at this time.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['DELETE'])
+@api_view(['DELETE', 'GET'])
 def dismissJobReportView(request, pk):
     """
     A view function that allows an admin to dismiss a report made against a job. 

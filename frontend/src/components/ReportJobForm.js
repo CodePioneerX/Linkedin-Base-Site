@@ -12,6 +12,7 @@ export const ReportJobForm = (job) => {
     // Define state variables for the title and content fields
     const [title, setTitle] = useState(job.job.title)
     const [company, setCompany] = useState(job.job.company)
+    const [location, setLocation] = useState(job.job.location)
     
     const [reportMessage, setReportMessage] = useState("")
 
@@ -64,8 +65,12 @@ export const ReportJobForm = (job) => {
             <Input  name="title" placeholder={title} id="name" disabled />
           </FormGroup>
           <FormGroup className='mb-4'>
-            <Label className='labelE' for="content">Content</Label>
-            <Input  name="content" placeholder={content} id="content" disabled />
+            <Label className='labelE' for="company">Company</Label>
+            <Input  name="company" placeholder={company} id="company" disabled />
+          </FormGroup>
+          <FormGroup className='mb-4'>
+            <Label className='labelE' for="location">Location</Label>
+            <Input  name="location" placeholder={location} id="location" disabled />
           </FormGroup>      
         </Form>
         
