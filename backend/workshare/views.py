@@ -8,11 +8,9 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
-from .serializers import WorkShareSerializer
-from .models import WorkShare
-from .models import Profile, Post, JobListing, Comment, Recommendations, Connection, Document, Notification, JobAlert, UserReport, PostReport
+from .models import *
 from django.contrib.auth.models import User, Group
-from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer, ConnectionSerializer, DocumentSerializer, NotificationSerializer, JobAlertSerializer, UserReportSerializer, PostReportSerializer
+from .serializers import *
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -434,6 +432,75 @@ def reportPostView(request):
         return Response(message, status=status.HTTP_200_OK)
     except:
         message = {'detail':'The post could not be reported at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def reportJobView(request):
+    """
+    A view function that allows a user to report a job. 
+
+    Parameters:
+    - request: HTTP request object, containing sender of request, a specific job, and the request message.
+
+    Returns:
+    - Response: HTTP Response with a success/error message.
+    """
+    try:
+        data = request.data
+
+        sender = get_object_or_404(User, pk=data['sender'])
+        job = get_object_or_404(JobListing, pk=data['job'])
+        message = data['message']
+
+        report = PostReport(sender=sender, job=job, message=message)
+        report.save()
+
+        message = {'detail':'The job has been reported.'}
+        return Response(message, status=status.HTTP_200_OK)
+    except:
+        message = {'detail':'The job could not be reported at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def getJobReportsView(request):
+    """
+    A view function that allows an Admin to retrieve a list of all reported Jobs. 
+
+    Parameters:
+    - request: HTTP request object.
+
+    Returns:
+    - Response: HTTP Response containing serialized job data, or an error message.
+    """
+    try: 
+        job_reports = JobReport.objects.all().order_by('-job__id')
+        serializer = JobReportSerializer(job_reports, many=True)
+
+        return Response(serializer.data)
+    except:
+        message = {'detail':'The reported posts could not be retrieved at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def dismissJobReportView(request, pk):
+    """
+    A view function that allows an admin to dismiss a report made against a job. 
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of Job Report to be dismissed from the reported list.
+
+    Returns:
+    - Response: HTTP Response with a success/error message.
+    """
+    try:
+        job_report = get_object_or_404(JobReport, pk=pk)
+        job_report.delete()
+
+        message = {'detail':'This job report has been dismissed.'}
+        return Response(message, status=status.HTTP_200_OK)
+    except:
+        message = {'detail':'The job report could not be dismissed at this time.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 # TO-DO: finalize implementation of user authentication

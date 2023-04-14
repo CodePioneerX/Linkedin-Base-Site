@@ -85,6 +85,9 @@ urlpatterns = [
     path('api/posts/report/', views.reportPostView, name='report-post'),
     path('api/posts/report/dismiss/<int:pk>', views.dismissPostReportView, name='dismiss-post-report'),
     path('api/posts/reported', views.getPostReportsView, name='get-reported-posts'),
+    path('api/jobs/report/', views.reportJobView, name='report-job'),
+    path('api/jobs/report/dismiss/<int:pk>', views.dismissJobReportView, name='dismiss-job-report'),
+    path('api/jobs/reported', views.getJobReportsView, name='get-reported-jobs'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

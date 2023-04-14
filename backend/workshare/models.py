@@ -298,3 +298,11 @@ class PostReport(models.Model):
 
     def __str__(self):
         return self.sender.email + ' reported post: ' + self.post.title
+
+class JobReport(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    job = models.ForeignKey(JobListing, related_name='reported_job', on_delete=models.CASCADE)
+    message = models.TextField(blank=False, null=False)
+
+    def __str__(self):
+        return self.sender.email + ' report job: ' + self.job.title + ' at ' + self.job.company
