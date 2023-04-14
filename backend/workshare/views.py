@@ -1296,6 +1296,36 @@ def getMyApplicationsView(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def getUserJobsWithApplicationsView(request, pk):
+    """
+    A view to handle the retrieval of all of a user's posted jobs, together with all the applications that were submitted for them.
+    
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of Job for which the Job Applications must be retrieved.
+
+    Returns: 
+    - Response: Response with the serialized Job and Job Application information, or error if the job author is not found.
+    """
+    job_list = []
+    
+    try:
+        user = get_object_or_404(User, pk=pk)
+    except User.DoesNotExist:
+        return Response({"error":"The job author cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    jobs = JobListing.objects.filter(author=user)
+
+    for job in jobs:
+        job_serializer = JobListingSerializer(job, many=False)
+        applications = JobApplication.objects.filter(job_post=job)
+        application_serializer = SimpleJobApplicationSerializer(applications, many=True)
+        combined = {'job':job_serializer.data, 'applications':application_serializer.data}
+        job_list.append(combined)
+
+    return Response(job_list, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
 def getJobApplicationsView(request, pk):
     """
     A view to handle the retrieval of all the applications submitted for a specific Job.

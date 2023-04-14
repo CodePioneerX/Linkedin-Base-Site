@@ -80,6 +80,7 @@ urlpatterns = [
     path('api/my_job_applications/', views.getMyApplicationsView, name='my_job_applications'),
     path('api/job/apply/', views.jobApplicationView, name='create_job_application'),
     path('api/job/applications/<int:pk>', views.getJobApplicationsView, name='create_job_application'),
+    path('api/jobs_applications/user/<int:pk>', views.getUserJobsWithApplicationsView, name='get_users_jobs_with_applications')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
