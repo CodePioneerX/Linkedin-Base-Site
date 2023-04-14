@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from 'react-router-dom'
 import Job from '../components/Job';
 import { EditJobForm } from '../components/EditJobForm';
+import { ReportJobForm } from '../components/ReportJobForm';
 import Alert from 'react-bootstrap/Alert';
 
 function JobScreen() {
@@ -13,6 +14,8 @@ function JobScreen() {
 
   const [jobEditor, setJobEditor ] = useState('')
   const [job, setJob] = useState('')
+
+  const [reportEditor, setReportEditor] = useState(false)
 
   const location = useLocation()
   const { job_id } = location.state
@@ -27,6 +30,13 @@ function JobScreen() {
     setJobEditor(false)
   }
 
+  const reportEditorMode = () => {
+    setReportEditor(true)
+  }
+
+  const quitReportEditor = () => {
+    setReportEditor(false)
+  }
 
   return (
       <Container className="justify-content-md-center padd">
@@ -36,9 +46,10 @@ function JobScreen() {
           <div>
             {jobEditor ? 
               <EditJobForm edit={jobEditorMode} quit={quitJobEditor} job={job} /> : 
-              <Container>
-                <Job edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.id} job_id={job_id} navigate={navigate}/>
-              </Container>}
+            reportEditor ? <ReportJobForm edit={reportEditorMode} quitReportEditor={quitReportEditor} job={job}/> :
+            <Container>
+              <Job edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.id} job_id={job_id} navigate={navigate} report={reportEditorMode}/>
+            </Container>}
           </div>
         </>
         ) : (        

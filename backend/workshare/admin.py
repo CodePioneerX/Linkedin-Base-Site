@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
-from .models import WorkShare, Profile, Post, JobListing, Comment, Connection, Recommendations, Document, Notification, JobAlert, UserReport, PostReport
+from .models import *
 
 Reported, created = Group.objects.get_or_create(name='Reported')
 
@@ -40,6 +40,9 @@ class UserReportAdmin(admin.ModelAdmin):
 class PostReportAdmin(admin.ModelAdmin):
     list_display = ('id', 'sender', 'post')
 
+class JobReportAdmin(admin.ModelAdmin):
+    list_display = ('id', 'sender', 'job')
+
 # Register your models here.
 
 admin.site.register(WorkShare, WorkShareAdmin)
@@ -54,3 +57,4 @@ admin.site.register(Document, DocumentAdmin)
 admin.site.register(JobAlert, JobAlertAdmin)
 admin.site.register(UserReport, UserReportAdmin)
 admin.site.register(PostReport, PostReportAdmin)
+admin.site.register(JobReport, JobReportAdmin)
