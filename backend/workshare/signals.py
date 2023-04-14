@@ -1,9 +1,9 @@
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save, post_save, post_delete
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404
-from .models import Profile, Connection, Notification, Recommendations, JobAlert, JobListing
+from .models import Profile, Connection, Notification, Recommendations, JobAlert, JobListing, JobApplication
 from django.db.models import Q, F, Value, CharField, Count
 
 def updateUser(sender, instance, **kwargs):
@@ -185,3 +185,51 @@ def job_alert_notification(sender, instance, created, **kwargs):
                 )
             except User.DoesNotExist:
                 print('Requested user does not exist.')
+
+@receiver(post_save, sender=JobApplication)
+def job_application_sent_notification(sender, instance, created, **kwargs):
+    """
+    A signal which creates a Notification instance when a JobApplication instance is created, for the User
+    who submitted the Job Application.
+    This is a post_save signal, so the signal is sent after the JobApplication instance has been saved. 
+
+    Parameters:
+    - sender: The model class that has sent the signal (in this case, JobApplication).
+    - instance: The particular instance of the sender model being saved that sent the signal.
+    - created: A boolean value that is True if the instance has just been created.
+    - kwargs: A dictionary of keyword arguments.
+
+    Returns:
+    - creates a Notification instance based on the sender instance attributes.
+    """
+    if created:
+        Notification.objects.create(
+            recipient=instance.user,
+            title='You have submitted an application for ' + instance.job_post.title + ' at ' + instance.job_post.company + '.',
+            content='You may cancel your application from the dropdown menu.',
+            type=Notification.JOBAPPLICATION,
+            object_id=instance.id,
+            content_type=ContentType.objects.get_for_model(sender)
+        )
+
+@receiver(post_delete, sender=JobApplication)
+def job_application_cancelled_notification(sender, instance, **kwargs):
+    """
+    A signal which creates a Notification instance when a JobApplication instance is deleted, for the User
+    who originally submitted the Job Application.
+    This is a post_delete signal, so the signal is sent after the JobApplication instance has been deleted. 
+
+    Parameters:
+    - sender: The model class that has sent the signal (in this case, JobApplication).
+    - instance: The particular instance of the sender model being deleted that sent the signal.
+    - kwargs: A dictionary of keyword arguments.
+
+    Returns:
+    - creates a Notification instance based on the sender instance attributes.
+    """
+    Notification.objects.create(
+        recipient=instance.user,
+        title='You have canceled your application for ' + instance.job_post.title + ' at ' + instance.job_post.company + '.',
+        content='',
+        type=Notification.SYSTEM
+    )

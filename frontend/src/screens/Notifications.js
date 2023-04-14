@@ -70,6 +70,20 @@ function Notifications() {
       navigate('/profileScreen', { state: {data: id} })
     }
 
+    const cancelApplication = async (id, notification_id) => {
+      try {
+        const response = await axios.delete(
+          `http://localhost:8000/api/my_job_applications/cancel/${id}/`
+        )
+        deleteHandler(notification_id)
+        window.location.reload()
+      } catch (error) {
+        console.log(error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message)
+      }
+    }
+
     // check the connections status of the two users before dispatching the delete request
     const rejectConnection = async (id, notification) => {
       try {
@@ -210,6 +224,9 @@ function Notifications() {
                               }
                               {notification.type == "RECOMMENDATION" &&
                                 <Dropdown.Item as="button" onClick={() => viewProfile(notification.sender)}>View profile</Dropdown.Item>
+                              }
+                              {notification.type == "JOBAPPLICATION" && 
+                                <Dropdown.Item as="button" onClick={() => cancelApplication(notification.object_id, notification.id)}>Cancel application</Dropdown.Item>
                               }  
                             </DropdownButton>
                         </Col>

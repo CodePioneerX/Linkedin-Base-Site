@@ -199,6 +199,7 @@ class Notification(models.Model):
     COMMENT = 'COMMENT'
     CONNECTION = 'CONNECTION'
     JOBALERT = 'JOBALERT'
+    JOBAPPLICATION = 'JOBAPPLICATION'
     LIKE = 'LIKE'
     MESSAGE = 'MESSAGE'
     RECOMMENDATION = 'RECOMMENDATION'
@@ -208,6 +209,7 @@ class Notification(models.Model):
         (COMMENT, 'Comment'),
         (CONNECTION, 'Connection'),
         (JOBALERT, 'Job Alert'),
+        (JOBAPPLICATION, 'Job Application'),
         (LIKE, 'Like'),
         (MESSAGE, 'Message'),
         (RECOMMENDATION, 'Recommendation'),
