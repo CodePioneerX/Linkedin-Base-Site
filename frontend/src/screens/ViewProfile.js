@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { EditProfileForm } from '../components/EditProfileForm';
 import { EditPostForm } from '../components/EditPostForm';
-import '../Assets/css/App.css'
+import '../Assets/css/myApp.css'
 import { get_profile } from '../actions/userActions'
 
 
