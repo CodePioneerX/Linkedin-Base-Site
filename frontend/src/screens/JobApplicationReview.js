@@ -6,6 +6,7 @@ import {  Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import '../Assets/css/App.css';
 import { MdClose } from 'react-icons/md';
 import JobApplicationCard from '../components/JobApplicationCard';
+import { Link, useLocation } from "react-router-dom";
 
 
 
@@ -16,12 +17,17 @@ const userLogin = useSelector((state) => state.userLogin);
 const { userInfo } = userLogin;
 const navigate = useNavigate()
 
+const location = useLocation();
+const applications = location.state.applications;
+console.log(applications)
+
 return (
    <Container className="justify-content-md-center padd">
    <Button className='mb-4' variant='secondary' onClick={() => {navigate(-1)}}>Back</Button>
   <h2>Applications to your job posts:</h2>
+  
   <JobApplicationCard/>
-  <JobApplicationCard/>
+  
    </Container>
 );
 };

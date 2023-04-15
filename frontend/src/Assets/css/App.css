@@ -337,3 +337,13 @@ footer {
   padding: 0;
   z-index: 99999;
 }
+
+.userJobPost{
+  background: white;
+  border-radius: 7px;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-left: 14px;
+}
+

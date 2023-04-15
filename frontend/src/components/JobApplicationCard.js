@@ -12,24 +12,6 @@ const JobApplicationCard = (props) => {
     <>
       <Card style={{ marginTop: "20px" }}>
           <Card.Body className='card_body'>
-            <Row style={{display:'flex', justifyContent:'left'}}>
-            <div>
-              <Col style={{display:'flex', justifyContent:'left'}}>
-                  <Card.Img className='img-fluid rounded-pill' 
-                  style={{width:'50px'}}
-                  src='#' />  
-                  <Card.Title style={{marginLeft:'1rem'}}>Job.title</Card.Title>             
-              </Col>
-              <Card.Text style={{marginLeft:'5rem',marginTop:'.7rem'}}>Job.company</Card.Text> 
-            </div>
-              <Col style={{display:'flex', justifyContent:'right'}}>
-                <Link to='/job' >
-                    <Button variant="primary">View Details </Button>
-                </Link> 
-              </Col>
-            </Row> 
-            <hr style={{margin:'1rem'}}/>
-            
             <Row>
                 <div>
                 <Col style={{display:'flex', justifyContent:'left'}}>
