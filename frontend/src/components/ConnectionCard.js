@@ -2,9 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, Button, Row, Col } from 'react-bootstrap';
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { MdAddLink, MdLinkOff } from "react-icons/md";
+import { TiCancel } from "react-icons/ti";
+import { RxCrossCircled, RxCheckCircled } from "react-icons/rx";
+import '../Assets/css/Network.css';
 
 const ConnectionCard = (props) => {
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 // const shortAbout = about.split(".")[0] + '...';
     
 // Define state variables
@@ -79,6 +86,31 @@ const getProfile = async () => {
     window.location.reload()
   }
 
+  //disconnect from the searched user
+  const cancelConnection = async (e) =>{
+    //axios request
+    console.log("send connection")
+    e.preventDefault()
+    try 
+    {
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+
+        const { data } = await axios.delete(
+          `http://localhost:8000/api/connections/delete/` + userInfo.id +`/`+ props.senderId +`/`,
+            config
+        )
+        window.location.reload(false)  
+    }catch(error){
+        console.log(error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message)
+    }
+}
+
   // Call getProfile() function when component mounts
   useEffect(() => {
      getProfile(); 
@@ -96,41 +128,30 @@ const getProfile = async () => {
                   <Card.Img className='img-fluid rounded-pill' 
                   style={{width:'50px'}}
                   src={profile.image} />  
-                  <Card.Title style={{marginLeft:'1rem',marginTop:'.7rem'}}>{profile.name}</Card.Title>             
+                  <Card.Title style={{marginLeft:'1rem',marginTop:'.5rem'}}><Link id='cardTitle' to="/profileScreen" state={{data:props.senderId}}>{profile.name}</Link></Card.Title>             
               </Col>
               <Col style={{display:'flex', justifyContent:'right'}}>
               {props.status == 'accepted' ? 
-                <Link to="/profileScreen" state={{data:props.senderId}}>
-                  <Button variant="primary">View Profile</Button>
-                </Link> : 
+                <MdLinkOff className="connectionIcon" style={{marginLeft:'1rem',marginTop:'.5rem'}} onClick={cancelConnection}/>: 
                 <>
                   {props.type == 'received' && 
                     <>
-                      <Link to="/profileScreen" state={{data:props.senderId}}>
-                        <Button variant="primary">View Profile</Button>
-                      </Link>
                       <div style={{paddingRight: "10px"}}></div>  
-                      <Button style={{height: '38px'}} onClick={acceptHandler} variant="secondary">Accept</Button>
+                      <RxCheckCircled className="connectionIcon" onClick={acceptHandler} style={{marginLeft:'1rem',marginTop:'.5rem'}}/>
                       <div style={{paddingRight: "10px"}}></div>  
-                      <Button style={{height: '38px'}} onClick={rejectHandler} variant="danger">Reject</Button>
+                      <RxCrossCircled className="connectionIcon" onClick={rejectHandler} style={{marginLeft:'1rem',marginTop:'.5rem'}}/>
                     </>
                   }
                   {props.type == 'sent' && 
                     <>
-                      <Link to="/profileScreen" state={{data:props.recipientId}}>
-                          <Button variant="primary">View Profile</Button>
-                      </Link>
                       <div style={{paddingRight: "10px"}}></div>  
-                      <Button style={{height: '38px'}} onClick={cancelHandler} variant="danger">Cancel</Button>
+                      <TiCancel className="connectionIcon" onClick={cancelHandler} style={{marginLeft:'1rem',marginTop:'.5rem'}}/>
                     </> 
                   }
                   {props.type == 'possible' && 
                     <>
-                      <Link to="/profileScreen" state={{data:props.recipientId}}>
-                        <Button variant="primary">View Profile</Button>
-                      </Link>
                       <div style={{paddingRight: "10px"}}></div>  
-                      <Button style={{height: '38px'}} onClick={sendConnectionRequestHandler} variant="secondary">Send Connection Request</Button>
+                      <MdAddLink className="connectionIcon" onClick={sendConnectionRequestHandler} style={{marginLeft:'1rem',marginTop:'.5rem'}}/>
                     </> 
                   }
                 </>
