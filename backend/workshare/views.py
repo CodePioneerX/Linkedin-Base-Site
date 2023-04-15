@@ -10,9 +10,9 @@ from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
 from .serializers import WorkShareSerializer
 from .models import WorkShare
-from .models import Profile, Post, JobListing, Comment, Recommendations, Connection, Document, Notification, JobAlert
+from .models import *
 from django.contrib.auth.models import User
-from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer, RecommendationsSerializer, ConnectionSerializer, DocumentSerializer, NotificationSerializer, JobAlertSerializer
+from .serializers import *
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -1267,3 +1267,36 @@ def searchFunction(request):
         "jobs": jobs_serializer.data}
     
     return Response(data)
+
+#This function allows a user to comment on a post.
+@api_view(['POST'])
+def createComment(request, post_id):
+    content = request.data.get('content')
+    if content:
+        post = Post.objects.get(id=post_id)
+        comment = Comment(author=request.user, post=post, content=content)
+        comment.save()
+        serializer = CommentSerializer(comment)
+        return Response(serializer.data)
+    else:
+        return Response({'error': 'Your comment cannot be empty!'})
+
+#This function allows the user to like or dislike a post.
+def likePost(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    user = request.user
+    
+    if post.likes.filter(user=user).exists():
+        like = Likes.objects.get(user=user, post=post)
+        like.delete()
+        liked = False
+    else:
+        like = Likes(user=user, post=post)
+        like.save()
+        liked = True
+    
+    data = {
+        'likes': post.likes.count(),
+        'liked': liked,
+    }
+    return JsonResponse(data)

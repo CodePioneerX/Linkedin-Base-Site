@@ -76,7 +76,9 @@ urlpatterns = [
     path('api/job_alerts/<int:pk>/', views.getJobAlertsView, name='get_job_alerts'),
     path('api/job_alerts/delete/<int:pk>/', views.deleteJobAlertView, name='delete_job_alert'),
     path('api/job_alerts/<int:pk>/create/', views.createJobAlertView, name='create_job_alert'),
-    path('api/search/', views.searchFunction, name='search')
+    path('api/search/', views.searchFunction, name='search'),
+    path('api/posts/comments/<int:post_id>/', createComment, name='create_comment'),
+    path('api/posts/like/<int:post_id>/', likePost, name='like_post'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

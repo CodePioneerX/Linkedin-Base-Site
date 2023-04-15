@@ -94,8 +94,8 @@ class Recommendations(models.Model):
 class Comment(models.Model):
     #list of data fields and their accepted format are defined here.
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)    
+    content = models.TextField(default=" ")
+    created_at = models.DateTimeField(auto_now_add=True)  
     
 # The Post class creates and designs the model for posts. A post will consist 7 data fields, inlcuding the time of posting.     
 class Post(models.Model):
@@ -104,13 +104,18 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     image = models.ImageField(upload_to='images/', null=True, blank=True)
-    comments = models.ManyToManyField('Comment', blank=True)
-    likes = models.IntegerField(default=0)
+    comments = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True)
+    likes = models.ManyToManyField(User, through='Likes', related_name='liked_posts')
     created_at = models.DateTimeField(auto_now_add=True)
     
     #this function defines what will be returned when the class is printed. The code below will return the author's email.
     def __str__(self):
         return self.author.email
+
+#The Likes model represents the amount of like for a post.
+class Likes(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_likes')
     
 # The JobListing class creates and designs the model for job listings. A job listing will consist of 13 data fields, including the time of posting.   
 class JobListing(models.Model):

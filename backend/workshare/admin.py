@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import WorkShare, Profile, Post, JobListing, Comment, Connection, Recommendations, Document, Notification, JobAlert
+from .models import *
 
 class WorkShareAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'completed')
@@ -8,7 +8,7 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = ('name', 'title', 'about', 'image', 'experience')
     
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'content', 'image', 'likes', 'author', 'created_at')
+    list_display = ('id', 'title', 'content', 'image', 'author', 'created_at')
 
 class JobListingAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'remote', 'employment_term', 'job_type', 'image', 'likes', 'salary', 'salary_type', 'location', 'status', 'author', 'get_required_docs', 'created_at', 'deadline', 'listing_type')
