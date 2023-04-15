@@ -277,12 +277,30 @@ def PostNewsfeedView(request, pk):
 
     user_profiles = Profile.objects.all().filter(user__id__in=posters)
 
-    post_serializer = PostSerializer(posts, many=True)
     profile_serializer = ProfileSerializer(user_profiles, many=True)
-    
-    combined_serializer = [post_serializer.data, profile_serializer.data]
 
-    return Response(combined_serializer)
+    post_serializer = PostSerializer(posts, many=True)
+    post_data = post_serializer.data
+
+    for i, post in enumerate(posts):
+        comments = Comment.objects.filter(post=post)
+        comment_serializer = CommentSerializer(comments, many=True)
+        post_data[i]['comments'] = comment_serializer.data
+    
+    post_numbers = []
+    for post in posts:
+        post_dic = {
+            'num_likes': post.likes.count(),
+            'num_comments': post.comments.count(),
+        }
+        post_numbers.append[post_dic]
+    
+    data = {
+        "profiles": profile_serializer.data,
+        "posts and comments": post_data,
+        "post_metrics": post_numbers
+    }
+    return Response(data)
 
 # This function is intended to allow the user to update an existing post that they posted
 @api_view(['PUT'])    
