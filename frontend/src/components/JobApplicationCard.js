@@ -6,6 +6,19 @@ import { faGripVertical } from "@fortawesome/free-solid-svg-icons";
 
 const JobApplicationCard = (props) => {
 
+//the following variables and functions are for displaying applicants' images
+const [profile, setProfile] = useState("");
+//get the user's profile information using the profile id
+const getProfile = async () => {    
+      const {data} = await axios.get(
+        `http://localhost:8000/api/profile/${props.application.user}`
+      );
+      setProfile(data.profile);     
+    }
+    
+useEffect(() => {
+    getProfile(); 
+}, []);
 
   return (
       
@@ -17,16 +30,17 @@ const JobApplicationCard = (props) => {
                 <Col style={{display:'flex', justifyContent:'left'}}>
                     <Card.Img className='img-fluid rounded-pill' 
                     style={{width:'50px'}}
-                    src='#' />  
-                    <Card.Title style={{marginLeft:'1rem'}}>profile.name</Card.Title>   
-                             
+                    src={profile.image} />  
+                    <Link to="/profileScreen" state={{data:props.application.user}}>
+                      <Card.Title style={{marginLeft:'1rem'}}> Name: {props.application.name}</Card.Title>    
+                    </Link>            
                 </Col>
-                    <Card.Text style={{marginLeft:'5rem',marginTop:'.7rem'}}>profile.title</Card.Text> 
+                    <Card.Text style={{marginLeft:'5rem'}}>{props.application.email}</Card.Text> 
                 </div>
 
                 <Col style={{display:'flex', justifyContent:'right'}}>
-                    <Link to="/profileScreen">
-                        <Button variant="primary">View Profile</Button>
+                    <Link to="/applicationDetail" state={{data:props.application}}>
+                        <Button variant="primary">View Application Detail</Button>
                     </Link> 
                 </Col>
             </Row> 

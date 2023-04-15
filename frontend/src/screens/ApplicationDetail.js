@@ -10,7 +10,7 @@ import { Link, useLocation } from "react-router-dom";
 
 
 
-const JobApplicationReview = () => {
+const ApplicationDetail= () => {
 
 //Get the user information from the store
 const userLogin = useSelector((state) => state.userLogin);
@@ -18,19 +18,15 @@ const { userInfo } = userLogin;
 const navigate = useNavigate()
 
 const location = useLocation();
-const applications = location.state.applications;
+const applications = location.state.data;
 console.log(applications)
 
 return (
    <Container className="justify-content-md-center padd">
    <Button className='mb-4' variant='secondary' onClick={() => {navigate(-1)}}>Back</Button>
-  <h2>Applications to your job posts:</h2>
-  {applications.map(application => (
-  <JobApplicationCard  key={application.id} application={application}/>
-    ))
-    } 
+  <h2>Applications Details</h2>
    </Container>
 );
 };
 
-export default JobApplicationReview;
+export default ApplicationDetail;
