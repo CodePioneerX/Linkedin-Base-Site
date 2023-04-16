@@ -51,7 +51,7 @@ const getProfile = async () => {
               <Card.Text style={{marginLeft:'2rem',marginTop:'.7rem'}}>Posted: {jobPost.job.created_at.slice(0, 10)}</Card.Text> 
             </div>
               <Col style={{display:'flex', justifyContent:'right'}}>
-                <Link to='/jobApplicationReview' state={{job_id: jobPost.job.id, applications:jobPost.applications}}>
+                <Link to='/jobApplicationReview' state={{job_title: jobPost.job.title, job_id: jobPost.job.id, applications:jobPost.applications}}>
                     <Button variant="primary">Review Applications </Button>
                 </Link> 
               </Col>
