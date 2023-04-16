@@ -135,11 +135,6 @@ function ViewProfile() {
 
                       <Row style={{background:"white",display: "flex", flexDirection: "column", alignItems: "center"}}>
                         <div style={{textAlign: "center", padding: "1rem"}}>
-                        {/* button to review applications to jobs posted by logged in user */}
-                        <Link to='/jobApplicationReview'>
-                          <button className="profile-button">View Applications to Your Job Posts</button>
-                        </Link>
-
                           <h1 className="profile-name">{profile.name}</h1>
                           <h4 className="profile-title">{profile.title}</h4>
                           <h6 className="profile-city" style={{paddingBottom:"10px"}}>{profile.city}</h6>
