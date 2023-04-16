@@ -40,6 +40,28 @@
     color: #3a0f90;
 }
 
+#checkIcon:hover {
+    color: rgb(44, 194, 44);
+}
+
+
+#crossIcon:hover {
+    color: red;
+}
+
+#cancelIcon:hover {
+    color: red;
+}
+
+#disconnectIcon:hover {
+    color: red;
+}
+
+#addConnectionIcon:hover {
+    color: dodgerblue;
+}
+
+
 @media (max-width: 767px) {
     #networkContainer {
         margin: 1%;
