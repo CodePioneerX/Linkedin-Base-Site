@@ -103,7 +103,7 @@ return (
             <Col>
             {applications.resume?<>
             <div>
-                <a href='' download>{applications.resume}</a>
+                <a href={'http://localhost:8000/'+applications.resume} download>{applications.resume}</a>
             </div>
             </>:
             <p>N/A</p>
@@ -117,7 +117,7 @@ return (
             <Col>
             {applications.cover_letter?<>
             <div>
-                <a href='' download>{applications.cover_letter}</a>
+                <a href={'http://localhost:8000/'+applications.cover_letter} download>{applications.cover_letter}</a>
             </div>
             </>:
             <p>N/A</p>
@@ -131,7 +131,7 @@ return (
             <Col>
             {applications.letter_of_recommendation?<>
             <div>
-                <a href='' download>{applications.letter_of_recommendation}</a>
+                <a href={'http://localhost:8000/'+applications.letter_of_recommendation} download>{applications.letter_of_recommendation}</a>
             </div>
             </>:
             <p>N/A</p>
@@ -145,7 +145,7 @@ return (
             <Col>
             {applications.portfolio?<>
             <div>
-                <a href='' download>{applications.portfolio}</a>
+                <a href={'http://localhost:8000/'+applications.portfolio} download>{applications.portfolio}</a>
             </div>
             </>:
             <p>N/A</p>
@@ -159,7 +159,7 @@ return (
             <Col>
             {applications.transcript?<>
             <div>
-                <a href='' download>{applications.transcript}</a>
+                <a href={'http://localhost:8000/'+applications.transcript} download>{applications.transcript}</a>
             </div>
             </>:
             <p>N/A</p>
@@ -173,7 +173,7 @@ return (
             <Col>
             {applications.other_documents?<>
             <div>
-                <a href='' download>{applications.other_documents}</a>
+                <a href={'http://localhost:8000/'+applications.other_documents} download>{applications.other_documents}</a>
             </div>
             </>:
             <p>N/A</p>
