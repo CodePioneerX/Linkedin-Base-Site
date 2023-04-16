@@ -213,6 +213,7 @@ input{
   cursor: pointer;
   transition: background-color 0.5s ease-out;
 }
+
 /* Styling for the delete button in edit mode */
 .editDeleteButton{
   margin:1%;
@@ -268,10 +269,92 @@ input{
   padding: 5%;
 }
 
-@media (max-width: 767px) {
+#editJobListing2 {
+  font-size: 2em;
+}
+
+.labelE {
+  font-size: 1.25em;
+  margin-top: 2%;
+  padding-left: 2px;
+  padding-right: 10px;
+}
+
+.form-doc-input {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 10px;
+  height:1.5em;
+}
+
+.form-checkbox-input {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 10px;
+  height: 1.5em;
+} 
+
+.submit-job-post-button {
+  margin:1%;
+  background-color: #3a0f90;
+  border-color: #3a0f90;
+  color: white;
+  border-width: 2px;
+  border-radius: 100px;
+  box-shadow: 4px 4px 10px #c5c5c5,
+      -4px -4px 10px #ffffff;
+  font-weight: bold;
+}
+
+.submit-job-post-button:hover {
+  border-color: #3a0f90;
+  border-width: 2px;
+  background-color: white;
+  color:#3a0f90;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+  transition: background-color 0.5s ease-out;
+}
+
+@media (max-width: 995px) {
   #button_column{
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+
+  #editJobListing2 {
+    font-size: 2em;
+  }
+
+  #docLabelE {
+    font-size: 1em;
+  }
+
+  #jobTypeLabel {
+    font-size: 1.2em;
+  }
+
+  #job-type {
+    min-width: 250px;
+  }
+
+  #deadline {
+    min-width: 250px;
+  }
+
+  #salary-type {
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 500px) {
+  #docLabelE {
+    font-size: 0.7em;
+  }
+
+  .form-doc-input {
+    height:1.05em;
+  }
+  
 }

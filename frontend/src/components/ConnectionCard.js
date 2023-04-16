@@ -132,27 +132,19 @@ const getProfile = async () => {
               </Col>
               <Col style={{display:'flex', justifyContent:'right'}}>
               {props.status == 'accepted' ? 
-                <MdLinkOff className="connectionIcon" style={{marginLeft:'1rem',marginTop:'.5rem'}} onClick={cancelConnection}/>: 
+                <MdLinkOff className="connectionIcon" id='disconnectIcon' style={{marginLeft:'1rem',marginTop:'.5rem'}} onClick={cancelConnection}/>: 
                 <>
                   {props.type == 'received' && 
                     <>
-                      <div style={{paddingRight: "10px"}}></div>  
-                      <RxCheckCircled className="connectionIcon" onClick={acceptHandler} style={{marginLeft:'1rem',marginTop:'.5rem'}}/>
-                      <div style={{paddingRight: "10px"}}></div>  
-                      <RxCrossCircled className="connectionIcon" onClick={rejectHandler} style={{marginLeft:'1rem',marginTop:'.5rem'}}/>
+                      <RxCheckCircled className="connectionIcon" id='checkIcon' onClick={acceptHandler} style={{marginLeft:'2rem', marginTop:'.5rem'}}/>
+                      <RxCrossCircled className="connectionIcon" id='crossIcon' onClick={rejectHandler} style={{marginLeft:'0.2rem',marginTop:'.5rem'}}/>
                     </>
                   }
                   {props.type == 'sent' && 
-                    <>
-                      <div style={{paddingRight: "10px"}}></div>  
-                      <TiCancel className="connectionIcon" onClick={cancelHandler} style={{marginLeft:'1rem',marginTop:'.5rem'}}/>
-                    </> 
+                      <TiCancel className="connectionIcon" id='cancelIcon' onClick={cancelHandler} style={{marginLeft:'1rem',marginTop:'.5rem'}}/>
                   }
-                  {props.type == 'possible' && 
-                    <>
-                      <div style={{paddingRight: "10px"}}></div>  
-                      <MdAddLink className="connectionIcon" onClick={sendConnectionRequestHandler} style={{marginLeft:'1rem',marginTop:'.5rem'}}/>
-                    </> 
+                  {props.type == 'possible' &&
+                      <MdAddLink className="connectionIcon" id='addConnectionIcon' onClick={sendConnectionRequestHandler} style={{marginLeft:'1rem',marginTop:'.5rem'}}/>
                   }
                 </>
               }
