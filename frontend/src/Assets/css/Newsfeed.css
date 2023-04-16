@@ -83,3 +83,18 @@ span {
     cursor: pointer;
     transition: background-color 0.5s ease-out;
 }
+
+.background {
+    background-color: #44599d;
+    min-height: 100vh;
+}
+
+.formContainer {
+    background-color: white;
+    border-radius: 10px;
+}
+
+#createPostH1 {
+    padding: 0px;
+    margin: 0px 0px 4% 0px;
+}
