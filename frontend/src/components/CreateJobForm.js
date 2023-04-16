@@ -99,16 +99,6 @@ export const CreateJobForm = () => {
             <Form onSubmit={submitHandler}>
                 <Row className='mb-4'>
                     <Col>
-                        <Label className='labelE' for='contact-name'>Contact Name</Label>
-                        <Input name='contact-name' disabled id='contact-name' label='Contact name' value={userLogin.userInfo.username} onChange={(e)=> setAuthor(e.target.value)} />
-                    </Col>
-                    <Col>
-                        <Label className='labelE' for='contact-email'>Contact Email</Label>
-                        <Input name='contact-email' disabled id='contact-email' value={userLogin.userInfo.email} onChange={(e)=> setEmail(e.target.value)}/>
-                    </Col>
-                </Row>
-                <Row className='mb-4'>
-                    <Col>
                         <Label className='labelE' for='job-title'>Job Title</Label>
                         <Input name='job-title' id='job-title' required={true} value={title} onChange={(e)=> setTitle(e.target.value)} />
                     </Col>
