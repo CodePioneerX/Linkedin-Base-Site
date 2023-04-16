@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {  Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import '../Assets/css/App.css';
 import { MdClose } from 'react-icons/md';
+import {upload_document} from '../actions/userActions'
 
 
 
@@ -11,6 +12,7 @@ const FileForm = ({ fileForm,setFileForm }) => {
 //Get the user information from the store
 const userLogin = useSelector((state) => state.userLogin);
 const { userInfo } = userLogin;
+const dispatch = useDispatch();
 const resumeRef = useRef();
 const coverLetterRef = useRef();
 
@@ -31,7 +33,8 @@ const FileUpload = (e)=>{
     }
     console.log(resume);
     console.log(coverLetter);
-    // setFileForm(prev => !prev)
+    dispatch(upload_document(userInfo.id, resume, coverLetter))
+    setFileForm(prev => !prev)
 }
 
 const FileClear = (e)=>{

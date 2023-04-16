@@ -36,6 +36,10 @@ import{
     UPDATE_PROFILE_REQUEST,
     UPDATE_PROFILE_SUCCESS,
     UPDATE_PROFILE_FAIL,
+
+    UPLOAD_DOCUMENTS_REQUEST,
+    UPLOAD_DOCUMENTS_SUCCESS,
+    UPLOAD_DOCUMENTS_FAIL,
 } from '../constants/userConstants'
 
 // Action creator to get profile details of a user with the given ID
@@ -386,6 +390,45 @@ export const update_profile = (uID, name, title, city, about, experience, educat
         console.log('updating post failed')
         dispatch({
             type: UPDATE_PROFILE_FAIL,
+            payload: error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+        })
+    }
+}
+
+// This function updates a user's profile on the server
+export const upload_document = (uID, resume, cover_letter) => async (dispatch) => {
+    try {
+        
+        // Dispatches an UPDATE_PROFILE_REQUEST action to start the request
+        dispatch({
+            type: UPLOAD_DOCUMENTS_REQUEST
+        })
+        
+        // Configures the headers for the request
+        const config = {
+            headers: {
+                'Content-type': 'multipart/form-data'}
+        }
+        
+        // Sends a POST request to upload user's resume and cover letter
+        const { data } = await axios.post(`http://localhost:8000/api/documentsUpload/` + uID, 
+            {'resume': resume, 
+            'cover_letter': cover_letter, 
+            }, 
+            config)
+
+        // Dispatches an UPLOAD_DOCUMENTS_SUCCESS action with the upload documents
+        dispatch({
+            type: UPLOAD_DOCUMENTS_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        // Dispatches an UPLOAD_DOCUMENTS_FAIL action with the error message
+        console.log('upload documents failed')
+        dispatch({
+            type: UPLOAD_DOCUMENTS_FAIL,
             payload: error.response && error.response.data.detail
             ? error.response.data.detail
             : error.message,
