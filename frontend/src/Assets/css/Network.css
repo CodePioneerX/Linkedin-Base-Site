@@ -93,4 +93,24 @@
         margin-top: 2%;
         font-size: 1.25em;
     }
+
+  }
+
+  @media (max-width: 500px) {
+    #checkIcon {
+        margin-right: 5px;
+    }
+    
+    #crossIcon {
+        padding-right: 0px;
+    }
+
+    #cardTitle {
+        font-size: 0.6em;
+    }
+
+    .connectionIcon {
+        height:1.75em;
+        width:1.75em;
+    }
   }
