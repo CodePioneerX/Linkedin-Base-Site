@@ -23,6 +23,10 @@ import{
     CREATE_JOB_APPLICATION_SUCCESS,
     CREATE_JOB_APPLICATION_FAIL,
 
+    REMOVE_JOB_APPLICATION_REVIEW_REQUEST,
+    REMOVE_JOB_APPLICATION_REVIEW_SUCCESS,
+    REMOVE_JOB_APPLICATION_REVIEW_FAIL,
+
 } from '../constants/jobConstants'
 
 /**
@@ -386,5 +390,43 @@ export const create_job_application = (user_id, job_id, email, name, telephone, 
                 : error.message,
         })
         return { success: false, message: "There was an error while submitting your job application. Please try again." };
+    }
+}
+
+
+export const remove_job_application_review = (uId, jobId) => async (dispatch) => {
+    try {
+        dispatch({
+            type: REMOVE_JOB_APPLICATION_REVIEW_REQUEST
+        })
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+            }
+        }
+        
+        // Send a DELETE request to remove the job application request
+        const { data } = await axios.delete(
+            `http://localhost:8000/api/jobRequest/delete/`,
+            {'userId': uId, 
+            'jobId': jobId, 
+            }, 
+            config
+        )
+        
+        // If the request is successful, dispatch an action with the deleted job request
+        dispatch({
+            type: REMOVE_JOB_APPLICATION_REVIEW_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        // If the request fails, dispatch an action with the error message
+        dispatch({
+            type: REMOVE_JOB_APPLICATION_REVIEW_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
     }
 }

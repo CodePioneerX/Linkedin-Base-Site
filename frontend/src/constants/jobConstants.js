@@ -39,3 +39,7 @@ export const job_types = [{name: 'Full Time', value: 'FULLTIME'},
                         {name: 'Part Time', value: 'PARTTIME'},
                         {name: 'Internship', value: 'INTERNSHIP'},
                         {name: 'Freelance', value: 'FREELANCE'}];
+
+export const REMOVE_JOB_APPLICATION_REVIEW_REQUEST = "REMOVE_JOB_APPLICATION_REVIEW_REQUEST";
+export const REMOVE_JOB_APPLICATION_REVIEW_SUCCESS = "REMOVE_JOB_APPLICATION_REVIEW_SUCCESS";
+export const REMOVE_JOB_APPLICATION_REVIEW_FAIL = "REMOVE_JOB_APPLICATION_REVIEW_FAIL";

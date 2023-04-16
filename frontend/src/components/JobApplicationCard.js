@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, Button, Row, Col,Container } from 'react-bootstrap';
 import { Link } from "react-router-dom";
-import { faGripVertical } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from 'react-router-dom';
+import {remove_job_application_review} from '../actions/jobActions';
+import { useDispatch } from "react-redux";
 
 const JobApplicationCard = (props) => {
 
@@ -19,6 +21,16 @@ const getProfile = async () => {
 useEffect(() => {
     getProfile(); 
 }, []);
+
+
+const dispatch = useDispatch();
+const navigate = useNavigate();
+const deleteJobReview = (e)=>{
+    e.preventDefault();
+    dispatch(remove_job_application_review(props.application.user,props.jobId))
+    navigate('/profile');
+}
+
 
   return (
       
@@ -48,7 +60,7 @@ useEffect(() => {
 
             <Row style={{display:'flex', justifyContent:'right'}}>
                 <Col style={{display:'flex', justifyContent:'right'}}>
-                <Button variant="danger">Remove This Application</Button>
+                <Button variant="danger" onClick={deleteJobReview}>Remove This Application</Button>
                 </Col>
             </Row>
           </Card.Body>

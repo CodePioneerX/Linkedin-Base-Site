@@ -20,6 +20,7 @@ const navigate = useNavigate()
 const location = useLocation();
 const jobTitle = location.state.job_title;
 const applications = location.state.applications;
+const jobId = location.state.job_id;
 console.log(applications)
 
 return (
@@ -27,7 +28,7 @@ return (
    <Button className='mb-4' variant='secondary' onClick={() => {navigate(-1)}}>Back</Button>
   <h2>Applications to your posted job: {jobTitle}</h2>
   {applications.map(application => (
-  <JobApplicationCard  key={application.id} application={application}/>
+  <JobApplicationCard  key={application.id} application={application} jobId={jobId}/>
     ))
     } 
    </Container>
