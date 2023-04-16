@@ -262,16 +262,17 @@ def updateUserProfile(request, pk):
     return Response(serializer.data)
     
 @api_view(['GET'])
-def PostNewsfeedView(request, pk):
+def PostNewsfeedView(request, name):
     """
     A view to handle retrieving a user's newsfeed, consisting of their posts and the posts of any other user who they are connected with. 
     """
-    sent = Connection.objects.all().filter(sender__id = pk).values_list('recipient', flat=True)
-    received = Connection.objects.all().filter(recipient__id = pk).values_list('sender', flat=True)
+    user = get_object_or_404(User, username=name)
+    sent = Connection.objects.all().filter(sender=user).values_list('recipient__username', flat=True)
+    received = Connection.objects.all().filter(recipient=user).values_list('sender__username', flat=True)
 
-    connections = list(chain(sent, received, [pk]))
+    connections = list(chain(sent, received, [user.username]))
 
-    posts = Post.objects.all().filter(author__id__in=connections).order_by('-created_at')
+    posts = Post.objects.all().filter(author__username__in=connections).order_by('-created_at')
     
     posters = posts.values_list('author', flat=True)
 
@@ -286,19 +287,12 @@ def PostNewsfeedView(request, pk):
         comments = Comment.objects.filter(post=post)
         comment_serializer = CommentSerializer(comments, many=True)
         post_data[i]['comments'] = comment_serializer.data
-    
-    post_numbers = []
-    for post in posts:
-        post_dic = {
-            'num_likes': post.likes.count(),
-            'num_comments': post.comments.count(),
-        }
-        post_numbers.append[post_dic]
+        post_data[i]['num_likes'] = post.likes.count()
+        post_data[i]['num_comments'] =comments.count()
     
     data = {
         "profiles": profile_serializer.data,
-        "posts and comments": post_data,
-        "post_metrics": post_numbers
+        "post data": post_data,
     }
     return Response(data)
 

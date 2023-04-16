@@ -31,6 +31,9 @@ class DocumentAdmin(admin.ModelAdmin):
 class JobAlertAdmin(admin.ModelAdmin):
     list_display = ('user', 'search_term', 'company', 'location', 'job_type', 'employment_term', 'salary_type', 'min_salary', 'max_salary', 'listing_type', 'remote')
 
+class LikesAdmin(admin.ModelAdmin):
+    list_display = ('user', 'post')
+
 # Register your models here.
 
 admin.site.register(WorkShare, WorkShareAdmin)
@@ -43,3 +46,4 @@ admin.site.register(Connection,ConnectionAdmin)
 admin.site.register(Recommendations, RecommendationsAdmin)
 admin.site.register(Document, DocumentAdmin)
 admin.site.register(JobAlert, JobAlertAdmin)
+admin.site.register(Likes, LikesAdmin)
