@@ -38,7 +38,7 @@ export default class Newsfeed extends Component {
         <Container id='container' className="justify-content-md-center padd">
             <Row className='networkPosts' style={{marginLeft: "20px", marginBottom: "25px", width: "100%"}}>
               <Col xs={12} md={6} className='text-left'>
-                <h1>Network Post Activity</h1>
+                <h1 style={{fontSize: "2em"}}>Network Activity</h1>
               </Col>
               <Col xs={12} md={6} className='text-right'>
               <Container>

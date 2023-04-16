@@ -21,6 +21,7 @@ import {
   } from "mdb-react-ui-kit";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import '../Assets/css/Newsfeed.css';
 
 import { salary_types, employment_terms, job_types } from '../constants/jobConstants';
 
@@ -72,15 +73,14 @@ export default class Job extends Component {
     </>
     ) 
     if (this.state.ready) return (
-      <>
-        <Row style={{marginBottom: "25px", width: "100%"}}>
+        <div className='pageBackground'>
+            <Row id='container' >
             <Container style={{paddingBottom:"80px"}}>
             <Col xs={12} style={{ borderRadius: "20px", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "-40px" }}>
-            <div style={{borderBottom: "1px solid #d3d3d3",marginBottom:"10px"}}></div>
             <Row className='mb-4'>
                 <Col xs={8} md={10}>
                 <span>
-                    <h2>{this.state.job.title} at {this.state.job.company}</h2>
+                    <h2 >{this.state.job.title} at {this.state.job.company}</h2>
                 </span>
                 </Col>
                 <Col xs={4} md={2} style={{display:'flex', alignItems: 'center', justifyContent: 'end'}}>
@@ -256,7 +256,8 @@ export default class Job extends Component {
             </Col>
             </Container>
         </Row>
-    </>
+
+        </div>
     )
   }
 }

@@ -1,3 +1,8 @@
+.pageBackground {
+    background-color: #44599d;
+    padding: 5% 15%;
+    min-height: 100vh;
+}
 #container {
     background-color: white;
     padding-left: 2%;
@@ -98,3 +103,11 @@ span {
     padding: 0px;
     margin: 0px 0px 4% 0px;
 }
+
+
+@media (min-width: 500px) {
+    .pageBackground {
+        padding: 5% 7%;
+    }
+}
+

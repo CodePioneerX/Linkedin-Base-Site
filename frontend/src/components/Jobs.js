@@ -55,7 +55,7 @@ export default class Jobs extends Component {
       <Container id='container' className="justify-content-md-center" style={{marginTop: "5%", padding: "4%", paddingBottom: "0%"}}>
         <Row className='networkPosts' style={{marginLeft: "20px", marginBottom: "2%", width: "100%"}}>
           <Col xs={12} md={6} className='text-left'>
-            <h1>Job Post Activity</h1>
+            <h1 style={{fontSize: "2em"}}>Job Activity</h1>
           </Col>
           <Col xs={12} md={6} className='text-right'>
           <Container>
@@ -76,9 +76,9 @@ export default class Jobs extends Component {
                 <Row className='mb-4'>
                   <Col xs={8} md={10}>
                     <span>
-                      <Link to='/job' state={{job_id: job.id}}>
-                        <h2>{job.title} at {job.company}</h2>
-                      </Link>
+                      <div state={{job_id: job.id}}>
+                        <h2 style={{fontSize: "1.75 em"}}>{job.title} at {job.company}</h2>
+                      </div>
                     </span>
                   </Col>
                   <Col xs={4} md={2} style={{display:'flex', alignItems: 'center', justifyContent: 'end'}}>
@@ -90,17 +90,17 @@ export default class Jobs extends Component {
                   <Row>
                     <Col xs={12}>
                       <h4>Description: </h4>
-                      <p style={{whiteSpace: 'pre-wrap'}}>{job.description}</p>
+                      <p style={{whiteSpace: 'pre-wrap', fontSize: "1.25em"}}>{job.description}</p>
                       <hr style={{width: "100%"}}/>
                     </Col>
                   </Row>
                   <Row className='mb-2'>
                     <Col sm={12} md={6} xl={4}>
-                      <h4>Location: </h4>
+                      <h4 >Location: </h4>
                     </Col>
                     <Col sm={12} md={6} xl={8}>
-                      <p >{job.location}</p>
-                      {job.remote ? <p>Remote work possible.</p> : <p>Must be willing to work in person.</p>} 
+                      <p style={{whiteSpace: 'pre-wrap', fontSize: "1.25em"}}>{job.location}</p>
+                      {job.remote ? <p style={{whiteSpace: 'pre-wrap', fontSize: "1.25em"}}>Remote work possible.</p> : <p style={{whiteSpace: 'pre-wrap', fontSize: "1.25em"}}>Must be willing to work in person.</p>} 
                     </Col>
                     <hr style={{width: "100%"}}/>
                   </Row>
@@ -109,7 +109,7 @@ export default class Jobs extends Component {
                       <h4>Salary: </h4>
                     </Col>
                     <Col sm={12} md={6} xl={8}>
-                      <p>${job.salary} {salary_types.map(type => ((type.value == job.salary_type) && <span key={type.value}>{type.name}</span>))}</p>
+                      <p style={{whiteSpace: 'pre-wrap', fontSize: "1.25em"}}>${job.salary} {salary_types.map(type => ((type.value == job.salary_type) && <span key={type.value}>{type.name}</span>))}</p>
                     </Col>
                     <hr style={{width: "100%"}}/>
                   </Row>
@@ -118,7 +118,7 @@ export default class Jobs extends Component {
                       <h4>Position Type: </h4>
                     </Col>
                     <Col sm={12} md={6} xl={8}>
-                      <p>{job_types.map(type => ((type.value == job.job_type) && <span key={type.value}>{type.name}</span>))}</p>
+                      <p style={{whiteSpace: 'pre-wrap', fontSize: "1.25em"}}>{job_types.map(type => ((type.value == job.job_type) && <span key={type.value}>{type.name}</span>))}</p>
                     </Col>
                     <hr style={{width: "100%"}}/>
                   </Row>
@@ -127,7 +127,7 @@ export default class Jobs extends Component {
                       <h4>Employment Term: </h4>
                     </Col>
                     <Col sm={12} md={6} xl={8}>
-                      <p>{employment_terms.map(type => ((type.value == job.employment_term) && <span key={type.value}>{type.name}</span>))}</p>
+                      <p style={{whiteSpace: 'pre-wrap', fontSize: "1.25em"}}>{employment_terms.map(type => ((type.value == job.employment_term) && <span key={type.value}>{type.name}</span>))}</p>
                     </Col>
                     <hr style={{width: "100%"}}/>
                   </Row>
@@ -136,7 +136,7 @@ export default class Jobs extends Component {
                       <h4>Position Type: </h4>
                     </Col>
                     <Col sm={12} md={6} xl={8}>
-                      <p>{job_types.map(type => ((type.value == job.job_type) && <span key={type.value}>{type.name}</span>))}</p>
+                      <p style={{whiteSpace: 'pre-wrap', fontSize: "1.25em"}}>{job_types.map(type => ((type.value == job.job_type) && <span key={type.value}>{type.name}</span>))}</p>
                     </Col>
                     <hr style={{width: "100%"}}/>
                   </Row>
@@ -145,7 +145,7 @@ export default class Jobs extends Component {
                       <h4>Posted: </h4>
                     </Col>
                     <Col sm={12} md={6} xl={8}>
-                      <p>{job.created_at.slice(0, 10)}</p>
+                      <p style={{whiteSpace: 'pre-wrap', fontSize: "1.25em"}}>{job.created_at.slice(0, 10)}</p>
                     </Col>
                     <hr style={{width: "100%"}}/>
                   </Row>
@@ -154,7 +154,7 @@ export default class Jobs extends Component {
                       <h4>Application Deadline: </h4>
                     </Col>
                     <Col sm={12} md={6} xl={8}>
-                      <p>{job.deadline.slice(0, 10)}</p>
+                      <p style={{whiteSpace: 'pre-wrap', fontSize: "1.25em"}}>{job.deadline.slice(0, 10)}</p>
                     </Col>
                     <hr style={{width: "100%"}}/>
                   </Row>
@@ -163,7 +163,7 @@ export default class Jobs extends Component {
                       <h4>Status: </h4>
                     </Col>
                     <Col sm={12} md={6} xl={8}>
-                      <p>{job.status ? <>Applications Open</> : <>Applications Closed</>}</p>
+                       <p style={{whiteSpace: 'pre-wrap', fontSize: "1.25em"}}>{job.status ? <>Applications Open</> : <>Applications Closed</>}</p>
                     </Col>
                     <hr style={{width: "100%"}}/>
                   </Row>
@@ -172,7 +172,7 @@ export default class Jobs extends Component {
                       <h4>Application Type: </h4>
                     </Col>
                     <Col sm={12} md={6} xl={8}>
-                      <p>{(job.listing_type == 'INTERNAL') ? <>Internal</> : <a href={job.link}>External</a>}</p>
+                      <p style={{whiteSpace: 'pre-wrap', fontSize: "1.25em"}}>{(job.listing_type == 'INTERNAL') ? <>Internal</> : <a href={job.link}>External</a>}</p>
                     </Col>
                     <hr style={{width: "100%"}}/>
                   </Row>
