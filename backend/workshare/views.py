@@ -33,7 +33,7 @@ from .tokens import account_activation_token
 #for dm feature
 from django.contrib import messages
 from .models import DirectMessage, Conversation
-from .serializers import MessageSerializer, ConversationSerializer
+from .serializers import ConversationSerializer, DirectMessageSerializer
 from rest_framework import generics, permissions, status
 from channels.generic.websocket import WebsocketConsumer 
 from asgiref.sync import async_to_sync
@@ -364,52 +364,66 @@ def activate(request, uidb64, token):
     return redirect("http://localhost:3000")
 
 
-class MessageList(generics.ListCreateAPIView):
+
+
+class ConversationListCreateView(generics.ListCreateAPIView):
+    queryset = Conversation.objects.all()
+    serializer_class = ConversationSerializer
+
+
+# class DirectMessageCreateView(generics.CreateAPIView):
+#     queryset = DirectMessage.objects.all()
+#     serializer_class = DirectMessageSerializer
+
+#     def perform_create(self, serializer):
+#         sender_id = self.request.data.get('sender')
+#         receiver = self.request.data.get('receiver')
+#         receiver_id = 0# self.request.data.get('receiver_id')
+#         sender = User.objects.get(pk=sender_id)
+        
+
+#         conversation = Conversation.get_or_create_conversation(sender, receiver)
+#         serializer.save(conversation=conversation, sender=sender)
+class DirectMessageCreateView(generics.CreateAPIView):
     queryset = DirectMessage.objects.all()
-    serializer_class = MessageSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = DirectMessageSerializer
 
     def perform_create(self, serializer):
-        serializer.save(sender=self.request.user)
+        print("got a post request for a DM: ", self.request.data)
+        sender_email = self.request.data.get('sender').get('email')
+        receiver_email = self.request.data.get('receiver')  # Corrected spelling of "reciever" to "receiver"
+        print("sender: ", sender_email)
+        sender = User.objects.get(email=sender_email)
 
-class MessageDetail(generics.RetrieveUpdateDestroyAPIView):
+        conversation = Conversation.get_or_create_conversation(sender, receiver_email)
+        serializer.save(conversation=conversation, sender=sender)
+        
+        
+class DirectMessageListView(generics.ListAPIView):
     queryset = DirectMessage.objects.all()
-    serializer_class = MessageSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = DirectMessageSerializer
 
-    def perform_update(self, serializer):
-        serializer.save(sender=self.request.user)
 
-class SendMessage(generics.CreateAPIView):
-    serializer_class = MessageSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(sender=self.request.user)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
-class ReceiveMessages(generics.ListAPIView):
-    serializer_class = MessageSerializer
-    permission_classes = [permissions.IsAuthenticated]
+class DirectMessageByUserListView(generics.ListAPIView):
+    serializer_class = DirectMessageSerializer
 
     def get_queryset(self):
-        return DirectMessage.objects.filter(recipient=self.request.user)
-    
-class DeleteMessage(generics.DestroyAPIView):
-    queryset = DirectMessage.objects.all()
-    serializer_class = MessageSerializer
-    permission_classes = [permissions.IsAuthenticated]
+        user_id = self.kwargs['user_id']
+        return DirectMessage.objects.filter(sender=user_id)
 
-    def delete(self, request, *args, **kwargs):
-        instance = self.get_object()
-        if instance.sender == request.user or instance.recipient == request.user:
-            self.perform_destroy(instance)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        else:
-            return Response({'error': 'You do not have permission to delete this message.'}, status=status.HTTP_403_FORBIDDEN)
-        
+
+class ConversationBetweenUsersView(generics.ListAPIView):
+    serializer_class = DirectMessageSerializer
+
+    def get_queryset(self):
+        user1_id = self.kwargs['user1_id']
+        user2_id = self.kwargs['user2_id']
+        conversation = Conversation.get_or_create_conversation(User.objects.get(pk=user1_id), User.objects.get(pk=user2_id))
+        return DirectMessage.objects.filter(conversation=conversation)
+
+
+
+
 
 @login_required
 def get_users(request):
@@ -422,19 +436,3 @@ def get_users(request):
         users_list.append({"id": user.id, "username": user.username})
     return JsonResponse(users_list, safe=False)
 
-
-class MessageListCreate(generics.ListCreateAPIView):
-    queryset = DirectMessage.objects.all()
-    serializer_class = MessageSerializer
-
-class MessageRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
-    queryset = DirectMessage.objects.all()
-    serializer_class = MessageSerializer
-
-class ConversationListCreate(generics.ListCreateAPIView):
-    queryset = Conversation.objects.all()
-    serializer_class = ConversationSerializer
-
-class ConversationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Conversation.objects.all()
-    serializer_class = ConversationSerializer

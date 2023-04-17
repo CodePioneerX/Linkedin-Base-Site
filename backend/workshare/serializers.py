@@ -71,15 +71,34 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ('id', 'content', 'author')
 
+# class DirectMessageSerializer(serializers.ModelSerializer):
+#     sender = UserSerializer()
+#     #receiver = UserSerializer()
+    
+#     class Meta:
+#         model = DirectMessage
+#         fields = ['id', 'sender','receiver','receiver_id', 'content', 'timestamp'] #'receiver', 
+
+class DirectMessageSerializer(serializers.Serializer):
+    print("got a post request for a DM ")
+    id = serializers.IntegerField(read_only=True)
+    sender = UserSerializer(required=False)  # Add 'required=False' to allow existing users
+    receiver = serializers.CharField()
+    receiver_id = serializers.IntegerField()
+    content = serializers.CharField()
+    timestamp = serializers.DateTimeField(read_only=True)
+
+    def create(self, validated_data):
+        sender_data = validated_data.pop('sender')
+        receiver = validated_data.pop('receiver')
+        sender = User.objects.get(pk=sender_data.get('id'))
+        
+        conversation = Conversation.get_or_create_conversation(sender, receiver)
+        return DirectMessage.objects.create(sender=sender, conversation=conversation, **validated_data)
+
 class ConversationSerializer(serializers.ModelSerializer):
+    messages = DirectMessageSerializer(many=True)
+
     class Meta:
         model = Conversation
-        fields = ['id', 'participants']
-
-class MessageSerializer(serializers.ModelSerializer):
-    sender = serializers.ReadOnlyField(source='sender.username')
-    recipient = serializers.ReadOnlyField(source='recipient.username')
-
-    class Meta:
-        model = DirectMessage
-        fields = ['id', 'sender', 'recipient', 'conversation', 'content', 'timestamp']
+        fields = ['id', 'participants', 'messages']

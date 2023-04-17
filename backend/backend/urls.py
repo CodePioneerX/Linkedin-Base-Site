@@ -18,7 +18,8 @@ from django.urls import path, include
 from rest_framework import routers
 from workshare.views import ProfileView, ProfileCreateView, getProfileView, updateUserProfile
 from workshare.views import JobListingCreateView, JobListingLatestView, JobListingUpdateView, JobListingDeleteView
-from workshare.views import PostView, PostCreateView, PostUpdateView, PostDeleteView, PostLatestView, PostListingCreateView, UserPostsView, MessageList, MessageDetail, SendMessage, ReceiveMessages, DeleteMessage
+from workshare.views import PostView, PostCreateView, PostUpdateView, PostDeleteView, PostLatestView, PostListingCreateView, UserPostsView#, MessageList, MessageDetail, SendMessage, ReceiveMessages, DeleteMessage
+from workshare.views import ConversationListCreateView, DirectMessageCreateView
 from django.conf import settings
 from django.conf.urls.static import static
 from workshare import views
@@ -33,7 +34,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
-    path('api/profile/<int:pk>', getProfileView, name='profile_detail'),
+    path('api/profile/<int:pk>', getProfileView, name='profile_detail'), 
     path('api/profile/', ProfileCreateView.as_view(), name='profile_create'),
     path('api/profile/update/<int:pk>', updateUserProfile, name='profile_update'),
     path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),
@@ -48,11 +49,16 @@ urlpatterns = [
     path('api/job/delete/<int:pk>', JobListingDeleteView, name='job_listing_delete'),
     path('api/jobs/', JobListingLatestView.as_view(), name='job_listing_latest_detail'),
     path('api/register/' , views.registerUser, name='register'),
-    path('api/messages/', views.MessageListCreate.as_view(), name='messages_list'),
-    path('api/messages/<int:pk>/', views.MessageRetrieveUpdateDestroy.as_view(), name='message_detail'),
-    path('api/send-message/', SendMessage.as_view(), name='send_message'),
-    path('api/receive-messages/', ReceiveMessages.as_view(), name='receive_message'),
-    path('api/delete-message/<int:pk>/', DeleteMessage.as_view(), name='delete_message'),
+    #path('api/messages/', views.MessageListCreate.as_view(), name='messages_list'),
+    #path('api/messages/<int:pk>/', views.MessageRetrieveUpdateDestroy.as_view(), name='message_detail'),
+    #path('api/send-message/', SendMessage.as_view(), name='send_message'),
+    #path('api/receive-messages/', ReceiveMessages.as_view(), name='receive_message'),
+    #path('api/delete-message/<int:pk>/', DeleteMessage.as_view(), name='delete_message'),
+    path('conversations/', ConversationListCreateView.as_view(), name='conversation-list-create'),
+    path('direct_messages/', DirectMessageCreateView.as_view(), name='direct_message-create'),
+    path('direct_messages/all/', views.DirectMessageListView.as_view(), name='direct_message-list'),
+    path('direct_messages/user/<int:user_id>/', views.DirectMessageByUserListView.as_view(), name='direct_message-by-user'),
+    path('direct_messages/conversation/<int:user1_id>/<int:user2_id>/', views.ConversationBetweenUsersView.as_view(), name='conversation-between-users'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

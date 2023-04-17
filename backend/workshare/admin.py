@@ -16,17 +16,24 @@ class JobListingAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('content', 'author', 'created_at')
 
-class DirectMessagingAdmin(admin.ModelAdmin):
-    list_display = ('sender', 'receiver', 'timestamp', 'content')
+# class DirectMessagingAdmin(admin.ModelAdmin):
+#     list_display = ('sender', 'receiver', 'timestamp', 'content')
+
+# class ConversationAdmin(admin.ModelAdmin):
+#      list_display = ('id', 'get_participants')
+
+#      def get_participants(self, obj):
+#             return ', '.join([p.username for p in obj.participants.all()])
+#      get_participants.short_description = 'Participants'
+# # Register your models here.
+
+class DirectMessageInline(admin.TabularInline):
+    model = DirectMessage
+    extra = 0
 
 class ConversationAdmin(admin.ModelAdmin):
-     list_display = ('id', 'get_participants')
-
-     def get_participants(self, obj):
-            return ', '.join([p.username for p in obj.participants.all()])
-     get_participants.short_description = 'Participants'
-# Register your models here.
-
+    inlines = [DirectMessageInline]
+    filter_horizontal = ('participants',)
 
 
 
@@ -35,5 +42,5 @@ admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(JobListing, JobListingAdmin)
 admin.site.register(Comment, CommentAdmin)
-admin.site.register(DirectMessage, DirectMessagingAdmin)
 admin.site.register(Conversation, ConversationAdmin)
+admin.site.register(DirectMessage)
