@@ -15,6 +15,7 @@ from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import Q
+from django.contrib.admin.views.decorators import staff_member_required
 import datetime
 
 from itertools import chain
@@ -267,6 +268,7 @@ def reportUserView(request):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])
+@staff_member_required
 def dismissUserReportView(request, pk):
     """
     A view function that allows an admin to dismiss a report made against a user. 
@@ -296,6 +298,7 @@ def dismissUserReportView(request, pk):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
+@staff_member_required
 def getReportedUsersView(request):
     """
     A view function that allows an Admin to retrieve a list of all reported Users (who have not yet been banned). 
@@ -318,6 +321,7 @@ def getReportedUsersView(request):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
+@staff_member_required
 def getUserReportMessagesView(request, pk):
     """
     A view function that allows an Admin to retrieve all of the report messages associated with a certain reported User. 
@@ -338,7 +342,8 @@ def getUserReportMessagesView(request, pk):
         message = {'detail':'The reported users could not be retrieved at this time.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['PUT', 'GET'])
+@api_view(['PUT'])
+@staff_member_required
 def banUserView(request, pk):
     """
     A view function that allows an admin to ban a user. 
@@ -363,6 +368,7 @@ def banUserView(request, pk):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['GET'])
+@staff_member_required
 def getPostReportsView(request):
     """
     A view function that allows an Admin to retrieve a list of all reported Posts. 
@@ -371,7 +377,7 @@ def getPostReportsView(request):
     - request: HTTP request object.
 
     Returns:
-    - Response: HTTP Response containing serialized post data, or an error message.
+    - Response: HTTP Response containing serialized post report data, or an error message.
     """
     try: 
         post_reports = PostReport.objects.all().order_by('-post__id')
@@ -383,6 +389,7 @@ def getPostReportsView(request):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE', 'GET'])
+@staff_member_required
 def dismissPostReportView(request, pk):
     """
     A view function that allows an admin to dismiss a report made against a post. 
@@ -462,6 +469,7 @@ def reportJobView(request):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
+@staff_member_required
 def getJobReportsView(request):
     """
     A view function that allows an Admin to retrieve a list of all reported Jobs. 
@@ -482,6 +490,7 @@ def getJobReportsView(request):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE', 'GET'])
+@staff_member_required
 def dismissJobReportView(request, pk):
     """
     A view function that allows an admin to dismiss a report made against a job. 

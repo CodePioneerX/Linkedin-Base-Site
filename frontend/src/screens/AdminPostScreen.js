@@ -8,16 +8,22 @@ import Alert from 'react-bootstrap/Alert';
 import AdminPostCard from '../components/AdminPostCard';
 import axios from "axios";
 
-function AdminPostScreen() {
+function AdminPostScreen() {   
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
     const [reportedPostsList, setReportedPostsList] = useState("")
 
-    const getReportedPosts = async () => {
+    const getReportedPosts = async () => {      
       try {
+        const config = {
+          headers: {
+              'Content-type': 'application/json',
+              Authorization: `Bearer ${userInfo.token}`   
+          }
+        }
         const { data } = await axios.get(
-          `http://localhost:8000/api/posts/reported`
+          `http://localhost:8000/api/posts/reported`, config
         );
         setReportedPostsList( data );
       } catch(error) {

@@ -1,21 +1,37 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import { Card, Button, Row, Col } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import { faGripVertical } from "@fortawesome/free-solid-svg-icons";
 
 const AdminJobCard = (props) => {
-    
+
   // Define state variables
   const [reportMessages, setReportMessages] = useState("");
+  
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const banHandler = async () => {
-    const response = await axios.put(`http://localhost:8000/api/users/ban/${author_id}`)
+    const config = {
+      headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`   
+      }
+    }
+    const response = await axios.put(`http://localhost:8000/api/users/ban/${author_id}`, {}, config)
     window.location.reload()
   }
 
   const dismissReportHandler = async () => {
-    const response = await axios.delete(`http://localhost:8000/api/jobs/report/dismiss/${id}`)
+    const config = {
+      headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`   
+      }
+    }
+    const response = await axios.delete(`http://localhost:8000/api/jobs/report/dismiss/${id}`, config)
     window.location.reload()
   }
 

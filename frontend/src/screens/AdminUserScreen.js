@@ -16,8 +16,14 @@ function AdminUserScreen() {
 
     const getReportedUsers = async () => {
       try {
+        const config = {
+          headers: {
+              'Content-type': 'application/json',
+              Authorization: `Bearer ${userInfo.token}`   
+          }
+        }
         const { data } = await axios.get(
-          `http://localhost:8000/api/users/reported`
+          `http://localhost:8000/api/users/reported`, config
         );
         setReportedUsersList( data );
       } catch(error) {

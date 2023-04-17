@@ -16,8 +16,14 @@ function AdminJobScreen() {
 
     const getReportedJobs = async () => {
       try {
+        const config = {
+          headers: {
+              'Content-type': 'application/json',
+              Authorization: `Bearer ${userInfo.token}`   
+          }
+        }
         const { data } = await axios.get(
-          `http://localhost:8000/api/jobs/reported`
+          `http://localhost:8000/api/jobs/reported`, config
         );
         setReportedJobsList( data );
       } catch(error) {

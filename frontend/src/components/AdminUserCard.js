@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import { Card, Button, Row, Col } from 'react-bootstrap';
 import { Link } from "react-router-dom";
@@ -6,16 +7,15 @@ import { faGripVertical } from "@fortawesome/free-solid-svg-icons";
 
 const AdminUserCard = (props) => {
     
-// Define state variables
-const [profile, setProfile] = useState("");
-const [reportMessages, setReportMessages] = useState("");
+  // Define state variables
+  const [profile, setProfile] = useState("");
+  const [reportMessages, setReportMessages] = useState("");
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
 // Function to get user profile information
-const getProfile = async () => {
-    var userId;
-
-    userId = props.userId
-
+  const getProfile = async () => {
     // Send GET request to retrieve user profile information
     const {data} = await axios.get(
       `http://localhost:8000/api/profile/${props.userId}`
@@ -25,25 +25,40 @@ const getProfile = async () => {
   };
 
   const getReportMessages = async () => {
-    var userId;
-
-    userId = props.userId
+    const config = {
+      headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`   
+      }
+    } 
 
     // Send GET request to retrieve user report messages
     const {data} = await axios.get(
-      `http://localhost:8000/api/users/reports/${props.userId}`
+      `http://localhost:8000/api/users/reports/${props.userId}`, config
     );
     // Update state with retrieved report messages
     setReportMessages(data);
   }
 
   const banHandler = async () => {
-    const response = await axios.put(`http://localhost:8000/api/users/ban/${props.userId}`)
+    const config = {
+      headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`   
+      }
+    }
+    const response = await axios.put(`http://localhost:8000/api/users/ban/${props.userId}`, {}, config)
     window.location.reload()
   }
 
   const dismissReportHandler = async () => {
-    const response = await axios.delete(`http://localhost:8000/api/users/report/dismiss/${props.userId}`)
+    const config = {
+      headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`   
+      }
+    }
+    const response = await axios.delete(`http://localhost:8000/api/users/report/dismiss/${props.userId}`, config)
     window.location.reload()
   }
 
