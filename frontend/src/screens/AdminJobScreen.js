@@ -12,6 +12,9 @@ function AdminJobScreen() {
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
+    const updateToken = useSelector((state) => state.updateToken);
+    const { loading, auth } = updateToken;
+
     const [reportedJobsList, setReportedJobsList] = useState("")
 
     const getReportedJobs = async () => {
@@ -19,7 +22,7 @@ function AdminJobScreen() {
         const config = {
           headers: {
               'Content-type': 'application/json',
-              Authorization: `Bearer ${userInfo.token}`   
+              Authorization: `Bearer ${auth.access}`   
           }
         }
         const { data } = await axios.get(
@@ -35,7 +38,7 @@ function AdminJobScreen() {
 
     useEffect(() => {
       getReportedJobs();
-    }, [])
+    }, [auth])
 
 
 
@@ -47,7 +50,6 @@ function AdminJobScreen() {
           <h1 style={{marginTop:'1rem'}}>Reported Jobs</h1>
           {reportedJobsList.length > 0 ? 
           <>
-          {console.log(reportedJobsList)}
           {reportedJobsList.map(report => (
             <div key={report.id}> 
               <div>

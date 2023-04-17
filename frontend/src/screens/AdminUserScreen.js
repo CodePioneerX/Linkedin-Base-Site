@@ -12,6 +12,9 @@ function AdminUserScreen() {
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
+    const updateToken = useSelector((state) => state.updateToken);
+    const { loading, auth } = updateToken;
+
     const [reportedUsersList, setReportedUsersList] = useState("")
 
     const getReportedUsers = async () => {
@@ -19,7 +22,7 @@ function AdminUserScreen() {
         const config = {
           headers: {
               'Content-type': 'application/json',
-              Authorization: `Bearer ${userInfo.token}`   
+              Authorization: `Bearer ${auth.access}`   
           }
         }
         const { data } = await axios.get(
@@ -35,7 +38,7 @@ function AdminUserScreen() {
 
     useEffect(() => {
       getReportedUsers();
-    }, [])
+    }, [auth])
 
 
 

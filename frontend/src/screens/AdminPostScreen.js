@@ -12,6 +12,9 @@ function AdminPostScreen() {
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
+    const updateToken = useSelector((state) => state.updateToken);
+    const { loading, auth } = updateToken;
+
     const [reportedPostsList, setReportedPostsList] = useState("")
 
     const getReportedPosts = async () => {      
@@ -19,7 +22,7 @@ function AdminPostScreen() {
         const config = {
           headers: {
               'Content-type': 'application/json',
-              Authorization: `Bearer ${userInfo.token}`   
+              Authorization: `Bearer ${auth.access}`   
           }
         }
         const { data } = await axios.get(
@@ -35,7 +38,7 @@ function AdminPostScreen() {
 
     useEffect(() => {
       getReportedPosts();
-    }, [])
+    }, [auth])
 
 
 
@@ -47,7 +50,6 @@ function AdminPostScreen() {
           <h1 style={{marginTop:'1rem'}}>Reported Posts</h1>
           {reportedPostsList.length > 0 ? 
           <>
-          {console.log(reportedPostsList)}
           {reportedPostsList.map(report => (
             <div key={report.id}> 
               <div>

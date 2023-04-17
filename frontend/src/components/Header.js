@@ -6,7 +6,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../actions/userActions";
+import { logout, updateToken } from "../actions/userActions";
 import { check_new_notifications, count_notifications, get_notifications } from '../actions/notificationActions'
 import logo from "../logo.jpg";
 import store from "../store";
@@ -37,6 +37,7 @@ function Header(){
   // on load, check the user's count of unread notifications
   useEffect(() => {
     if (userInfo) {
+      dispatch(updateToken())
       dispatch(count_notifications(userInfo.id))
     }
   }, [userInfo])
@@ -53,7 +54,16 @@ function Header(){
         return () => clearTimeout(timer)
     }
   })
-  
+
+  // using a timer, refresh the user's access token every 4 minutes
+  useEffect(() => {
+    if (userInfo) {
+      const timer = setTimeout(() => dispatch(updateToken()), 420000)
+    
+      return () => clearTimeout(timer)
+    }
+  })
+
   // dispatch the check_new_notifications action with the previous datetime and save new datetime
   // if there are new notifications to be loaded, dispatch the count_notifications action
   const check = () => {

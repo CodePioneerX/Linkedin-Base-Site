@@ -13,11 +13,14 @@ const AdminJobCard = (props) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const updateToken = useSelector((state) => state.updateToken);
+  const { loading, auth } = updateToken;
+
   const banHandler = async () => {
     const config = {
       headers: {
           'Content-type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`   
+          Authorization: `Bearer ${auth.access}`   
       }
     }
     const response = await axios.put(`http://localhost:8000/api/users/ban/${author_id}`, {}, config)
@@ -28,7 +31,7 @@ const AdminJobCard = (props) => {
     const config = {
       headers: {
           'Content-type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`   
+          Authorization: `Bearer ${auth.access}`   
       }
     }
     const response = await axios.delete(`http://localhost:8000/api/jobs/report/dismiss/${id}`, config)

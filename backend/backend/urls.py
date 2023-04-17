@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from rest_framework_simplejwt.views import TokenRefreshView
 from workshare.views import *
 from workshare.views import *
 from django.conf import settings
@@ -31,6 +32,7 @@ urlpatterns = [
     path('api/login/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
     path('api/changePassword/<int:pk>', views.changePassword, name='changePassword'),
     path('api/changePasswordForReset/<int:pk>', views.changePasswordForReset, name='changePasswordForReset'),
