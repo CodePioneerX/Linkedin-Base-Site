@@ -360,7 +360,7 @@ def banUserView(request, pk):
         user = get_object_or_404(User, pk=pk)
         user.is_active = False
         user.save()
-        
+
         message = {'detail':'The user has been banned.'}
         return Response(message, status=status.HTTP_200_OK)
     except:
@@ -380,7 +380,7 @@ def getPostReportsView(request):
     - Response: HTTP Response containing serialized post report data, or an error message.
     """
     try: 
-        post_reports = PostReport.objects.all().order_by('-post__id')
+        post_reports = PostReport.objects.all().filter(post__author__is_active=True).order_by('-post__id')
         serializer = PostReportSerializer(post_reports, many=True)
 
         return Response(serializer.data)
@@ -481,7 +481,7 @@ def getJobReportsView(request):
     - Response: HTTP Response containing serialized job data, or an error message.
     """
     try: 
-        job_reports = JobReport.objects.all().order_by('-job__id')
+        job_reports = JobReport.objects.all().filter(job__author__is_active=True).order_by('-job__id')
         serializer = JobReportSerializer(job_reports, many=True)
 
         return Response(serializer.data)
@@ -550,7 +550,7 @@ def PostNewsfeedView(request, pk):
 
     connections = list(chain(sent, received, [pk]))
 
-    posts = Post.objects.all().filter(author__id__in=connections).order_by('-created_at')
+    posts = Post.objects.all().filter(Q(author__id__in=connections) & Q(author__is_active=True)).order_by('-created_at')
     
     posters = posts.values_list('author', flat=True)
 
@@ -907,7 +907,7 @@ class JobListingLatestView(APIView):
         Returns:
         - Response: A JSON response object containing the list of latest Job Listings.
         """
-        jobs = JobListing.objects.all().order_by('-created_at')[:10]
+        jobs = JobListing.objects.all().filter(Q(author__is_active=True)).order_by('-created_at')[:10]
         all_docs = Document.objects.all()
         job_list = []
 
@@ -1505,9 +1505,9 @@ def searchFunction(request):
     is_remote = request.GET.get('remote')
 
     if search_value is not None:
-        jobs = JobListing.objects.filter(title__icontains=search_value)
+        jobs = JobListing.objects.filter(Q(title__icontains=search_value) & Q(author__is_active=True))
     else:
-        jobs = JobListing.objects.all()
+        jobs = JobListing.objects.all().filter(Q(author__is_active=True))
 
     if company and company != "":
         jobs = jobs.filter(company = company)
@@ -1536,7 +1536,7 @@ def searchFunction(request):
     if search_value is None:
         users = []
     else:
-        users = User.objects.filter(first_name__icontains =search_value)
+        users = User.objects.filter(Q(first_name__icontains =search_value) & Q(is_active=True))
 
     user_serializer = UserSerializer(users, many=True)
     jobs_serializer = JobListingSerializer(jobs, many=True)
