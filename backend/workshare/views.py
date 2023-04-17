@@ -18,8 +18,9 @@ from itertools import chain
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework import status
+from rest_framework import status, generics
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from rest_framework.parsers import MultiPartParser, FormParser
 
 #for email confirmation
 from django.template.loader import render_to_string
@@ -1294,7 +1295,7 @@ def rejectJobApplication(request, pk):
 @api_view(['GET'])
 def getMyApplicationsView(request):
     job_applications = JobApplication.objects.filter(user=request.user)
-    serializer = JobApplicationSerializer(job_applications, many=True)
+    serializer = SimpleJobApplicationSerializer(job_applications, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
@@ -1348,61 +1349,18 @@ def getJobApplicationsView(request, pk):
     serializer = SimpleJobApplicationSerializer(job_applications, many=True)
     return Response(serializer.data)
 
-@api_view(['POST'])
-def jobApplicationView(request):
-    """
-    A view to handle the posting of a Job Application.
-    
-    Parameters:
-    - request: HTTP request object.
+#This view shall allow the user to create a job application and upload the wanted files.
+class JobApplicationCreateView(generics.CreateAPIView):
+    queryset = JobApplication.objects.all()
+    serializer_class = SimpleJobApplicationSerializer
+    parser_classes = (MultiPartParser, FormParser,)
 
-    Returns: 
-    - Response: Response with the serialized Job Application information, or error if job/user is not found.
-    """
-    data = request.data
-
-    try:
-        job = get_object_or_404(JobListing, pk=data['job_id'])
-    except JobListing.DoesNotExist:
-        return Response({"error":"The job you are trying to apply for cannot be found."}, status=status.HTTP_404_NOT_FOUND)
-
-    try:
-        user = get_object_or_404(User, pk=data['user_id'])
-    except User.DoesNotExist:
-        return Response({"error":"The user account you are applying with cannot be found."}, status=status.HTTP_404_NOT_FOUND)
-    
-    try: 
-        job_application = JobApplication.objects.create(
-            user=user,
-            job_post=job,
-            name=data['name'],
-            email=data['email'],
-            city=data['city'],
-            province=data['provinceState'],
-            country=data['country'],
-            phone=data['telephone'],
-            experience=data['experience'],
-            work=data['work'],
-            education=data['education'],
-            volunteering=data['volunteering'],
-            projects=data['projects'],
-            courses=data['courses'],
-            awards=data['awards'],
-            languages=data['languages']
-            # resume=data['resume'],
-            # cover_letter=data['coverLetter'],
-            # letter_of_recommendation=data['recommendationLetter'],
-            # portfolio=data['portfolio'],
-            # transcript=data['transcript'],
-            # other_documents=data['otherDocuments']
-        )
-        
-        serializer = SimpleJobApplicationSerializer(job_application, many=False)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    except Exception as e:
-        return Response({"error":"Job Application could not be created"}, status=status.HTTP_404_NOT_FOUND)
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=201, headers=headers)
 
 #This function allows a user to cancel a sent application.
 @api_view(['DELETE', 'GET'])

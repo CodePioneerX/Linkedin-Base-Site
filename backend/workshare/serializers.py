@@ -95,18 +95,6 @@ class JobAlertSerializer(serializers.ModelSerializer):
         model = JobAlert
         fields = ('id', 'user', 'search_term', 'company', 'location', 'job_type', 'employment_term', 'salary_type', 'min_salary', 'max_salary', 'listing_type', 'remote')
 
-class JobApplicationSerializer(serializers.ModelSerializer):
-    resume = serializers.FileField(source='resume.url')
-    cover_letter = serializers.FileField(source='cover_letter.url')
-    letter_of_recommendation = serializers.FileField(source='letter_of_recommendation.url')
-    portfolio = serializers.FileField(source='portfolio.url')
-    transcript = serializers.FileField(source='transcript.url')
-    other_documents = serializers.FileField(source='other_documents.url')
-    
-    class Meta:
-        model = JobApplication
-        fields = '__all__'
-
 class SimpleJobApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobApplication
