@@ -15,6 +15,7 @@ from django.contrib import messages
 from django.db.models import Q
 import datetime
 from itertools import chain
+import traceback
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -1353,7 +1354,7 @@ def getJobApplicationsView(request, pk):
 class JobApplicationCreateView(generics.CreateAPIView):
     queryset = JobApplication.objects.all()
     serializer_class = SimpleJobApplicationSerializer
-    parser_classes = (MultiPartParser, FormParser,)
+    parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -1361,6 +1362,95 @@ class JobApplicationCreateView(generics.CreateAPIView):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=201, headers=headers)
+    
+@api_view(['POST'])
+def jobApplicationView(request):
+    """
+    A view to handle the posting of a Job Application.
+    
+    Parameters:
+    - request: HTTP request object.
+
+    Returns: 
+    - Response: Response with the serialized Job Application information, or error if job/user is not found.
+    """
+    data = request.data
+
+    try:
+        job = get_object_or_404(JobListing, pk=data['job_id'])
+    except JobListing.DoesNotExist:
+        return Response({"error":"The job you are trying to apply for cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        user = get_object_or_404(User, pk=data['user_id'])
+    except User.DoesNotExist:
+        return Response({"error":"The user account you are applying with cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+
+    if 'resume' not in data:
+        resume = ''
+    else:
+        resume = data['resume']
+    
+    if 'coverLetter' not in data:
+        coverLetter = ''
+    else:
+        coverLetter = data['coverLetter']
+    
+    if 'recommendationLetter' not in data:
+        recommendationLetter = ''
+    else:
+        recommendationLetter = data['recommendationLetter']
+    
+    if 'portfolio' not in data:
+        portfolio = ''
+    else:
+        portfolio = data['portfolio']
+    
+    if 'transcript' not in data:
+        transcript = ''
+    else:
+        transcript = data['transcript']
+    
+    if 'otherDocuments' not in data:
+        otherDocuments = ''
+    else:
+        otherDocuments = data['otherDocuments']
+
+    try: 
+        job_application = JobApplication.objects.create(
+            user=user,
+            job_post=job,
+            name=data['name'],
+            email=data['email'],
+            city=data['city'],
+            province=data['provinceState'],
+            country=data['country'],
+            phone=data['telephone'],
+            experience=data['experience'],
+            work=data['work'],
+            education=data['education'],
+            volunteering=data['volunteering'],
+            projects=data['projects'],
+            courses=data['courses'],
+            awards=data['awards'],
+            languages=data['languages'],
+            resume=resume,
+            cover_letter=coverLetter,
+            letter_of_recommendation=recommendationLetter,
+            portfolio=portfolio,
+            transcript=transcript,
+            other_documents=otherDocuments
+        )
+
+        serializer = SimpleJobApplicationSerializer(job_application, many=False)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        print('%s' % type(e))
+        message = traceback.format_exc()
+        print(message)
+        return Response({"error":"Job Application could not be created"}, status=status.HTTP_404_NOT_FOUND)
 
 #This function allows a user to cancel a sent application.
 @api_view(['DELETE', 'GET'])
