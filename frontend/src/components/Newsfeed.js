@@ -14,14 +14,13 @@ import '../Assets/css/Newsfeed.css';
 
 export default class Newsfeed extends Component {
     state = {
-        data: []
+        data: [],
+        draft_comments: {},
     }
-
-    
 
     componentDidMount() {
         axios.get(`http://localhost:8000/api/newsfeed/${this.props.id}`)
-            .then(res => this.setState({ data: res.data }))
+            .then(res => this.setState({ post_data: res.data['post_data'], profiles: res.data['profiles']}))
     }
 
     handleClick = post => () => {
@@ -29,10 +28,58 @@ export default class Newsfeed extends Component {
       this.props.edit()
     }
 
+    handleLike = post_id => () => {
+      const config = {
+        headers: {
+          'Content-type': 'application/json'
+        }
+      }
+      axios.post(`http://localhost:8000/api/posts/like/${post_id}/`, {'user_id': this.props.id}, config)
+            .then(res => {
+              let posts_ = [...this.state.post_data]
+              let index_ = posts_.findIndex(post => post.id === post_id)
+              posts_[index_] = res.data
+              this.setState({post_data: posts_})
+            })
+    }
+
+    handleComment = post_id => () => {
+      // prevent user from submitting blank comment
+      if (this.state.draft_comments[post_id] === undefined || this.state.draft_comments[post_id] === "") {
+        return
+      } else {
+        const config = {
+          headers: {
+            'Content-type': 'application/json'
+          }
+        }
+        axios.post(`http://localhost:8000/api/posts/comment/${post_id}/`, {'user_id': this.props.id, 'content': this.state.draft_comments[post_id]}, config)
+              .then(res => {
+                let posts_ = [...this.state.post_data]
+                let index_ = posts_.findIndex(post => post.id === post_id)
+                posts_[index_] = res.data
+                this.setState({post_data: posts_})
+                
+                // reset the draft comment for the post that was just commented on
+                let draft_comments_ = this.state.draft_comments
+                draft_comments_[post_id] = ""
+                this.setState({draft_comments: draft_comments_})
+              }).catch(error => {
+                console.log('error:', error);
+              })
+      }
+    }
+
+    handleCommentChange(post_id, comment) {
+      // update the draft comment corresponding to the post id
+      let draft_comments_ = this.state.draft_comments
+      draft_comments_[post_id] = comment
+      this.setState({draft_comments: draft_comments_})
+    }
+
     render() {
-      const posts = this.state.data[0]
-      const profiles = this.state.data[1]
-    
+      const posts = this.state.post_data
+      const profiles = this.state.profiles
     return (
       <div id='newsfeedCDiv'>
         <Container id='container' className="justify-content-md-center padd">
@@ -58,13 +105,13 @@ export default class Newsfeed extends Component {
                     <Col xs={12} style={{ borderRadius: "20px", boxShadow: "0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "0.5%", width: "auto"}}>
                       <div style={{marginBottom:"1%"}}></div>
                       <Row style={{ display: "flex", alignItems: "center"}}>
-                        <Col xs={2} md={2}>
+                        <Col xs={2} md={1}>
                           {/* <img src={post.image} alt={post.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> */}
                           {post.image ? 
                             <img src={'http://localhost:8000'+post.image} alt="test alt image text" style={{ borderRadius: "50%", width: "auto", height: "55px", width: "55px", marginRight: "10px" }} /> : 
                             <p style={{ borderRadius: "50%", border: "0.1rem solid black", width: "auto", height: "55px", width: "55px", marginRight: "10px" }}></p>}
                         </Col>
-                        <Col xs={7} md={9}>
+                        <Col xs={7} md={10}>
                           <h5>{(profiles.find(profile => profile.user === post.author).name)}</h5>
                         </Col>
                         <Col xs={2} md={1} style={{display:'flex', alignItems: 'center', justifyContent: 'end'}}>
@@ -75,21 +122,34 @@ export default class Newsfeed extends Component {
                       <p style={{padding: "15px 0"}}>{post.content}</p>
                       <Row style={{ justifyContent: "space-between", borderBottom: "1px solid #D3D3D3", marginBottom:"1%" }}>
                         <div style={{ marginLeft: "10px", fontSize: "14px", color: "#808080" }}>
-                          <FontAwesomeIcon icon={faHeart} style={{ color: "red", fontSize: "19px" }}/> {post.likes} Likes
+                          <FontAwesomeIcon icon={faHeart} style={{ color: "red", fontSize: "19px" }}/>  {post.num_likes} Likes
                         </div>
                         <p style={{ marginRight: "10px", fontSize: "14px", color: "#808080" }}>
-                          Posted: {new Date(post.created_at).toLocaleDateString()}
+                          Posted: {new Date(post.created_at).toLocaleDateString()} at {new Date(post.created_at).toLocaleTimeString('en-US')}
                         </p>
                       </Row>
+                      {post.comments?.map(comment => (
+                        <Row key={comment.id} style={{justifyContent: 'space-between'}}>
+                            <Col md={2}>
+                              <p><strong>{(profiles.find(profile => profile.user === comment.author).name)}</strong></p>
+                            </Col>
+                            <Col>
+                              <p>{comment.content}</p>
+                            </Col>
+                            <Col md={2}>
+                              <p>{new Date(comment.created_at).toLocaleDateString()} at {new Date(comment.created_at).toLocaleTimeString('en-US')}</p>
+                            </Col>
+                        </Row>
+                      ))}
                       <Row className='mb-4'>
-                        <Form.Control className='padd pad_down' type="text" placeholder="Comment..." />
+                        <Form.Control className='padd pad_down' type="text" placeholder="Comment..." value={this.state.draft_comments[post.id] || ""} onChange={(e) => this.handleCommentChange(post.id, e.target.value)}/>
                       </Row>
                       <Row>
                         <Col style={{display: 'flex', justifyContent: 'center'}}>
-                          <Button id='applyLink' variant="secondary"><FaThumbsUp className='icon'/><span style={{marginLeft: "3%"}}>Like</span></Button>
+                          <Button id='applyLink' variant="secondary" onClick={this.handleLike(post.id)}><FaThumbsUp className='icon'/><span style={{marginLeft: "3%"}}>Like</span></Button>
                         </Col>
                         <Col style={{display: 'flex', justifyContent: 'center'}}>
-                          <Button className='jobButton' variant="secondary"><TfiCommentAlt className='icon'/><span style={{marginLeft: "3%"}}>Comment</span></Button>
+                          <Button className='jobButton' variant="secondary" onClick={this.handleComment(post.id)}><TfiCommentAlt className='icon'/><span style={{marginLeft: "3%"}}>Comment</span></Button>
                         </Col>
                       </Row>
                     </Col>

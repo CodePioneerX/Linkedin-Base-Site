@@ -90,13 +90,6 @@ class Recommendations(models.Model):
     recipient = models.ForeignKey(Profile, on_delete= models.CASCADE, related_name='received_recommendations')
     description = models.TextField(default='', blank=True)
     
-# The Comment class creates and designs the model for comments. A comment will consist of 3 data fields: the author, the content, and the time of posting. 
-class Comment(models.Model):
-    #list of data fields and their accepted format are defined here.
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField(default=" ")
-    created_at = models.DateTimeField(auto_now_add=True)  
-    
 # The Post class creates and designs the model for posts. A post will consist 7 data fields, inlcuding the time of posting.     
 class Post(models.Model):
     #list of data fields and their accepted format are defined here.
@@ -104,18 +97,39 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     image = models.ImageField(upload_to='images/', null=True, blank=True)
-    comments = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True)
-    likes = models.ManyToManyField(User, through='Likes', related_name='liked_posts')
     created_at = models.DateTimeField(auto_now_add=True)
     
-    #this function defines what will be returned when the class is printed. The code below will return the author's email.
+    @property
+    def num_likes(self):
+        num_likes = Likes.objects.filter(post=self).count()
+        return num_likes
+
+    @property
+    def num_comments(self):
+        num_comments = Comment.objects.filter(post=self).count()
+        return num_comments
+    
     def __str__(self):
-        return self.author.email
+        return self.author.email + ': ' + self.title
+
+# The Comment class creates and designs the model for comments. A comment will consist of 4 data fields: the author, the content, and the time of posting. 
+class Comment(models.Model):
+    #list of data fields and their accepted format are defined here.
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_comment')
+    content = models.TextField(default=" ")
+    created_at = models.DateTimeField(auto_now_add=True)  
+
+    def __str__(self):
+        return self.author.email + ': ' + self.content
 
 #The Likes model represents the amount of like for a post.
 class Likes(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_likes')
+
+    def __str__(self):
+        return self.user.email + ': ' + self.post.title
     
 # The JobListing class creates and designs the model for job listings. A job listing will consist of 13 data fields, including the time of posting.   
 class JobListing(models.Model):
@@ -131,8 +145,6 @@ class JobListing(models.Model):
     remote = models.BooleanField(default=False)
     company = models.CharField(max_length=255)
     image = models.ImageField(upload_to='images/', null=True, blank=True)
-    comments = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True)
-    likes = models.IntegerField(default=0)
     location = models.CharField(max_length=255)
     status = models.BooleanField(default=True)
     required_docs = models.ManyToManyField('Document', default=None, blank=True)

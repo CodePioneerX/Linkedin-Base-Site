@@ -11,10 +11,10 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'content', 'image', 'author', 'created_at')
 
 class JobListingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'remote', 'employment_term', 'job_type', 'image', 'likes', 'salary', 'salary_type', 'location', 'status', 'author', 'get_required_docs', 'created_at', 'deadline', 'listing_type')
+    list_display = ('id', 'title', 'remote', 'employment_term', 'job_type', 'image', 'salary', 'salary_type', 'location', 'status', 'author', 'get_required_docs', 'created_at', 'deadline', 'listing_type')
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('content', 'author', 'created_at')
+    list_display = ('author', 'content', 'post', 'created_at')
 
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ('id', 'sender', 'recipient', 'title', 'content', 'type', 'unread', 'created_at', 'content_type', 'object_id', 'content_object')
