@@ -1321,7 +1321,7 @@ def getUserJobsWithApplicationsView(request, pk):
 
     for job in jobs:
         job_serializer = JobListingSerializer(job, many=False)
-        applications = JobApplication.objects.filter(job_post=job)
+        applications = JobApplication.objects.filter(job_post=job,status="true")
         application_serializer = SimpleJobApplicationSerializer(applications, many=True)
         combined = {'job':job_serializer.data, 'applications':application_serializer.data}
         job_list.append(combined)
