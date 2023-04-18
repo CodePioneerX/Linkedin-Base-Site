@@ -27,7 +27,7 @@ const dispatch = useDispatch();
 const navigate = useNavigate();
 const deleteJobReview = (e)=>{
     e.preventDefault();
-    dispatch(remove_job_application_review(props.application.user,props.jobId))
+    dispatch(remove_job_application_review(props.application.id))
     navigate('/profile');
 }
 

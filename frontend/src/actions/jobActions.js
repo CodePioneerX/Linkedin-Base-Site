@@ -394,7 +394,7 @@ export const create_job_application = (user_id, job_id, email, name, telephone, 
 }
 
 
-export const remove_job_application_review = (uId, jobId) => async (dispatch) => {
+export const remove_job_application_review = (applicationId) => async (dispatch) => {
     try {
         dispatch({
             type: REMOVE_JOB_APPLICATION_REVIEW_REQUEST
@@ -407,11 +407,8 @@ export const remove_job_application_review = (uId, jobId) => async (dispatch) =>
         }
         
         // Send a DELETE request to remove the job application request
-        const { data } = await axios.delete(
-            `http://localhost:8000/api/jobRequest/delete/`,
-            {'userId': uId, 
-            'jobId': jobId, 
-            }, 
+        const { data } = await axios.put(
+            `http://localhost:8000/api/job_applications/reject/`+applicationId + `/`,
             config
         )
         
