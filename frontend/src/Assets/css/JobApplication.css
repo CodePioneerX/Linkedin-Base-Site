@@ -43,6 +43,18 @@
         -4px -4px 10px #ffffff;
 }
 
+.customDisabledButton {
+    display: block;
+    border-color: #3a0f90;
+    border-width: 2px;
+    background-color: white;
+    color:#3a0f90;
+    border-radius: 100px;
+    width: 100px;
+    box-shadow: 4px 4px 10px #c5c5c5,
+        -4px -4px 10px #ffffff;
+}
+
 .customButton:hover {
     background-color: #3a0f90;
     border-color: #3a0f90;

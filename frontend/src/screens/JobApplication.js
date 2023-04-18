@@ -257,7 +257,9 @@ const JobApplication = () => {
                      {submitStatus}{" "}
                   </Alert>)}
                   <p>Before submitting your application, please verify that the information provided above is both accurate and genuine.</p>
-                  <Button id='apply' className='customButton' type='submit' onClick={submitHandler}>Send Application Now</Button>
+                  {submitStatus?.includes("successfully") ? 
+                     <Button id='apply' className='customDisabledButton' disabled>Application Submitted</Button>
+                     : <Button id='apply' className='customButton' type='submit' onClick={submitHandler}>Send Application Now</Button>}
                </Form>
                
             </div>
