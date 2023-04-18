@@ -213,3 +213,30 @@ def comment_on_post_notification(sender, instance, created, **kwargs):
                 object_id=instance.post.id,
                 content_type=ContentType.objects.get_for_model(instance.post)
             )
+
+@receiver(post_save, sender=Likes)
+def like_post_notification(sender, instance, created, **kwargs):
+    """
+    A signal which creates a Notification instance for a User when another user Likes one of their Posts.
+    This is a post_save signal, so the signal is sent after the JobListing instance has been saved. 
+
+    Parameters:
+    - sender: The model class that has sent the signal (in this case, Likes).
+    - instance: The particular instance of the sender model being saved that sent the signal.
+    - created: A boolean value that is True if the instance has just been created.
+    - kwargs: A dictionary of keyword arguments.
+
+    Returns:
+    - creates a Notification instance based on the sender instance attributes.
+    """
+    if created:
+        if instance.user != instance.post.author:
+            Notification.objects.create(
+                sender=instance.user,
+                recipient=instance.post.author,
+                title=str(instance.user.first_name) + ' liked your post.',
+                content='"' + instance.post.content + '"',
+                type=Notification.LIKE,
+                object_id=instance.post.id,
+                content_type=ContentType.objects.get_for_model(instance.post)
+            )
