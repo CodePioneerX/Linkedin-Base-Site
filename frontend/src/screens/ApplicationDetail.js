@@ -103,7 +103,7 @@ return (
             <Col>
             {applications.resume?<>
             <div>
-                <a href={'http://localhost:8000/'+applications.resume} download>{applications.resume}</a>
+                <a href={'http://localhost:8000'+applications.resume} download>View Resume</a>
             </div>
             </>:
             <p>N/A</p>
@@ -117,7 +117,7 @@ return (
             <Col>
             {applications.cover_letter?<>
             <div>
-                <a href={'http://localhost:8000/'+applications.cover_letter} download>{applications.cover_letter}</a>
+                <a href={'http://localhost:8000'+applications.cover_letter} download>View Cover Letter</a>
             </div>
             </>:
             <p>N/A</p>
@@ -131,7 +131,7 @@ return (
             <Col>
             {applications.letter_of_recommendation?<>
             <div>
-                <a href={'http://localhost:8000/'+applications.letter_of_recommendation} download>{applications.letter_of_recommendation}</a>
+                <a href={'http://localhost:8000'+applications.letter_of_recommendation} download>View Letter of Recommendation</a>
             </div>
             </>:
             <p>N/A</p>
@@ -145,7 +145,7 @@ return (
             <Col>
             {applications.portfolio?<>
             <div>
-                <a href={'http://localhost:8000/'+applications.portfolio} download>{applications.portfolio}</a>
+                <a href={'http://localhost:8000'+applications.portfolio} download>View Portfolio</a>
             </div>
             </>:
             <p>N/A</p>
@@ -159,7 +159,7 @@ return (
             <Col>
             {applications.transcript?<>
             <div>
-                <a href={'http://localhost:8000/'+applications.transcript} download>{applications.transcript}</a>
+                <a href={'http://localhost:8000'+applications.transcript} download>View Transcript</a>
             </div>
             </>:
             <p>N/A</p>
@@ -173,7 +173,7 @@ return (
             <Col>
             {applications.other_documents?<>
             <div>
-                <a href={'http://localhost:8000/'+applications.other_documents} download>{applications.other_documents}</a>
+                <a href={'http://localhost:8000'+applications.other_documents} download>View Other Documents</a>
             </div>
             </>:
             <p>N/A</p>
