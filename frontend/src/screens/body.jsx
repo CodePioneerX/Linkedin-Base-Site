@@ -30,6 +30,8 @@ const Body = (props) => {
     const [chats, setChats] = useState([]);
     const [reciever, setReciever] = useState('');
     const [sender, setSender] = useState('');
+    const [message, setMessage] = useState('');
+    const [chat_id, setChatId] = useState('');
   
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
@@ -41,8 +43,11 @@ const Body = (props) => {
         console.log("user id for the post request : ");
         console.log(userInfo.id);
         const response = await axios.get(
-          `http://localhost:8000/direct_messages/`
+          `http://localhost:8000/direct_messages/${userInfo.email}/`
         );
+        setChatId(response.data[0].id);
+        setReciever(response.data[0].messages[0].from_user);
+        setSender(response.data[0].messages[0].to_user);
         console.log("response from body");
         console.log(response.data);
         setChats(processMessages(response.data));
@@ -67,67 +72,95 @@ const Body = (props) => {
       return images[Math.floor(Math.random() * images.length)];
     };
     
+    // const processMessages = (rawMessages) => {
+    //   let chats = [];
+    
+    //   rawMessages.forEach((msg) => {
+    //     console.log("MSG");
+    //     console.log(msg);
+    //     setChatId(msg.id);
+    
+    //     msg.messages.forEach((message) => {
+    //       const existingChatIndex = chats.findIndex(
+    //         (chat) => chat.name === msg.name
+    //       );
+    //       setReciever(message.from_user);
+    //       setSender(message.to_user);
+    
+    //       const messageObj = {
+    //         is_contact: message.from_user !== userInfo.id,
+    //         text: message.content,
+    //       };
+    
+    //       if (existingChatIndex !== -1) {
+    //         chats[existingChatIndex].data[0].messages.push(messageObj);
+    //       } else {
+    //         chats.push({
+    //           label: message.content.slice(0,5)+'...',
+    //           name: message.to_user,
+    //           date: message.timestamp.slice(0,10), // Replace with actual date if needed
+    //           profil: getRandomImage(), // Replace with actual profile image if needed
+    //           data: [
+    //             {
+    //               datetime: message.timestamp, // Replace with actual date if needed
+    //               messages: [messageObj],
+    //             },
+    //           ],
+    //         });
+    //       }
+    //     });
+    //   });
+    
+    //   return chats;
+    // };
     const processMessages = (rawMessages) => {
       let chats = [];
     
       rawMessages.forEach((msg) => {
-        console.log("MSG");
-        console.log(msg);
-    
-        msg.messages.forEach((message) => {
-          const existingChatIndex = chats.findIndex(
-            (chat) => chat.name === msg.name
-          );
-          setReciever(message.from_user);
-          setSender(message.to_user);
-    
-          const messageObj = {
-            is_contact: message.from_user !== userInfo.id,
-            text: message.content,
-          };
-    
-          if (existingChatIndex !== -1) {
-            chats[existingChatIndex].data[0].messages.push(messageObj);
-          } else {
-            chats.push({
-              label: message.content.slice(0,5)+'...',
-              name: message.to_user,
-              date: message.timestamp.slice(0,10), // Replace with actual date if needed
-              profil: getRandomImage(), // Replace with actual profile image if needed
-              data: [
-                {
-                  datetime: message.timestamp, // Replace with actual date if needed
-                  messages: [messageObj],
-                },
-              ],
-            });
-          }
-        });
+        const existingChatIndex = chats.findIndex(
+          (chat) => chat.name === msg.name
+        );
+        if (existingChatIndex !== -1) {
+          const messageObjs = msg.messages.map((message) => {
+            return {
+              is_contact: message.from_user != userInfo.email,
+              text: message.content,
+            };
+          });
+          chats[existingChatIndex].data.push({
+            datetime: msg.messages[0].timestamp,
+            messages: messageObjs,
+          });
+        } else {
+          const messageObjs = msg.messages.map((message) => {
+            return {
+              is_contact: message.from_user != userInfo.email,
+              text: message.content,
+            };
+          });
+          chats.push({
+            label: msg.messages[0].content.slice(0, 5) + "...",
+            name: msg.name,
+            date: msg.messages[0].timestamp.slice(0, 10),
+            profil: getRandomImage(),
+            data: [
+              {
+                datetime: msg.messages[0].timestamp,
+                messages: messageObjs,
+              },
+            ],
+          });
+        }
       });
     
       return chats;
     };
+    
 
       const __set_active_contact_index = (new_index) => {
         setActiveIndex(new_index);
       };
 
-    //   const __send_message = (datetime, is_contact, message) => {
-    //     // Gets chats data.
-    //     let chats = lodash.cloneDeep (chats), today = (datetime.split (',')[0] + ", " + new Date ().getFullYear ());
-    //     // Gets chat datetime index.
-    //     let index = chats[active_index].data.findLastIndex (item => {
-    //         // Returns the imposed constraint.
-    //         return ((item.datetime.split (',')[0] + ", " + new Date ().getFullYear ()) === today);
-    //     });
-    //     // The given datetime is it defined ?
-    //     if (index > -1) chats[active_index].data[index].messages.push ({is_contact: is_contact, text: message});
-    //     // Adds the current message with the given datetime for today.
-    //     else chats[active_index].data.push ({datetime: DateTime.get_datetime (), messages: [{is_contact: is_contact, text: message}]});
-    //     // Updates the global state.
-    //     this.setState ({chats: chats});
-    //     // Moves the scrollbar at the full bottom.
-    //     setTimeout (() => chat_context.current.scroll_to_bottom (), 100);
     // }
     function getCookie(name) {
         const value = `; ${document.cookie}`;
@@ -135,39 +168,54 @@ const Body = (props) => {
         if (parts.length === 2) return parts.pop().split(';').shift();
       }
 
-    const __send_message = async (datetime, is_contact, message) => {
 
-    // Get the CSRF token
-    const csrfToken = getCookie('csrftoken');
 
-    setTimeout(() => chat_context.current.scroll_to_bottom(), 100);
 
-    // Send the message to the server
-    try {
-        const response = await axios.post(
-        'http://localhost:8000/direct_messages/',
-        {
-            //csrfmiddlewaretoken: csrfToken, // Add the CSRF token to the request body
-            id: userInfo.id,
-            sender: sender,
-            receiver: reciever,
-            //reciever: reciever,
-            receiver_id: 2, // Assuming 0 is a valid reciever_id
-            content: message,
-        },
-        {
-            headers: {
-            'Content-Type': 'application/json',
-            //'Authorization': `Bearer ${userInfo.token}`, // Uncomment and add your access token if you need authorization
-            'X-CSRFToken': csrfToken, // Add the CSRF token to the headers
-            },
+
+      const __send_message = async (datetime, is_contact, message) => {
+
+        // Get the CSRF token
+        const csrfToken = getCookie('csrftoken');
+        var to_user_id = reciever;
+        var from_user_id = sender;
+
+        if (sender != userInfo.email){
+          to_user_id = sender;
+          from_user_id = reciever;
         }
-        );
-        console.log('Message sent successfully:', response.data);
-    } catch (error) {
-        console.error('Error sending message:', error);
-    }
-    };
+
+
+        setTimeout(() => chat_context.current.scroll_to_bottom(), 100);
+    
+        // Send the message to the server
+        const response = await fetch(`http://localhost:8000/chat/${chat_id}/send_message/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            // Include your authentication token if needed
+            //'Authorization': 'Token <your_auth_token>'
+          },
+          
+          body: JSON.stringify({
+            chat: chat_id,
+            from_user: from_user_id,
+            to_user: to_user_id,
+            content: message
+          })
+        });
+      
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Message sent:', data);
+          window.location.reload(false);
+          setTimeout(() => chat_context.current.scroll_to_bottom(), 100);
+        } else {
+          console.error('Error sending message:', response.status, response.statusText);
+        }
+
+        };
+    
+
 
 
 return (

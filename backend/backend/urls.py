@@ -19,7 +19,7 @@ from rest_framework import routers
 from workshare.views import ProfileView, ProfileCreateView, getProfileView, updateUserProfile
 from workshare.views import JobListingCreateView, JobListingLatestView, JobListingUpdateView, JobListingDeleteView
 from workshare.views import PostView, PostCreateView, PostUpdateView, PostDeleteView, PostLatestView, PostListingCreateView, UserPostsView#, MessageList, MessageDetail, SendMessage, ReceiveMessages, DeleteMessage
-from workshare.views import create_chat, get_my_chats #ConversationListCreateView, DirectMessageCreateView
+from workshare.views import send_message, create_chat, get_my_chats #ConversationListCreateView, DirectMessageCreateView
 from django.conf import settings
 from django.conf.urls.static import static
 from workshare import views
@@ -54,8 +54,9 @@ urlpatterns = [
     #path('api/send-message/', SendMessage.as_view(), name='send_message'),
     #path('api/receive-messages/', ReceiveMessages.as_view(), name='receive_message'),
     #path('api/delete-message/<int:pk>/', DeleteMessage.as_view(), name='delete_message'),
-    path('direct_messages/', get_my_chats, name='direct_messages-list'),
-    path('api/post/send_message/', create_chat, name='send_message-create'),
+    path('direct_messages/<user_email>/', get_my_chats, name='direct_messages-list'),
+    #path('api/post/send_message/', send_message, name='send_message-create'),
+    path('chat/<int:chat_id>/send_message/', send_message, name='send_message-create'),
     #path('direct_messages/all/', views.DirectMessageListView.as_view(), name='direct_message-list'),
     #path('direct_messages/user/<int:user_id>/', views.DirectMessageByUserListView.as_view(), name='direct_message-by-user'),
     #path('direct_messages/conversation/<int:user1_id>/<int:user2_id>/', views.ConversationBetweenUsersView.as_view(), name='conversation-between-users'),

@@ -502,12 +502,17 @@ def create_group_chat(request):
 #@authentication_classes([SessionAuthentication, BasicAuthentication])
 #@permission_classes([IsAuthenticated])
 @api_view(['GET'])
-def get_my_chats(request):
+def get_my_chats(request, user_email):
     try:
-        user = request.user
+        #user = request.user
+        user = User.objects.get(email=user_email)
         chats_with_messages = []
-        chats = Chat.objects.all()#.filter(participants=user)
+        
+        # Filter chats with the user as a participant
+        chats = Chat.objects.filter(participants=user)
+        
         for c in chats:
+            print("c: ", c)
             msg_count = c.get_message_count()
             if msg_count > 0:
                 chats_with_messages.append(c)
@@ -517,6 +522,38 @@ def get_my_chats(request):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({"detail": "{}".format(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# @permission_classes([IsAuthenticated])
+@api_view(['POST'])
+def send_message(request, chat_id):
+    chat = get_object_or_404(Chat, pk=chat_id)
+    user = User.objects.get(email=request.data['from_user'])
+    user_to = User.objects.get(email=request.data['to_user'])
+    
+    user_to_id = user_to.id
+    
+    # if request.user not in chat.participants.all():
+    #     return Response({"detail": "Not a participant of this chat. "+str(request.user)+" not in "+str(chat.participants.all())}, status=status.HTTP_403_FORBIDDEN)
+    to_user_id = request.data.get('to_user')
+    from_user_id = request.data.get('from_user')
+    content = request.data.get('content')
+
+    if not to_user_id or not content:
+        return Response({"detail": "Missing to_user or content."}, status=status.HTTP_400_BAD_REQUEST)
+
+    message = ChatMessage(
+        chat=chat,
+        from_user=user,
+        to_user_id=user_to_id,
+        content=content
+    )
+    message.save()
+    serializer = ChatMessageSerializer(message)
+
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
 
 
 
