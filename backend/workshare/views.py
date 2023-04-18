@@ -1345,7 +1345,7 @@ def getJobApplicationsView(request, pk):
     except JobListing.DoesNotExist:
         return Response({"error":"The job cannot be found."}, status=status.HTTP_404_NOT_FOUND)
     
-    job_applications = JobApplication.objects.filter(job_post=job)
+    job_applications = JobApplication.objects.filter(job_post=job, status="true")
     serializer = SimpleJobApplicationSerializer(job_applications, many=True)
     return Response(serializer.data)
 
