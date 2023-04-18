@@ -3,14 +3,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap"; 
 import { useDispatch, useSelector } from "react-redux";
 import Profil1 from "../Assets/images/profil_1.png";
-// import Profil7 from "../Assets/images/profil_2.png";
+import Profil7 from "../Assets/images/profil_2.png";
 import Profil2 from "../Assets/images/profil_3.png";
-// import Profil3 from "../Assets/images/profil_4.png";
-// import Profil4 from "../Assets/images/profil_5.png";
-// import Profil5 from "../Assets/images/profil_6.png";
-// import Profil6 from "../Assets/images/profil_7.png";
-// import Profil8 from "../Assets/images/profil_8.png";
-// import Profil9 from "../Assets/images/profil_9.png";
+import Profil3 from "../Assets/images/profil_4.png";
+import Profil4 from "../Assets/images/profil_5.png";
+import Profil5 from "../Assets/images/profil_6.png";
+import Profil6 from "../Assets/images/profil_7.png";
+import Profil8 from "../Assets/images/profil_8.png";
+import Profil9 from "../Assets/images/profil_9.png";
 import ChatMessagesHeader from "./msgheader.jsx";
 import ChatMessageEditor from "./msgeditor.jsx";
 import DateTime from "../libs/datetime.js";
@@ -41,7 +41,7 @@ const Body = (props) => {
         console.log("user id for the post request : ");
         console.log(userInfo.id);
         const response = await axios.get(
-          `http://localhost:8000/direct_messages/user/${userInfo.id}/`
+          `http://localhost:8000/direct_messages/`
         );
         console.log("response from body");
         console.log(response.data);
@@ -51,44 +51,62 @@ const Body = (props) => {
   
       fetchData();
     }, [userInfo.id]);
+
+    const getRandomImage = () => {
+      const images = [
+        Profil1,
+        Profil2,
+        Profil3,
+        Profil4,
+        Profil5,
+        Profil6,
+        Profil7,
+        Profil8,
+        Profil9
+      ];
+      return images[Math.floor(Math.random() * images.length)];
+    };
     
     const processMessages = (rawMessages) => {
-        // Process raw messages and convert them into the format expected by the component
-        // This is just an example, you might need to adjust it based on your actual data
-        let chats = [];
+      let chats = [];
     
-        rawMessages.forEach((msg) => {
+      rawMessages.forEach((msg) => {
+        console.log("MSG");
+        console.log(msg);
+    
+        msg.messages.forEach((message) => {
           const existingChatIndex = chats.findIndex(
-            (chat) => chat.name === msg.reciever
+            (chat) => chat.name === msg.name
           );
-          setReciever(msg.reciever);
-          setSender(msg.sender);
+          setReciever(message.from_user);
+          setSender(message.to_user);
     
           const messageObj = {
-            is_contact: msg.sender.id !== userInfo.id,
-            text: msg.content,
+            is_contact: message.from_user !== userInfo.id,
+            text: message.content,
           };
     
           if (existingChatIndex !== -1) {
             chats[existingChatIndex].data[0].messages.push(messageObj);
           } else {
             chats.push({
-              label: "New chat",
-              name: msg.reciever,
-              date: "9/3/2022", // Replace with actual date if needed
-              profil: Profil2, // Replace with actual profile image if needed
+              label: message.content.slice(0,5)+'...',
+              name: message.to_user,
+              date: message.timestamp.slice(0,10), // Replace with actual date if needed
+              profil: getRandomImage(), // Replace with actual profile image if needed
               data: [
                 {
-                  datetime: "August 21, 2022 19:45", // Replace with actual date if needed
+                  datetime: message.timestamp, // Replace with actual date if needed
                   messages: [messageObj],
                 },
               ],
             });
           }
         });
+      });
     
-        return chats;
-      }
+      return chats;
+    };
 
       const __set_active_contact_index = (new_index) => {
         setActiveIndex(new_index);

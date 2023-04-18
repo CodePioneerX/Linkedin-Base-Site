@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap"; 
 import { useDispatch, useSelector } from "react-redux";
 import Posts from "../components/Posts-old";
 import { useNavigate, Link } from "react-router-dom";

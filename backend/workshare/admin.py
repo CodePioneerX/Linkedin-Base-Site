@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import WorkShare, Profile, Post, JobListing, Comment, DirectMessage, Conversation
+from .models import WorkShare, Profile, Post, JobListing, Comment, Chat, ChatMessage#, Conversation, DirectMessage 
 
 class WorkShareAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'completed') 
@@ -27,13 +27,13 @@ class CommentAdmin(admin.ModelAdmin):
 #      get_participants.short_description = 'Participants'
 # # Register your models here.
 
-class DirectMessageInline(admin.TabularInline):
-    model = DirectMessage
-    extra = 0
+# class ChatMessageInline(admin.TabularInline):
+#     model = ChatMessage
+#     extra = 0
 
-class ConversationAdmin(admin.ModelAdmin):
-    inlines = [DirectMessageInline]
-    filter_horizontal = ('participants',)
+# class ChatAdmin(admin.ModelAdmin):
+#     inlines = [ChatMessageInline]
+#     filter_horizontal = ('participants',)
 
 
 
@@ -42,5 +42,5 @@ admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(JobListing, JobListingAdmin)
 admin.site.register(Comment, CommentAdmin)
-admin.site.register(Conversation, ConversationAdmin)
-admin.site.register(DirectMessage)
+admin.site.register(Chat)
+admin.site.register(ChatMessage)
