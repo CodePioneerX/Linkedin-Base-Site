@@ -50,6 +50,9 @@ const JobApplication = () => {
    const [otherDocuments, setOtherDocuments] = useState(null);
    const [profile, setProfile] = useState('');
    const [job, setJob] = useState('')
+   const [ready, setReady] = useState(false)
+   const [error, setError] = useState(false)
+   const [requiredDocs, setRequiredDocs] = useState('')
 
    //Event handlers that get triggered when the user selects files for uploading
    const handleResumeChange = (event) => {
@@ -83,6 +86,8 @@ const JobApplication = () => {
    const getJob = async () => {
       const { data } = await axios.get(`http://localhost:8000/api/job/${job_id}`);
       setJob(data[0]);
+      setRequiredDocs(data[1]);
+      setReady(true);
    }
 
    //Calls the getProfile function once when the component mounts
@@ -123,6 +128,7 @@ const JobApplication = () => {
 
    }
 
+   if (ready) 
    return (
       <div className='formBackground'>
          <div className='jobApplicationsPage'>
@@ -225,26 +231,20 @@ const JobApplication = () => {
                   </FormGroup>
                   <hr/>
                   <h2>Documents</h2>
-                  <FormGroup>
-                     <Label className='resume' for="resume"><h3>Resume</h3></Label>
-                     <Input type="file" name="resume" id="resume" onChange={handleResumeChange} required/>
-                  </FormGroup>
-                  <FormGroup>
-                     <Label className='coverLetter' for="coverLetter"><h3>Cover Letter</h3></Label>
-                     <Input type="file" name="coverLetter" id="coverLetter" onChange={handleCoverLetterChange} required/>
-                  </FormGroup>
-                  <FormGroup>
-                     <Label className='recommendationLetter' for="recommendationLetter"><h3>Letter of Recommendation</h3></Label>
-                     <Input type="file" name="recommendationLetter" id="recommendationLetter" onChange={handleRecommendationLetterChange} required/>
-                  </FormGroup>
-                  <FormGroup>
-                     <Label className='portfolio' for="portfolio"><h3>Portfolio</h3></Label>
-                     <Input type="file" name="portfolio" id="portfolio" onChange={handlePortfolioChange} required/>
-                  </FormGroup>
-                  <FormGroup>
-                     <Label className='transcript' for="transcript"><h3>Transcript</h3></Label>
-                     <Input type="file" name="transcript" id="transcript" onChange={handleTranscriptChange} required/>
-                  </FormGroup>
+                  {requiredDocs?.map(doc => (
+                     <React.Fragment key={doc.type}>
+                        {doc.required && 
+                           <FormGroup>
+                              <Label className={doc.type} for={doc.type}><h3>Upload {doc.type}</h3></Label>
+                              {doc.type === "Resume" && <Input type="file" name={doc.type} id={doc.type} onChange={handleResumeChange} required/>}
+                              {doc.type === "Cover Letter" && <Input type="file" name={doc.type} id={doc.type} onChange={handleCoverLetterChange} required/>}
+                              {doc.type === "Letter of Recommendation" && <Input type="file" name={doc.type} id={doc.type} onChange={handleRecommendationLetterChange} required/>}
+                              {doc.type === "Portfolio" && <Input type="file" name={doc.type} id={doc.type} onChange={handlePortfolioChange} required/>}
+                              {doc.type === "Transcript" && <Input type="file" name={doc.type} id={doc.type} onChange={handleTranscriptChange} required/>}
+                           </FormGroup>
+                        }
+                     </React.Fragment>
+                  ))}
                   <FormGroup>
                      <Label className='otherDocuments' for="otherDocuments"><h3>Other Documents</h3></Label>
                      <p>In this section, you can upload any extra documents that the employer may have requested in the job description, including but not limited to writing samples, certifications, proof of citizenship, and references.</p>

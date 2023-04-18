@@ -18,13 +18,13 @@ export const CREATE_JOB_APPLICATION_REQUEST = "CREATE_JOB_APPLICATION_REQUEST";
 export const CREATE_JOB_APPLICATION_SUCCESS = "CREATE_JOB_APPLICATION_SUCCESS";
 export const CREATE_JOB_APPLICATION_FAIL = "CREATE_JOB_APPLICATION_FAIL";
 
-export const required_docs_template = [{'type':'CV', 'required': false}, 
+export const required_docs_template = [{'type':'Resume', 'required': false}, 
                             {'type':'Cover Letter','required': false}, 
                             {'type':'Letter of Recommendation', 'required': false}, 
                             {'type':'Portfolio', 'required': false},
                             {'type':'Transcript', 'required': false}];
 
-export const possible_docs = ['CV', 'Cover Letter', 'Letter of Recommendation', 'Portfolio', 'Transcript'];
+export const possible_docs = ['Resume', 'Cover Letter', 'Letter of Recommendation', 'Portfolio', 'Transcript'];
 
 export const salary_types = [{name: 'Annually', value: 'ANNUALLY'}, 
                             {name: 'Hourly', value: 'HOURLY'}, 

@@ -1,6 +1,13 @@
 from django.contrib import admin
 from .models import WorkShare, Profile, Post, JobListing, Comment, Connection, Recommendations, Document, Notification, JobAlert, JobApplication
 
+# initialize Document instances for use in JobListing required_docs
+Document.objects.get_or_create(document_type='Resume')
+Document.objects.get_or_create(document_type='Cover Letter')
+Document.objects.get_or_create(document_type='Letter of Recommendation')
+Document.objects.get_or_create(document_type='Portfolio')
+Document.objects.get_or_create(document_type='Transcript')
+
 class WorkShareAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'completed')
     
