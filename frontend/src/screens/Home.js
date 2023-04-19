@@ -75,7 +75,7 @@ function Home() {
             reportEditor ? <ReportPostForm edit={reportEditorMode} quitReportEditor={quitReportEditor} post={post}/> :
             jobReportEditor ? <ReportJobForm edit={jobReportEditorMode} quitReportEditor={quitJobReportEditor} job={job}/> :
             <>
-              <Newsfeed id={userInfo.id} author={userInfo.id} edit={postEditorMode} quit={quitPostEditor} setpost={setPost}  report={reportEditorMode} setpost={setPost}/>
+              <Newsfeed id={userInfo.id} author={userInfo.id} edit={postEditorMode} quit={quitPostEditor} setpost={setPost}  report={reportEditorMode}/>
               <Jobs edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.email} report={jobReportEditorMode}/>
           </>}
         </div>
