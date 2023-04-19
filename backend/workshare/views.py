@@ -278,11 +278,17 @@ def PostNewsfeedView(request, pk):
 
     commentor_list = []
 
+    liked_posts = [] 
+
     for post in posts:
         comments = Comment.objects.all().filter(post=post)
         commentors = comments.values_list('author', flat=True)
         commentor_list = list(chain(commentors, commentor_list))
-    
+        
+        liked = Likes.objects.all().filter(Q(post=post) & Q(user=user))
+        if liked:
+            liked_posts.append(post.id)
+
     user_profiles = Profile.objects.all().filter(Q(user__id__in=posters) | Q(user__id__in=commentor_list))
 
     profile_serializer = NewsfeedProfileSerializer(user_profiles, many=True)
@@ -294,7 +300,12 @@ def PostNewsfeedView(request, pk):
         comments = Comment.objects.filter(post=post)
         comment_serializer = CommentSerializer(comments, many=True)
         post_data[i]['comments'] = comment_serializer.data
-    
+        
+        post_data[i]['liked'] = False
+
+        if post_data[i]['id'] in liked_posts:
+            post_data[i]['liked'] = True
+
     data = {
         "profiles": profile_serializer.data,
         "post_data": post_data,
@@ -1328,9 +1339,11 @@ def likePost(request, post_id):
 
         if like:
             like.delete()
+            liked = False
         else:
             new_like = Likes.objects.create(user=user, post=post)
             new_like.save()
+            liked = True
 
         post_serializer = PostSerializer(post, many=False)
         post_data = post_serializer.data
@@ -1338,6 +1351,7 @@ def likePost(request, post_id):
         comments = Comment.objects.filter(post=post)
         comment_serializer = CommentSerializer(comments, many=True)
         post_data['comments'] = comment_serializer.data
+        post_data['liked'] = liked
 
         return Response(post_data, status=status.HTTP_200_OK)
     except:

@@ -9,7 +9,7 @@ import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { Link } from 'react-router-dom';
 import { FiPlus } from 'react-icons/fi';
 import { TfiCommentAlt } from 'react-icons/tfi';
-import { FaThumbsUp } from 'react-icons/fa';
+import { FaThumbsDown, FaThumbsUp } from 'react-icons/fa';
 import '../Assets/css/Newsfeed.css';
 
 export default class Newsfeed extends Component {
@@ -99,7 +99,7 @@ export default class Newsfeed extends Component {
 
             <Row className='newsFeedContainer' style={{display: "flex", flexDirection: "column", alignItems: "center", marginBottom:"3%"}}>  
 
-              {posts && posts.map(post => (
+              {posts && posts?.map(post => (
                 <Row key={post.id} style={{marginBottom: "0%", width: "100%"}}>
                   <Container style={{padding: "2%", paddingBottom: "0"}}>
                     <Col xs={12} style={{ borderRadius: "20px", boxShadow: "0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "0.5%", width: "auto"}}>
@@ -146,7 +146,10 @@ export default class Newsfeed extends Component {
                       </Row>
                       <Row>
                         <Col style={{display: 'flex', justifyContent: 'center'}}>
-                          <Button id='applyLink' variant="secondary" onClick={this.handleLike(post.id)}><FaThumbsUp className='icon'/><span style={{marginLeft: "3%"}}>Like</span></Button>
+                          {post.liked ? 
+                          <Button id='applyLink' variant="secondary" onClick={this.handleLike(post.id)}><FaThumbsDown className='icon'/><span style={{marginLeft: "3%"}}>Unlike</span></Button>: 
+                          <Button id='applyLink' variant="secondary" onClick={this.handleLike(post.id)}><FaThumbsUp className='icon'/><span style={{marginLeft: "3%"}}>Like</span></Button> 
+                        }
                         </Col>
                         <Col style={{display: 'flex', justifyContent: 'center'}}>
                           <Button className='jobButton' variant="secondary" onClick={this.handleComment(post.id)}><TfiCommentAlt className='icon'/><span style={{marginLeft: "3%"}}>Comment</span></Button>
