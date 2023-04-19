@@ -253,7 +253,8 @@ export const ProfileScreen =()=>{
       ]);
 
     return (    
-    <Container className="justify-content-md-center padd">
+    <div id="profilePage">
+    <Container id="profileContainer" className="justify-content-md-center padd">
       <div className="profile-page">
         <div style={{ display: "flex" }}>
           <div style={{ flex: 5}}>
@@ -436,5 +437,6 @@ export const ProfileScreen =()=>{
       </div>
     </Row>
   </div>
-  </Container>)
+  </Container>
+  </div>)
 }
