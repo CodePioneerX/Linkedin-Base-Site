@@ -3,8 +3,10 @@ import React, { useState, useEffect} from 'react'
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import '../Assets/css/Login.css';
+import '../Assets/css/App.css';
 import {  Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
-import { delete_job, update_job } from '../actions/jobActions'
+import { Container } from 'react-bootstrap'
+import '../Assets/css/Report.css';
 
 // Define the ReportJobForm component
 export const ReportJobForm = (job) => {
@@ -57,22 +59,31 @@ export const ReportJobForm = (job) => {
         window.location.reload(false)
     }
     
-    return <div>
-        <h2>Report Post</h2>
-        <Form>
-          <FormGroup className='mb-4'>
-            <Label className='labelE' for="title" >Title</Label>
-            <Input  name="title" placeholder={title} id="name" disabled />
-          </FormGroup>
-          <FormGroup className='mb-4'>
-            <Label className='labelE' for="company">Company</Label>
-            <Input  name="company" placeholder={company} id="company" disabled />
-          </FormGroup>
-          <FormGroup className='mb-4'>
-            <Label className='labelE' for="location">Location</Label>
-            <Input  name="location" placeholder={location} id="location" disabled />
-          </FormGroup>      
-        </Form>
+    return (
+      <Container className="reportContainer">
+        <h2>Report Job</h2>
+        <>
+          <Row>
+            <Col>
+              <Label className='labelE'>Title</Label>
+              <h4>{title}</h4>
+            </Col>
+            <Col>
+              <Label className='labelE'>Company</Label>
+              <h5>{company}</h5>
+            </Col>
+            <Col>
+              <Label className='labelE' for="location">Location</Label>
+              <h5>{location}</h5>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Label className='labelE'>Job Description</Label>
+              <p className="jobDescriptionPreview">{job.job.description}</p>
+            </Col>
+          </Row>
+        </>
         
         <Form>
           <FormGroup>
@@ -83,12 +94,13 @@ export const ReportJobForm = (job) => {
           </FormGroup>
             <Row className='editButtonContainer'>
                 <Col xs={12} md={6} style={{display: 'flex', justifyContent: 'center'}}>
-                    <Button type='submit' className='editDeleteButton' onClick={submitHandler}>Submit Report</Button>
+                    <Button type='submit' className='reportFormButton' onClick={submitHandler}>Submit Report</Button>
                 </Col>
                 <Col xs={12} md={6} style={{display: 'flex', justifyContent: 'center'}}>
-                    <Button className='editCancelButton' onClick={cancelHandler}>Cancel</Button>
+                    <Button className='reportFormButton' onClick={cancelHandler}>Cancel</Button>
                 </Col>
             </Row>
         </Form>
-    </div>
+      </Container>
+    )
 }

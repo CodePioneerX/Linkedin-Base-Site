@@ -4,7 +4,8 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import '../Assets/css/Login.css';
 import {  Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
-import { delete_post, update_post } from '../actions/postActions'
+import { Container } from 'react-bootstrap'
+import '../Assets/css/Report.css';
 
 // Define the ReportPostForm component
 export const ReportPostForm = (post) => {
@@ -56,18 +57,23 @@ export const ReportPostForm = (post) => {
         window.location.reload(false)
     }
     
-    return <div>
+    return (
+      <Container className="reportContainer">
         <h2>Report Post</h2>
-        <Form>
-          <FormGroup className='mb-4'>
-            <Label className='labelE' for="title" >Title</Label>
-            <Input  name="title" placeholder={title} id="name" disabled />
-          </FormGroup>
-          <FormGroup className='mb-4'>
-            <Label className='labelE' for="content">Content</Label>
-            <Input  name="content" placeholder={content} id="content" disabled />
-          </FormGroup>      
-        </Form>
+        <>
+          <Row>
+            <Col>
+              <Label className='labelE'>Title</Label>
+              <h4>{title}</h4>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Label className='labelE'>Content</Label>
+              <p className="postContentPreview">{content}</p>
+            </Col>
+          </Row>      
+        </>
         
         <Form>
           <FormGroup>
@@ -78,12 +84,13 @@ export const ReportPostForm = (post) => {
           </FormGroup>
             <Row className='editButtonContainer'>
                 <Col xs={12} md={6} style={{display: 'flex', justifyContent: 'center'}}>
-                    <Button type='submit' className='editDeleteButton' onClick={submitHandler}>Submit Report</Button>
+                    <Button type='submit' className="reportFormButton" onClick={submitHandler}>Submit Report</Button>
                 </Col>
                 <Col xs={12} md={6} style={{display: 'flex', justifyContent: 'center'}}>
-                    <Button className='editCancelButton' onClick={cancelHandler}>Cancel</Button>
+                    <Button className="reportFormButton" onClick={cancelHandler}>Cancel</Button>
                 </Col>
             </Row>
         </Form>
-    </div>
+    </Container>
+  )
 }
