@@ -120,9 +120,9 @@ const getProfile = async () => {
       
     //Card displaying the profile name, option to view profile, buttons to accept, reject, send conection request
     <>
-      <Card >
+      <Card className="networkCard">
         <Row>
-          <Card.Body className='card_body'style={{ height:'90px'}} >
+          <Card.Body className="networkCardBody">
             <div style={{display:'flex', justifyContent:'left'}}>
               <Col style={{display:'flex', justifyContent:'left'}}>
                   <Card.Img className='img-fluid rounded-pill' 

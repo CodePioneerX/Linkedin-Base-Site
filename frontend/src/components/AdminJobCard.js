@@ -64,7 +64,7 @@ const AdminJobCard = (props) => {
   return (
     <>   
       <Container className="adminCardContainer">
-        <div className="card_body">
+        <div className="adminCardBody">
           <Row>
             <Col xs={8} md={10}>
               <Row className="adminCardRow">
