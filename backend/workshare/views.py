@@ -541,11 +541,11 @@ def updateUserProfile(request, pk):
     return Response(serializer.data)
     
 @api_view(['GET'])
-def PostNewsfeedView(request, name):
+def PostNewsfeedView(request, pk):
     """
     A view to handle retrieving a user's newsfeed, consisting of their posts and the posts of any other user who they are connected with. 
     """
-    user = get_object_or_404(User, username=name)
+    user = get_object_or_404(User, pk=pk)
     sent = Connection.objects.all().filter(sender=user).values_list('recipient__username', flat=True)
     received = Connection.objects.all().filter(recipient=user).values_list('sender__username', flat=True)
 
@@ -555,9 +555,22 @@ def PostNewsfeedView(request, name):
     
     posters = posts.values_list('author', flat=True)
 
-    user_profiles = Profile.objects.all().filter(user__id__in=posters)
+    commentor_list = []
 
-    profile_serializer = ProfileSerializer(user_profiles, many=True)
+    liked_posts = [] 
+
+    for post in posts:
+        comments = Comment.objects.all().filter(post=post)
+        commentors = comments.values_list('author', flat=True)
+        commentor_list = list(chain(commentors, commentor_list))
+        
+        liked = Likes.objects.all().filter(Q(post=post) & Q(user=user))
+        if liked:
+            liked_posts.append(post.id)
+
+    user_profiles = Profile.objects.all().filter(Q(user__id__in=posters) | Q(user__id__in=commentor_list))
+
+    profile_serializer = NewsfeedProfileSerializer(user_profiles, many=True)
 
     post_serializer = PostSerializer(posts, many=True)
     post_data = post_serializer.data
@@ -566,12 +579,51 @@ def PostNewsfeedView(request, name):
         comments = Comment.objects.filter(post=post)
         comment_serializer = CommentSerializer(comments, many=True)
         post_data[i]['comments'] = comment_serializer.data
-        post_data[i]['num_likes'] = post.likes.count()
-        post_data[i]['num_comments'] =comments.count()
+        
+        post_data[i]['liked'] = False
+
+        if post_data[i]['id'] in liked_posts:
+            post_data[i]['liked'] = True
+
+    data = {
+        "profiles": profile_serializer.data,
+        "post_data": post_data,
+    }
+    return Response(data)
+
+@api_view(['GET'])
+def PersonalNewsfeedView(request, pk):
+    """
+    A view to handle retrieving a user's personal newsfeed, consisting of their own posts. 
+    """
+    user = get_object_or_404(User, pk=pk)
+
+    posts = Post.objects.all().filter(author=user).order_by('-created_at')
+    
+    posters = posts.values_list('author', flat=True)
+
+    commentor_list = []
+
+    for post in posts:
+        comments = Comment.objects.all().filter(post=post)
+        commentors = comments.values_list('author', flat=True)
+        commentor_list = list(chain(commentors, commentor_list))
+    
+    user_profiles = Profile.objects.all().filter(Q(user__id__in=posters) | Q(user__id__in=commentor_list))
+
+    profile_serializer = NewsfeedProfileSerializer(user_profiles, many=True)
+
+    post_serializer = PostSerializer(posts, many=True)
+    post_data = post_serializer.data
+
+    for i, post in enumerate(posts):
+        comments = Comment.objects.filter(post=post)
+        comment_serializer = CommentSerializer(comments, many=True)
+        post_data[i]['comments'] = comment_serializer.data
     
     data = {
         "profiles": profile_serializer.data,
-        "post data": post_data,
+        "post_data": post_data,
     }
     return Response(data)
 
@@ -728,25 +780,6 @@ class PostLatestView(APIView):
             if post.image and hasattr(post.image, 'url'):
                 image_path = post.image.url
 
-            post_list.append({
-                'id': post.id,
-                'author': post.author.username,
-                'title': post.title,
-                'content': post.content,
-                'image': image_path,
-                'likes': post.likes,
-                'created_at': post.created_at
-            })
-        return JsonResponse(post_list, safe=False)
-
-class UserPostsView(APIView):
-    def get(self, request, pk):
-        posts = Post.objects.all().filter(author__id = pk).order_by('-created_at')[:10]
-        post_list = []
-        for post in posts:
-            image_path = ""
-            if post.image and hasattr(post.image, 'url'):
-                image_path = post.image.url
             post_list.append({
                 'id': post.id,
                 'author': post.author.username,
@@ -941,15 +974,6 @@ class JobListingLatestView(APIView):
 
             doc_serializer = DocumentSerializer(job_documents, many=True)
 
-            if job.comments is not None:
-                job_comments.append({
-                    'author': str(job.comments.author),
-                    'content': job.comments.content,
-                    'created_at': job.comments.created_at
-                })
-            else:
-                job_comments=[]
-
             if job.image and hasattr(job.image, 'url'):
                 image_path = job.image.url
 
@@ -959,12 +983,10 @@ class JobListingLatestView(APIView):
                 'title': job.title,
                 'description': job.description,
                 'image': image_path,
-                'likes': job.likes,
                 'created_at': job.created_at,
                 'location': job.location,
                 'status': job.status,
                 'company': job.company,
-                'comments': job_comments,
                 'remote': job.remote,
                 'deadline': job.deadline,
                 'required_docs': doc_serializer.data,
@@ -1562,32 +1584,54 @@ def searchFunction(request):
 #This function allows a user to comment on a post.
 @api_view(['POST'])
 def createComment(request, post_id):
-    content = request.data.get('content')
+    data = request.data
+
+    content = data['content']
+    author = User.objects.get(pk=data['user_id'])
+
     if content:
         post = Post.objects.get(id=post_id)
-        comment = Comment(author=request.user, post=post, content=content)
+        comment = Comment(author=author, post=post, content=content)
         comment.save()
-        serializer = CommentSerializer(comment)
-        return Response(serializer.data)
+
+        post_serializer = PostSerializer(post, many=False)
+        post_data = post_serializer.data
+
+        comments = Comment.objects.filter(post=post)
+        comment_serializer = CommentSerializer(comments, many=True)
+        post_data['comments'] = comment_serializer.data
+
+        return Response(post_data, status=status.HTTP_200_OK)
     else:
-        return Response({'error': 'Your comment cannot be empty!'})
+        return Response({'error': 'Your comment cannot be empty!'}, status=status.HTTP_400_BAD_REQUEST)
 
 #This function allows the user to like or dislike a post.
+@api_view(['POST'])
 def likePost(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    user = request.user
-    
-    if post.likes.filter(user=user).exists():
-        like = Likes.objects.get(user=user, post=post)
-        like.delete()
-        liked = False
-    else:
-        like = Likes(user=user, post=post)
-        like.save()
-        liked = True
-    
-    data = {
-        'likes': post.likes.count(),
-        'liked': liked,
-    }
-    return JsonResponse(data)
+    try: 
+        data = request.data
+
+        post = get_object_or_404(Post, pk=post_id)
+        user = get_object_or_404(User, pk=data['user_id'])
+
+        like = Likes.objects.all().filter(post=post, user=user)
+
+        if like:
+            like.delete()
+            liked = False
+        else:
+            new_like = Likes.objects.create(user=user, post=post)
+            new_like.save()
+            liked = True
+
+        post_serializer = PostSerializer(post, many=False)
+        post_data = post_serializer.data
+
+        comments = Comment.objects.filter(post=post)
+        comment_serializer = CommentSerializer(comments, many=True)
+        post_data['comments'] = comment_serializer.data
+        post_data['liked'] = liked
+
+        return Response(post_data, status=status.HTTP_200_OK)
+    except:
+        return Response({'error': 'The post could not be liked.'}, status=status.HTTP_400_BAD_REQUEST)

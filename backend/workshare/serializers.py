@@ -8,7 +8,12 @@ class WorkShareSerializer(serializers.ModelSerializer):
         model = WorkShare
         fields = ('id', 'title', 'description', 'completed')
         
-        
+
+class NewsfeedProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ('user', 'name', 'email', 'image')
+
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
@@ -30,7 +35,7 @@ class PostSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        fields = ('id', 'title', 'content', 'image', 'author', 'created_at', 'reported')
+        fields = ('id', 'title', 'content', 'image', 'author', 'created_at', 'num_likes', 'num_comments')
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
@@ -72,12 +77,12 @@ class DocumentSerializer(serializers.Serializer):
 class JobListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobListing
-        fields = ('id', 'title', 'description','company', 'remote', 'image', 'comments', 'likes', 'location', 'status', 'author', 'created_at', 'deadline', 'salary', 'salary_type', 'listing_type', 'link', 'employment_term', 'job_type')
+        fields = ('id', 'title', 'description','company', 'remote', 'image', 'location', 'status', 'author', 'created_at', 'deadline', 'salary', 'salary_type', 'listing_type', 'link', 'employment_term', 'job_type')
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('id', 'content', 'author')
+        fields = ('id', 'content', 'author', 'created_at')
 
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta: 
