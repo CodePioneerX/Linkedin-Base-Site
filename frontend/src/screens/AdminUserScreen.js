@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import AdminUserCard from '../components/AdminUserCard';
 import axios from "axios";
+import '../Assets/css/Admin.css';
 
 function AdminUserScreen() {
     const userLogin = useSelector((state) => state.userLogin);
@@ -40,12 +41,10 @@ function AdminUserScreen() {
       getReportedUsers();
     }, [auth])
 
-
-
   return (
-    <div>
+    <div className="background">
       {userInfo && userInfo.isAdmin && 
-      <div>
+      <div className="adminContainer">
         <Container>
           <h1 style={{marginTop:'1rem'}}>Reported Users</h1>
           {reportedUsersList.length > 0 ? 

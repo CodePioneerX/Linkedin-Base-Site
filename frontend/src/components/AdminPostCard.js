@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { Card, Button, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Dropdown, DropdownButton } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import { faGripVertical } from "@fortawesome/free-solid-svg-icons";
+import '../Assets/css/Admin.css';
 
 const AdminPostCard = (props) => {
-    
+  
+  const navigate = useNavigate();
+
   // Define state variables
   const [reportMessages, setReportMessages] = useState("");
 
@@ -43,52 +47,52 @@ const AdminPostCard = (props) => {
     window.location.reload()
   }
 
+  const viewAuthor = () => {
+    navigate('/profileScreen', { state: {data: author_id} })
+  }
+
+  const viewSender = () => {
+    navigate('/profileScreen', { state: {data: sender_id} })
+  }
+
   const { id, sender_id, sender_name, sender_email, post_id, post_content, post_title, message, author_id, author_name } = props.report
 
   return (
     <>
-      <Card className='mb-3'>
-        <Row>
-          <Card.Body className='card_body' >
-            <Row style={{display:'flex', justifyContent:'left'}}>
-              <Col style={{display:'flex', justifyContent:'left'}}>
-                <Card.Title style={{marginLeft:'1rem'}}>Post Author: {author_name}</Card.Title>
-              </Col>
-              <Col className="mr-3" style={{display:'flex', justifyContent:'right'}}>
-                <Link to="/profileScreen" state={{data:author_id}}>
-                  <Button variant="primary">View Profile</Button>
-                </Link>
-                <div style={{paddingRight: "10px"}}></div> 
-                <Button style={{height: '38px'}} onClick={banHandler} variant="danger">Ban User</Button>
-              </Col>
-            </Row>
+      <Container className="adminCardContainer">
+          <div className="card_body">
             <Row>
-                <Col className="ml-3">
-                    <strong>{post_title}</strong>
-                </Col>
-                <Col className="mr-3 pt-3" style={{display:'flex', justifyContent:'right'}}>
-                    <Button style={{height: '38px'}} onClick={dismissReportHandler} variant="secondary">Dismiss Report</Button>
-                    <div style={{paddingRight: "10px"}}></div> 
-                    <Button style={{height: '38px'}} onClick={deletePostHandler} variant="danger">Delete Post</Button>
-                </Col>
+              <Col xs={8} md={10}>
+                <Row className="adminCardRow">
+                  <h4>Post Author: {author_name}</h4>
+                </Row>
+                <Row className="adminCardRow">
+                  <h4>{post_title}</h4>
+                </Row>
+                <Row className="adminCardRow">
+                  <p>{post_content}</p>
+                </Row>
+                <Row className="adminCardRow">
+                  <p><strong>{sender_name}</strong> ({sender_email}): "{message}"</p>
+                </Row>
+                <Row className="adminCardRow">
+                  <hr style={{width: "100%"}}/>
+                </Row>
+              </Col>
+              <Col xs={4} md={2} style={{display:'flex', justifyContent:'right'}}>
+                <Row>
+                  <DropdownButton id="dropdownButton" title=''>
+                    <Dropdown.Item as="button" onClick={viewAuthor}>View Author</Dropdown.Item>
+                    <Dropdown.Item as="button" onClick={viewSender}>View Sender</Dropdown.Item>
+                    <Dropdown.Item as="button" onClick={dismissReportHandler}>Dismiss Report</Dropdown.Item>
+                    <Dropdown.Item as="button" onClick={deletePostHandler}>Delete Post</Dropdown.Item>
+                    <Dropdown.Item as="button" onClick={banHandler}>Ban User</Dropdown.Item>
+                  </DropdownButton>
+                </Row>
+              </Col>
             </Row>
-            <Row>
-                <Col className="ml-3">
-                    <p>{post_content}</p>
-                </Col>
-            </Row>
-            <div className="pt-3 ml-3">
-                <div className='pb-1'>
-                  <span> 
-                    <strong>{sender_name}</strong> ({sender_email}): "{message}"
-                  </span>
-                </div>
-              
-              
-            </div>
-          </Card.Body>
-        </Row>
-      </Card>
+          </div>
+      </Container>
     </>
   );
 };
