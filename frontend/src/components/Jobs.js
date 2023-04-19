@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import {Container, Row, Col, Card } from 'react-bootstrap';
+import {Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import axios from 'axios'
 import { FiPlus } from 'react-icons/fi';
@@ -10,12 +9,6 @@ import { FaBackward, FaForward } from 'react-icons/fa';
 import { TfiCommentAlt } from 'react-icons/tfi';
 import '../Assets/css/Newsfeed.css';
 import {
-    MDBCard,
-    MDBCardBody,
-    MDBCardImage,
-    MDBContainer,
-    MDBIcon,
-    MDBRow,
     MDBPagination, 
     MDBPaginationItem, 
     MDBPaginationLink
@@ -75,7 +68,7 @@ export default class Jobs extends Component {
         <hr style={{ width: "96%", marginBottom: "4%" }}/>
 
         <Row style={{display: "flex", flexDirection: "column", alignItems: "center", marginBottom:"100px"}}>
-            {this.state.jobs && Array.isArray(this.state.jobs) && this.state.jobs.map(job => (
+          {this.state.jobs && Array.isArray(this.state.jobs) && this.state.jobs.map(job => (
             <Row key={job.id} style={{marginBottom: "2%", width: "100%"}}>
               <Container style={{paddingBottom:"4%"}}>
                 <Col xs={12} style={{ borderRadius: "20px", boxShadow: "0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "3%px" }}>
@@ -212,52 +205,6 @@ export default class Jobs extends Component {
                       }
                     </Col>
                   </Row>
-                <hr style={{width: "100%"}}/>
-                {job.comments && job.comments.length > 0 && <h4>Comments</h4>}
-                {job.comments && job.comments.length > 0 && job.comments.map(comment => (
-                    
-                    <Row>
-                            <MDBContainer >
-                            <MDBRow> 
-                            <MDBCard className="mb-4 restrict-height">
-                                    <MDBCardBody className='common-width '>
-                                      <Row> 
-                                    
-
-                                    <div className="d-flex justify-content-between common-width">
-                                        <Col>
-                                            <div className="d-flex flex-row align-items-center">
-                                            <MDBCardImage
-                                                className="rounded-circle"
-                                                src='http://localhost:8000/images/default.png'
-                                                alt="avatar"
-                                            />
-                                            <p className="tiny">{comment.author}</p>
-                                            </div>
-                                        </Col>
-                                        <Col><p className="small">{comment.content}</p></Col>
-                                        <Col>
-                                          <div className="d-flex flex-row align-items-center">
-                                          <p className="tiny text-muted ">Likes ( </p>
-                                          <MDBIcon
-                                              far
-                                              icon="thumbs-up fa-xs text-black"
-                                              
-                                          />
-                                          <p className="small text-muted "> 3)</p>
-                                          </div>
-                                        </Col>
-                                    </div>
-                                    </Row>
-                                    </MDBCardBody>
-                                </MDBCard>
-                            </MDBRow>
-                        </MDBContainer>
-                    </Row>
-                ))}
-                <Row className='mb-4'>
-                    <Form.Control className='padd pad_down' type="text" placeholder="Comment..." />
-                </Row>
                 </Container>
 
                 <Row>
@@ -269,15 +216,11 @@ export default class Jobs extends Component {
                       </>
                     }
                   </Col>
-                  <Col style={{display: 'flex', justifyContent: 'center'}}>
-                    <Button className='jobButton' variant="secondary"><TfiCommentAlt className='icon'/><span style={{marginLeft: "3%"}}>Comment</span></Button>
-                  </Col>
                 </Row>
                 </Col>
               </Container>
-          </Row>
-            ))}
-
+            </Row>
+          ))}
         </Row>
       </Container>
       <Row style={{display:'flex', justifyContent: 'center', marginTop: "4%"}}>
