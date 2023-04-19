@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Container, Row, Col} from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
@@ -20,9 +21,15 @@ export default class Newsfeed extends Component {
             .then(res => this.setState({ data: res.data }))
     }
 
-    handleClick = post => () => {
+    editPost = post => () => {
       this.props.setpost(post)
       this.props.edit()
+    }
+
+    reportPost = post => () => {
+      // report the post
+      this.props.setpost(post)
+      this.props.report()
     }
 
     render() {
@@ -52,7 +59,17 @@ export default class Newsfeed extends Component {
                           <h5>{(profiles.find(profile => profile.user === post.author).name)}</h5>
                         </Col>
                         <Col xs={2} md={1} style={{display:'flex', alignItems: 'center', justifyContent: 'end'}}>
-                          {this.props.author == post.author ? <button onClick={this.handleClick(post)} style={{ backgroundColor: "#3D13C6", color: "white", borderRadius: "25px", padding: "5px 10px", border: "none" }}><FontAwesomeIcon icon={faPenToSquare} style={{ color: "white"}}/> </button> : <></>}
+                          <DropdownButton variant="secondary" title="">
+                            {this.props.author == post.author ? 
+                            <>
+                              <Dropdown.Item as="button" onClick={this.editPost(post)}>Edit Post</Dropdown.Item>
+                            </>
+                              : 
+                            <>
+                              <Dropdown.Item as="button" onClick={this.reportPost(post)}>Report Post</Dropdown.Item>
+                            </>
+                            }
+                          </DropdownButton>
                         </Col>
                       </Row>
                       <h4 style={{ textAlign: "left",paddingBottom: "5px", paddingTop:"6px"}}>{post.title}</h4>

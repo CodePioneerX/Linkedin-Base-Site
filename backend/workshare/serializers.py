@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
-from .models import WorkShare, Profile, Post, JobListing, Comment, Recommendations, Connection, Notification, JobAlert
+from .models import *
 
 class WorkShareSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,18 +30,22 @@ class PostSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        fields = ('id', 'title', 'content', 'image', 'likes', 'author', 'created_at')
+        fields = ('id', 'title', 'content', 'image', 'likes', 'author', 'created_at', 'reported')
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
     isAdmin = serializers.SerializerMethodField(read_only=True)
+    isActive = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'name', 'isAdmin']
+        fields = ['id', 'username', 'email', 'name', 'isAdmin', 'isActive']
 
     def get_isAdmin(self, obj):
         return obj.is_staff
+    
+    def get_isActive(self, obj):
+        return obj.is_active
 
     def get_name(self, obj):
         name = obj.first_name
@@ -55,7 +59,7 @@ class UserSerializerWithToken(UserSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'name', 'isAdmin', 'token']
+        fields = ['id', 'username', 'email', 'name', 'isAdmin', 'isActive', 'token']
 
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
@@ -94,3 +98,41 @@ class JobAlertSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobAlert
         fields = ('id', 'user', 'search_term', 'company', 'location', 'job_type', 'employment_term', 'salary_type', 'min_salary', 'max_salary', 'listing_type', 'remote')
+
+class UserReportSerializer(serializers.ModelSerializer):
+    sender_id = serializers.CharField(read_only=True, source="sender.id")
+    sender_email = serializers.CharField(read_only=True, source="sender.email")
+    sender_name = serializers.CharField(read_only=True, source="sender.first_name")
+    
+    class Meta:
+        model = UserReport
+        fields = ('id', 'sender_id', 'sender_email', 'sender_name', 'recipient', 'message')
+
+class PostReportSerializer(serializers.ModelSerializer):
+    sender_id = serializers.CharField(read_only=True, source="sender.id")
+    sender_email = serializers.CharField(read_only=True, source="sender.email")
+    sender_name = serializers.CharField(read_only=True, source="sender.first_name")
+    post_id = serializers.CharField(read_only=True, source="post.id")
+    post_title = serializers.CharField(read_only=True, source="post.title")
+    post_content = serializers.CharField(read_only=True, source="post.content")
+    author_id = serializers.CharField(read_only=True, source="post.author.id")
+    author_name = serializers.CharField(read_only=True, source="post.author.first_name")
+    
+    class Meta:
+        model = PostReport
+        fields = ('id', 'sender_id', 'sender_email', 'sender_name', 'post_id', 'post_title', 'post_content', 'message', 'author_id', 'author_name')
+
+class JobReportSerializer(serializers.ModelSerializer):
+    sender_id = serializers.CharField(read_only=True, source="sender.id")
+    sender_email = serializers.CharField(read_only=True, source="sender.email")
+    sender_name = serializers.CharField(read_only=True, source="sender.first_name")
+    job_id = serializers.CharField(read_only=True, source="job.id")
+    job_title = serializers.CharField(read_only=True, source="job.title")
+    job_company = serializers.CharField(read_only=True, source="job.company")
+    job_location = serializers.CharField(read_only=True, source="job.location")
+    author_id = serializers.CharField(read_only=True, source="job.author.id")
+    author_name = serializers.CharField(read_only=True, source="job.author.first_name")
+
+    class Meta:
+        model = JobReport
+        fields = ('id', 'sender_id', 'sender_email', 'sender_name', 'job_id', 'job_title', 'job_company', 'job_location', 'message', 'author_id', 'author_name')

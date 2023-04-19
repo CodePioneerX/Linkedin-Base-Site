@@ -107,10 +107,11 @@ class Post(models.Model):
     comments = models.ManyToManyField('Comment', blank=True)
     likes = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    reported = models.BooleanField(default=False)
     
     #this function defines what will be returned when the class is printed. The code below will return the author's email.
     def __str__(self):
-        return self.author.email
+        return self.author.email + ': ' + self.title
     
 # The JobListing class creates and designs the model for job listings. A job listing will consist of 13 data fields, including the time of posting.   
 class JobListing(models.Model):
@@ -155,6 +156,8 @@ class JobListing(models.Model):
         default=INTERNAL
     )
     link = models.TextField(blank=True)
+
+    # reported = models.BooleanField(default=False, blank=False, null=False)
 
     def get_required_docs(self):
         return ",".join([str(p) for p in self.required_docs.all()])
@@ -279,3 +282,27 @@ class JobAlert(models.Model):
 
     def __str__(self):
         return self.search_term + ' ' + self.user.first_name
+
+class UserReport(models.Model):
+    sender = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE)
+    recipient = models.ForeignKey(User, related_name='recipient', on_delete=models.CASCADE)
+    message = models.TextField(blank=False, null=False)
+
+    def __str__(self):
+        return self.sender.email + ' reported ' + self.recipient.email 
+
+class PostReport(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, related_name='reported_post', on_delete=models.CASCADE)
+    message = models.TextField(blank=False, null=False)
+
+    def __str__(self):
+        return self.sender.email + ' reported post: ' + self.post.title
+
+class JobReport(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    job = models.ForeignKey(JobListing, related_name='reported_job', on_delete=models.CASCADE)
+    message = models.TextField(blank=False, null=False)
+
+    def __str__(self):
+        return self.sender.email + ' report job: ' + self.job.title + ' at ' + self.job.company

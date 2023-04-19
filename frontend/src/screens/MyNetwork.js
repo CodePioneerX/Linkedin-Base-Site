@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import Newsfeed from '../components/Newsfeed'
+import { EditPostForm } from '../components/EditPostForm';
+import { ReportPostForm } from '../components/ReportPostForm';
 import { Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
@@ -19,6 +21,7 @@ export const MyNetwork =()=> {
     const [unconnectedList, setUnconnectedList] = useState("");
     const [postEditor, setPostEditor] = useState(false);
     const [post, setPost] = useState('');
+    const [reportEditor, setReportEditor] = useState(false)
     
     //retrieve the connection list from the back end
     const getConnections = async () => {
@@ -84,6 +87,14 @@ export const MyNetwork =()=> {
       setPostEditor(false)
     }
 
+    const reportEditorMode = () => {
+      setReportEditor(true)
+    }
+  
+    const quitReportEditor = () => {
+      setReportEditor(false)
+    }
+
     useEffect(() => {
       getPendingConnections();
       getPendingSentConnections();
@@ -94,7 +105,7 @@ export const MyNetwork =()=> {
     return (
       <div>
         {userInfo?
-          <div >
+          <div className="mb-4">
           <Container>
             {(pendingConnectionList.length > 0 || pendingSentConnectionList.length > 0) &&
               <>
@@ -145,8 +156,11 @@ export const MyNetwork =()=> {
                 <Link className='btn btn-primary' to='/create/post/' state={{from: "/network"}}>
                   Create a Post
                 </Link>
+          {postEditor ? <EditPostForm edit={postEditorMode} quitPostEditor={quitPostEditor} post={post} /> :
+          reportEditor ? <ReportPostForm edit={reportEditorMode} quitReportEditor={quitReportEditor} post={post}/> :
+          <Newsfeed id={userInfo.id} author={userInfo.id} edit={postEditorMode} quit={quitPostEditor} report={reportEditorMode} setpost={setPost} />
+          }
           </Container>
-          <Newsfeed id={userInfo.id} author={userInfo.id} edit={postEditorMode} quit={quitPostEditor} setpost={setPost} />
           </div>
           :
           <Container className="justify-content-md-center padd">

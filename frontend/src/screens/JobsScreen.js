@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom'
 import Jobs from '../components/Jobs';
 import { EditJobForm } from '../components/EditJobForm';
+import { ReportJobForm } from '../components/ReportJobForm';
 import Alert from 'react-bootstrap/Alert';
 
 function JobsScreen() {
@@ -13,6 +14,8 @@ function JobsScreen() {
 
   const [jobEditor, setJobEditor ] = useState('')
   const [job, setJob] = useState('')
+
+  const [jobReportEditor, setJobReportEditor] = useState(false)
 
   const navigate = useNavigate()
 
@@ -24,6 +27,14 @@ function JobsScreen() {
     setJobEditor(false)
   }
 
+  const jobReportEditorMode = () => {
+    setJobReportEditor(true)
+  }
+
+  const quitJobReportEditor = () => {
+    setJobReportEditor(false)
+  }
+
   return (
       <Container className="justify-content-md-center padd">
         {userInfo ? (
@@ -33,11 +44,12 @@ function JobsScreen() {
                 <Button className='mb-4' variant='secondary' onClick={() => {navigate(-1)}}>Back</Button>
                 <EditJobForm edit={jobEditorMode} quit={quitJobEditor} job={job} />  
               </>:
+              jobReportEditor ? <ReportJobForm edit={jobReportEditorMode} quitReportEditor={quitJobReportEditor} job={job}/> :
               <Container>
                 <a className='btn btn-primary' href='/create/job' role='button'>
                   Create a job listing
                 </a>
-                <Jobs edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.email}/>
+                <Jobs edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.email} report={jobReportEditorMode}/>
             </Container>}
           </div>
         ) : (        

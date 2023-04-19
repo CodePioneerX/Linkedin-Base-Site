@@ -3,6 +3,7 @@ import {Container, Row, Col, Card } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 import axios from 'axios'
 import Comment from './Comment';
 import Message from './Message';
@@ -52,6 +53,12 @@ export default class Job extends Component {
         this.props.edit()
     }
 
+    reportJob = job => () => {
+        // report the job
+        this.props.setjob(job)
+        this.props.report()
+      }    
+
 // Rendering the job details and comments
   render() {
 // Defining a Comment component to display individual comments
@@ -84,7 +91,17 @@ export default class Job extends Component {
                 </span>
                 </Col>
                 <Col xs={4} md={2} style={{display:'flex', alignItems: 'center', justifyContent: 'end'}}>
-                {this.props.author == this.state.job.author ? <button onClick={this.handleClick(this.state.job)} style={{ backgroundColor: "#3D13C6", color: "white", borderRadius: "25px", padding: "5px 10px", border: "none" }}><FontAwesomeIcon icon={faPenToSquare} style={{ color: "white"}}/> </button> : <></>}
+                    <DropdownButton variant="secondary" title="">
+                      {this.props.author == this.state.job.author ? 
+                      <>
+                        <Dropdown.Item as="button" onClick={this.handleClick(this.state.job)}>Edit Job</Dropdown.Item>
+                      </>
+                        : 
+                      <>
+                        <Dropdown.Item as="button" onClick={this.reportJob(this.state.job)}>Report Job</Dropdown.Item>
+                      </>
+                      }
+                    </DropdownButton>
                 </Col>
             </Row>
             <Container className='darker'>
