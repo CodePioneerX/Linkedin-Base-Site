@@ -37,6 +37,9 @@ export const ProfileScreen =()=>{
 
     const [recommended, setRecommended] = useState(false);
     const [recommendForm, setRecommendForm] = useState(false);
+    
+    const [reportForm, setReportForm] = useState(false);
+    const [reportMessage, setReportMessage] = useState("")
 
     //functions for connection
     const checkPendingConnection = async (e) =>{
@@ -144,6 +147,14 @@ export const ProfileScreen =()=>{
         setRecommendForm(false)
     };
 
+    const enterReport = () => {
+      setReportForm(true)
+    };
+
+    const exitReport = () => {
+      setReportForm(false)
+    };
+
     //check if the current logged in user has recommended the searched user
     const checkRecommendation = async () =>{
       const { data } = await axios.get(
@@ -205,6 +216,32 @@ export const ProfileScreen =()=>{
         setReceivedRec(data.received_recommendations)
       };
 
+      const reportUser = async (e) => {
+        e.preventDefault()
+        try {
+          // Set the headers for the HTTP request
+          const config = {
+            headers: {
+              'Content-type': 'application/json',
+            }
+          }
+        
+          // Send the HTTP request to report the user
+          const { data } = await axios.post(
+            `http://localhost:8000/api/users/report/`,
+              { 'sender': userInfo.id,
+                'recipient': otherUserId,
+                'message': reportMessage },
+              config
+          )
+          window.location.reload(false) 
+        } catch(error) {
+          console.log(error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message)
+        }
+      }
+
       //page set up
       useEffect(() => {
         getProfile();
@@ -212,7 +249,7 @@ export const ProfileScreen =()=>{
         checkRecommendation()
         
       }, [
-        isConnected,connectPending,connectSender,connectStatus,recommended,recommendForm
+        isConnected,connectPending,connectSender,connectStatus,recommended,recommendForm, reportForm
       ]);
 
     return (    
@@ -244,6 +281,7 @@ export const ProfileScreen =()=>{
                             :
                             <button className="profile-button" onClick ={enterRecommendation}>Recommend</button>}
                         <button className="profile-button">Message</button>
+                        <button className="profile-button" onClick={enterReport}>Report User</button>
                         </div>
                         :  
                             (connectPending? 
@@ -261,6 +299,7 @@ export const ProfileScreen =()=>{
                             <div>
                             <button className="profile-button" onClick={sendConnection}>Connect</button>
                             <button className="profile-button">Message</button>
+                            <button className="profile-button" onClick={enterReport}>Report User</button>
                             </div>)
                         }
 
@@ -291,6 +330,24 @@ export const ProfileScreen =()=>{
                         </Row>
                         </Form>
                     :<></>
+                    }
+                    {reportForm && 
+                    <Form>
+                      <FormGroup >
+                        <Label className='labelE' for="report-message">Report Description</Label>
+                        <textarea style={{width : "100%" }} required
+                        name="report-message" id="report-message" placeholder="Please describe the reason that you are reporting this user." 
+                          onChange={(e)=> setReportMessage(e.target.value)}/>
+                        </FormGroup>
+                        <Row className='editButtonContainer' >
+                            <Col xs={12} md={6} style={{display: 'flex', justifyContent: 'center'}}>
+                                <Button type='submit' className='editSaveButton' onClick={reportUser}>Send Report</Button>
+                            </Col>
+                            <Col xs={12} md={6} style={{display: 'flex', justifyContent: 'center'}}>
+                                <Button className='editCancelButton' onClick={exitReport}>Cancel</Button>
+                            </Col>
+                        </Row>
+                    </Form>
                     }
 
                     <Row>

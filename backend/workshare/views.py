@@ -8,16 +8,16 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
-from .serializers import WorkShareSerializer
-from .models import WorkShare
 from .models import *
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from .serializers import *
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import Q
+from django.contrib.admin.views.decorators import staff_member_required
 import datetime
+
 from itertools import chain
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -233,6 +233,285 @@ def passwordResetConfirm(request, uidb64, token):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['POST'])
+def reportUserView(request):
+    """
+    A view function that allows a user to report another user. 
+    This is accomplished by adding the user to the 'Reported' User Group.
+
+    Parameters:
+    - request: HTTP request object, containing sender of request, recipient of request, and request message.
+
+    Returns:
+    - Response: HTTP Response with a success/error message.
+    """
+    try:
+        data = request.data
+
+        print(data)
+
+        sender = get_object_or_404(User, pk=data['sender'])
+        recipient = get_object_or_404(User, pk=data['recipient'])
+        message = data['message']
+
+        reported = Group.objects.get(name='Reported')
+        reported.user_set.add(recipient)
+
+        report = UserReport(sender=sender, recipient=recipient, message=message)
+
+        report.save()
+
+        message = {'detail':'The user has been reported.'}
+        return Response(message, status=status.HTTP_200_OK)
+    except:
+        message = {'detail':'The user could not be reported at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+@staff_member_required
+def dismissUserReportView(request, pk):
+    """
+    A view function that allows an admin to dismiss a report made against a user. 
+    This is accomplished by removing the user from the 'Reported' User Group.
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of User to be removed from the reported list.
+
+    Returns:
+    - Response: HTTP Response with a success/error message.
+    """
+    try:
+        user = get_object_or_404(User, pk=pk)
+        reported = Group.objects.get(name='Reported')
+        user.groups.remove(reported)
+
+        reports = UserReport.objects.all().filter(recipient__id=pk)
+
+        for report in reports:
+            report.delete()
+
+        message = {'detail':'The reports against this user have been dismissed.'}
+        return Response(message, status=status.HTTP_200_OK)
+    except:
+        message = {'detail':'The report could not be dismissed at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@staff_member_required
+def getReportedUsersView(request):
+    """
+    A view function that allows an Admin to retrieve a list of all reported Users (who have not yet been banned). 
+
+    Parameters:
+    - request: HTTP request object.
+
+    Returns:
+    - Response: HTTP Response containing serialized user data, or an error message.
+    """
+    try: 
+        reported = Group.objects.get(name="Reported")
+        users = reported.user_set.all()
+        users = users.filter(Q(is_active=True))
+        serializer = UserSerializer(users, many=True)
+
+        return Response(serializer.data)
+    except:
+        message = {'detail':'The reported users could not be retrieved at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@staff_member_required
+def getUserReportMessagesView(request, pk):
+    """
+    A view function that allows an Admin to retrieve all of the report messages associated with a certain reported User. 
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: The primary key of the reported user.
+
+    Returns:
+    - Response: HTTP Response containing serialized user report data, or an error message.
+    """
+    try: 
+        reports = UserReport.objects.all().filter(recipient__id=pk)
+        serializer = UserReportSerializer(reports, many=True)
+
+        return Response(serializer.data)
+    except:
+        message = {'detail':'The reported users could not be retrieved at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+@staff_member_required
+def banUserView(request, pk):
+    """
+    A view function that allows an admin to ban a user. 
+    This is accomplished by setting their account's is_active attribute to False, preventing the user from logging in.
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of User to be banned.
+
+    Returns:
+    - Response: HTTP Response with a success/error message.
+    """
+    try:
+        user = get_object_or_404(User, pk=pk)
+        user.is_active = False
+        user.save()
+
+        message = {'detail':'The user has been banned.'}
+        return Response(message, status=status.HTTP_200_OK)
+    except:
+        message = {'detail':'The user could not be banned at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@staff_member_required
+def getPostReportsView(request):
+    """
+    A view function that allows an Admin to retrieve a list of all reported Posts. 
+
+    Parameters:
+    - request: HTTP request object.
+
+    Returns:
+    - Response: HTTP Response containing serialized post report data, or an error message.
+    """
+    try: 
+        post_reports = PostReport.objects.all().filter(post__author__is_active=True).order_by('-post__id')
+        serializer = PostReportSerializer(post_reports, many=True)
+
+        return Response(serializer.data)
+    except:
+        message = {'detail':'The reported posts could not be retrieved at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE', 'GET'])
+@staff_member_required
+def dismissPostReportView(request, pk):
+    """
+    A view function that allows an admin to dismiss a report made against a post. 
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of Post Report to be dismissed from the reported list.
+
+    Returns:
+    - Response: HTTP Response with a success/error message.
+    """
+    try:
+        post_report = get_object_or_404(PostReport, pk=pk)
+        post_report.delete()
+
+        message = {'detail':'This post report has been dismissed.'}
+        return Response(message, status=status.HTTP_200_OK)
+    except:
+        message = {'detail':'The post report could not be dismissed at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def reportPostView(request):
+    """
+    A view function that allows a user to report a post. 
+
+    Parameters:
+    - request: HTTP request object, containing sender of request, a specific post, and the request message.
+
+    Returns:
+    - Response: HTTP Response with a success/error message.
+    """
+    try:
+        data = request.data
+
+        sender = get_object_or_404(User, pk=data['sender'])
+        post = get_object_or_404(Post, pk=data['post'])
+        message = data['message']
+
+        post.reported = True
+        post.save()
+
+        report = PostReport(sender=sender, post=post, message=message)
+        report.save()
+
+        message = {'detail':'The post has been reported.'}
+        return Response(message, status=status.HTTP_200_OK)
+    except:
+        message = {'detail':'The post could not be reported at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def reportJobView(request):
+    """
+    A view function that allows a user to report a job. 
+
+    Parameters:
+    - request: HTTP request object, containing sender of request, a specific job, and the request message.
+
+    Returns:
+    - Response: HTTP Response with a success/error message.
+    """
+    try:
+        data = request.data
+
+        sender = get_object_or_404(User, pk=data['sender'])
+        job = get_object_or_404(JobListing, pk=data['job'])
+        message = data['message']
+
+        report = JobReport(sender=sender, job=job, message=message)
+        report.save()
+
+        message = {'detail':'The job has been reported.'}
+        return Response(message, status=status.HTTP_200_OK)
+    except:
+        message = {'detail':'The job could not be reported at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@staff_member_required
+def getJobReportsView(request):
+    """
+    A view function that allows an Admin to retrieve a list of all reported Jobs. 
+
+    Parameters:
+    - request: HTTP request object.
+
+    Returns:
+    - Response: HTTP Response containing serialized job data, or an error message.
+    """
+    try: 
+        job_reports = JobReport.objects.all().filter(job__author__is_active=True).order_by('-job__id')
+        serializer = JobReportSerializer(job_reports, many=True)
+
+        return Response(serializer.data)
+    except:
+        message = {'detail':'The reported posts could not be retrieved at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE', 'GET'])
+@staff_member_required
+def dismissJobReportView(request, pk):
+    """
+    A view function that allows an admin to dismiss a report made against a job. 
+
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of Job Report to be dismissed from the reported list.
+
+    Returns:
+    - Response: HTTP Response with a success/error message.
+    """
+    try:
+        job_report = get_object_or_404(JobReport, pk=pk)
+        job_report.delete()
+
+        message = {'detail':'This job report has been dismissed.'}
+        return Response(message, status=status.HTTP_200_OK)
+    except:
+        message = {'detail':'The job report could not be dismissed at this time.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
 # TO-DO: finalize implementation of user authentication
 @api_view(['PUT'])
 # @permission_classes([IsAuthenticated])
@@ -272,7 +551,7 @@ def PostNewsfeedView(request, name):
 
     connections = list(chain(sent, received, [user.username]))
 
-    posts = Post.objects.all().filter(author__username__in=connections).order_by('-created_at')
+    posts = Post.objects.all().filter(Q(author__username__in=connections) & Q(author__is_active=True)).order_by('-created_at')
     
     posters = posts.values_list('author', flat=True)
 
@@ -640,7 +919,7 @@ class JobListingLatestView(APIView):
         Returns:
         - Response: A JSON response object containing the list of latest Job Listings.
         """
-        jobs = JobListing.objects.all().order_by('-created_at')[:10]
+        jobs = JobListing.objects.all().filter(Q(author__is_active=True)).order_by('-created_at')[:10]
         all_docs = Document.objects.all()
         job_list = []
 
@@ -1238,9 +1517,9 @@ def searchFunction(request):
     is_remote = request.GET.get('remote')
 
     if search_value is not None:
-        jobs = JobListing.objects.filter(title__icontains=search_value)
+        jobs = JobListing.objects.filter(Q(title__icontains=search_value) & Q(author__is_active=True))
     else:
-        jobs = JobListing.objects.all()
+        jobs = JobListing.objects.all().filter(Q(author__is_active=True))
 
     if company and company != "":
         jobs = jobs.filter(company = company)
@@ -1269,7 +1548,7 @@ def searchFunction(request):
     if search_value is None:
         users = []
     else:
-        users = User.objects.filter(first_name__icontains =search_value)
+        users = User.objects.filter(Q(first_name__icontains =search_value) & Q(is_active=True))
 
     user_serializer = UserSerializer(users, many=True)
     jobs_serializer = JobListingSerializer(jobs, many=True)

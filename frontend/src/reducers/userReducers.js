@@ -9,7 +9,11 @@
     
         GET_PROFILE_REQUEST,
         GET_PROFILE_SUCCESS,
-        GET_PROFILE_FAIL
+        GET_PROFILE_FAIL,
+
+        UPDATE_TOKEN_REQUEST,
+        UPDATE_TOKEN_SUCCESS,
+        UPDATE_TOKEN_FAIL,
 } from '../constants/userConstants'
 
     export const userLoginReducer = (state = {}, action) => {
@@ -61,6 +65,22 @@
             case GET_PROFILE_FAIL:
                 return { loading: false, error: action.payload }
     
+            default:
+                return state
+        }
+    }
+
+    export const updateTokenReducer = (state = {}, action) => {
+        switch(action.type) {
+            case UPDATE_TOKEN_REQUEST:
+                return { loading: true }
+
+            case UPDATE_TOKEN_SUCCESS:
+                return { loading: false, auth: action.payload }
+            
+            case UPDATE_TOKEN_FAIL:
+                return { loading: false, error: action.payload }
+
             default:
                 return state
         }

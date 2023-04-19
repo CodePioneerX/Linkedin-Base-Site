@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import Newsfeed from '../components/Newsfeed'
+import { EditPostForm } from '../components/EditPostForm';
+import { ReportPostForm } from '../components/ReportPostForm';
 import { Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
@@ -20,6 +22,7 @@ export const MyNetwork =()=> {
     const [unconnectedList, setUnconnectedList] = useState("");
     const [postEditor, setPostEditor] = useState(false);
     const [post, setPost] = useState('');
+    const [reportEditor, setReportEditor] = useState(false)
     
     //retrieve the connection list from the back end
     const getConnections = async () => {
@@ -85,6 +88,14 @@ export const MyNetwork =()=> {
       setPostEditor(false)
     }
 
+    const reportEditorMode = () => {
+      setReportEditor(true)
+    }
+  
+    const quitReportEditor = () => {
+      setReportEditor(false)
+    }
+
     useEffect(() => {
       getPendingConnections();
       getPendingSentConnections();
@@ -96,7 +107,7 @@ export const MyNetwork =()=> {
       <div id='networkPage'>
         <div id='networkContainer'>
         {userInfo?
-          <div >
+          <div className="mb-4">
           <Container>
             {(pendingConnectionList.length > 0 || pendingSentConnectionList.length > 0) &&
               <>

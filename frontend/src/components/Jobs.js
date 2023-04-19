@@ -3,6 +3,7 @@ import {Container, Row, Col, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 import axios from 'axios'
 import { FiPlus } from 'react-icons/fi';
 import { FaBackward, FaForward } from 'react-icons/fa';
@@ -37,6 +38,12 @@ export default class Jobs extends Component {
   handleClick = job => () => {
     this.props.setjob(job)
     this.props.edit()
+  }
+
+  reportJob = job => () => {
+    // report the job
+    this.props.setjob(job)
+    this.props.report()
   }
 
   render() {
@@ -82,7 +89,17 @@ export default class Jobs extends Component {
                     </span>
                   </Col>
                   <Col xs={4} md={2} style={{display:'flex', alignItems: 'center', justifyContent: 'end'}}>
-                    {this.props.author == job.author ? <button onClick={this.handleClick(job)} style={{ backgroundColor: "#3D13C6", color: "white", borderRadius: "25px", padding: "5px 10px", border: "none" }}><FontAwesomeIcon icon={faPenToSquare} style={{ color: "white"}}/> </button> : <></>}
+                    <DropdownButton variant="secondary" title="">
+                      {this.props.author == job.author ? 
+                      <>
+                        <Dropdown.Item as="button" onClick={this.handleClick(job)}>Edit Job</Dropdown.Item>
+                      </>
+                        : 
+                      <>
+                        <Dropdown.Item as="button" onClick={this.reportJob(job)}>Report Job</Dropdown.Item>
+                      </>
+                      }
+                    </DropdownButton>
                   </Col>
                 </Row>
                 <Container className='darker'>

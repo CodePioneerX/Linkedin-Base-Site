@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from rest_framework_simplejwt.views import TokenRefreshView
 from workshare.views import *
 from workshare.views import *
 from django.conf import settings
@@ -31,6 +32,7 @@ urlpatterns = [
     path('api/login/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
     path('api/changePassword/<int:pk>', views.changePassword, name='changePassword'),
     path('api/changePasswordForReset/<int:pk>', views.changePasswordForReset, name='changePasswordForReset'),
@@ -79,6 +81,17 @@ urlpatterns = [
     path('api/search/', views.searchFunction, name='search'),
     path('api/posts/comments/<int:post_id>/', createComment, name='create_comment'),
     path('api/posts/like/<int:post_id>/', likePost, name='like_post'),
+    path('api/users/report/', views.reportUserView, name='report-user'),
+    path('api/users/report/dismiss/<int:pk>', views.dismissUserReportView, name='dismiss-user-report'),
+    path('api/users/reported', views.getReportedUsersView, name='get-reported-users'),
+    path('api/users/reports/<int:pk>', views.getUserReportMessagesView, name='get-reported-user-messages'),
+    path('api/users/ban/<int:pk>', views.banUserView, name='ban-user'),
+    path('api/posts/report/', views.reportPostView, name='report-post'),
+    path('api/posts/report/dismiss/<int:pk>', views.dismissPostReportView, name='dismiss-post-report'),
+    path('api/posts/reported', views.getPostReportsView, name='get-reported-posts'),
+    path('api/jobs/report/', views.reportJobView, name='report-job'),
+    path('api/jobs/report/dismiss/<int:pk>', views.dismissJobReportView, name='dismiss-job-report'),
+    path('api/jobs/reported', views.getJobReportsView, name='get-reported-jobs'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
