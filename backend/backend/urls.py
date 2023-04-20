@@ -36,6 +36,7 @@ urlpatterns = [
     path('api/password_reset/', views.password_reset_request, name='password_reset'),
     path('reset/<uidb64>/<token>', views.passwordResetConfirm, name='passwordResetConfirm'),
     path('api/profile/<int:pk>', getProfileView, name='profile_detail'),
+    path('api/my_profile/<int:pk>', getMyProfileView, name='my_profile_detail'),
     path('api/profile/', ProfileCreateView.as_view(), name='profile_create'),
     path('api/profile/update/<int:pk>', updateUserProfile, name='profile_update'),
     path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),

@@ -7,7 +7,7 @@ import {upload_document} from '../actions/userActions'
 
 
 
-const FileForm = ({ fileForm,setFileForm }) => {
+const FileForm = ({ fileForm ,setFileForm, oldResume, oldCoverLetter }) => {
 
 //Get the user information from the store
 const userLogin = useSelector((state) => state.userLogin);
@@ -31,8 +31,6 @@ const FileUpload = (e)=>{
       return;
       }
     }
-    console.log(resume);
-    console.log(coverLetter);
     dispatch(upload_document(userInfo.id, resume, coverLetter))
     setFileForm(prev => !prev)
 }
@@ -43,9 +41,6 @@ const FileClear = (e)=>{
   coverLetterRef.current.value = "";
   setResume();
   setCoverLetter();
-  console.log(resume);
-  console.log(coverLetter);
-
 }
 
 return (
@@ -58,12 +53,28 @@ return (
           <FormGroup className='FileInputContent'>
             <h2 className='FileInputText'>Resume</h2>
             <Label className='Resume' for="Resume"/>
+            {oldResume? 
+            <>
+              <div>
+                <p>You've already uploaded a resume, you can <a href={'http://localhost:8000'+oldResume} download>download it here</a>.</p>
+              </div>
+            </> : 
+            <p>No resume currently on file.</p>
+            }
             <input type='file' name="Resume" id="Resume" ref={resumeRef}
             onChange={(e)=> {setResume(e.target.files[0])}}/>
-            </FormGroup>
+          </FormGroup>
           <FormGroup className='FileInputContent'>
             <h2 className='FileInputText'>Cover Letter</h2>
             <Label className='CoverLetter' for="CoverLetter"/>
+            {oldCoverLetter? 
+            <>
+              <div>
+                <p>You've already uploaded a cover letter, you can <a href={'http://localhost:8000'+oldCoverLetter} download>download it here</a>.</p>
+              </div>
+            </> : 
+            <p>No cover letter currently on file.</p>
+            }
             <input type='file' name="CoverLetter" id="CoverLetter" ref={coverLetterRef}
             onChange={(e)=> {setCoverLetter(e.target.files[0])}}/>
           </FormGroup>

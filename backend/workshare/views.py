@@ -872,7 +872,6 @@ def getUserProfile(request):
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
-# This function is intended allow us to get the recommendations related data (sent and received) of a given profile
 @api_view(['GET'])
 def getProfileView(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
@@ -891,6 +890,27 @@ def getProfileView(request, pk):
     }
 
     return Response(data)
+
+@api_view(['GET'])
+def getMyProfileView(request, pk):
+    user = get_object_or_404(User, pk=pk)
+
+    profile = get_object_or_404(Profile, user=user)
+    profile_serializer = ProfileSerializerWithDocuments(profile)
+
+    sent_recommendations = Recommendations.objects.filter(sender=profile)
+    received_recommendations = Recommendations.objects.filter(recipient=profile)
+
+    sent_recommendations_serializer = RecommendationsSerializer(sent_recommendations, many=True)
+    received_recommendations_serializer = RecommendationsSerializer(received_recommendations, many=True)
+
+    data = {
+        "profile": profile_serializer.data,
+        "sent_recommendations": sent_recommendations_serializer.data,
+        "received_recommendations": received_recommendations_serializer.data
+    }
+
+    return Response(data, status=status.HTTP_200_OK)
 
 # This function is intended to register a user
 @api_view(['POST'])

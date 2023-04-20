@@ -13,7 +13,12 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('user', 'name', 'email', 'city', 'title', 'about', 'image', 'experience', 'education', 'work', 'volunteering', 'courses', 'projects', 'awards', 'languages')
-        
+
+class ProfileSerializerWithDocuments(serializers.ModelSerializer):
+    class Meta: 
+        model = Profile
+        fields = '__all__'
+
 class ProfileSerializerWithToken(ProfileSerializer):
     token = serializers.SerializerMethodField(read_only=True)
 

@@ -62,14 +62,11 @@ function ViewProfile() {
 
   const getProfile = async () => {
     const { data } = await axios.get(
-      `http://localhost:8000/api/profile/` + userInfo.id
+      `http://localhost:8000/api/my_profile/${userInfo.id}`
     );
     setProfile(data.profile);
     setRecommendation(data.sent_recommendations);
-    // console.log(data)
     setReceivedRec(data.received_recommendations);
-
-    // console.log(data)
   };
 
   
@@ -123,7 +120,7 @@ function ViewProfile() {
             {editor ? <EditProfileForm profile={profile} quitEditor={quitEditor}/> : 
             postEditor ? <EditPostForm post={post} quitPostEditor={quitPostEditor}/> : 
               <Container>
-                <FileForm fileForm={fileForm} setFileForm={setFileForm} />
+                <FileForm fileForm={fileForm} setFileForm={setFileForm} oldResume={profile.resume} oldCoverLetter={profile.cover_letter}/>
                 <Row>
                   {/* Bio + Resume Column  */}
                   <Col sm={12} md={12} lg={8}>
