@@ -11,7 +11,9 @@
 div.chat-messages-header {
   box-shadow: 0 0 1px 1px #eee;
   border-top-right-radius: 8px;
-  border-top-left-radius: 8px; }
+  border-top-left-radius: 8px; 
+  padding-bottom: 10px;
+}
   div.chat-messages-header div.active-user-contact {
     transition: background-color 0.4s;
     padding: 10px 0 10px 2.5%;
