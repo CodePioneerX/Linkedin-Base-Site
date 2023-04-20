@@ -99,6 +99,7 @@ urlpatterns = [
     path('api/jobs/reported', views.getJobReportsView, name='get-reported-jobs'),
     path('direct_messages/<user_email>/', get_my_chats, name='direct_messages-list'),
     path('chat/<int:chat_id>/send_message/', send_message, name='send_message-create'),
+    path('create_chat/<str:name>/<str:user_email>/<str:participant_email>/', create_chat, name='create_chat'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

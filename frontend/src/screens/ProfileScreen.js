@@ -12,7 +12,7 @@ import { sendRecommendation } from "../actions/recommendAction";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { faCircleChevronRight } from '@fortawesome/free-solid-svg-icons'
-
+import { useNavigate } from "react-router-dom";
 
 export const ProfileScreen =()=>{
 
@@ -22,6 +22,7 @@ export const ProfileScreen =()=>{
     const [receivedRecommendations, setReceivedRec]= useState("");
     
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     //recommendation data
     // const [title, setTitle] = useState("")
@@ -70,6 +71,74 @@ export const ProfileScreen =()=>{
       console.log(message);
       console.log(userInfo.email);
       console.log(data.profile.email);
+
+      var to_user_id = data.profile.email; // u put the other user email here
+      var from_user_id = userInfo.email; // u put your email here
+      var chat_id;
+
+      // Create a new chat and get the chat_id
+      try {
+        const createChatResponse = await fetch(
+          `http://localhost:8000/create_chat/NewChat with ${to_user_id}/${from_user_id}/${to_user_id}/`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        if (createChatResponse.ok) {
+          const createChatData = await createChatResponse.json();
+          chat_id = createChatData.pk;
+        } else {
+          console.error(
+            'Error creating chat:',
+            createChatResponse.status,
+            createChatResponse.statusText
+          );
+          return;
+        }
+      } catch (error) {
+        console.error('Error creating chat:', error);
+        return;
+      }
+
+
+
+  // Send the message to the server
+  try {
+    const response = await fetch(
+      `http://localhost:8000/chat/${chat_id}/send_message/`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+          chat: chat_id,
+          from_user: from_user_id,
+          to_user: to_user_id,
+          content: message,
+        }),
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Message sent:', data);
+      navigate("/messaging");
+      window.location.reload(false);
+    } else {
+      console.error(
+        'Error sending message:',
+        response.status,
+        response.statusText
+      );
+    }
+  } catch (error) {
+    console.error('Error sending message:', error);
+  }
 
       setMessage(""); // clear the message textarea
       setIsForumOpen(false); // close the forum
