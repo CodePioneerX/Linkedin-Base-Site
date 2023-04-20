@@ -300,11 +300,11 @@ return (
           <br />
           <div className="chat-container">
             {/* Left arrow container */}
-            <div
+            {/* <div
               className="left-arrow"
               title="Back to the previous page."
             >
-              {/* Vector image */}
+            
               <svg
                 viewBox="0 0 24 24"
                 width="24px"
@@ -317,7 +317,7 @@ return (
                           20.707 2.586 12 11.293 3.293 12.707 4.707 6.414 11 21 11 21 13`}
                 />
               </svg>
-            </div>
+            </div> */}
             {/* Availables users contacts */}
             <Contacts
                 onSettings={() => props.onSettings()}

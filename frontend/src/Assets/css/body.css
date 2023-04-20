@@ -44,3 +44,73 @@ div.chat-workspace {
       background-color: #fff;
       border-radius: 8px;
       width: 52%; }
+
+
+
+      .chat-container{
+        padding-top: 9rem !important;
+        padding-bottom: 4rem !important;
+      }
+      /* Media query for mobile devices */
+      @media screen and (max-width: 768px) {
+        .chat-container{
+          margin-bottom: 2rem !important;
+          
+         
+        }
+        .chat-workspace {
+          /* Styles specific to mobile devices */
+          font-size: 5px; /* Scale down the font size */
+          /* Add other styles to scale down content as needed */
+          min-width: fit-content !important;
+        }
+        .guests-contacts .chat-container{
+          /* Your regular styles for larger devices */
+          font-size: 5px;
+          padding: 4px;
+          margin: 1px;
+          min-width: fit-content !important;
+        }
+        .guest-profil>img{
+          max-width: 20px !important;
+          max-height: 20px !important;
+        }
+        .guest-name>label{
+          font-size: 10px !important;
+        }
+        .msg-date>label{
+          font-size: 7px !important;
+        }
+        .emoji-icon>svg{
+          max-width: 10px !important;
+          max-height: 10px !important;
+        }
+        .contacts-title>label{
+          font-size: 10px !important;
+        }
+        .settings-icon>svg{
+          max-width: 10px !important;
+          max-height: 10px !important;
+        }
+        .active-user-label>label{
+          font-size: 5px !important;
+        }
+        .user-profile>img .user-profile{
+          max-width: 15px !important;
+          max-height: 15px !important;
+        }
+        .chat-msg-data>label{
+          font-size: 10px !important;
+        }
+        .users-contacts{
+          min-width: 150px !important;
+          min-height: 150px !important;
+          margin-right: -0.5rem;
+         
+        }
+        .messages-workspace{
+          min-width: 150px !important;
+          min-height: 150px !important;
+          /* margin-right: 15rem !important; */
+        }
+      }
