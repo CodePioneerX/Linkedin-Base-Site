@@ -9,6 +9,10 @@ import '../Assets/css/App.css'
 import RecommendationCard from '../components/RecommendationCard';
 import { Link, useLocation } from "react-router-dom";
 import { sendRecommendation } from "../actions/recommendAction";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCircleChevronRight } from '@fortawesome/free-solid-svg-icons'
+
 
 export const ProfileScreen =()=>{
 
@@ -34,6 +38,8 @@ export const ProfileScreen =()=>{
     const [connectPending, setConnectPending] = useState(false);
     const [connectSender, setConnectSender] = useState(false);
     const [connectStatus, setConnectStatus] = useState("");
+    const [isForumOpen, setIsForumOpen] = useState(false);
+    const [message, setMessage] = useState('');
 
     const [recommended, setRecommended] = useState(false);
     const [recommendForm, setRecommendForm] = useState(false);
@@ -45,6 +51,28 @@ export const ProfileScreen =()=>{
     const checkPendingConnection = async (e) =>{
         //axios request
         //change state
+    };
+
+    const handleOpenForum = () => {
+      setIsForumOpen(true);
+    };
+
+    const handleCloseForum = () => {
+      setIsForumOpen(false);
+    };
+
+    const handleSendMessage  = async () =>{
+
+      const { data } = await axios.get(
+        `http://localhost:8000/api/profile/` + location.state.data
+      );
+      
+      console.log(message);
+      console.log(userInfo.email);
+      console.log(data.profile.email);
+
+      setMessage(""); // clear the message textarea
+      setIsForumOpen(false); // close the forum
     };
 
     //check the connection status between the logged-in user and the searched user
@@ -281,7 +309,7 @@ export const ProfileScreen =()=>{
                             <button className="profile-button" onClick={cancelRecommendation}>Cancel recommendation</button>
                             :
                             <button className="profile-button" onClick ={enterRecommendation}>Recommend</button>}
-                        <button className="profile-button">Message</button>
+                    
                         <button className="profile-button" onClick={enterReport}>Report User</button>
                         </div>
                         :  
@@ -299,8 +327,18 @@ export const ProfileScreen =()=>{
                             :
                             <div>
                             <button className="profile-button" onClick={sendConnection}>Connect</button>
-                            <button className="profile-button">Message</button>
+                            <button className="profile-button" onClick={handleOpenForum}>Message</button>
                             <button className="profile-button" onClick={enterReport}>Report User</button>
+
+                            {isForumOpen && (
+                                <div className="forum-pop-up" style={{padding: '10px 0 0 10px'}}>
+                                  <textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Type your message here" style={{ borderRadius: '10px', width: '100%', marginTop: '10px', padding: '10px' }}></textarea>
+                                  <button onClick={handleCloseForum} style={{ border: 'none', outline: 'none', background: 'white' }}><FontAwesomeIcon icon={faCircleXmark} size="2x" /></button>
+                                  <button onClick={handleSendMessage} style={{ border: 'none', outline: 'none', background: 'white' }}><FontAwesomeIcon icon={faCircleChevronRight} size="2x"/></button>
+
+                                </div>
+                              )}
+
                             </div>)
                         }
 
