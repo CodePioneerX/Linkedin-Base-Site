@@ -1,9 +1,9 @@
 import React, { useState, useEffect,useRef } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import {  Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
+import {  Form, FormGroup, Label, Input, Row, Col, Button } from 'reactstrap';
 import '../Assets/css/App.css';
 import { MdClose } from 'react-icons/md';
-import {upload_document} from '../actions/userActions'
+import { upload_document, remove_document } from '../actions/userActions'
 
 
 
@@ -20,7 +20,8 @@ const coverLetterRef = useRef();
 //Holds and sets the value
 const [resume, setResume] = useState();    
 const [coverLetter, setCoverLetter]= useState(); 
-
+const [resumeRemoved, setResumeRemoved] = useState(false)
+const [coverLetterRemoved, setCoverLetterRemoved] = useState(false)
 
 //Handle the submission, send the file to the backend
 const FileUpload = (e)=>{
@@ -43,6 +44,19 @@ const FileClear = (e)=>{
   setCoverLetter();
 }
 
+const removeDocument = (e, type) => {
+  e.preventDefault();
+  dispatch(remove_document(userInfo.id, type))
+
+  if (type === 'resume') {
+    setResumeRemoved(true)
+  }
+  if (type === 'cover_letter') {
+    setCoverLetterRemoved(true)
+  }
+
+}
+
 return (
    <>
    {fileForm?
@@ -53,11 +67,17 @@ return (
           <FormGroup className='FileInputContent'>
             <h2 className='FileInputText'>Resume</h2>
             <Label className='Resume' for="Resume"/>
-            {oldResume? 
+            {oldResume ?
             <>
-              <div>
-                <p>You've already uploaded a resume, you can <a href={'http://localhost:8000'+oldResume} download>download it here</a>.</p>
-              </div>
+              {!resumeRemoved &&
+              <>
+                <div>
+                  <p>You've already uploaded a resume, you can <a href={'http://localhost:8000'+oldResume} download>download it here</a>.</p>
+                </div>
+                <div>
+                    <p>Click <a href={''} onClick={(e) => removeDocument(e, 'resume')}>here</a> to remove your old resume.</p>    
+                </div>
+              </>}
             </> : 
             <p>No resume currently on file.</p>
             }
@@ -69,9 +89,15 @@ return (
             <Label className='CoverLetter' for="CoverLetter"/>
             {oldCoverLetter? 
             <>
-              <div>
-                <p>You've already uploaded a cover letter, you can <a href={'http://localhost:8000'+oldCoverLetter} download>download it here</a>.</p>
-              </div>
+              {!coverLetterRemoved && 
+              <>
+                <div>
+                  <p>You've already uploaded a cover letter, you can <a href={'http://localhost:8000'+oldCoverLetter} download>download it here</a>.</p>
+                </div>
+                <div>
+                  <p>Click <a href={''} onClick={(e) => removeDocument(e, 'cover_letter')}>here</a> to remove your old cover letter.</p>
+                </div>
+              </>}
             </> : 
             <p>No cover letter currently on file.</p>
             }

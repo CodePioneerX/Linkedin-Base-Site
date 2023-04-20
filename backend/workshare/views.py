@@ -1513,3 +1513,28 @@ def uploadDocuments(request, pk):
     profile.save()
 
     return Response({"detail":"The documents have been uploaded to your profile."}, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def removeDocument(request, pk):
+
+    data = request.data
+
+    try:
+        user = get_object_or_404(User, pk=pk)
+    except User.DoesNotExist:
+        return Response({"error":"The user account you are trying to access with cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+
+    try: 
+        profile = get_object_or_404(Profile, user=user)
+    except Profile.DoesNotExist:
+        return Response({"error":"The profile you are attempting to upload documents to cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    if data['type'] == 'resume':
+        profile.resume = ''
+
+    if data['type'] == 'cover_letter':
+        profile.cover_letter = ''
+    
+    profile.save()
+
+    return Response({"detail":"The document has been removed from your profile."}, status=status.HTTP_200_OK)

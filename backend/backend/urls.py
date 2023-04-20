@@ -85,6 +85,7 @@ urlpatterns = [
     path('api/jobs_applications/user/<int:pk>', views.getUserJobsWithApplicationsView, name='get_users_jobs_with_applications'),
     path('api/my_job_applications/cancel/<int:pk>/', cancelMyJobApplication, name='cancel_my_job_application'),
     path('api/documentsUpload/<int:pk>/', uploadDocuments, name='upload_documents'),
+    path('api/documentRemove/<int:pk>/', removeDocument, name='remove_document'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
