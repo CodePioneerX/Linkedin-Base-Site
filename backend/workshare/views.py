@@ -1,6 +1,7 @@
 import time
 import json
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
@@ -8,9 +9,19 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
+
 from .models import *
 from django.contrib.auth.models import User, Group
 from .serializers import *
+
+from .serializers import WorkShareSerializer, ChatSerializer, ChatMessageSerializer
+from .models import WorkShare, Chat, ChatMessage
+from .models import Profile, Post, JobListing, Comment
+from django.contrib.auth.models import User
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.decorators import authentication_classes
+from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer
+
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -33,6 +44,24 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 from .tokens import account_activation_token
+
+#for dm feature
+from django.contrib import messages
+#from .models import DirectMessage, Conversation
+#from .serializers import ConversationSerializer, DirectMessageSerializer
+from rest_framework import generics, permissions, status
+from channels.generic.websocket import WebsocketConsumer 
+from asgiref.sync import async_to_sync
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
+from django.core import serializers
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+import json
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -1254,6 +1283,7 @@ def activate(request, uidb64, token):
     return redirect("http://localhost:3000")
 
 
+
 # A function to create a connection between users.
 @api_view(['POST'])
 def createConnection(request, sender_id, recipient_id):
@@ -1635,3 +1665,252 @@ def likePost(request, post_id):
         return Response(post_data, status=status.HTTP_200_OK)
     except:
         return Response({'error': 'The post could not be liked.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+# class ConversationListCreateView(generics.ListCreateAPIView):
+#     queryset = Conversation.objects.all()
+#     serializer_class = ConversationSerializer
+
+
+# # class DirectMessageCreateView(generics.CreateAPIView):
+# #     queryset = DirectMessage.objects.all()
+# #     serializer_class = DirectMessageSerializer
+
+# #     def perform_create(self, serializer):
+# #         sender_id = self.request.data.get('sender')
+# #         receiver = self.request.data.get('receiver')
+# #         receiver_id = 0# self.request.data.get('receiver_id')
+# #         sender = User.objects.get(pk=sender_id)
+        
+
+# #         conversation = Conversation.get_or_create_conversation(sender, receiver)
+# #         serializer.save(conversation=conversation, sender=sender)
+# class DirectMessageCreateView(generics.CreateAPIView):
+#     queryset = DirectMessage.objects.all()
+#     serializer_class = DirectMessageSerializer
+
+#     def perform_create(self, serializer):
+#         print("got a post request for a DM: ", self.request.data)
+#         sender_email = self.request.data.get('sender').get('email')
+#         receiver_email = self.request.data.get('receiver')  # Corrected spelling of "reciever" to "receiver"
+#         print("sender: ", sender_email)
+#         sender = User.objects.get(email=sender_email)
+
+#         conversation = Conversation.get_or_create_conversation(sender, receiver_email)
+#         serializer.save(conversation=conversation, sender=sender)
+        
+        
+# class DirectMessageListView(generics.ListAPIView):
+#     queryset = DirectMessage.objects.all()
+#     serializer_class = DirectMessageSerializer
+
+
+# class DirectMessageByUserListView(generics.ListAPIView):
+#     serializer_class = DirectMessageSerializer
+
+#     def get_queryset(self):
+#         user_id = self.kwargs['user_id']
+#         return DirectMessage.objects.filter(sender=user_id)
+
+
+# class ConversationBetweenUsersView(generics.ListAPIView):
+#     serializer_class = DirectMessageSerializer
+
+#     def get_queryset(self):
+#         user1_id = self.kwargs['user1_id']
+#         user2_id = self.kwargs['user2_id']
+#         conversation = Conversation.get_or_create_conversation(User.objects.get(pk=user1_id), User.objects.get(pk=user2_id))
+#         return DirectMessage.objects.filter(conversation=conversation)
+
+
+
+
+#@require_http_methods(["POST"])
+#@permission_classes([IsAuthenticated])
+@api_view(['POST'])
+def create_chat(request):
+    try:
+        user = request.user
+        data = request.data
+        reciever_id = data.get("reciever_id")
+        reciever = User.objects.get(_id=reciever_id)
+
+        chats = Chat.objects.all()
+        chat = None
+        already_exists = False
+        for c in chats:
+            participants = c.participants.all()
+            if len(participants) > 2: continue
+            if (user in participants and reciever in participants):
+                already_exists = True
+                chat = c
+
+        if already_exists:
+            serializer = UserSerializer(chat, context={'user_id': user._id})
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        chat = Chat.objects.create()
+        chat.name = "chat_"+str(chat.id)
+        chat.participants.add(user)
+        chat.participants.add(reciever)
+        chat.save()
+        serializer = UserSerializer(chat, context={'user_id': user._id})
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        return Response({"detail": "{}".format(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+#@require_http_methods(["POST"])
+#@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def create_group_chat(request):
+    try:
+        user = request.user
+        data = request.data
+        reciever_ids = data.get("neighbor_ids")
+        recievers = User.objects.filter(_id__in=reciever_ids)
+
+        chats = Chat.objects.all()
+        chat = None
+        already_exists = False
+        for c in chats:
+            participants = c.participants.all()
+            
+            if len(participants) < 3: continue
+            if (user in participants and set(recievers).issubset(participants) and len(participants) == len(set(recievers))+1):
+                already_exists = True
+                chat = c
+
+        if already_exists:
+            serializer = ChatSerializer(chat, context={'user_id': user._id})
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        chat = Chat.objects.create()
+        chat.name = "chat_"+str(chat.id)
+        chat.participants.add(user)
+        for reciever in recievers:
+            chat.participants.add(reciever)
+        chat.save()
+        serializer = ChatSerializer(chat, context={'user_id': user._id})
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        return Response({"detail": "{}".format(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+#@authentication_classes([SessionAuthentication, BasicAuthentication])
+#@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def get_my_chats(request, user_email):
+    try:
+        #user = request.user
+        user = User.objects.get(email=user_email)
+        chats_with_messages = []
+        
+        # Filter chats with the user as a participant
+        chats = Chat.objects.filter(participants=user)
+        
+        for c in chats:
+            print("c: ", c)
+            msg_count = c.get_message_count()
+            if msg_count > 0:
+                chats_with_messages.append(c)
+
+        serializer = ChatSerializer(
+            chats_with_messages, many=True, context={'user_id': user.id})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"detail": "{}".format(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# @permission_classes([IsAuthenticated])
+@api_view(['POST'])
+def send_message(request, chat_id):
+    chat = get_object_or_404(Chat, pk=chat_id)
+    user = User.objects.get(email=request.data['from_user'])
+    user_to = User.objects.get(email=request.data['to_user'])
+    
+    user_to_id = user_to.id
+    
+    # if request.user not in chat.participants.all():
+    #     return Response({"detail": "Not a participant of this chat. "+str(request.user)+" not in "+str(chat.participants.all())}, status=status.HTTP_403_FORBIDDEN)
+    to_user_id = request.data.get('to_user')
+    from_user_id = request.data.get('from_user')
+    content = request.data.get('content')
+
+    if not to_user_id or not content:
+        return Response({"detail": "Missing to_user or content."}, status=status.HTTP_400_BAD_REQUEST)
+
+    message = ChatMessage(
+        chat=chat,
+        from_user=user,
+        to_user_id=user_to_id,
+        content=content
+    )
+    message.save()
+    serializer = ChatMessageSerializer(message)
+
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+
+
+
+
+#@require_http_methods(["POST"])
+#@permission_classes([IsAuthenticated])
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def set_chat_read(request):
+    try:
+        user = request.user
+        data = request.data
+        chat_name = data.get("chat_name")
+        chat = Chat.objects.get(name=chat_name)
+        if user not in chat.participants.all():
+            raise Exception
+        messages = chat.messages.all()
+        for msg in messages:
+            if msg.from_user != user:
+                msg.read = True
+                msg.save()
+
+        return Response(status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"detail": "{}".format(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+#@require_http_methods(["DELETE"])
+#@permission_classes([IsAuthenticated])
+@api_view(['POST'])
+def delete_chat(request):
+    try:
+        user = request.user
+        data = request.data
+        chat_name = data.get("chat_name")
+        chat = Chat.objects.get(name=chat_name)
+        if user not in chat.participants.all():
+            raise Exception
+        messages = chat.messages.all()
+        for msg in messages:
+            msg.deleted_by.add(user)
+            msg.save()
+
+        return Response(status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"detail": "{}".format(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@login_required
+def get_users(request):
+    """
+    Returns a list of users to populate the DM list
+    """
+    users = User.objects.exclude(id=request.user.id)
+    users_list = []
+    for user in users:
+        users_list.append({"id": user.id, "username": user.username})
+    return JsonResponse(users_list, safe=False)
+
+

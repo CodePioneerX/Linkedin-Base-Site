@@ -255,6 +255,7 @@ class Notification(models.Model):
     def __str__(self):
         return self.title
 
+
     class Meta:
         indexes = [
             models.Index(fields=["content_type", "object_id"]),
@@ -323,3 +324,66 @@ class JobReport(models.Model):
 
     def __str__(self):
         return self.sender.email + ' report job: ' + self.job.title + ' at ' + self.job.company
+
+
+# class Conversation(models.Model):
+#     participants = models.ManyToManyField(User, related_name="conversations")
+
+#     def __str__(self):
+#         return f"Conversation {self.id}"
+
+#     @classmethod
+#     def get_or_create_conversation(cls, user1, user2):
+#         conversation = cls.objects.filter(participants=user1).filter(participants=user2).first()
+#         if not conversation:
+#             conversation = cls.objects.filter(participants=user2).filter(participants=user1).first()
+#         if not conversation:
+#             conversation = cls.objects.create()
+#             conversation.participants.add(user1, user2)
+#         return conversation
+
+
+# class DirectMessage(models.Model):
+#     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name='messages')
+#     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
+#     receiver = models.TextField() #models.ForeignKey(User, on_delete=models.CASCADE, related_name='recieved_messages')
+#     receiver_id = models.IntegerField()
+#     content = models.TextField()
+#     timestamp = models.DateTimeField(auto_now_add=True)
+
+#     def __str__(self):
+#         return f"DirectMessage {self.id}"
+
+class Chat(models.Model):
+    name = models.CharField(max_length=128)
+    participants = models.ManyToManyField(User, related_name='participants', blank=True)
+
+    def add_participant(self, user):
+        self.participants.add(user)
+        self.save()
+
+    def remove_participant(self, user):
+        self.participants.remove(user)
+        self.save()
+
+    def get_participant_count(self):
+        return self.participants.count()
+    
+    def get_message_count(self):
+        return self.messages.count()
+
+
+class ChatMessage(models.Model):
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name="messages")
+    from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="message_from_me")
+    to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="message_to_you")
+    content = models.CharField(max_length=512)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)
+    deleted_by = models.ManyToManyField(User, related_name='users_deleted_message', blank=True)
+
+
+
+
+
+

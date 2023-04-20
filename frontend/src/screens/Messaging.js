@@ -1,9 +1,19 @@
 import React, { Component } from 'react'
 import {Container,Row} from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert';
-
+import MessagesSettings from "./msgsettings.jsx";
+import Body from "./body.jsx";
 
 export default class Messaging extends Component {
+  constructor (props) {
+		// Calls the parent constructor.
+		super (props);
+		// Global attributes.
+		this.state = {
+			modal: false
+		};
+	}
+
   render() {
     const userInfo =localStorage.getItem('userInfo');
     return (
@@ -21,6 +31,12 @@ export default class Messaging extends Component {
         </Container>
           }
           
+          <div className = "chat-simulation">
+
+          <Body onSettings = {() => this.setState ({modal: true})}/>
+
+          {this.state.modal && <MessagesSettings onClosed = {() => this.setState ({modal: false})}/>}
+        </div>
       </div>
       
     )

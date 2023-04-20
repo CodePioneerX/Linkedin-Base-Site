@@ -19,6 +19,12 @@ from rest_framework import routers
 from rest_framework_simplejwt.views import TokenRefreshView
 from workshare.views import *
 from workshare.views import *
+
+from workshare.views import ProfileView, ProfileCreateView, getProfileView, updateUserProfile
+from workshare.views import JobListingCreateView, JobListingLatestView, JobListingUpdateView, JobListingDeleteView
+from workshare.views import PostView, PostCreateView, PostUpdateView, PostDeleteView, PostLatestView, PostListingCreateView, UserPostsView#, MessageList, MessageDetail, SendMessage, ReceiveMessages, DeleteMessage
+from workshare.views import send_message, create_chat, get_my_chats #ConversationListCreateView, DirectMessageCreateView
+
 from django.conf import settings
 from django.conf.urls.static import static
 from workshare import views
@@ -92,6 +98,9 @@ urlpatterns = [
     path('api/jobs/report/', views.reportJobView, name='report-job'),
     path('api/jobs/report/dismiss/<int:pk>', views.dismissJobReportView, name='dismiss-job-report'),
     path('api/jobs/reported', views.getJobReportsView, name='get-reported-jobs'),
+    path('direct_messages/<user_email>/', get_my_chats, name='direct_messages-list'),
+    path('chat/<int:chat_id>/send_message/', send_message, name='send_message-create'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
