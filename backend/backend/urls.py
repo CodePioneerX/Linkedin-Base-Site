@@ -18,12 +18,11 @@ from django.urls import path, include
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenRefreshView
 from workshare.views import *
-from workshare.views import *
 
-from workshare.views import ProfileView, ProfileCreateView, getProfileView, updateUserProfile
-from workshare.views import JobListingCreateView, JobListingLatestView, JobListingUpdateView, JobListingDeleteView
-from workshare.views import PostView, PostCreateView, PostUpdateView, PostDeleteView, PostLatestView, PostListingCreateView, UserPostsView#, MessageList, MessageDetail, SendMessage, ReceiveMessages, DeleteMessage
-from workshare.views import send_message, create_chat, get_my_chats #ConversationListCreateView, DirectMessageCreateView
+# from workshare.views import ProfileView, ProfileCreateView, getProfileView, updateUserProfile
+# from workshare.views import JobListingCreateView, JobListingLatestView, JobListingUpdateView, JobListingDeleteView
+# from workshare.views import PostView, PostCreateView, PostUpdateView, PostDeleteView, PostLatestView, PostListingCreateView, UserPostsView#, MessageList, MessageDetail, SendMessage, ReceiveMessages, DeleteMessage
+# from workshare.views import send_message, create_chat, get_my_chats #ConversationListCreateView, DirectMessageCreateView
 
 from django.conf import settings
 from django.conf.urls.static import static
