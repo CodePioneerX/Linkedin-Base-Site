@@ -19,7 +19,7 @@ export default class Messaging extends Component {
     return (
       <div>
           {userInfo?
-          <h1>Messaging</h1>:
+          <h1></h1>:
           <Container className="justify-content-md-center padd">
           <Row>
           
