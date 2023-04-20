@@ -1,0 +1,38 @@
+.reportContainer{
+    background-color: white;
+    padding: 5%;
+    border-radius: 10px;
+}
+
+.jobDescriptionPreview {
+    white-space: pre-line;
+    font-size: 1em;
+}
+
+.postContentPreview {
+    white-space: pre-line;
+    font-size: 1em;
+}
+
+.reportFormButton {
+    margin:1%;
+    background-color: #3a0f90;
+    border-color: #3a0f90;
+    color: white;
+    border-width: 2px;
+    border-radius: 100px;
+    box-shadow: 4px 4px 10px #c5c5c5,
+        -4px -4px 10px #ffffff;
+    font-weight: bold;
+    width: 80%;
+}
+
+.reportFormButton:hover {
+    border-color: #3a0f90;
+    border-width: 2px;
+    background-color: white;
+    color:#3a0f90;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+    transition: background-color 0.5s ease-out;
+}

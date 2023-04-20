@@ -3,7 +3,8 @@ import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { userRegisterReducer, 
         userLoginReducer, 
-        userProfileReducer } from './reducers/userReducers'
+        userProfileReducer,
+        updateTokenReducer } from './reducers/userReducers'
 
 import {notificationsReducer,
         notificationsCheckNewReducer,
@@ -19,6 +20,7 @@ const reducer = combineReducers({
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
     userProfile: userProfileReducer,
+    updateToken: updateTokenReducer,
     
     notifications: notificationsReducer,
     notificationsCheckNew: notificationsCheckNewReducer,

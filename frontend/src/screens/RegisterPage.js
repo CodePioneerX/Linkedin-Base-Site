@@ -1,11 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import '../Assets/css/Login.css';
 import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import { useDispatch, useSelector} from 'react-redux';
-import { useNavigate} from 'react-router-dom';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import{ register, login } from '../actions/userActions'
+import{ register } from '../actions/userActions'
 import Alert from 'react-bootstrap/Alert';
 
 

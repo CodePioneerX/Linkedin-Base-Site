@@ -50,11 +50,6 @@
   min-height: 100vh;
 }
 
-/* Position the footer at the bottom of the page and style it */
-footer {
-  margin-top: auto;
-}
-
 /* Add padding and a slightly darker background color to a section */
 .App {
   display: grid;
@@ -64,15 +59,14 @@ footer {
 
 /* Add padding, a slightly darker background color, and reduce the padding-top to a section */
 footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  padding-top: 0.5rem;
-  background-color: rgba(0, 0, 0, 0.05); /* slightly darker background color */
+  background-color: white;
+  padding: 0.5%;
   display: flex;
-  align-items: center; /* center the elements inside the footer */
-  justify-content: center; /* center the elements inside the footer */
-  text-align: center; /* center the text inside the footer */
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #282c34;
 }
 
 /* Add padding and a slightly darker background color to a section */
@@ -244,7 +238,6 @@ footer {
   left: -10px;
 }
 
-
 .file-form-background {
   width: 55%;
   height: 70%;
@@ -309,19 +302,19 @@ footer {
   margin: 10px;
   }
 
-  .file-form-clear-button {
-    cursor:pointer;
-    border-color: #b91313;
-    border-width: 2px;
-    border-radius: 20px;
-    border:none;
-    background-color:#b91313;
-    color:white;
-    font-weight: bold;
-    width: 150px;
-    padding: 10px;
-    margin: 10px;
-    }
+.file-form-clear-button {
+  cursor:pointer;
+  border-color: #b91313;
+  border-width: 2px;
+  border-radius: 20px;
+  border:none;
+  background-color:#b91313;
+  color:white;
+  font-weight: bold;
+  width: 150px;
+  padding: 10px;
+  margin: 10px;
+  }
 
 
 .close-file-form-button{
@@ -347,3 +340,54 @@ footer {
   margin-left: 14px;
 }
 
+#profilePage {
+  background-color: #44599d;
+  padding:5%;
+}
+
+#profileContainer {
+  background-color: white;
+  padding-left: 2%;
+  padding-right: 2%;
+  padding-top: 4%;
+  padding-bottom: 4%;
+  border-radius: 10px;
+}
+
+.profile-button {
+  border-color: #3a0f90;
+  border-width: 4px;
+  background-color: white;
+  color:#3a0f90;
+  border-radius: 100px;
+  box-shadow: 4px 4px 10px #aeaeae,
+      -4px -4px 10px #ffffff;
+}
+
+.profile-button:hover {
+  background-color: #3a0f90;
+  color:white;
+  border-color: #3a0f90;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+  transition: background-color 0.5s ease-out;
+}
+
+
+
+.profile-card {
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+}
+
+.profile-main-card{
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+}
+
+@media (max-width: 750px) {
+  
+  .profile-button{
+    width: 300px;
+    margin:2%;
+  }
+
+}

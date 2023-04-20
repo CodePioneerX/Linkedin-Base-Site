@@ -1,5 +1,5 @@
 import '../Assets/css/Settings.css';
-import React, {useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import { Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import Alert from 'react-bootstrap/Alert';
 import { useDispatch, useSelector } from 'react-redux';
@@ -45,8 +45,7 @@ function Settings() {
   };
 
     return (
-      <div>
-      <h1>Settings</h1>
+      <div className='settingsPage'>
       <div className='settingsForm'>
         <Form className='changePasswordForm' onSubmit={submitHandler}>
           <span>
@@ -64,6 +63,8 @@ function Settings() {
                 {passwordChangeSuccess}{" "}
               </Alert>)}
           </span>
+          <h1>Settings</h1>
+          <hr style={{ width: "100%" }}/>
           <h3>Reset Password</h3>
         <FormGroup>
           <Label for="oldPassword">Old Password</Label>

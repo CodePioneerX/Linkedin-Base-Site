@@ -112,6 +112,12 @@ hr {
     padding-bottom: 1.5%;
 }
 
+#userHomePage{
+    padding-bottom: 4%;
+    padding-top: 4%;
+    padding-left: 8%;
+    padding-right: 8%;
+}
 
 @media (max-width: 825px) {
     /* CSS that should be displayed if width is equal to or less than 800px */
@@ -144,4 +150,11 @@ hr {
     }
 
   }
+
+@media (max-width: 770px){
+    #userHomePage{
+        padding-left: 3%;
+        padding-right: 3%;
+    }
+}
 

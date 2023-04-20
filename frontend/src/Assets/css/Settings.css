@@ -1,6 +1,9 @@
-h1 {
-    padding: 50px 10px 50px 30px;
+.settingsPage {
+    background-color: #44599d;
+    height:100vh;
+    padding-top: 5%;
 }
+
 
 h3 {
     padding-top: 15px;
@@ -9,7 +12,7 @@ h3 {
 
 .changePasswordForm {
     width: 95%;
-    padding: 30px;
+    padding: 5%;
     max-width: 1200px;
     background-color: white;
     height: 70%;
@@ -18,7 +21,6 @@ h3 {
     justify-content: center;
     border-radius: 25px;
     display:block;
-    padding-bottom: 30px;
     margin: auto;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -39,13 +41,27 @@ h3 {
     max-width: 500px;
 }
 
+/* Styling for the save button in edit mode */
 #submit {
-    background-color: #3a0f90;
-    padding: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
-}
+    border-color: #3a0f90;
+    border-width: 2px;
+    background-color: white;
+    color:#3a0f90;
+    border-radius: 100px;
+    width: 25%;
+    box-shadow: 4px 4px 10px #c5c5c5,
+        -4px -4px 10px #ffffff;
+    font-weight: bold;
+  }
 
+  #submit:hover {
+    background-color: #3a0f90;
+    border-color: #3a0f90;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+    transition: background-color 0.5s ease-out;
+    color: white;
+  }
 .settingsForm {
     display: "flex"; 
     flex-direction: "column"; 
@@ -67,4 +83,10 @@ h3 {
     padding-bottom: 30px;
     margin: auto;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+@media (max-width: 946px) {
+    #submit {
+        width: 63%;
+    }
 }

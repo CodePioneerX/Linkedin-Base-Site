@@ -30,8 +30,10 @@ import SearchScreen from "./screens/SearchScreen";
 import JobApplication from "./screens/JobApplication";
 import JobApplicationReview from "./screens/JobApplicationReview";
 import ApplicationDetail from "./screens/ApplicationDetail";
+import AdminUserScreen from "./screens/AdminUserScreen";
+import AdminPostScreen from "./screens/AdminPostScreen";
+import AdminJobScreen from "./screens/AdminJobScreen";
 import  {Provider} from 'react-redux';
-import userInfoFromStorage from './store'
 import store from './store';
 
 
@@ -106,6 +108,15 @@ const router = createBrowserRouter([
   },{
     path: "/applicationDetail",
     element: <ApplicationDetail />
+  },{
+    path: "/admin/moderate/users",
+    element: <AdminUserScreen/>
+  },{
+    path: "/admin/moderate/posts",
+    element: <AdminPostScreen/>
+  },{
+    path: "/admin/moderate/jobs",
+    element: <AdminJobScreen/>
   }
 ]);
 

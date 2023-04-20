@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import WorkShare, Profile, Post, JobListing, Comment, Connection, Recommendations, Document, Notification, JobAlert, JobApplication
+from django.contrib.auth.models import User, Group
+from .models import *
 
 # initialize Document instances for use in JobListing required_docs
 Document.objects.get_or_create(document_type='Resume')
@@ -8,6 +9,9 @@ Document.objects.get_or_create(document_type='Letter of Recommendation')
 Document.objects.get_or_create(document_type='Portfolio')
 Document.objects.get_or_create(document_type='Transcript')
 
+
+Reported, created = Group.objects.get_or_create(name='Reported')
+
 class WorkShareAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'completed')
     
@@ -15,13 +19,13 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = ('name', 'title', 'about', 'image', 'experience')
     
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'content', 'image', 'likes', 'author', 'created_at')
+    list_display = ('id', 'title', 'content', 'image', 'author', 'created_at', 'reported')
 
 class JobListingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'remote', 'employment_term', 'job_type', 'image', 'likes', 'salary', 'salary_type', 'location', 'status', 'author', 'get_required_docs', 'created_at', 'deadline', 'listing_type')
+    list_display = ('id', 'title', 'remote', 'employment_term', 'job_type', 'image', 'salary', 'salary_type', 'location', 'status', 'author', 'get_required_docs', 'created_at', 'deadline', 'listing_type')
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('content', 'author', 'created_at')
+    list_display = ('author', 'content', 'post', 'created_at')
 
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ('id', 'sender', 'recipient', 'title', 'content', 'type', 'unread', 'created_at', 'content_type', 'object_id', 'content_object')
@@ -41,6 +45,18 @@ class JobAlertAdmin(admin.ModelAdmin):
 class JobApplicationAdmin(admin.ModelAdmin):
     list_display = ('user', 'job_post')
 
+class LikesAdmin(admin.ModelAdmin):
+    list_display = ('user', 'post')
+
+class UserReportAdmin(admin.ModelAdmin):
+    list_display = ('id', 'sender', 'recipient')
+
+class PostReportAdmin(admin.ModelAdmin):
+    list_display = ('id', 'sender', 'post')
+
+class JobReportAdmin(admin.ModelAdmin):
+    list_display = ('id', 'sender', 'job')
+
 # Register your models here.
 
 admin.site.register(WorkShare, WorkShareAdmin)
@@ -54,3 +70,7 @@ admin.site.register(Recommendations, RecommendationsAdmin)
 admin.site.register(Document, DocumentAdmin)
 admin.site.register(JobAlert, JobAlertAdmin)
 admin.site.register(JobApplication, JobApplicationAdmin)
+admin.site.register(Likes, LikesAdmin)
+admin.site.register(UserReport, UserReportAdmin)
+admin.site.register(PostReport, PostReportAdmin)
+admin.site.register(JobReport, JobReportAdmin)

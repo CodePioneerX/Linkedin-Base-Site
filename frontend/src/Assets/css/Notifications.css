@@ -1,3 +1,59 @@
+.background {
+    background-color: #44599d;
+    padding: 5% 15%;
+    min-height: 100vh;
+}
+
+.formContainer {
+    background-color: white;
+    padding-left: 4%;
+    padding-right: 4%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    border-radius: 10px;
+}
+
+h1 {
+    margin-left: 4%;
+    font-size: 3em;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.notificationsButton {
+    min-width: 150px;
+    font-size:0.9em;
+    margin:1%;
+    background-color: white;
+    border-color: #3a0f90;
+    color:#3a0f90;
+    border-width: 2px;
+    border-radius: 100px;
+    box-shadow: 4px 4px 10px #c5c5c5,
+        -4px -4px 10px #ffffff;
+        font-weight: bold;
+}
+
+#notificationsButton:hover {
+    border-color: #3a0f90;
+    border-width: 2px;
+    color: white;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+    transition: background-color 0.5s ease-out;
+}
+
+#markAsReadButton:hover {
+    border-color: #3a0f90;
+    background-color: #3a0f90;
+}
+
+#clearButton:hover {
+    border-color:red;
+    background-color: red;
+}
+
+
 .read {
     color: lightslategray;
 }
@@ -11,4 +67,40 @@
 .notif-content {
     text-align: 'left';
     padding:'15px 0';
+}
+
+#dropdownButton {
+    background: #3a0f90;
+    border-color: #3a0f90;
+}
+
+#dropdownButton:hover {
+    background: #44599d;
+    border-color: #44599d;
+}
+
+h4 {
+    font-size: 1.25em;
+}
+
+p {
+    font-size: 0.75em;
+}
+
+@media (max-width: 500px){
+
+    .background {
+        padding: 8% 3%;
+    }
+
+    .formContainer {
+        background-color: white;
+        padding-left: 2%;
+        padding-right: 2%;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
 }

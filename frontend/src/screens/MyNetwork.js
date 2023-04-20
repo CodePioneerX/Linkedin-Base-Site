@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import Newsfeed from '../components/Newsfeed'
+import { EditPostForm } from '../components/EditPostForm';
+import { ReportPostForm } from '../components/ReportPostForm';
 import { Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import ConnectionCard from '../components/ConnectionCard';
 import axios from "axios";
+import '../Assets/css/Network.css';
 
 
 export const MyNetwork =()=> {
@@ -19,6 +22,7 @@ export const MyNetwork =()=> {
     const [unconnectedList, setUnconnectedList] = useState("");
     const [postEditor, setPostEditor] = useState(false);
     const [post, setPost] = useState('');
+    const [reportEditor, setReportEditor] = useState(false)
     
     //retrieve the connection list from the back end
     const getConnections = async () => {
@@ -84,6 +88,14 @@ export const MyNetwork =()=> {
       setPostEditor(false)
     }
 
+    const reportEditorMode = () => {
+      setReportEditor(true)
+    }
+  
+    const quitReportEditor = () => {
+      setReportEditor(false)
+    }
+
     useEffect(() => {
       getPendingConnections();
       getPendingSentConnections();
@@ -92,18 +104,19 @@ export const MyNetwork =()=> {
     }, []) 
 
     return (
-      <div>
+      <div id='networkPage'>
+        <div id='networkContainer'>
         {userInfo?
-          <div >
+          <div className="mb-4">
           <Container>
             {(pendingConnectionList.length > 0 || pendingSentConnectionList.length > 0) &&
               <>
-                <h1 style={{marginTop:'1rem'}}>Pending Connections</h1>
+                <h2 className='heading'>Pending Connections</h2>
               </> 
             }
             {pendingConnectionList.length > 0 && 
             <>
-              <h2 style={{marginTop:'1rem'}}>Received</h2>
+              <h3 className='heading3'>Received</h3>
               {pendingConnectionList.map(connection => (
                 <ConnectionCard key={connection.id} senderId={connection.sender} recipientId={connection.recipient} status={connection.status} type={'received'}/>
               ))
@@ -112,17 +125,17 @@ export const MyNetwork =()=> {
             }
             {pendingSentConnectionList.length > 0 && 
             <>
-              <h2 style={{marginTop:'1rem'}}>Sent</h2>
+              <h3 className='heading3' id='sentHeading'>Sent</h3>
               {pendingSentConnectionList.map(connection => (
                 <ConnectionCard key={connection.id} senderId={connection.sender} recipientId={connection.recipient} status={connection.status} type={'sent'}/>
               ))
               }
             </> 
             }
-            <div style={{marginBottom:'5rem'}}>
+            <div>
               {connectionList.length > 0 && 
               <>
-                <h1 style={{marginTop:'1rem'}}>My Connections</h1>
+                <h2 className='heading'>My Connections</h2>
                 {connectionList.map(connection => userInfo.id == connection.sender ? 
                 <>
                   <ConnectionCard key={connection.id} senderId={connection.sender} recipientId={connection.recipient} status={connection.status} type={'sent'}/>
@@ -134,19 +147,14 @@ export const MyNetwork =()=> {
               }
               {unconnectedList.length > 0 && 
               <>
-                <h1 style={{marginTop:'1rem'}}>People You May Know</h1>
+                <h2 className='heading'>People You May Know</h2>
                 {unconnectedList.map(user => (
                   <ConnectionCard key={user.id} recipientId={user.id} senderId={userInfo.id} type={'possible'}/>
                 ))}
               </> 
               }
             </div>
-          <hr/>
-                <Link className='btn btn-primary' to='/create/post/' state={{from: "/network"}}>
-                  Create a Post
-                </Link>
           </Container>
-          <Newsfeed id={userInfo.id} author={userInfo.id} edit={postEditorMode} quit={quitPostEditor} setpost={setPost} />
           </div>
           :
           <Container className="justify-content-md-center padd">
@@ -154,9 +162,11 @@ export const MyNetwork =()=> {
               <Alert  className='alertLogin' key='primary' variant='primary'>
                   <h5>You are not signed in! Please <a href="/login">Sign in</a> or <a href="/register">Register</a>!</h5>
               </Alert>
-          </Row>
+            </Row>
           </Container>
         }
+
+        </div>
       </div>
     )
   

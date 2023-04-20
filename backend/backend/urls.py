@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from rest_framework_simplejwt.views import TokenRefreshView
 from workshare.views import *
 from django.conf import settings
 from django.conf.urls.static import static
@@ -30,6 +31,7 @@ urlpatterns = [
     path('api/login/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
     path('api/changePassword/<int:pk>', views.changePassword, name='changePassword'),
     path('api/changePasswordForReset/<int:pk>', views.changePasswordForReset, name='changePasswordForReset'),
@@ -45,7 +47,7 @@ urlpatterns = [
     path('api/post/', PostCreateView.as_view(), name='post_create'),
     path('api/post/update/<int:pk>', PostUpdateView, name='post_update'),
     path('api/post/delete/<int:pk>', PostDeleteView, name='delete_post'),
-    path('api/posts/user/<int:pk>', UserPostsView.as_view(), name='user_posts'),
+    path('api/posts/user/<int:pk>', PersonalNewsfeedView, name='user_posts'),
     path('api/create_post/',PostListingCreateView.as_view(), name='post_listing_create'),
     path('api/create_job/', JobListingCreateView.as_view(), name='job_listing_create'),
     path('api/job/update/<int:pk>', JobListingUpdateView, name='job_listing_update'),
@@ -86,6 +88,19 @@ urlpatterns = [
     path('api/my_job_applications/cancel/<int:pk>/', cancelMyJobApplication, name='cancel_my_job_application'),
     path('api/documentsUpload/<int:pk>/', uploadDocuments, name='upload_documents'),
     path('api/documentRemove/<int:pk>/', removeDocument, name='remove_document'),
+    path('api/posts/comment/<int:post_id>/', createComment, name='create_comment'),
+    path('api/posts/like/<int:post_id>/', likePost, name='like_post'),
+    path('api/users/report/', views.reportUserView, name='report-user'),
+    path('api/users/report/dismiss/<int:pk>', views.dismissUserReportView, name='dismiss-user-report'),
+    path('api/users/reported', views.getReportedUsersView, name='get-reported-users'),
+    path('api/users/reports/<int:pk>', views.getUserReportMessagesView, name='get-reported-user-messages'),
+    path('api/users/ban/<int:pk>', views.banUserView, name='ban-user'),
+    path('api/posts/report/', views.reportPostView, name='report-post'),
+    path('api/posts/report/dismiss/<int:pk>', views.dismissPostReportView, name='dismiss-post-report'),
+    path('api/posts/reported', views.getPostReportsView, name='get-reported-posts'),
+    path('api/jobs/report/', views.reportJobView, name='report-job'),
+    path('api/jobs/report/dismiss/<int:pk>', views.dismissJobReportView, name='dismiss-job-report'),
+    path('api/jobs/reported', views.getJobReportsView, name='get-reported-jobs'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

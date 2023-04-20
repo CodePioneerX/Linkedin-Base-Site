@@ -1,0 +1,132 @@
+#networkPage {
+    background-color: #44599d;
+    padding: 5% 8% 5% 8%;
+}
+
+#networkContainer {
+    background-color: white;
+    padding: 2% 5% 5% 5%;
+    border-radius: 10px;
+    margin: 3% 9%;
+}
+
+.networkCard {
+    padding-bottom: 1rem;
+    border-width: 0px;
+}
+
+.networkCardBody {
+    border-radius: 20px; 
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    padding: 18px 10px;  
+    background-color: white;
+    border: none;
+    margin-bottom: 0px;
+    width: 105%;
+    height: 90px
+}
+
+.heading {
+    margin-top: 4%;
+    margin-bottom: 2%;
+    font-size: 2em;
+}
+
+.heading3 {
+    font-size:1.5em;
+}
+
+#sentHeading {
+    margin-top: 2%;
+    font-size: 1.5em;
+}
+
+#cardTitle {
+    font-size: 1.25em;
+    color: black;
+}
+
+#cardTitle:hover {
+    text-decoration:#3a0f90;
+}
+
+.connectionIcon {
+    height:3em;
+    width:3em;
+    color: #3a0f90;
+}
+
+#checkIcon:hover {
+    color: rgb(44, 194, 44);
+}
+
+
+#crossIcon:hover {
+    color: red;
+}
+
+#cancelIcon:hover {
+    color: red;
+}
+
+#disconnectIcon:hover {
+    color: red;
+}
+
+#addConnectionIcon:hover {
+    color: dodgerblue;
+}
+
+
+@media (max-width: 767px) {
+    #networkContainer {
+        margin: 1%;
+    }
+
+    #networkPage {
+        background-color: #44599d;
+        padding: 3% 5% 3% 5%;
+    }
+
+    #cardTitle {
+        font-size: 0.75em;
+    }
+
+    .connectionIcon {
+        height:2em;
+        width:2em;
+    }
+
+    .heading {
+        font-size: 1.5em;
+    }
+    
+    .heading3 {
+        font-size:1.25em;
+    }
+    
+    #sentHeading {
+        margin-top: 2%;
+        font-size: 1.25em;
+    }
+
+  }
+
+  @media (max-width: 500px) {
+    #checkIcon {
+        margin-right: 5px;
+    }
+    
+    #crossIcon {
+        padding-right: 0px;
+    }
+
+    #cardTitle {
+        font-size: 0.6em;
+    }
+
+    .connectionIcon {
+        height:1.75em;
+        width:1.75em;
+    }
+  }

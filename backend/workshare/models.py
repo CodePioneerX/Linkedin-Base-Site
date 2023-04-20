@@ -92,13 +92,6 @@ class Recommendations(models.Model):
     recipient = models.ForeignKey(Profile, on_delete= models.CASCADE, related_name='received_recommendations')
     description = models.TextField(default='', blank=True)
     
-# The Comment class creates and designs the model for comments. A comment will consist of 3 data fields: the author, the content, and the time of posting. 
-class Comment(models.Model):
-    #list of data fields and their accepted format are defined here.
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)    
-    
 # The Post class creates and designs the model for posts. A post will consist 7 data fields, inlcuding the time of posting.     
 class Post(models.Model):
     #list of data fields and their accepted format are defined here.
@@ -106,13 +99,40 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     image = models.ImageField(upload_to='images/', null=True, blank=True)
-    comments = models.ManyToManyField('Comment', blank=True)
-    likes = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    reported = models.BooleanField(default=False)
     
-    #this function defines what will be returned when the class is printed. The code below will return the author's email.
+    @property
+    def num_likes(self):
+        num_likes = Likes.objects.filter(post=self).count()
+        return num_likes
+
+    @property
+    def num_comments(self):
+        num_comments = Comment.objects.filter(post=self).count()
+        return num_comments
+    
     def __str__(self):
-        return self.author.email
+        return self.author.email + ': ' + self.title
+
+# The Comment class creates and designs the model for comments. A comment will consist of 4 data fields: the author, the content, and the time of posting. 
+class Comment(models.Model):
+    #list of data fields and their accepted format are defined here.
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_comment')
+    content = models.TextField(default=" ")
+    created_at = models.DateTimeField(auto_now_add=True)  
+
+    def __str__(self):
+        return self.author.email + ': ' + self.content
+
+#The Likes model represents the amount of like for a post.
+class Likes(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_likes')
+
+    def __str__(self):
+        return self.user.email + ': ' + self.post.title
     
 # The JobListing class creates and designs the model for job listings. A job listing will consist of 13 data fields, including the time of posting.   
 class JobListing(models.Model):
@@ -128,8 +148,6 @@ class JobListing(models.Model):
     remote = models.BooleanField(default=False)
     company = models.CharField(max_length=255)
     image = models.ImageField(upload_to='images/', null=True, blank=True)
-    comments = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True)
-    likes = models.IntegerField(default=0)
     location = models.CharField(max_length=255)
     status = models.BooleanField(default=True)
     required_docs = models.ManyToManyField('Document', default=None, blank=True)
@@ -157,6 +175,8 @@ class JobListing(models.Model):
         default=INTERNAL
     )
     link = models.TextField(blank=True)
+
+    # reported = models.BooleanField(default=False, blank=False, null=False)
 
     def get_required_docs(self):
         return ",".join([str(p) for p in self.required_docs.all()])
@@ -315,3 +335,27 @@ class JobApplication(models.Model):
         ('reject', 'Inactive'),
     )
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='true')
+
+class UserReport(models.Model):
+    sender = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE)
+    recipient = models.ForeignKey(User, related_name='recipient', on_delete=models.CASCADE)
+    message = models.TextField(blank=False, null=False)
+
+    def __str__(self):
+        return self.sender.email + ' reported ' + self.recipient.email 
+
+class PostReport(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, related_name='reported_post', on_delete=models.CASCADE)
+    message = models.TextField(blank=False, null=False)
+
+    def __str__(self):
+        return self.sender.email + ' reported post: ' + self.post.title
+
+class JobReport(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    job = models.ForeignKey(JobListing, related_name='reported_job', on_delete=models.CASCADE)
+    message = models.TextField(blank=False, null=False)
+
+    def __str__(self):
+        return self.sender.email + ' report job: ' + self.job.title + ' at ' + self.job.company

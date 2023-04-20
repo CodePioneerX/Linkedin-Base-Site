@@ -1,5 +1,6 @@
 // Import axios for making HTTP requests
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 // Import action constants from userConstants.js
 import{
@@ -44,7 +45,48 @@ import{
     REMOVE_DOCUMENT_REQUEST,
     REMOVE_DOCUMENT_SUCCESS,
     REMOVE_DOCUMENT_FAIL,
+    
+    UPDATE_TOKEN_REQUEST,
+    UPDATE_TOKEN_SUCCESS,
+    UPDATE_TOKEN_FAIL,
 } from '../constants/userConstants'
+
+export const updateToken = () => async (dispatch, getState) => {
+    try {
+
+        dispatch({
+            type: UPDATE_TOKEN_REQUEST
+        })
+
+        const { 
+            userLogin: { userInfo },
+        } = getState()
+
+        const body = {'refresh': userInfo.refresh}
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+            }
+        }
+    
+        let response = await axios.post(`http://localhost:8000/api/token/refresh/`, body, config)
+
+        dispatch({
+            type: UPDATE_TOKEN_SUCCESS,
+            payload: {'refresh': userInfo.refresh, 'access': response.data.access}
+        })
+        
+    } catch(error) {
+        dispatch({
+            type: UPDATE_TOKEN_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+    }
+    
+}
 
 // Action creator to get profile details of a user with the given ID
 export const getProfileDetails = (id) => async (dispatch, getState) => {

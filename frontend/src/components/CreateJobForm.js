@@ -88,24 +88,15 @@ export const CreateJobForm = () => {
         })
         setRequiredDocs(newDocs)
       }
-    
+      
     // Render form for creating job listing
     return (
-    <Container className="justify-content-md-center padd">
+    <div style={{backgroundColor: "#44599d"}}>
+        <Container className="justify-content-md-center padd">
         {userInfo ? (
-            <Container>
+            <Container className='editPostContainer'>
             <h2>Create a Job Listing</h2>
             <Form onSubmit={submitHandler}>
-                <Row className='mb-4'>
-                    <Col>
-                        <Label className='labelE' for='contact-name'>Contact Name</Label>
-                        <Input name='contact-name' disabled id='contact-name' label='Contact name' value={userLogin.userInfo.username} onChange={(e)=> setAuthor(e.target.value)} />
-                    </Col>
-                    <Col>
-                        <Label className='labelE' for='contact-email'>Contact Email</Label>
-                        <Input name='contact-email' disabled id='contact-email' value={userLogin.userInfo.email} onChange={(e)=> setEmail(e.target.value)}/>
-                    </Col>
-                </Row>
                 <Row className='mb-4'>
                     <Col>
                         <Label className='labelE' for='job-title'>Job Title</Label>
@@ -195,18 +186,18 @@ export const CreateJobForm = () => {
                     </Col>
                 </Row >
                 {possible_docs.map((doc, index) => (
-                    <Row key={index}>
-                        <Col xs='2'>
+                    <Row key={index} className='mb-4'>
+                        <Col xs='5'>
                             <Input className='form-doc-input' type='checkbox' name={doc} id={doc} checked={required_docs[doc]} onChange={() => updateRequiredDocs(doc)} />
                         </Col>
-                        <Col xs='10'>
-                            <Label className='labelE' style={{position:'relative', left:'-100px'}} for={doc}>{`${doc}`} Required</Label>
+                        <Col xs='15'>
+                            <Label className='labelE' id='docLabelE' style={{position:'relative', left:'-100px'}} for={doc}>{`${doc}`} Required</Label>
                         </Col>
                     </Row>
                 ))}
                 <Row className='mb-4'></Row>
                 <Row className='mb-4'>
-                    <Input className='profile-button' type='submit' label='Create a Job'/>
+                    <Input className='submit-job-post-button' type='submit' label='Create a Job'/>
                 </Row>
             </Form>
           </Container>) : (
@@ -221,7 +212,8 @@ export const CreateJobForm = () => {
 
     </Container>
         
-    )
+
+    </div>    )
 
 }
 
