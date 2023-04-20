@@ -78,6 +78,8 @@ class Profile(models.Model):
     projects = models.TextField(default='')
     awards = models.TextField(default='')
     languages = models.TextField(default='')
+    resume = models.FileField(upload_to="documents/", blank=True)
+    cover_letter = models.FileField(upload_to="documents/", blank=True)
     
     #this function defines what will be returned when the class is printed. The code below will return the name.
     def __str__(self):

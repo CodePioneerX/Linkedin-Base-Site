@@ -1462,3 +1462,34 @@ def cancelMyJobApplication(request, pk):
         return JsonResponse({'message': 'Job application has already been deleted or rejected.'}, status=status.HTTP_400_BAD_REQUEST)
     job_application.delete()
     return Response({'message': 'Job application request cancelled successfully.'}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def uploadDocuments(request, pk):
+
+    data = request.data
+
+    try:
+        user = get_object_or_404(User, pk=pk)
+    except User.DoesNotExist:
+        return Response({"error":"The user account you are trying to access with cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+
+    try: 
+        profile = get_object_or_404(Profile, user=user)
+    except Profile.DoesNotExist:
+        return Response({"error":"The profile you are attempting to upload documents to cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    if 'resume' not in data:
+        resume = ''
+    else:
+        resume = data['resume']
+        profile.resume = resume
+    
+    if 'coverLetter' not in data:
+        coverLetter = ''
+    else:
+        coverLetter = data['coverLetter']
+        profile.cover_letter = coverLetter
+    
+    profile.save()
+
+    return Response({"detail":"The documents have been uploaded to your profile."}, status=status.HTTP_200_OK)

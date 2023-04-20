@@ -398,7 +398,7 @@ export const update_profile = (uID, name, title, city, about, experience, educat
 }
 
 // This function updates a user's profile on the server
-export const upload_document = (uID, resume, cover_letter) => async (dispatch) => {
+export const upload_document = (uID, resume, coverLetter) => async (dispatch) => {
     try {
         
         // Dispatches an UPDATE_PROFILE_REQUEST action to start the request
@@ -413,9 +413,9 @@ export const upload_document = (uID, resume, cover_letter) => async (dispatch) =
         }
         
         // Sends a POST request to upload user's resume and cover letter
-        const { data } = await axios.post(`http://localhost:8000/api/documentsUpload/` + uID, 
+        const { data } = await axios.post(`http://localhost:8000/api/documentsUpload/${uID}/`, 
             {'resume': resume, 
-            'cover_letter': cover_letter, 
+            'coverLetter': coverLetter, 
             }, 
             config)
 
