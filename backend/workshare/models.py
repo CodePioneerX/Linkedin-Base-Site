@@ -326,33 +326,6 @@ class JobReport(models.Model):
         return self.sender.email + ' report job: ' + self.job.title + ' at ' + self.job.company
 
 
-# class Conversation(models.Model):
-#     participants = models.ManyToManyField(User, related_name="conversations")
-
-#     def __str__(self):
-#         return f"Conversation {self.id}"
-
-#     @classmethod
-#     def get_or_create_conversation(cls, user1, user2):
-#         conversation = cls.objects.filter(participants=user1).filter(participants=user2).first()
-#         if not conversation:
-#             conversation = cls.objects.filter(participants=user2).filter(participants=user1).first()
-#         if not conversation:
-#             conversation = cls.objects.create()
-#             conversation.participants.add(user1, user2)
-#         return conversation
-
-
-# class DirectMessage(models.Model):
-#     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name='messages')
-#     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
-#     receiver = models.TextField() #models.ForeignKey(User, on_delete=models.CASCADE, related_name='recieved_messages')
-#     receiver_id = models.IntegerField()
-#     content = models.TextField()
-#     timestamp = models.DateTimeField(auto_now_add=True)
-
-#     def __str__(self):
-#         return f"DirectMessage {self.id}"
 
 class Chat(models.Model):
     name = models.CharField(max_length=128)

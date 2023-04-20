@@ -6,6 +6,8 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from django.core.exceptions import MultipleObjectsReturned
+
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework import viewsets
@@ -1222,6 +1224,27 @@ def getProfileView(request, pk):
     }
 
     return Response(data)
+
+
+@api_view(['GET'])
+def getProfileViewviaEmail(request, email):
+    profile = get_object_or_404(Profile, email=email)
+    profile_serializer = ProfileSerializer(profile)
+
+    sent_recommendations = Recommendations.objects.filter(sender=profile)
+    received_recommendations = Recommendations.objects.filter(recipient=profile)
+
+    sent_recommendations_serializer = RecommendationsSerializer(sent_recommendations, many=True)
+    received_recommendations_serializer = RecommendationsSerializer(received_recommendations, many=True)
+
+    data = {
+        "profile": profile_serializer.data,
+        "sent_recommendations": sent_recommendations_serializer.data,
+        "received_recommendations": received_recommendations_serializer.data
+    }
+
+    return Response(data)
+
 
 # This function is intended to register a user
 @api_view(['POST'])
