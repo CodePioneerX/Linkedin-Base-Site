@@ -8,6 +8,11 @@
 * @author: Obrymec
 * @version: 0.4.6
 */
+
+body {
+  background-color: #485c9c !important;
+}
+
 path.settings {
   stroke-linejoin: round;
   stroke-linecap: round;
@@ -48,7 +53,7 @@ div.chat-workspace {
 
 
       .chat-container{
-        padding-top: 9rem !important;
+        padding-top: 2rem !important;
         padding-bottom: 4rem !important;
       }
       /* Media query for mobile devices */
