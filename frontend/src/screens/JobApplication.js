@@ -78,7 +78,7 @@ const JobApplication = () => {
    //Retrieves the user's profile information from the backend API using the user's ID
    const getProfile = async () => {
       const { data } = await axios.get(
-      `http://localhost:8000/api/profile/` + userInfo.id
+      `http://localhost:8000/api/my_profile/${userInfo.id}`
       );
       setProfile(data.profile);
    };
@@ -110,8 +110,11 @@ const JobApplication = () => {
       setProjects(profile.projects);
       setAwards(profile.awards);
       setLanguages(profile.languages);
-      //setResume(profile.resume);
-      //setCoverLetter(profile.coverLetter);
+      setResume(profile.resume);
+      setCoverLetter(profile.cover_letter);
+
+      console.log(profile.resume)
+      console.log(profile.cover_letter)
    }
 
    const submitHandler = (e) => {
@@ -141,7 +144,7 @@ const JobApplication = () => {
                   <h2>{job.company}</h2>
                </div>
                <Button className='customButton' id='autoFillButton' variant='secondary' onClick={autofillHandler}>Autofill using my profile information</Button>
-               <Form className='jobApplicationForm'>
+               <Form className='jobApplicationForm' onSubmit={submitHandler}>
                   <hr/>
                   <Label className='personalInformation' for="personalInformation"><h3>Personal Information</h3></Label>
                   <FormGroup>
@@ -154,7 +157,7 @@ const JobApplication = () => {
                   </FormGroup>
                   <FormGroup>
                      <Label for="telephone">Phone Number</Label>
-                     <Input type="tel" name="telephone" id="telephone" placeholder="Enter your phone number" required value={telephone} onChange={(e)=> setTelephone(e.target.value)}/>
+                     <Input type="tel" name="telephone" id="telephone" placeholder="Enter your phone number (no spaces between digits)" required value={telephone} onChange={(e)=> setTelephone(e.target.value)}/>
                   </FormGroup>
                   <FormGroup >
                      <Label for="city">City</Label>
@@ -236,8 +239,16 @@ const JobApplication = () => {
                         {doc.required && 
                            <FormGroup>
                               <Label className={doc.type} for={doc.type}><h3>Upload {doc.type}</h3></Label>
-                              {doc.type === "Resume" && <Input type="file" name={doc.type} id={doc.type} onChange={handleResumeChange} required/>}
-                              {doc.type === "Cover Letter" && <Input type="file" name={doc.type} id={doc.type} onChange={handleCoverLetterChange} required/>}
+                              {doc.type === "Resume" && 
+                              <>
+                                 {profile.resume === resume && <p>Your resume on file will be submitted with this Application.</p>}
+                                 <Input type="file" name={doc.type} id={doc.type} onChange={handleResumeChange} required={profile.resume !== resume}/> 
+                              </>}
+                              {doc.type === "Cover Letter" &&
+                              <>
+                                 {profile.cover_letter === coverLetter && <p className="ml-1">Your cover letter on file will be submitted with this Application.</p>}
+                                 <Input type="file" name={doc.type} id={doc.type} onChange={handleCoverLetterChange} required={profile.cover_letter !== coverLetter}/>
+                              </>}
                               {doc.type === "Letter of Recommendation" && <Input type="file" name={doc.type} id={doc.type} onChange={handleRecommendationLetterChange} required/>}
                               {doc.type === "Portfolio" && <Input type="file" name={doc.type} id={doc.type} onChange={handlePortfolioChange} required/>}
                               {doc.type === "Transcript" && <Input type="file" name={doc.type} id={doc.type} onChange={handleTranscriptChange} required/>}
@@ -259,7 +270,7 @@ const JobApplication = () => {
                   <p>Before submitting your application, please verify that the information provided above is both accurate and genuine.</p>
                   {submitStatus?.includes("successfully") ? 
                      <Button id='apply' className='customDisabledButton' disabled>Application Submitted</Button>
-                     : <Button id='apply' className='customButton' type='submit' onClick={submitHandler}>Send Application Now</Button>}
+                     : <Button id='apply' className='customButton' type='submit'>Send Application Now</Button>}
                </Form>
                
             </div>
