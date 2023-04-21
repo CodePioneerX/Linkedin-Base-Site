@@ -7,7 +7,7 @@ import { upload_document, remove_document } from '../actions/userActions'
 
 
 
-const FileForm = ({ fileForm ,setFileForm, oldResume, oldCoverLetter }) => {
+const FileForm = ({ fileForm, setFileForm, profile}) => {
 
 //Get the user information from the store
 const userLogin = useSelector((state) => state.userLogin);
@@ -20,8 +20,8 @@ const coverLetterRef = useRef();
 //Holds and sets the value
 const [resume, setResume] = useState();    
 const [coverLetter, setCoverLetter]= useState(); 
-const [resumeRemoved, setResumeRemoved] = useState(false)
-const [coverLetterRemoved, setCoverLetterRemoved] = useState(false)
+const [resumeRemoved, setResumeRemoved] = useState(false);
+const [coverLetterRemoved, setCoverLetterRemoved] = useState(false);
 
 //Handle the submission, send the file to the backend
 const FileUpload = (e)=>{
@@ -33,6 +33,8 @@ const FileUpload = (e)=>{
       }
     }
     dispatch(upload_document(userInfo.id, resume, coverLetter))
+    setResumeRemoved(false)
+    setResumeRemoved(false)
     setFileForm(prev => !prev)
 }
 
@@ -57,6 +59,12 @@ const removeDocument = (e, type) => {
 
 }
 
+const closeForm = () => {
+  setResumeRemoved(false)
+  setResumeRemoved(false)
+  setFileForm(prev => !prev)
+}
+
 return (
    <>
    {fileForm?
@@ -67,12 +75,12 @@ return (
           <FormGroup className='FileInputContent'>
             <h2 className='FileInputText'>Resume</h2>
             <Label className='Resume' for="Resume"/>
-            {oldResume ?
+            {profile.resume ?
             <>
               {!resumeRemoved &&
               <>
                 <div>
-                  <p>You've already uploaded a resume, you can <a href={'http://localhost:8000'+oldResume} download>download it here</a>.</p>
+                  <p>You've already uploaded a resume, you can <a href={'http://localhost:8000'+profile.resume} download>download it here</a>.</p>
                 </div>
                 <div>
                     <p>Click <a href={''} onClick={(e) => removeDocument(e, 'resume')}>here</a> to remove your old resume.</p>    
@@ -87,12 +95,12 @@ return (
           <FormGroup className='FileInputContent'>
             <h2 className='FileInputText'>Cover Letter</h2>
             <Label className='CoverLetter' for="CoverLetter"/>
-            {oldCoverLetter? 
+            {profile.cover_letter? 
             <>
               {!coverLetterRemoved && 
               <>
                 <div>
-                  <p>You've already uploaded a cover letter, you can <a href={'http://localhost:8000'+oldCoverLetter} download>download it here</a>.</p>
+                  <p>You've already uploaded a cover letter, you can <a href={'http://localhost:8000'+profile.cover_letter} download>download it here</a>.</p>
                 </div>
                 <div>
                   <p>Click <a href={''} onClick={(e) => removeDocument(e, 'cover_letter')}>here</a> to remove your old cover letter.</p>
@@ -109,7 +117,7 @@ return (
           </Form>
         </div>
         <MdClose className='close-file-form-button'
-          onClick={() => setFileForm(prev => !prev)}
+          onClick={() => closeForm()}
         />
       </div>
   </div>)

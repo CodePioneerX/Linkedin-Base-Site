@@ -55,18 +55,16 @@ function ViewProfile() {
     } else {
     getProfile();
   }
-  }, [userInfo, navigate]);
-  
-  
-  
+  }, [userInfo, navigate, fileForm]);
 
   const getProfile = async () => {
     const { data } = await axios.get(
       `http://localhost:8000/api/my_profile/${userInfo.id}`
     );
-    setProfile(data.profile);
+    console.log(data.profile)
     setRecommendation(data.sent_recommendations);
     setReceivedRec(data.received_recommendations);
+    setProfile(data.profile);
   };
 
   
@@ -78,9 +76,6 @@ function ViewProfile() {
     // dispatch(get_profile(userInfo.id))
     userInfo && dispatch(get_notifications(userInfo.id))
   }, []);
-
-  
-  
   
   const editorMode = ()=>{
     setEditor(true)
@@ -119,7 +114,7 @@ function ViewProfile() {
             {editor ? <EditProfileForm profile={profile} quitEditor={quitEditor}/> : 
             postEditor ? <EditPostForm post={post} quitPostEditor={quitPostEditor}/> : 
               <Container>
-                <FileForm fileForm={fileForm} setFileForm={setFileForm} oldResume={profile.resume} oldCoverLetter={profile.cover_letter}/>
+                <FileForm fileForm={fileForm} setFileForm={setFileForm} profile={profile}/>
                 <Row>
                   {/* Bio + Resume Column  */}
                   <Col sm={12} md={12} lg={8}>
