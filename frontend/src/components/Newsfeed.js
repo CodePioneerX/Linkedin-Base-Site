@@ -92,7 +92,7 @@ export default class Newsfeed extends Component {
         <Container id='container' className="justify-content-md-center padd">
             <Row className='networkPosts' style={{marginLeft: "20px", marginBottom: "25px", width: "100%"}}>
               <Col xs={12} md={6} className='text-left'>
-                <h1 style={{fontSize: "2em"}}>Network Activity</h1>
+                <h1 className='section-title'>Network Activity</h1>
               </Col>
               <Col xs={12} md={6} className='text-right'>
               <Container>
@@ -102,7 +102,7 @@ export default class Newsfeed extends Component {
               </Container>
               </Col>
             </Row>
-            <hr style={{ width: "96%" }}/>
+            <hr className='post-hr'/>
 
             <Row className='newsFeedContainer' style={{display: "flex", flexDirection: "column", alignItems: "center", marginBottom:"3%"}}>  
 
@@ -135,8 +135,8 @@ export default class Newsfeed extends Component {
                           </DropdownButton>
                         </Col>
                       </Row>
-                      <h4 style={{ textAlign: "left",paddingBottom: "5px", paddingTop:"6px"}}>{post.title}</h4>
-                      <p style={{padding: "15px 0"}}>{post.content}</p>
+                      <h4 className='post-card-title'>{post.title}</h4>
+                      <p className='post-card-text'>{post.content}</p>
                       <Row style={{ justifyContent: "space-between", borderBottom: "1px solid #D3D3D3", marginBottom:"1%" }}>
                         <div style={{ marginLeft: "10px", fontSize: "14px", color: "#808080" }}>
                           <FontAwesomeIcon icon={faHeart} style={{ color: "red", fontSize: "19px" }}/>  {post.num_likes} Likes

@@ -82,7 +82,7 @@ span {
 }
 
 #applyLink:hover {
-    text-decoration: green wavy under;
+    text-decoration: none;
     background-color: white;
     color:#3a0f90;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
@@ -120,3 +120,33 @@ span {
     }
 }
 
+p.job-card-text {
+    font-size: 1.0em;
+}
+
+p.job-card-text.description {
+    font-size: 1.0em;
+    white-space: pre-wrap;
+}
+
+p.post-card-text {
+    font-size: 1.0em;
+    white-space: pre-wrap;
+    padding: 15px 0;
+}
+
+h4.post-card-title {
+    text-align: left;
+    padding-bottom: 5px; 
+    padding-top: 6px;
+}
+
+h1.section-title {
+    text-align: left !important;
+    font-size: 2em;
+}
+
+.post-hr {
+    margin-bottom: 0px;
+    width: 96%;
+}

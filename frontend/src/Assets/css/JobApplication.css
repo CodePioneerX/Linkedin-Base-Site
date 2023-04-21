@@ -1,4 +1,4 @@
-/* Styling for the background of the login form */
+/* Styling for the background of the job application form */
 .formBackground{
     background-color: #44599d;
     display: flex;
@@ -145,4 +145,100 @@ hr {
 .InfoH5{
     margin-right: 2%;
     margin-left: 4%;
+    white-space: pre-wrap;
+}
+
+.profile-job-card {
+    background-color: white;
+    border-radius: 7px;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #ccc;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-job-card-title {
+    color: #3a0f90;
+}
+
+.profile-job-card-title:hover {
+    text-decoration: solid underline #3a0f90;
+    color: #3a0f90;
+}
+
+.profile-job-card-button {
+    border-color: #3a0f90;
+    border-width: 2px;
+    width:100%;
+    height:50%;
+    background-color: white;
+    color:#3a0f90;
+    border-radius: 100px;
+    box-shadow: 4px 4px 10px #aeaeae,
+        -4px -4px 10px #ffffff;
+}
+
+.profile-job-card-button:hover {
+    text-decoration: none;
+    background-color: #3a0f90;
+    color:white;
+    border-color: #3a0f90;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+    transition: background-color 0.5s ease-out;
+}
+
+.profile-job-card-text-column {
+    margin-left: -2rem;
+}
+
+.job-application-card {
+    background-color: white;
+    border-radius: 7px;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #ccc;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
+}
+
+.job-application-view-button {
+    border-color: #3a0f90;
+    border-width: 2px;
+    width:100%;
+    height:100%;
+    background-color: white;
+    color:#3a0f90;
+    border-radius: 100px;
+    box-shadow: 4px 4px 10px #aeaeae,
+        -4px -4px 10px #ffffff;
+}
+
+.job-application-view-button:hover {
+    text-decoration: none;
+    background-color: #3a0f90;
+    color:white;
+    border-color: #3a0f90;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+    transition: background-color 0.5s ease-out;
+}
+
+.job-application-remove-button {
+    border-color: #3a0f90;
+    border-width: 2px;
+    width:100%;
+    height:100%;
+    color: white;
+    background-color: #3a0f90;
+    border-radius: 100px;
+    box-shadow: 4px 4px 10px #aeaeae,
+    -4px -4px 10px #ffffff;
+}
+
+.job-application-remove-button:hover {
+    text-decoration: none;
+    color:#3a0f90;
+    background-color: white;
+    border-color: #3a0f90;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+    transition: background-color 0.5s ease-out;
 }

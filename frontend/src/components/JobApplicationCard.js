@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import {remove_job_application_review} from '../actions/jobActions';
 import { useDispatch } from "react-redux";
+import '../Assets/css/App.css';
+import '../Assets/css/JobApplication.css';
 
 const JobApplicationCard = (props) => {
 
@@ -25,7 +27,7 @@ useEffect(() => {
 
 const dispatch = useDispatch();
 const navigate = useNavigate();
-const deleteJobReview = (e)=>{
+const deleteJobApplication = (e) =>{
     e.preventDefault();
     dispatch(remove_job_application_review(props.application.id))
     navigate('/profile');
@@ -35,34 +37,31 @@ const deleteJobReview = (e)=>{
   return (
       
     <>
-      <Card style={{ marginTop: "20px" }}>
-          <Card.Body className='card_body'>
-            <Row>
-                <div>
-                <Col style={{display:'flex', justifyContent:'left'}}>
+      <Card style={{ margin: "20px" }} className='job-application-card'>
+          <Card.Body>
+            <Row className='pb-5'>
+                <Col xs={6}>
+                  <Row>
                     <Card.Img className='img-fluid rounded-pill' 
                     style={{width:'50px'}}
                     src={profile.image} />  
-                    <Link to="/profileScreen" state={{data:props.application.user}}>
+                    <Link to="/profileScreen" className="profile-job-card-title" state={{data:props.application.user}}>
                       <Card.Title style={{marginLeft:'1rem'}}> Name: {props.application.name}</Card.Title>    
                     </Link>            
-                </Col>
+                  </Row>
+                  <Row>
                     <Card.Text style={{marginLeft:'5rem'}}>{props.application.email}</Card.Text> 
-                </div>
-
-                <Col style={{display:'flex', justifyContent:'right'}}>
-                    <Link to="/applicationDetail" state={{data:props.application}}>
-                        <Button variant="primary">View Application Detail</Button>
-                    </Link> 
+                  </Row>
+                </Col>
+                <Col xs={3} style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                  <Link to="/applicationDetail" state={{data:props.application}}>
+                    <Button className="job-application-view-button">View Application Detail</Button>
+                  </Link> 
+                </Col>
+                <Col xs={3}>
+                  <Button className="job-application-remove-button" onClick={deleteJobApplication}>Remove This Application</Button>
                 </Col>
             </Row> 
-            <hr style={{margin:'1rem'}}/>
-
-            <Row style={{display:'flex', justifyContent:'right'}}>
-                <Col style={{display:'flex', justifyContent:'right'}}>
-                <Button variant="danger" onClick={deleteJobReview}>Remove This Application</Button>
-                </Col>
-            </Row>
           </Card.Body>
       </Card>
 

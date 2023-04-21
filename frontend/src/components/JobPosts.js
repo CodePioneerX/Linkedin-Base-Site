@@ -8,6 +8,8 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { faPaperPlane, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import Form from 'react-bootstrap/Form';
 import '../Assets/css/App.css'
+import '../Assets/css/Newsfeed.css'
+import '../Assets/css/JobApplication.css'
 
 const JobPosts= (props) => {
 
@@ -38,21 +40,21 @@ const getProfile = async () => {
          {jobPosts.map(jobPost => (
             
             
-        <Card style={{ marginTop: "20px" }} key={jobPost.job.id}>
-          <Card.Body className='card_body'>
+        <Card style={{ marginTop: "20px" }} className="profile-card" key={jobPost.job.id}>
+          <Card.Body>
             <Row style={{display:'flex', justifyContent:'left'}}>
-            <div>
+            <Col className="profile-job-card-text-column">
               <Col style={{display:'flex', justifyContent:'left'}}>
-                  <Link to='/job' state={{job_id: jobPost.job.id}} >
-                  <Card.Title style={{marginLeft:'1rem'}}>{jobPost.job.title}</Card.Title>   
+                  <Link to='/job' className="profile-job-card-title" state={{job_id: jobPost.job.id}} >
+                  <Card.Title style={{marginLeft:'1rem'}} >{jobPost.job.title}</Card.Title>   
                   </Link>          
               </Col>
               <Card.Text style={{marginLeft:'2rem',marginTop:'.7rem'}}>{jobPost.job.company}</Card.Text> 
               <Card.Text style={{marginLeft:'2rem',marginTop:'.7rem'}}>Posted: {jobPost.job.created_at.slice(0, 10)}</Card.Text> 
-            </div>
+            </Col>
               <Col style={{display:'flex', justifyContent:'right'}}>
                 <Link to='/jobApplicationReview' state={{job_title: jobPost.job.title, job_id: jobPost.job.id, applications:jobPost.applications}}>
-                    <Button variant="primary">Review Applications </Button>
+                    <Button className="profile-job-card-button">Review Applications </Button>
                 </Link> 
               </Col>
             </Row> 

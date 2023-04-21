@@ -22,10 +22,11 @@ const applications = location.state.data;
 console.log(applications)
 
 return (
-   <Container className="applicationDetailContainer">
-   <Button className='mb-4' variant='secondary' onClick={() => {navigate(-1)}}>Back</Button>
-  <h2>Applications Details</h2>
-    <Container className="personalInfoContainer">
+    <div style={{backgroundColor: "#44599d", paddingTop: "50px"}}>
+      <Container id='container' className="justify-content-md-center" >
+        <Button className='mb-4' variant='secondary' onClick={() => {navigate(-1)}}>Back</Button>
+        <h2>Applications Details</h2>
+      <Container className="personalInfoContainer" >
     <h2>Personal information</h2>
     <Row>
        <h5 className='personInfoH5'>Name: </h5> <h5>{applications.name}</h5>
@@ -34,16 +35,16 @@ return (
         <h5 className='personInfoH5'>Email: </h5> <h5>{applications.email}</h5>
     </Row>  
     <Row>
-        <h5 className='personInfoH5'>phone: </h5> <h5>{applications.phone}</h5>
+        <h5 className='personInfoH5'>Phone: </h5> <h5>{applications.phone}</h5>
     </Row> 
     <Row>
-        <h5 className='personInfoH5'>city: </h5> <h5>{applications.city}</h5>
+        <h5 className='personInfoH5'>City: </h5> <h5>{applications.city}</h5>
     </Row> 
     <Row>
-        <h5 className='personInfoH5'>province: </h5> <h5>{applications.province}</h5>
+        <h5 className='personInfoH5'>Province: </h5> <h5>{applications.province}</h5>
     </Row> 
     <Row>
-        <h5 className='personInfoH5'>country: </h5> <h5>{applications.country}</h5>
+        <h5 className='personInfoH5'>Country: </h5> <h5>{applications.country}</h5>
     </Row>  
     </Container>
     <Container className="personalInfoContainer">
@@ -183,6 +184,7 @@ return (
     </Container>
     
    </Container>
+   </div>
 );
 };
 
