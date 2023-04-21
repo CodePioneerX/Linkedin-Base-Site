@@ -113,15 +113,14 @@ export default class Newsfeed extends Component {
                       <div style={{marginBottom:"1%"}}></div>
                       <Row style={{ display: "flex", alignItems: "center"}}>
                         <Col xs={2} md={1}>
-                          {/* <img src={post.image} alt={post.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> */}
-                          {post.image ? 
-                            <img src={'http://localhost:8000'+post.image} alt="test alt image text" style={{ borderRadius: "50%", width: "auto", height: "55px", width: "55px", marginRight: "10px" }} /> : 
+                          {(profiles.find(profile => profile.user === post.author).image) ? 
+                            <img src={'http://localhost:8000'+(profiles.find(profile => profile.user === post.author).image)} alt="profile image" style={{ borderRadius: "50%", width: "auto", height: "55px", width: "55px", marginRight: "10px" }} /> : 
                             <p style={{ borderRadius: "50%", border: "0.1rem solid black", width: "auto", height: "55px", width: "55px", marginRight: "10px" }}></p>}
                         </Col>
                         <Col xs={7} md={10}>
-                          <h5>{(profiles.find(profile => profile.user === post.author).name)}</h5>
+                          <h5 style={{paddingLeft: "0.5rem"}}>{(profiles.find(profile => profile.user === post.author).name)}</h5>
                         </Col>
-                        <Col xs={2} md={1} style={{display:'flex', alignItems: 'center', justifyContent: 'end'}}>
+                        <Col xs={3} md={1} style={{display:'flex', alignItems: 'center', justifyContent: 'end'}}>
                           <DropdownButton variant="secondary" title="">
                             {this.props.author == post.author ? 
                             <>
@@ -137,6 +136,12 @@ export default class Newsfeed extends Component {
                       </Row>
                       <h4 className='post-card-title'>{post.title}</h4>
                       <p className='post-card-text'>{post.content}</p>
+                      {post.image && 
+                        <Row>
+                          <Col xs={12}>                        
+                            <img src={'http://localhost:8000'+post.image} alt="test alt image text" style={{ width: "100%", height: "auto", paddingBottom: "1rem" }} />
+                          </Col>
+                        </Row>}
                       <Row style={{ justifyContent: "space-between", borderBottom: "1px solid #D3D3D3", marginBottom:"1%" }}>
                         <div style={{ marginLeft: "10px", fontSize: "14px", color: "#808080" }}>
                           <FontAwesomeIcon icon={faHeart} style={{ color: "red", fontSize: "19px" }}/>  {post.num_likes} Likes

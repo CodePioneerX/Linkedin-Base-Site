@@ -627,6 +627,9 @@ def PostUpdateView(request, pk):
 
     post.title = data['title']
     post.content = data['content']
+        
+    if data['image'] != '':
+        post.image = data['image']
 
     post.save()
 

@@ -57,7 +57,7 @@ function CreatePost() {
 
               <FormGroup>
                 <Label for="postImage">Attach an Image</Label>
-                <Input type="file" value={image}  onChange={(e)=> setImage(e.target.value)}/>
+                <Input type="file" onChange={(e)=> setImage(e.target.files[0])}/>
               </FormGroup>
            
               <Button id='submit' className='createPostButton' type='submit'>Create Post</Button>
