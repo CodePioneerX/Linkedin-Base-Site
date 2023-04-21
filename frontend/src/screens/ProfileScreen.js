@@ -346,7 +346,7 @@ export const ProfileScreen =()=>{
         checkRecommendation()
         
       }, [
-        isConnected,connectPending,connectSender,connectStatus,recommended,recommendForm, reportForm
+        isConnected,connectPending,connectSender,connectStatus,recommended,recommendForm,reportForm, isForumOpen
       ]);
 
     return (    
@@ -378,7 +378,7 @@ export const ProfileScreen =()=>{
                             <button className="profile-button" onClick={cancelRecommendation}>Cancel recommendation</button>
                             :
                             <button className="profile-button" onClick ={enterRecommendation}>Recommend</button>}
-                    
+                        <button className="profile-button" onClick={handleOpenForum}>Message</button>
                         <button className="profile-button" onClick={enterReport}>Report User</button>
                         </div>
                         :  
@@ -396,17 +396,9 @@ export const ProfileScreen =()=>{
                             :
                             <div>
                             <button className="profile-button" onClick={sendConnection}>Connect</button>
-                            <button className="profile-button" onClick={handleOpenForum}>Message</button>
                             <button className="profile-button" onClick={enterReport}>Report User</button>
 
-                            {isForumOpen && (
-                                <div className="forum-pop-up" style={{padding: '10px 0 0 10px'}}>
-                                  <textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Type your message here" style={{ borderRadius: '10px', width: '100%', marginTop: '10px', padding: '10px' }}></textarea>
-                                  <button onClick={handleCloseForum} style={{ border: 'none', outline: 'none', background: 'white' }}><FontAwesomeIcon icon={faCircleXmark} size="2x" /></button>
-                                  <button onClick={handleSendMessage} style={{ border: 'none', outline: 'none', background: 'white' }}><FontAwesomeIcon icon={faCircleChevronRight} size="2x"/></button>
-
-                                </div>
-                              )}
+                            
 
                             </div>)
                         }
@@ -457,6 +449,13 @@ export const ProfileScreen =()=>{
                         </Row>
                     </Form>
                     }
+                    {isConnected && isForumOpen && (
+                      <div className="forum-pop-up" style={{padding: '10px 0 0 10px'}}>
+                        <textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Type your message here" style={{ borderRadius: '10px', width: '100%', marginTop: '10px', padding: '10px' }}></textarea>
+                        <button onClick={handleCloseForum} style={{ border: 'none', outline: 'none', background: 'white' }}><FontAwesomeIcon icon={faCircleXmark} size="2x" /></button>
+                        <button onClick={handleSendMessage} style={{ border: 'none', outline: 'none', background: 'white' }}><FontAwesomeIcon icon={faCircleChevronRight} size="2x"/></button>
+                      </div>
+                    )}
 
                     <Row>
                       <Col>
