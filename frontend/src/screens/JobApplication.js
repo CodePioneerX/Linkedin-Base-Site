@@ -71,7 +71,7 @@ const JobApplication = () => {
       setTranscript(event.target.files[0]);
    };
    const handleOtherDocumentsChange = (event) => {
-      setOtherDocuments(event.target.files);
+      setOtherDocuments(event.target.files[0]);
    };
    
 
@@ -257,8 +257,8 @@ const JobApplication = () => {
                      </React.Fragment>
                   ))}
                   <FormGroup>
-                     <Label className='otherDocuments' for="otherDocuments"><h3>Other Documents</h3></Label>
-                     <p>In this section, you can upload any extra documents that the employer may have requested in the job description, including but not limited to writing samples, certifications, proof of citizenship, and references.</p>
+                     <Label className='otherDocuments' for="otherDocuments"><h3>Other Document</h3></Label>
+                     <p>In this section, you can upload an extra document that the employer may have requested in the job description, including but not limited to writing samples, certifications, proof of citizenship, or references.</p>
                      <Input type="file" name="otherDocuments" id="otherDocuments" onChange={handleOtherDocumentsChange} multiple/>
                   </FormGroup>
                   <hr/>
