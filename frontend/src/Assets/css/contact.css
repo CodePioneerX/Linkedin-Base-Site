@@ -39,19 +39,16 @@ div.guest-contact {
     display: flex;
     width: 100%; }
     div.guest-contact div.guest-data div.guest-name > label {
-      font-family: "RedHatDisplayRegular";
       font-size: 13px;
       cursor: pointer; }
     div.guest-contact div.guest-data div.bottom-data {
       display: inline-flex;
       margin-top: 3px; }
       div.guest-contact div.guest-data div.bottom-data div.chat-label > label {
-        font-family: "OxygenRegular";
         cursor: pointer;
         font-size: 11px;
         color: gray; }
       div.guest-contact div.guest-data div.bottom-data div.msg-date > label {
-        font-family: "OxygenRegular";
         color: #b4b4b4;
         transform: translateX(10px);
         display: inline-block;

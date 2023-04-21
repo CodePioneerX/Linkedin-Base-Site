@@ -33,14 +33,12 @@ div.message-editior {
       background-color: #eee;
       transition: border 0.4s;
       padding: 9px 7% 9px 2%;
-      letter-spacing: 1.5px;
       border-radius: 3px;
       color: #343434;
       font-size: 16px;
       outline: none;
       width: 91%; }
       div.message-editior div.msg-editor input::placeholder {
-        font-family: "OxygenRegular";
         font-size: 12px;
         color: gray; }
   div.message-editior div.emoji-icon svg {

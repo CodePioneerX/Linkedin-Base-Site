@@ -312,9 +312,8 @@ footer {
 }
 
 label, input::placeholder { 
-  font-family: "Times New Roman", Times, serif;
-  letter-spacing: 1.5px;
   user-select: none;
   color: #303030;
-  font-size: 16px; }
+  font-size: 16px; 
+}
 

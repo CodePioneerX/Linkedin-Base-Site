@@ -26,7 +26,6 @@ div.active-guest-messages {
     background-color: #ddd;
     border-radius: 10px; }
   div.active-guest-messages div.msg-date label {
-    font-family: "RedHatDisplayRegular";
     color: #b4b4b4;
     font-weight: bold;
     font-size: 11px; }
