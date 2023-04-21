@@ -40,7 +40,6 @@ export const create_post = (author, title, content, image)  => async (dispatch, 
             } 
         }
         
-        console.log(image)
         // Make the POST request to the API endpoint
         const { data } = await axios.post(
             'http://localhost:8000/api/create_post/',
@@ -85,7 +84,7 @@ export const update_post = (postID, title, content, image) => async (dispatch, g
             headers: {
                 'Content-type': 'multipart/form-data'}
         }
-        console.log('image', image)
+        
          // Make the PUT request to the API endpoint with the updated post information
         const { data } = await axios.put(`http://localhost:8000/api/post/update/` + postID, 
         {'title': title, 'content': content, 'image': image}, 

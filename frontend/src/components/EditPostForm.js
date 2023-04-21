@@ -27,8 +27,6 @@ export const EditPostForm = (post) => {
         if (image == post.post.image) {
             setImage('')
         }
-        
-        console.log(image)
 
         // Dispatch an action to update the post
         dispatch(update_post(post.post.id, title, content, image))
