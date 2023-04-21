@@ -19,27 +19,9 @@ const [profile, setProfile] = useState("");
 
 // Function to get user profile information
 const getProfile = async () => {
-    var userId;
-
-    // Set userId based on connection type
-    switch(props.type) {
-      case 'received':
-        userId = props.senderId;
-        break;
-      case 'sent':
-        userId = props.recipientId;
-        break;
-      case 'possible':
-        userId = props.recipientId;
-        break;
-      default:
-        userId = props.recipientId;
-        break;
-    }
-
     // Send GET request to retrieve user profile information
     const {data} = await axios.get(
-      `http://localhost:8000/api/profile/${userId}`
+      `http://localhost:8000/api/profile/${props.otherUserId}`
     );
     // Update state with retrieved profile information
     setProfile(data.profile);
@@ -50,7 +32,7 @@ const getProfile = async () => {
   const acceptHandler = async () => {
     // accept connection request
     const response = await axios.put(
-      `http://localhost:8000/api/connections/accept/${props.senderId}/${props.recipientId}/`
+      `http://localhost:8000/api/connections/accept/${props.yourId}/${props.otherUserId}/`
     )
     // Reload the page to show updated connection status
     window.location.reload()
@@ -60,7 +42,7 @@ const getProfile = async () => {
   const rejectHandler = async () => {
    // Send DELETE request to delete connection request
     const response = await axios.delete(
-      `http://localhost:8000/api/connections/reject/${props.senderId}/${props.recipientId}/`
+      `http://localhost:8000/api/connections/reject/${props.yourId}/${props.otherUserId}/`
     )
     // Reload the page to show deleted connection request
     window.location.reload()
@@ -70,7 +52,7 @@ const getProfile = async () => {
   const cancelHandler = async () => {
     // cancel sent connection request
     const response = await axios.delete(
-      `http://localhost:8000/api/connections/cancel/${props.senderId}/${props.recipientId}/`  
+      `http://localhost:8000/api/connections/cancel/${props.yourId}/${props.otherUserId}/`  
     )
     window.location.reload()
   }
@@ -100,7 +82,7 @@ const getProfile = async () => {
         }
 
         const { data } = await axios.delete(
-          `http://localhost:8000/api/connections/delete/` + userInfo.id +`/`+ props.senderId +`/`,
+          `http://localhost:8000/api/connections/delete/` + userInfo.id +`/`+ props.otherUserId +`/`,
             config
         )
         window.location.reload(false)  
@@ -128,7 +110,7 @@ const getProfile = async () => {
                   <Card.Img className='img-fluid rounded-pill' 
                   style={{width:'50px'}}
                   src={profile.image} />  
-                  <Card.Title style={{marginLeft:'1rem',marginTop:'.5rem'}}><Link id='cardTitle' to="/profileScreen" state={{data:props.senderId}}>{profile.name}</Link></Card.Title>             
+                  <Card.Title style={{marginLeft:'1rem',marginTop:'.5rem'}}><Link id='cardTitle' to="/profileScreen" state={{data:props.otherUserId}}>{profile.name}</Link></Card.Title>             
               </Col>
               <Col style={{display:'flex', justifyContent:'right'}}>
               {props.status == 'accepted' ? 

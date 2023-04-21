@@ -118,7 +118,7 @@ export const MyNetwork =()=> {
             <>
               <h3 className='heading3'>Received</h3>
               {pendingConnectionList.map(connection => (
-                <ConnectionCard key={connection.id} senderId={connection.sender} recipientId={connection.recipient} status={connection.status} type={'received'}/>
+                <ConnectionCard key={connection.id} otherUserId={connection.sender} yourId={connection.recipient} status={connection.status} type={'received'}/>
               ))
               }
             </> 
@@ -127,7 +127,7 @@ export const MyNetwork =()=> {
             <>
               <h3 className='heading3' id='sentHeading'>Sent</h3>
               {pendingSentConnectionList.map(connection => (
-                <ConnectionCard key={connection.id} senderId={connection.sender} recipientId={connection.recipient} status={connection.status} type={'sent'}/>
+                <ConnectionCard key={connection.id} otherUserId={connection.recipient} yourId={connection.sender} status={connection.status} type={'sent'}/>
               ))
               }
             </> 
@@ -138,10 +138,10 @@ export const MyNetwork =()=> {
                 <h2 className='heading'>My Connections</h2>
                 {connectionList.map(connection => userInfo.id == connection.sender ? 
                 <>
-                  <ConnectionCard key={connection.id} senderId={connection.sender} recipientId={connection.recipient} status={connection.status} type={'sent'}/>
+                  <ConnectionCard key={connection.id} otherUserId={connection.recipient} yourId={connection.sender} status={connection.status} type={'sent'}/>
                 </> : 
                 <>
-                  <ConnectionCard key={connection.id} senderId={connection.sender} recipientId={connection.recipient} status={connection.status} type={'received'}/>
+                  <ConnectionCard key={connection.id} otherUserId={connection.sender} yourId={connection.recipient} status={connection.status} type={'received'}/>
                 </>)} 
               </>
               }
@@ -149,7 +149,7 @@ export const MyNetwork =()=> {
               <>
                 <h2 className='heading'>People You May Know</h2>
                 {unconnectedList.map(user => (
-                  <ConnectionCard key={user.id} recipientId={user.id} senderId={userInfo.id} type={'possible'}/>
+                  <ConnectionCard key={user.id} otherUserId={user.id} yourId={userInfo.id} type={'possible'}/>
                 ))}
               </> 
               }
