@@ -35,6 +35,7 @@ const Body = (props) => {
     const [chat_id, setChatId] = useState('');
     const [chat_ids, setChatIds] = useState('');
     const [profile, setProfile] = useState("");
+    const [initial, setInitial] = useState(true);
   
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
@@ -125,11 +126,16 @@ const Body = (props) => {
 
 
     const activeContactIndex = () => {
+      if (initial) {
+        setInitial(false)
+        const index = 0;
+        return index;
+      }
       const guestContactDivs = document.querySelectorAll("div.guest-contact");
       const guestContactDivsArray = Array.from(guestContactDivs);
       const activeDiv = guestContactDivsArray.find(div => div.classList.contains("active-contact"));
       const index = guestContactDivsArray.findIndex(div => div === activeDiv);
-      return index;
+      return index; 
     };
     const processMessages = (rawMessages) => {
       let chats = [];
@@ -232,6 +238,7 @@ const Body = (props) => {
 
       const __set_active_contact_index = (new_index) => {
         setActiveIndex(new_index);
+        setInitial(false);
       };
 
     // }
