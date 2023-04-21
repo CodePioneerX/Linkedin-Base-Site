@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import AdminJobCard from '../components/AdminJobCard';
 import axios from "axios";
+import '../Assets/css/Admin.css';
 
 function AdminJobScreen() {
     const userLogin = useSelector((state) => state.userLogin);
@@ -43,9 +44,9 @@ function AdminJobScreen() {
 
 
   return (
-    <div>
+    <div className="background">
       {userInfo && userInfo.isAdmin && 
-      <div>
+      <div className="adminContainer">
         <Container>
           <h1 style={{marginTop:'1rem'}}>Reported Jobs</h1>
           {reportedJobsList.length > 0 ? 

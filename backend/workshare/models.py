@@ -78,6 +78,8 @@ class Profile(models.Model):
     projects = models.TextField(default='')
     awards = models.TextField(default='')
     languages = models.TextField(default='')
+    resume = models.FileField(upload_to="documents/", blank=True)
+    cover_letter = models.FileField(upload_to="documents/", blank=True)
     
     #this function defines what will be returned when the class is printed. The code below will return the name.
     def __str__(self):
@@ -90,13 +92,6 @@ class Recommendations(models.Model):
     recipient = models.ForeignKey(Profile, on_delete= models.CASCADE, related_name='received_recommendations')
     description = models.TextField(default='', blank=True)
     
-# The Comment class creates and designs the model for comments. A comment will consist of 3 data fields: the author, the content, and the time of posting. 
-class Comment(models.Model):
-    #list of data fields and their accepted format are defined here.
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)    
-    
 # The Post class creates and designs the model for posts. A post will consist 7 data fields, inlcuding the time of posting.     
 class Post(models.Model):
     #list of data fields and their accepted format are defined here.
@@ -104,14 +99,40 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     image = models.ImageField(upload_to='images/', null=True, blank=True)
-    comments = models.ManyToManyField('Comment', blank=True)
-    likes = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     reported = models.BooleanField(default=False)
     
-    #this function defines what will be returned when the class is printed. The code below will return the author's email.
+    @property
+    def num_likes(self):
+        num_likes = Likes.objects.filter(post=self).count()
+        return num_likes
+
+    @property
+    def num_comments(self):
+        num_comments = Comment.objects.filter(post=self).count()
+        return num_comments
+    
     def __str__(self):
         return self.author.email + ': ' + self.title
+
+# The Comment class creates and designs the model for comments. A comment will consist of 4 data fields: the author, the content, and the time of posting. 
+class Comment(models.Model):
+    #list of data fields and their accepted format are defined here.
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_comment')
+    content = models.TextField(default=" ")
+    created_at = models.DateTimeField(auto_now_add=True)  
+
+    def __str__(self):
+        return self.author.email + ': ' + self.content
+
+#The Likes model represents the amount of like for a post.
+class Likes(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_likes')
+
+    def __str__(self):
+        return self.user.email + ': ' + self.post.title
     
 # The JobListing class creates and designs the model for job listings. A job listing will consist of 13 data fields, including the time of posting.   
 class JobListing(models.Model):
@@ -127,8 +148,6 @@ class JobListing(models.Model):
     remote = models.BooleanField(default=False)
     company = models.CharField(max_length=255)
     image = models.ImageField(upload_to='images/', null=True, blank=True)
-    comments = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True)
-    likes = models.IntegerField(default=0)
     location = models.CharField(max_length=255)
     status = models.BooleanField(default=True)
     required_docs = models.ManyToManyField('Document', default=None, blank=True)
@@ -202,6 +221,7 @@ class Notification(models.Model):
     COMMENT = 'COMMENT'
     CONNECTION = 'CONNECTION'
     JOBALERT = 'JOBALERT'
+    JOBAPPLICATION = 'JOBAPPLICATION'
     LIKE = 'LIKE'
     MESSAGE = 'MESSAGE'
     RECOMMENDATION = 'RECOMMENDATION'
@@ -211,6 +231,7 @@ class Notification(models.Model):
         (COMMENT, 'Comment'),
         (CONNECTION, 'Connection'),
         (JOBALERT, 'Job Alert'),
+        (JOBAPPLICATION, 'Job Application'),
         (LIKE, 'Like'),
         (MESSAGE, 'Message'),
         (RECOMMENDATION, 'Recommendation'),
@@ -282,6 +303,38 @@ class JobAlert(models.Model):
 
     def __str__(self):
         return self.search_term + ' ' + self.user.first_name
+
+#This model details the JobApplication form the user has to fill to apply to a job.
+class JobApplication(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    job_post = models.ForeignKey(JobListing, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255, default='')
+    city = models.CharField(max_length=255, default='')
+    province = models.CharField(max_length=255, default='')
+    country = models.CharField(max_length=255, default='')
+    phone = models.IntegerField(default=0)
+    experience = models.TextField(default='')
+    work = models.TextField(default='')
+    education = models.TextField(default='')
+    volunteering = models.TextField(default='')
+    projects = models.TextField(default='')
+    courses = models.TextField(default='')
+    awards=models.TextField(default='')
+    languages = models.TextField(default='')
+    resume = models.FileField(upload_to="documents/", blank=True)
+    cover_letter = models.FileField(upload_to="documents/", blank=True)
+    letter_of_recommendation = models.FileField(upload_to="documents/", blank=True)
+    portfolio = models.FileField(upload_to="documents/", blank=True)
+    transcript = models.FileField(upload_to="documents/", blank=True)
+    other_documents = models.FileField(upload_to="documents/", blank=True)
+
+    #This sets the status of the JobApplication as either applied, inactive, or in-progress depending on the recruiter's decision.
+    STATUS_CHOICES = (
+        ('true', 'Applied'),
+        ('reject', 'Inactive'),
+    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='true')
 
 class UserReport(models.Model):
     sender = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE)

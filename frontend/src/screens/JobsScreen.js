@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import {Container, Row} from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
 import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom'
 import Jobs from '../components/Jobs';
@@ -36,22 +35,16 @@ function JobsScreen() {
   }
 
   return (
-      <Container className="justify-content-md-center padd">
+      <div style={{backgroundColor: "#44599d"}}>
+        <Container className="justify-content-md-center padd" id='userHomePage'>
         {userInfo ? (
           <div>
-            {jobEditor ? 
-              <>
-                <Button className='mb-4' variant='secondary' onClick={() => {navigate(-1)}}>Back</Button>
-                <EditJobForm edit={jobEditorMode} quit={quitJobEditor} job={job} />  
-              </>:
-              jobReportEditor ? <ReportJobForm edit={jobReportEditorMode} quitReportEditor={quitJobReportEditor} job={job}/> :
-              <Container>
-                <a className='btn btn-primary' href='/create/job' role='button'>
-                  Create a job listing
-                </a>
-                <Jobs edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.email} report={jobReportEditorMode}/>
-            </Container>}
-          </div>
+            {jobEditor ? <EditJobForm edit={jobEditorMode} quit={quitJobEditor} job={job} /> :
+            jobReportEditor ? <ReportJobForm edit={jobReportEditorMode} quitReportEditor={quitJobReportEditor} job={job}/> : 
+            <>
+              <Jobs edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.email} report={jobReportEditorMode}/>
+          </>}
+        </div>
         ) : (        
         <Row>
           
@@ -61,6 +54,7 @@ function JobsScreen() {
 
         </Row>)}
       </Container>
+      </div>
   )
 
 }

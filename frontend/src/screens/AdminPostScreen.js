@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import AdminPostCard from '../components/AdminPostCard';
 import axios from "axios";
+import '../Assets/css/Admin.css';
 
 function AdminPostScreen() {   
     const userLogin = useSelector((state) => state.userLogin);
@@ -43,9 +44,9 @@ function AdminPostScreen() {
 
 
   return (
-    <div>
+    <div className="background">
       {userInfo && userInfo.isAdmin && 
-      <div>
+      <div className="adminContainer">
         <Container>
           <h1 style={{marginTop:'1rem'}}>Reported Posts</h1>
           {reportedPostsList.length > 0 ? 

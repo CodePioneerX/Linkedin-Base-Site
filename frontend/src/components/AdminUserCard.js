@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { Card, Button, Row, Col } from 'react-bootstrap';
+import { Card, Container, Button, Row, Col, Dropdown, DropdownButton } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import { faGripVertical } from "@fortawesome/free-solid-svg-icons";
+import '../Assets/css/Admin.css';
 
 const AdminUserCard = (props) => {
     
+  const navigate = useNavigate();
+
   // Define state variables
   const [profile, setProfile] = useState("");
   const [reportMessages, setReportMessages] = useState("");
@@ -65,6 +69,10 @@ const AdminUserCard = (props) => {
     window.location.reload()
   }
 
+  const viewProfile = () => {
+    navigate('/profileScreen', { state: {data: props.userId} })
+  }
+
   // Call getProfile() function when component mounts
   useEffect(() => {
     getProfile();
@@ -73,39 +81,39 @@ const AdminUserCard = (props) => {
 
   return (
     <>
-      <Card className='mb-3'>
-        <Row>
-          <Card.Body className='card_body' >
-            <div style={{display:'flex', justifyContent:'left'}}>
-              <Col style={{display:'flex', justifyContent:'left'}}>
-                <Card.Img className='img-fluid rounded-pill' 
-                  style={{width:'50px'}}
-                  src={profile.image} />  
-                <Card.Title style={{marginLeft:'1rem',marginTop:'.7rem'}}>{profile.name}</Card.Title>             
-              </Col>
-              <Col style={{display:'flex', justifyContent:'right'}}>
-                <Link to="/profileScreen" state={{data:props.userId}}>
-                  <Button variant="primary">View Profile</Button>
-                </Link>
-                <div style={{paddingRight: "10px"}}></div> 
-                <Button style={{height: '38px'}} onClick={dismissReportHandler} variant="secondary">Dismiss Report</Button>
-                <div style={{paddingRight: "10px"}}></div> 
-                <Button style={{height: '38px'}} onClick={banHandler} variant="danger">Ban User</Button>
-              </Col>
-            </div>
-            <div className="pt-3 ml-3">
+      <Container className="adminCardContainer">
+        <div className="adminCardBody">
+          <Row>
+            <Col xs={8} md={10}>
+              <Row className="adminCardRow">
+                <img className="img-fluid rounded-pill adminCardProfileImage" src={profile.image}></img>
+                <h4>{profile.name}</h4>
+              </Row>
+              <Row className="adminCardRow">
+                <hr style={{width: "100%"}}/>
+              </Row>
               {reportMessages && reportMessages.length > 0 && reportMessages.map(report => (
-                <div className='pb-4' key={report.id}>
-                  <span> 
-                    <strong>{report.sender_name}</strong> ({report.sender_email}): "{report.message}"
-                  </span>
-                </div>
+                <Row className="adminCardRow" key={report.id}>
+                  <p><strong>{report.sender_name}</strong> ({report.sender_email}): "{report.message}"</p>
+                </Row>
               ))
               }
-            </div>
-          </Card.Body>
-        </Row>
-      </Card>
+              <Row className="adminCardRow">
+                <hr style={{width: "100%"}}/>
+              </Row>
+            </Col>
+            <Col xs={4} md={2} style={{display:'flex', justifyContent:'right'}}>
+              <Row>
+                <DropdownButton id='dropdownButton' title=''>
+                  <Dropdown.Item as="button" onClick={viewProfile}>View Profile</Dropdown.Item>
+                  <Dropdown.Item as="button" onClick={dismissReportHandler}>Dismiss Report</Dropdown.Item>
+                  <Dropdown.Item as="button" onClick={banHandler}>Ban User</Dropdown.Item>
+                </DropdownButton>
+              </Row>
+            </Col>
+          </Row>
+        </div>
+      </Container>
     </>
   );
 };

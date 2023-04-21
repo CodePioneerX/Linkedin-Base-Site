@@ -38,6 +38,14 @@ import{
     UPDATE_PROFILE_SUCCESS,
     UPDATE_PROFILE_FAIL,
 
+    UPLOAD_DOCUMENTS_REQUEST,
+    UPLOAD_DOCUMENTS_SUCCESS,
+    UPLOAD_DOCUMENTS_FAIL,
+
+    REMOVE_DOCUMENT_REQUEST,
+    REMOVE_DOCUMENT_SUCCESS,
+    REMOVE_DOCUMENT_FAIL,
+    
     UPDATE_TOKEN_REQUEST,
     UPDATE_TOKEN_SUCCESS,
     UPDATE_TOKEN_FAIL,
@@ -434,3 +442,78 @@ export const update_profile = (uID, name, title, city, about, experience, educat
         })
     }
 }
+
+// This function updates a user's profile on the server
+export const upload_document = (uID, resume, coverLetter) => async (dispatch) => {
+    try {
+        
+        // Dispatches an UPDATE_PROFILE_REQUEST action to start the request
+        dispatch({
+            type: UPLOAD_DOCUMENTS_REQUEST
+        })
+        
+        // Configures the headers for the request
+        const config = {
+            headers: {
+                'Content-type': 'multipart/form-data'}
+        }
+        
+        // Sends a POST request to upload user's resume and cover letter
+        const { data } = await axios.post(`http://localhost:8000/api/documentsUpload/${uID}/`, 
+            {'resume': resume, 
+            'coverLetter': coverLetter, 
+            }, 
+            config)
+
+        // Dispatches an UPLOAD_DOCUMENTS_SUCCESS action with the upload documents
+        dispatch({
+            type: UPLOAD_DOCUMENTS_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        // Dispatches an UPLOAD_DOCUMENTS_FAIL action with the error message
+        console.log('upload documents failed')
+        dispatch({
+            type: UPLOAD_DOCUMENTS_FAIL,
+            payload: error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+        })
+    }
+}
+
+// This function updates a user's profile on the server
+export const remove_document = (uID, type) => async (dispatch) => {
+    try {
+        
+        // Dispatches an UPDATE_PROFILE_REQUEST action to start the request
+        dispatch({
+            type: REMOVE_DOCUMENT_REQUEST
+        })
+        
+        // Configures the headers for the request
+        const config = {
+            headers: {
+                'Content-type': 'application/json'}
+        }
+        
+        // Sends a POST request to upload user's resume and cover letter
+        const { data } = await axios.put(`http://localhost:8000/api/documentRemove/${uID}/`, {'type': type}, config)
+
+        // Dispatches an REMOVE_DOCUMENT_SUCCESS action with the upload documents
+        dispatch({
+            type: REMOVE_DOCUMENT_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        // Dispatches an REMOVE_DOCUMENT_FAIL action with the error message
+        console.log('upload documents failed')
+        dispatch({
+            type: REMOVE_DOCUMENT_FAIL,
+            payload: error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+        })
+    }
+}
+

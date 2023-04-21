@@ -1,0 +1,152 @@
+.pageBackground {
+    background-color: #44599d;
+    padding: 5% 15%;
+    min-height: 100vh;
+}
+#container {
+    background-color: white;
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-top: 5%;
+    padding-bottom: 1%;
+    border-radius: 10px;
+}
+
+.newsFeedContainer{
+    padding: 3% 4% 3% 4%;
+}
+
+.icon {
+    display: inline;
+}
+
+span {
+    padding-left: 2px;
+    padding-right: 10px;
+}
+
+.create_post_button {
+    border-color: #3a0f90;
+    padding:1.5%;
+    background-color: white;
+    color:#3a0f90;
+    border-radius: 100px;
+    box-shadow: 4px 4px 10px #aeaeae,
+        -4px -4px 10px #ffffff;
+}
+
+.create_post_button:hover {
+    text-decoration: none;
+    background-color: #3a0f90;
+    color:white;
+    border-color: #3a0f90;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+    transition: background-color 0.5s ease-out;
+}
+
+.jobButton {
+    border-color: #3a0f90;
+    border-width: 2px;
+    padding:1.5%;
+    width:90%;
+    background-color: white;
+    color:#3a0f90;
+    border-radius: 100px;
+    box-shadow: 4px 4px 10px #aeaeae,
+        -4px -4px 10px #ffffff;
+}
+
+.jobButton:hover {
+    text-decoration: none;
+    background-color: #3a0f90;
+    color:white;
+    border-color: #3a0f90;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+    transition: background-color 0.5s ease-out;
+}
+
+#applyLink {
+    text-decoration: none;
+    text-align: center;
+    border-width:2px;
+    padding:1.5%;
+    width:90%;
+    background-color: #3a0f90;
+    border-color: #3a0f90;
+    color:white;
+    border-radius: 100px;
+    box-shadow: 4px 4px 10px #aeaeae,
+        -4px -4px 10px #ffffff;
+}
+
+#applyLink:hover {
+    text-decoration: none;
+    background-color: white;
+    color:#3a0f90;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+    transition: background-color 0.5s ease-out;
+}
+
+#applyButtonContainer {
+    width: 100%;
+    display: flex;  
+    align-items: center; 
+    justify-content: center;
+    text-decoration: none;
+}
+
+.background {
+    background-color: #44599d;
+    min-height: 100vh;
+}
+
+.formContainer {
+    background-color: white;
+    border-radius: 10px;
+}
+
+#createPostH1 {
+    padding: 0px;
+    margin: 0px 0px 4% 0px;
+}
+
+
+@media (min-width: 500px) {
+    .pageBackground {
+        padding: 5% 7%;
+    }
+}
+
+p.job-card-text {
+    font-size: 1.0em;
+}
+
+p.job-card-text.description {
+    font-size: 1.0em;
+    white-space: pre-wrap;
+}
+
+p.post-card-text {
+    font-size: 1.0em;
+    white-space: pre-wrap;
+    padding: 15px 0;
+}
+
+h4.post-card-title {
+    text-align: left;
+    padding-bottom: 5px; 
+    padding-top: 6px;
+}
+
+h1.section-title {
+    text-align: left !important;
+    font-size: 2em;
+}
+
+.post-hr {
+    margin-bottom: 0px;
+    width: 96%;
+}

@@ -27,12 +27,15 @@ import Notifications from './screens/Notifications';
 import Settings from "./screens/Settings";
 import Home from './screens/Home';
 import SearchScreen from "./screens/SearchScreen";
+import JobApplication from "./screens/JobApplication";
+import JobApplicationReview from "./screens/JobApplicationReview";
+import ApplicationDetail from "./screens/ApplicationDetail";
 import AdminUserScreen from "./screens/AdminUserScreen";
 import AdminPostScreen from "./screens/AdminPostScreen";
 import AdminJobScreen from "./screens/AdminJobScreen";
 import  {Provider} from 'react-redux';
-import userInfoFromStorage from './store'
 import store from './store';
+
 
 
 const router = createBrowserRouter([
@@ -97,6 +100,15 @@ const router = createBrowserRouter([
     path: "/profileScreen",
     element: <ProfileScreen/>
   },{
+    path: "/jobApplication",
+    element: <JobApplication/>
+  },{
+    path: "/jobApplicationReview",
+    element: <JobApplicationReview/>
+  },{
+    path: "/applicationDetail",
+    element: <ApplicationDetail />
+  },{
     path: "/admin/moderate/users",
     element: <AdminUserScreen/>
   },{
@@ -106,7 +118,6 @@ const router = createBrowserRouter([
     path: "/admin/moderate/jobs",
     element: <AdminJobScreen/>
   }
-
 ]);
 
 function App() {

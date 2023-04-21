@@ -39,10 +39,9 @@ function JobScreen() {
   }
 
   return (
-      <Container className="justify-content-md-center padd">
+      <Container className="justify-content-md-center padd" style={{backgroundColor: "#44599d", minWidth: "100vw"}}>
         {userInfo ? (
         <>
-          <Button className='mb-4' variant='secondary' onClick={() => {navigate(-1)}}>Back</Button>
           <div>
             {jobEditor ? 
               <EditJobForm edit={jobEditorMode} quit={quitJobEditor} job={job} /> : 

@@ -104,19 +104,9 @@ export const EditJobForm = (job) => {
       }
     
     // Render the form for editing the job details
-    return <div>
-        <h2>Edit Your Job Listing</h2>
+    return <div className='editPostContainer' style={{margin: "3%"}}>
+        <h2 id='editJobListing2' style={{marginBottom: "5%"}}>Edit Your Job Listing</h2>
         <Form onSubmit={submitHandler}>
-            <Row className='mb-4'>
-                <Col>
-                    <Label className='labelE' for='contact-name'>Contact Name</Label>
-                    <Input name='contact-name' disabled id='contact-name' value={userLogin.userInfo.username} onChange={(e)=> setAuthor(e.target.value)} />
-                </Col>
-                <Col>
-                    <Label className='labelE' for='contact-email'>Contact Email</Label>
-                    <Input name='contact-email' disabled id='contact-email' value={userLogin.userInfo.username} onChange={(e)=> setEmail(e.target.value)}/>
-                </Col>
-            </Row>
             <Row className='mb-4'>
                 <Col>
                     <Label className='labelE' for='job-title'>Job Title</Label>
@@ -139,7 +129,7 @@ export const EditJobForm = (job) => {
                     <Input name='location' id='location' required={true} value={location} onChange={(e)=> setLocation(e.target.value)}/>
                 </Col>
                 <Col>
-                    <Label className='labelE' for='job-type'>Job Type (Full/Part-Time, etc.)</Label>
+                    <Label className='labelE' id='jobTypeLabel' for='job-type'>Job Type</Label>
                     <Input name='job-type' id='job-type' type='select' required={true} value={jobType} onChange={(e)=> setJobType(e.target.value)}>
                             {job_types.map(type => (
                                 <option key={type.value} value={type.value}>{type.name}</option>
@@ -176,11 +166,11 @@ export const EditJobForm = (job) => {
             <Row className='mb-4'>
                 <Col style={{paddingLeft: "40px"}}>
                     <Input name='remote' id='remote' className='form-checkbox-input' type="checkbox" checked={remote} onChange={(e)=> setRemote(!remote)}/>
-                    <Label className='labelE' for='remote'>Remote?</Label>
+                    <Label className='labelE' for='remote'><span>Remote?</span></Label>
                 </Col>
                 <Col style={{paddingLeft: "40px"}}>
                     <Input name='status' id='status' className='form-checkbox-input' type='checkbox' checked={status} onChange={(e)=> setStatus(!status)}/>
-                    <Label className='labelE' for='status'>Active?</Label>
+                    <Label className='labelE' for='status'><span>Active?</span></Label>
                 </Col>
                 <Col style={{paddingLeft: "40px"}}>
                     <Input name='listing-type' id='listing-type' className='form-checkbox-input' type='checkbox' checked={(listingType == 'INTERNAL') ? false : true} onChange={(e) => {
@@ -189,7 +179,7 @@ export const EditJobForm = (job) => {
                         :
                         setListingType('INTERNAL')
                         }}/>
-                    <Label className='labelE' for='listing-type'>External?</Label>
+                    <Label className='labelE' for='listing-type'><span>External?</span></Label>
                 </Col>
             </Row>
             {(listingType == 'EXTERNAL') &&  
@@ -206,12 +196,12 @@ export const EditJobForm = (job) => {
                 </Col>
             </Row>
             {requiredDocs.map((doc, index) => (
-                <Row key={index}>
-                    <Col xs='2'>
+                <Row key={index} className='mb-4'>
+                    <Col xs='5'>
                         <Input name={doc.type} id={doc.type} className='form-doc-input' type='checkbox' checked={doc.required} onChange={() => updateRequiredDocs(doc.type)} />
                     </Col>
-                    <Col xs='10'>
-                        <Label className='labelE' style={{position:'relative', left:'-100px'}} for={doc.type}>{`${doc.type}`} Required</Label>
+                    <Col xs='15'>
+                        <Label className='labelE' id='docLabelE' style={{position:'relative', left:'-100px'}} for={doc.type}>{`${doc.type}`} Required</Label>
                     </Col>
                 </Row>
             ))}

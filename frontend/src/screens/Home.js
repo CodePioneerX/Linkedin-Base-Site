@@ -1,7 +1,6 @@
-import React, { Component, useState, useEffect } from 'react'
-import {Container, Row, Col} from 'react-bootstrap';
+import React, { useState, useEffect } from 'react'
+import { Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from 'react-router-dom';
 import Jobs from '../components/Jobs';
 import Newsfeed from '../components/Newsfeed';
 import { EditJobForm } from '../components/EditJobForm';
@@ -12,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios'
 import Alert from 'react-bootstrap/Alert';
 import { get_notifications } from "../actions/notificationActions";
+import '../Assets/css/HomePage.css';
 
 function Home() {
   const userLogin = useSelector((state) => state.userLogin);
@@ -66,7 +66,8 @@ function Home() {
   })
 
   return (
-      <Container className="justify-content-md-center padd">
+    <div style={{backgroundColor: "#44599d"}}>
+      <Container className="justify-content-md-center padd" id='userHomePage'>
         {userInfo ? (
           <div>
             {jobEditor ? <EditJobForm edit={jobEditorMode} quit={quitJobEditor} job={job} /> : 
@@ -74,12 +75,7 @@ function Home() {
             reportEditor ? <ReportPostForm edit={reportEditorMode} quitReportEditor={quitReportEditor} post={post}/> :
             jobReportEditor ? <ReportJobForm edit={jobReportEditorMode} quitReportEditor={quitJobReportEditor} job={job}/> :
             <>
-              <Container>
-                <Link className='btn btn-primary' to='/create/post/' state={{from: "/"}}>
-                  Create a Post
-                </Link>
-              </Container>
-              <Newsfeed id={userInfo.id} author={userInfo.id} edit={postEditorMode} quit={quitPostEditor} report={reportEditorMode} setpost={setPost}/>
+              <Newsfeed id={userInfo.id} author={userInfo.id} edit={postEditorMode} quit={quitPostEditor} setpost={setPost}  report={reportEditorMode}/>
               <Jobs edit={jobEditorMode} quit={quitJobEditor} setjob={setJob} author={userInfo.email} report={jobReportEditorMode}/>
           </>}
         </div>
@@ -92,6 +88,8 @@ function Home() {
 
         </Row>)}
       </Container>
+
+    </div>
   )
 
 }

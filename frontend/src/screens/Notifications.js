@@ -70,6 +70,20 @@ function Notifications() {
       navigate('/profileScreen', { state: {data: id} })
     }
 
+    const cancelApplication = async (id, notification_id) => {
+      try {
+        const response = await axios.delete(
+          `http://localhost:8000/api/my_job_applications/cancel/${id}/`
+        )
+        deleteHandler(notification_id)
+        window.location.reload()
+      } catch (error) {
+        console.log(error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message)
+      }
+    }
+
     // check the connections status of the two users before dispatching the delete request
     const rejectConnection = async (id, notification) => {
       try {
@@ -131,7 +145,8 @@ function Notifications() {
     }
 
     return (
-        <div>
+        <div className='background'>
+        <div className='formContainer'>
         {userInfo ?
         <Container>
           <Row style={{display: "flex", alignItems: "center"}}>
@@ -139,30 +154,25 @@ function Notifications() {
               <h1>Notifications</h1>
             </Col>
             <Col md={4} >
-              <Row className="justify-content-md-center mb-3">
-                <Col xs={1}></Col>
-                <Col xs={5}>
-                  <Button className='btn btn-secondary' onClick={() => markAllReadHandler()}>
-                        Mark All as Read
-                  </Button> 
-                </Col>
-                <Col xs={5}>
-                  <Button className='btn btn-danger' onClick={clearHandler}>
-                        Clear Notifications
-                  </Button> 
-                </Col>
-                <Col xs={1}></Col>
-              </Row>
+            <Row className="justify-content-center mb-3">
+              <Button className='notificationsButton' id='markAsReadButton' onClick={() => markAllReadHandler()}>
+                Mark All as Read
+              </Button>
+              <Button className='notificationsButton' id='clearButton' onClick={clearHandler}>
+                Clear
+              </Button> 
+            </Row>
+
+
             </Col>
           </Row>
-            <Row style={{display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "100px"}}>
+            <Row style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
             { notifications?.map(notification => (
                 <Row key={notification.id} style={{width: "100%"}}>
-                  <Container style={{paddingBottom:"80px", display: "flex", flexDirection: "column", alignItems: "center"}}>
-                    <Col xs={8} md={12} style={{ borderRadius: "20px", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "-40px"}}>
-                      <div style={{borderBottom: "1px solid #d3d3d3", marginBottom:"10px"}}></div>
-                      <Row style={{ display: "flex", alignItems: "center"}}>
-                        <Col xs={8} md={10} style={{paddingLeft: "2rem"}}>
+                  <Container style={{padding: "0px", paddingBottom:"80px", width:"100%", display: "flex", flexDirection: "column", alignItems: "center"}}>
+                    <Col xs={18} md={12} style={{ borderRadius: "20px", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "-40px"}}>
+                      <Row >
+                        <Col xs={8} md={10}>
                           <Row>
                             {notification.unread ? 
                               <>
@@ -177,20 +187,22 @@ function Notifications() {
                             {notification.unread ? 
                               <>
                                 <p className="unread notif-content">{notification.content}</p>
+                                <hr style={{width: "100%"}}/>
                               </> : 
                               <>
                                 <p className="read notif-content">{notification.content}</p>
+                                <hr style={{width: "100%"}}/>
                               </>
                             }
                           </Row>
                           <Row>
-                            <p style={{ marginRight: "10px", fontSize: "14px", color: "#808080" }}>
+                            <p style={{ marginRight: "10px", color: "#808080" }}>
                               Received: {new Date(notification.created_at).toLocaleDateString()} at {new Date(notification.created_at).toLocaleTimeString()}
                             </p>
                           </Row>
                         </Col>
                         <Col xs={4} md={2} style={{ display: "flex", justifyContent: "right"}}>
-                            <DropdownButton variant="secondary" title="">
+                            <DropdownButton id='dropdownButton' title="">
                               {notification.unread ? 
                                 <Dropdown.Item as="button" onClick={() => readHandler(notification.id)}>Mark as read</Dropdown.Item> :
                                 <Dropdown.Item as="button" onClick={() => readHandler(notification.id)}>Mark as unread</Dropdown.Item> 
@@ -210,11 +222,13 @@ function Notifications() {
                               }
                               {notification.type == "RECOMMENDATION" &&
                                 <Dropdown.Item as="button" onClick={() => viewProfile(notification.sender)}>View profile</Dropdown.Item>
+                              }
+                              {notification.type == "JOBAPPLICATION" && 
+                                <Dropdown.Item as="button" onClick={() => cancelApplication(notification.object_id, notification.id)}>Cancel application</Dropdown.Item>
                               }  
                             </DropdownButton>
                         </Col>
                       </Row>
-                      <div style={{borderBottom: "1px solid #d3d3d3", marginBottom:"10px"}}></div>
                     </Col>
                     </Container>
                 </Row>
@@ -235,7 +249,8 @@ function Notifications() {
         </Row>
         </Container>
           }
-      </div>
+        </div>      
+        </div>
     )
 }
 

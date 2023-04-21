@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, Button, Row, Col } from 'react-bootstrap';
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 const ProfileCard = (props) => {
 
@@ -22,9 +22,9 @@ useEffect(() => {
 }, []);
 
   return (
-    <Card >
+    <Card>
     <Row >
-      <Card.Body className='card_body'style={{ height:'90px'}} >
+      <Card.Body className='card_body'style={{ height:'90px'}}>
         <div style={{display:'flex', justifyContent:'left'}}>
           <Col style={{display:'flex', justifyContent:'left'}}>
               <Card.Img className='img-fluid rounded-pill' 

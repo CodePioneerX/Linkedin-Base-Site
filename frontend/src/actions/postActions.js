@@ -67,7 +67,7 @@ export const create_post = (author, title, content, image)  => async (dispatch, 
 }
 
 // Action creator for updating a post
-export const update_post = (postID, title, content) => async (dispatch, getState) => {
+export const update_post = (postID, title, content, image) => async (dispatch, getState) => {
     try {
         // Dispatch an UPDATE_POST_REQUEST action
         dispatch({
@@ -86,7 +86,9 @@ export const update_post = (postID, title, content) => async (dispatch, getState
         }
         
          // Make the PUT request to the API endpoint with the updated post information
-        const { data } = await axios.put(`http://localhost:8000/api/post/update/` + postID, {'title': title, 'content': content}, config)
+        const { data } = await axios.put(`http://localhost:8000/api/post/update/` + postID, 
+        {'title': title, 'content': content, 'image': image}, 
+        config)
         
          // Dispatch an UPDATE_POST_SUCCESS action with the returned data from the API endpoint
         dispatch({
