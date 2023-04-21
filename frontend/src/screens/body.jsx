@@ -42,11 +42,6 @@ const Body = (props) => {
     console.log("user info from body");
     console.log(userInfo);
 
-
-    useEffect(() => {
-
-      getProfile(userInfo.email);
-
       async function fetchData() {
         console.log("user id for the post request : ");
         console.log(userInfo.id);
@@ -92,7 +87,9 @@ const Body = (props) => {
         setChats(processMessages(response.data));
 
       }
-  
+
+    useEffect(() => {
+      getProfile(userInfo.email);
       fetchData();
     }, [userInfo.id]);
 
@@ -290,7 +287,7 @@ const Body = (props) => {
         if (response.ok) {
           const data = await response.json();
           console.log('Message sent:', data);
-          window.location.reload(false);
+          fetchData();
           setTimeout(() => chat_context.current.scroll_to_bottom(), 100);
         } else {
           console.error('Error sending message:', response.status, response.statusText);
