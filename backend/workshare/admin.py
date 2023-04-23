@@ -20,7 +20,7 @@ class WorkShareAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'completed') 
     
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('name', 'title', 'about', 'image', 'experience')
+    list_display = ('name', 'email', 'user', 'title', 'about', 'image', 'experience')
     
 class PostAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'content', 'image', 'author', 'created_at', 'reported')
