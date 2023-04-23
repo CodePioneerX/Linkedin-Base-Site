@@ -1524,35 +1524,33 @@ def createJobAlertView(request, pk):
     """
     data = request.data
     
-    try: 
-        user = get_object_or_404(User, pk=pk)
 
-        if data['remote'] == 'true':
-            remote_ = True
-        elif data['remote'] == 'false':
-            remote_ = False
-        else:
-            remote_ = ''
+    user = get_object_or_404(User, pk=pk)
 
-        job_alert = JobAlert.objects.create(
-            user=user,
-            search_term=data['search_value'],
-            company=data['company'],
-            location=data['location'],
-            job_type=data['job_type'],
-            employment_term=data['employment_term'],
-            min_salary=data['salary_min'],
-            max_salary=data['salary_max'],
-            salary_type=data['salary_type'],
-            listing_type=data['listing_type'],
-            remote=remote_
-        )
+    if data['remote'] == 'true':
+        remote_ = True
+    elif data['remote'] == 'false':
+        remote_ = False
+    else:
+        remote_ = ''
 
-        serializer = JobAlertSerializer(job_alert, many=False)
+    job_alert = JobAlert.objects.create(
+        user=user,
+        search_term=data['search_value'],
+        company=data['company'],
+        location=data['location'],
+        job_type=data['job_type'],
+        employment_term=data['employment_term'],
+        min_salary=data['salary_min'],
+        max_salary=data['salary_max'],
+        salary_type=data['salary_type'],
+        listing_type=data['listing_type'],
+        remote=remote_
+    )
 
-        return Response(serializer.data)
-    except:
-        return Response({"error": "Job Alert could not be created"}, status=status.HTTP_404_NOT_FOUND)
+    serializer = JobAlertSerializer(job_alert, many=False)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['DELETE', 'GET'])
 def deleteJobAlertView(request, pk):

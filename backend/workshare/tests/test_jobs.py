@@ -202,3 +202,18 @@ class RejectJobApplicationTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         # Check that the response message is correct
         self.assertEqual(response.data['detail'], "Not found.")
+
+class JobAlertTestCase(APITestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='testuser', email='testuser@example.com', password='testpass')
+        
+        self.data = {'remote': 'true', 'search_value': 'test', 'company': 'test company', 'location': '', 'job_type':'', 'employment_term': '', 'salary_min': 0, 'salary_max': 100000, 'salary_type':'', 'listing_type':''}
+    
+    def test_job_alert_create(self):
+        response = self.client.post(reverse('create_job_alert', args=[self.user1.id]), data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    
+    def test_job_alert_created_not_found(self):
+        response = self.client.post(reverse('create_job_alert', args=[999]), data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
