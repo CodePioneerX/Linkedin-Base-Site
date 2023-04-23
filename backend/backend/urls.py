@@ -38,6 +38,7 @@ urlpatterns = [
     path('api/password_reset/', views.password_reset_request, name='password_reset'),
     path('reset/<uidb64>/<token>', views.passwordResetConfirm, name='passwordResetConfirm'),
     path('api/profile/<int:pk>', getProfileView, name='profile_detail'),
+    path('api/profile/image/<str:email>', getProfileViewviaEmail, name='profile_detailviaEmail'),
     path('api/my_profile/<int:pk>', getMyProfileView, name='my_profile_detail'),
     path('api/profile/', ProfileCreateView.as_view(), name='profile_create'),
     path('api/profile/update/<int:pk>', updateUserProfile, name='profile_update'),
@@ -101,6 +102,10 @@ urlpatterns = [
     path('api/jobs/report/', views.reportJobView, name='report-job'),
     path('api/jobs/report/dismiss/<int:pk>', views.dismissJobReportView, name='dismiss-job-report'),
     path('api/jobs/reported', views.getJobReportsView, name='get-reported-jobs'),
+    path('direct_messages/<user_email>/', get_my_chats, name='direct_messages-list'),
+    path('chat/<int:chat_id>/send_message/', send_message, name='send_message-create'),
+    path('create_chat/<str:name>/<str:user_email>/<str:participant_email>/', create_chat, name='create_chat'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

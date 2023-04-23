@@ -17,7 +17,7 @@ import { MdNotificationsNone } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
-import '../Assets/css/Header.css';
+import '../Assets/css/header.css';
 
 function Header(){
   const userLogin = useSelector((state) => state.userLogin);
