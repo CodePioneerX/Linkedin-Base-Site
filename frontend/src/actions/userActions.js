@@ -419,6 +419,7 @@ export const update_profile = (uID, name, title, city, about, experience, educat
             'experience': experience,
             'education': education, 
             'work': work, 
+            'image': image,
             'volunteering': volunteering,
             'courses': courses, 
             'projects': projects, 

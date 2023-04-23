@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap"; 
 import { useDispatch, useSelector } from "react-redux";
 import Posts from "../components/Posts";
 import { useNavigate, Link } from "react-router-dom";
@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { EditProfileForm } from '../components/EditProfileForm';
 import { EditPostForm } from '../components/EditPostForm';
-import '../Assets/css/App.css'
+import '../Assets/css/myApp.css'
 import { get_profile } from '../actions/userActions'
 import { get_notifications } from "../actions/notificationActions";
 import ConnectionCard from '../components/ConnectionCard';
@@ -121,7 +121,7 @@ function ViewProfile() {
                     {/* <Row> */}
                     <div className="profile-main-card">
                       <Row style={{backgroundImage: `url(${require("../images/a.jpg")})`, paddingBottom: "15px", backgroundSize: "cover", backgroundPosition: "center center", display: "flex", flexDirection: "column", alignItems: "center"}}>     
-                        <img src={profile.image} alt="Profile" className="profile-image padd_small" style={{ borderRadius: "50%", width: "auto", height: "250px"}}/>
+                        <img src={'http://localhost:8000' + profile.image} alt="Profile" className="profile-image padd_small" style={{ borderRadius: "50%", width: "auto", height: "250px"}}/>
                       </Row>
 
                       <Row style={{background:"white",display: "flex", flexDirection: "column", alignItems: "center"}}>

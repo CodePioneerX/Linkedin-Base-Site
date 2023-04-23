@@ -9,6 +9,10 @@ import '../Assets/css/App.css'
 import RecommendationCard from '../components/RecommendationCard';
 import { Link, useLocation } from "react-router-dom";
 import { sendRecommendation } from "../actions/recommendAction";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCircleChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from "react-router-dom";
 
 export const ProfileScreen =()=>{
 
@@ -18,6 +22,7 @@ export const ProfileScreen =()=>{
     const [receivedRecommendations, setReceivedRec]= useState("");
     
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     //recommendation data
     // const [title, setTitle] = useState("")
@@ -34,6 +39,8 @@ export const ProfileScreen =()=>{
     const [connectPending, setConnectPending] = useState(false);
     const [connectSender, setConnectSender] = useState(false);
     const [connectStatus, setConnectStatus] = useState("");
+    const [isForumOpen, setIsForumOpen] = useState(false);
+    const [message, setMessage] = useState('');
 
     const [recommended, setRecommended] = useState(false);
     const [recommendForm, setRecommendForm] = useState(false);
@@ -45,6 +52,96 @@ export const ProfileScreen =()=>{
     const checkPendingConnection = async (e) =>{
         //axios request
         //change state
+    };
+
+    const handleOpenForum = () => {
+      setIsForumOpen(true);
+    };
+
+    const handleCloseForum = () => {
+      setIsForumOpen(false);
+    };
+
+    const handleSendMessage  = async () =>{
+
+      const { data } = await axios.get(
+        `http://localhost:8000/api/profile/` + location.state.data
+      );
+      
+      console.log(message);
+      console.log(userInfo.email);
+      console.log(data.profile.email);
+
+      var to_user_id = data.profile.email; // u put the other user email here
+      var from_user_id = userInfo.email; // u put your email here
+      var chat_id;
+
+      // Create a new chat and get the chat_id
+      try {
+        const createChatResponse = await fetch(
+          `http://localhost:8000/create_chat/NewChat with ${to_user_id}/${from_user_id}/${to_user_id}/`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        if (createChatResponse.ok) {
+          const createChatData = await createChatResponse.json();
+          chat_id = createChatData.pk;
+        } else {
+          console.error(
+            'Error creating chat:',
+            createChatResponse.status,
+            createChatResponse.statusText
+          );
+          return;
+        }
+      } catch (error) {
+        console.error('Error creating chat:', error);
+        return;
+      }
+
+
+
+  // Send the message to the server
+  try {
+    const response = await fetch(
+      `http://localhost:8000/chat/${chat_id}/send_message/`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+          chat: chat_id,
+          from_user: from_user_id,
+          to_user: to_user_id,
+          content: message,
+        }),
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Message sent:', data);
+      navigate("/messaging");
+      window.location.reload(false);
+    } else {
+      console.error(
+        'Error sending message:',
+        response.status,
+        response.statusText
+      );
+    }
+  } catch (error) {
+    console.error('Error sending message:', error);
+  }
+
+      setMessage(""); // clear the message textarea
+      setIsForumOpen(false); // close the forum
     };
 
     //check the connection status between the logged-in user and the searched user
@@ -249,7 +346,7 @@ export const ProfileScreen =()=>{
         checkRecommendation()
         
       }, [
-        isConnected,connectPending,connectSender,connectStatus,recommended,recommendForm, reportForm
+        isConnected,connectPending,connectSender,connectStatus,recommended,recommendForm,reportForm, isForumOpen
       ]);
 
     return (    
@@ -281,7 +378,7 @@ export const ProfileScreen =()=>{
                             <button className="profile-button" onClick={cancelRecommendation}>Cancel recommendation</button>
                             :
                             <button className="profile-button" onClick ={enterRecommendation}>Recommend</button>}
-                        <button className="profile-button">Message</button>
+                        <button className="profile-button" onClick={handleOpenForum}>Message</button>
                         <button className="profile-button" onClick={enterReport}>Report User</button>
                         </div>
                         :  
@@ -299,8 +396,10 @@ export const ProfileScreen =()=>{
                             :
                             <div>
                             <button className="profile-button" onClick={sendConnection}>Connect</button>
-                            <button className="profile-button">Message</button>
                             <button className="profile-button" onClick={enterReport}>Report User</button>
+
+                            
+
                             </div>)
                         }
 
@@ -350,6 +449,13 @@ export const ProfileScreen =()=>{
                         </Row>
                     </Form>
                     }
+                    {isConnected && isForumOpen && (
+                      <div className="forum-pop-up" style={{padding: '10px 0 0 10px'}}>
+                        <textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Type your message here" style={{ borderRadius: '10px', width: '100%', marginTop: '10px', padding: '10px' }}></textarea>
+                        <button onClick={handleCloseForum} style={{ border: 'none', outline: 'none', background: 'white' }}><FontAwesomeIcon icon={faCircleXmark} size="2x" /></button>
+                        <button onClick={handleSendMessage} style={{ border: 'none', outline: 'none', background: 'white' }}><FontAwesomeIcon icon={faCircleChevronRight} size="2x"/></button>
+                      </div>
+                    )}
 
                     <Row>
                       <Col>
