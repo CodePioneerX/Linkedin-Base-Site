@@ -611,7 +611,7 @@ def PostNewsfeedView(request, pk):
         "profiles": profile_serializer.data,
         "post_data": post_data,
     }
-    return Response(data)
+    return Response(data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def PersonalNewsfeedView(request, pk):
@@ -647,7 +647,7 @@ def PersonalNewsfeedView(request, pk):
         "profiles": profile_serializer.data,
         "post_data": post_data,
     }
-    return Response(data)
+    return Response(data, status=status.HTTP_200_OK)
 
 # This function is intended to allow the user to update an existing post that they posted
 @api_view(['PUT'])    
@@ -666,7 +666,7 @@ def PostUpdateView(request, pk):
 
     serializer = PostSerializer(post, many=False)
 
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 # This function is intended to allow the user to delete an existing post that they created
 @api_view(['DELETE', 'GET'])
