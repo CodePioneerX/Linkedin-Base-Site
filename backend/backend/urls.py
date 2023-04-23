@@ -43,7 +43,6 @@ urlpatterns = [
     path('api/profile/', ProfileCreateView.as_view(), name='profile_create'),
     path('api/profile/update/<int:pk>', updateUserProfile, name='profile_update'),
     path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),
-    path('api/posts/', PostLatestView.as_view(), name='post_latest_detail'),
     path('api/newsfeed/<int:pk>', views.PostNewsfeedView, name='newsfeed'),
     path('api/post/', PostCreateView.as_view(), name='post_create'),
     path('api/post/update/<int:pk>', PostUpdateView, name='post_update'),

@@ -97,7 +97,7 @@ class PersonalNewsfeedTestCase(APITestCase):
         self.post3 = Post.objects.create(author=self.user2, title='test post 3 title', content='content of test post 3')
 
     def test_personal_newsfeed(self):
-        response = self.client.get(reverse('user_posts', args=[self.user1]))
+        response = self.client.get(reverse('user_posts', args=[self.user1.id])) 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_personal_newsfeed_user_not_found(self):

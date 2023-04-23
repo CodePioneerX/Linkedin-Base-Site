@@ -795,26 +795,6 @@ class PostView(APIView):
 class PostCreateView(CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    
-class PostLatestView(APIView):
-    def get(self, request):
-        posts = Post.objects.all().order_by('-created_at')[:10]
-        post_list = []
-        for post in posts:
-            image_path = ""
-            if post.image and hasattr(post.image, 'url'):
-                image_path = post.image.url
-
-            post_list.append({
-                'id': post.id,
-                'author': post.author.username,
-                'title': post.title,
-                'content': post.content,
-                'image': image_path,
-                'likes': post.likes,
-                'created_at': post.created_at
-            })
-        return JsonResponse(post_list, safe=False)
 
 class PostListingCreateView(CreateAPIView):
      queryset = Post.objects.all()
