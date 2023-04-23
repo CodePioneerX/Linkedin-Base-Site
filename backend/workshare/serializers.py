@@ -1,7 +1,13 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
+
 from .models import *
+
+from .models import WorkShare, Profile, Post, JobListing, Comment#, DirectMessage, Conversation
+from .models import Chat, ChatMessage
+
+
 
 class WorkShareSerializer(serializers.ModelSerializer):
     class Meta:
@@ -86,6 +92,7 @@ class JobListingSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
+
         fields = ('id', 'content', 'author', 'created_at')
 
 class NotificationSerializer(serializers.ModelSerializer):
@@ -150,4 +157,25 @@ class JobReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobReport
         fields = ('id', 'sender_id', 'sender_email', 'sender_name', 'job_id', 'job_title', 'job_company', 'job_location', 'message', 'author_id', 'author_name')
- 
+
+class ChatMessageSerializer(serializers.ModelSerializer):
+    from_user = serializers.CharField(source='from_user.username')
+    to_user = serializers.CharField(source='to_user.username')
+    
+    class Meta:
+        model = ChatMessage
+        fields = ('id', 'from_user', 'to_user','content', 'timestamp', 'read', 'deleted_by')
+
+class ChatSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(label='ID', read_only=True)
+    participants = serializers.SerializerMethodField(read_only=True)
+    name = serializers.CharField(max_length=128)
+    messages = ChatMessageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Chat
+        fields = ('id', 'participants', 'messages', 'name')
+
+    def get_participants(self, obj):
+        participants = obj.participants.all()
+        return [participant.id for participant in participants]
