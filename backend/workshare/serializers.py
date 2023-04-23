@@ -13,7 +13,6 @@ class WorkShareSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkShare
         fields = ('id', 'title', 'description', 'completed')
-        
 
 class NewsfeedProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,7 +23,12 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('user', 'name', 'email', 'city', 'title', 'about', 'image', 'experience', 'education', 'work', 'volunteering', 'courses', 'projects', 'awards', 'languages')
-        
+
+class ProfileSerializerWithDocuments(serializers.ModelSerializer):
+    class Meta: 
+        model = Profile
+        fields = '__all__'
+
 class ProfileSerializerWithToken(ProfileSerializer):
     token = serializers.SerializerMethodField(read_only=True)
 
@@ -111,6 +115,11 @@ class JobAlertSerializer(serializers.ModelSerializer):
         model = JobAlert
         fields = ('id', 'user', 'search_term', 'company', 'location', 'job_type', 'employment_term', 'salary_type', 'min_salary', 'max_salary', 'listing_type', 'remote')
 
+class SimpleJobApplicationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobApplication
+        fields = '__all__'
+
 class UserReportSerializer(serializers.ModelSerializer):
     sender_id = serializers.CharField(read_only=True, source="sender.id")
     sender_email = serializers.CharField(read_only=True, source="sender.email")
@@ -149,75 +158,6 @@ class JobReportSerializer(serializers.ModelSerializer):
         model = JobReport
         fields = ('id', 'sender_id', 'sender_email', 'sender_name', 'job_id', 'job_title', 'job_company', 'job_location', 'message', 'author_id', 'author_name')
 
-        fields = ('id', 'content', 'author')
-
-
-# class DirectMessageSerializer(serializers.Serializer):
-#     print("got a post request for a DM ")
-#     id = serializers.IntegerField(read_only=True)
-#     sender = UserSerializer(required=False)  # Add 'required=False' to allow existing users
-#     receiver = serializers.CharField()
-#     receiver_id = serializers.IntegerField()
-#     content = serializers.CharField()
-#     timestamp = serializers.DateTimeField(read_only=True)
-
-#     def create(self, validated_data):
-#         sender_data = validated_data.pop('sender')
-#         receiver = validated_data.pop('receiver')
-#         sender = User.objects.get(pk=sender_data.get('id'))
-        
-#         conversation = Conversation.get_or_create_conversation(sender, receiver)
-#         return DirectMessage.objects.create(sender=sender, conversation=conversation, **validated_data)
-
-# class ConversationSerializer(serializers.ModelSerializer):
-#     messages = DirectMessageSerializer(many=True)
-
-#     class Meta:
-#         model = Conversation
-#         fields = ['id', 'participants', 'messages']
-
-# class ChatSerializer(serializers.ModelSerializer):
-    
-#     participants = serializers.SerializerMethodField(read_only=True)
-#     messages = serializers.SerializerMethodField(read_only=True)
-
-#     class Meta:
-#         model = Chat
-#         fields = '__all__'
-
-#     def get_participants(self, obj):
-#         print(self)
-#         user_id = self.context['id']
-#         ids = [o.id for o in obj.participants.all() if o.id != user_id]
-#         print('here')
-#         accs = User.objects.filter(_id__in=ids)
-#         return UserSerializer(accs, many=True).data
-    
-    
-#     def get_messages(self, obj):
-#         messages = obj.messages.all().order_by("-timestamp")[0:50]
-#         return ChatMessageSerializer(messages, many=True).data
-    
-
-
-
-# class ChatMessageSerializer(serializers.ModelSerializer):
-
-#     from_user_name  = serializers.SerializerMethodField(read_only=True)
-#     deleted_by = serializers.SerializerMethodField(read_only=True)
-
-#     class Meta:
-#         model = ChatMessage
-#         fields = '__all__'
-
-
-#     def get_from_user_name(self, obj):
-#         return obj.from_user.name
-    
-#     def get_deleted_by(self, obj):
-#         deleted_by =  obj.deleted_by.all()
-#         return UserSerializer(deleted_by, many=True).data
-    
 class ChatMessageSerializer(serializers.ModelSerializer):
     from_user = serializers.CharField(source='from_user.username')
     to_user = serializers.CharField(source='to_user.username')

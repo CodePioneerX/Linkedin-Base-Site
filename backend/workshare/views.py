@@ -1,6 +1,6 @@
 import time
 import json
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from rest_framework.views import APIView
@@ -17,27 +17,25 @@ from django.contrib.auth.models import User, Group
 from .serializers import *
 
 from .serializers import WorkShareSerializer, ChatSerializer, ChatMessageSerializer
-from .models import WorkShare, Chat, ChatMessage
-from .models import Profile, Post, JobListing, Comment
-from django.contrib.auth.models import User
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.decorators import authentication_classes
 from rest_framework.parsers import JSONParser
 from .serializers import ProfileSerializer, ProfileSerializerWithToken, PostSerializer, UserSerializer, UserSerializerWithToken, JobListingSerializer
 
 from django.contrib.auth.hashers import make_password
-from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import Q
 from django.contrib.admin.views.decorators import staff_member_required
 import datetime
 
 from itertools import chain
+import traceback
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework import status
+from rest_framework import status, generics
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from rest_framework.parsers import MultiPartParser, FormParser
 
 #for email confirmation
 from django.template.loader import render_to_string
@@ -85,16 +83,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 class WorkShareView(viewsets.ModelViewSet):
     serializer_class = WorkShareSerializer
     queryset = WorkShare.objects.all()
-    
-    
-    
-class ProfileView(APIView):
-    def get(self, request, pk):
-        profile = get_object_or_404(Profile, pk=pk)
-        serializer = ProfileSerializer(profile)
-        return Response(serializer.data)
-    
-    
+
 
 class ProfileCreateView(CreateAPIView):
     queryset = Profile.objects.all()
@@ -668,6 +657,9 @@ def PostUpdateView(request, pk):
 
     post.title = data['title']
     post.content = data['content']
+        
+    if data['image'] != '':
+        post.image = data['image']
 
     post.save()
 
@@ -972,6 +964,29 @@ def JobListingView(request, pk):
 
     return Response(serializer_list)
 
+@api_view(['GET'])
+def getUserJobListingsView(request, pk):
+    """
+    A view to handle the retrieval of all of a specific user's Job Listings.
+    
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of User whose Job Listings must be retrieved.
+
+    Returns: 
+    - Response: Response with the serialized Job Listing information, or error if user is not found.
+    """
+    try:
+        user = get_object_or_404(User, pk=pk)
+    except User.DoesNotExist:
+        return Response({"error":"The job author cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    jobs = JobListing.objects.filter(author=user)
+
+    serializer = JobListingSerializer(jobs, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class JobListingLatestView(APIView):
     def get(self, request):
@@ -1205,7 +1220,6 @@ def getUserProfile(request):
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
-# This function is intended allow us to get the recommendations related data (sent and received) of a given profile
 @api_view(['GET'])
 def getProfileView(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
@@ -1230,6 +1244,14 @@ def getProfileView(request, pk):
 def getProfileViewviaEmail(request, email):
     profile = get_object_or_404(Profile, email=email)
     profile_serializer = ProfileSerializer(profile)
+    return Response(data)
+
+@api_view(['GET'])
+def getMyProfileView(request, pk):
+    user = get_object_or_404(User, pk=pk)
+
+    profile = get_object_or_404(Profile, user=user)
+    profile_serializer = ProfileSerializerWithDocuments(profile)
 
     sent_recommendations = Recommendations.objects.filter(sender=profile)
     received_recommendations = Recommendations.objects.filter(recipient=profile)
@@ -1242,9 +1264,7 @@ def getProfileViewviaEmail(request, email):
         "sent_recommendations": sent_recommendations_serializer.data,
         "received_recommendations": received_recommendations_serializer.data
     }
-
-    return Response(data)
-
+    return Response(data, status=status.HTTP_200_OK)
 
 # This function is intended to register a user
 @api_view(['POST'])
@@ -1634,6 +1654,245 @@ def searchFunction(request):
         "jobs": jobs_serializer.data}
     
     return Response(data)
+
+#This function allows the recurtier to reject an application.
+@api_view(['PUT'])
+def rejectJobApplication(request, pk):
+    job_application = get_object_or_404(JobApplication, id=pk)
+    
+    if not job_application:
+        return Response({'message': 'Job application request not found.'}, status=status.HTTP_404_NOT_FOUND)
+    
+    job_application.status = 'reject'
+    job_application.save()
+    return Response({'message': 'Job application request rejected successfully.'}, status=status.HTTP_200_OK)
+
+#This function allows the user to view all the jobs they applied to.
+@api_view(['GET'])
+def getMyApplicationsView(request):
+    job_applications = JobApplication.objects.filter(user=request.user)
+    serializer = SimpleJobApplicationSerializer(job_applications, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getUserJobsWithApplicationsView(request, pk):
+    """
+    A view to handle the retrieval of all of a user's posted jobs, together with all the applications that were submitted for them.
+    
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of Job for which the Job Applications must be retrieved.
+
+    Returns: 
+    - Response: Response with the serialized Job and Job Application information, or error if the job author is not found.
+    """
+    job_list = []
+    
+    try:
+        user = get_object_or_404(User, pk=pk)
+    except User.DoesNotExist:
+        return Response({"error":"The job author cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    jobs = JobListing.objects.filter(author=user)
+
+    for job in jobs:
+        job_serializer = JobListingSerializer(job, many=False)
+        applications = JobApplication.objects.filter(job_post=job,status="true")
+        application_serializer = SimpleJobApplicationSerializer(applications, many=True)
+        combined = {'job':job_serializer.data, 'applications':application_serializer.data}
+        job_list.append(combined)
+
+    return Response(job_list, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def getJobApplicationsView(request, pk):
+    """
+    A view to handle the retrieval of all the applications submitted for a specific Job.
+    
+    Parameters:
+    - request: HTTP request object.
+    - pk: Primary key of Job for which the Job Applications must be retrieved.
+
+    Returns: 
+    - Response: Response with the serialized Job Application information, or error if the job is not found.
+    """
+    try:
+        job = get_object_or_404(JobListing, pk=pk)
+    except JobListing.DoesNotExist:
+        return Response({"error":"The job cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    job_applications = JobApplication.objects.filter(job_post=job, status="true")
+    serializer = SimpleJobApplicationSerializer(job_applications, many=True)
+    return Response(serializer.data)
+
+#This view shall allow the user to create a job application and upload the wanted files.
+class JobApplicationCreateView(generics.CreateAPIView):
+    queryset = JobApplication.objects.all()
+    serializer_class = SimpleJobApplicationSerializer
+    parser_classes = (MultiPartParser, FormParser)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=201, headers=headers)
+    
+@api_view(['POST'])
+def jobApplicationView(request):
+    """
+    A view to handle the posting of a Job Application.
+    
+    Parameters:
+    - request: HTTP request object.
+
+    Returns: 
+    - Response: Response with the serialized Job Application information, or error if job/user is not found.
+    """
+    data = request.data
+
+    try:
+        job = get_object_or_404(JobListing, pk=data['job_id'])
+    except JobListing.DoesNotExist:
+        return Response({"error":"The job you are trying to apply for cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        user = get_object_or_404(User, pk=data['user_id'])
+    except User.DoesNotExist:
+        return Response({"error":"The user account you are applying with cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+
+    if 'resume' not in data:
+        resume = ''
+    else:
+        resume = data['resume']
+    
+    if 'coverLetter' not in data:
+        coverLetter = ''
+    else:
+        coverLetter = data['coverLetter']
+    
+    if 'recommendationLetter' not in data:
+        recommendationLetter = ''
+    else:
+        recommendationLetter = data['recommendationLetter']
+    
+    if 'portfolio' not in data:
+        portfolio = ''
+    else:
+        portfolio = data['portfolio']
+    
+    if 'transcript' not in data:
+        transcript = ''
+    else:
+        transcript = data['transcript']
+    
+    if 'otherDocuments' not in data:
+        otherDocuments = ''
+    else:
+        otherDocuments = data['otherDocuments']
+
+    try: 
+        job_application = JobApplication.objects.create(
+            user=user,
+            job_post=job,
+            name=data['name'],
+            email=data['email'],
+            city=data['city'],
+            province=data['provinceState'],
+            country=data['country'],
+            phone=data['telephone'],
+            experience=data['experience'],
+            work=data['work'],
+            education=data['education'],
+            volunteering=data['volunteering'],
+            projects=data['projects'],
+            courses=data['courses'],
+            awards=data['awards'],
+            languages=data['languages'],
+            resume=resume,
+            cover_letter=coverLetter,
+            letter_of_recommendation=recommendationLetter,
+            portfolio=portfolio,
+            transcript=transcript,
+            other_documents=otherDocuments
+        )
+
+        serializer = SimpleJobApplicationSerializer(job_application, many=False)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        print('%s' % type(e))
+        message = traceback.format_exc()
+        print(message)
+        return Response({"error":"Job Application could not be created"}, status=status.HTTP_404_NOT_FOUND)
+
+#This function allows a user to cancel a sent application.
+@api_view(['DELETE', 'GET'])
+def cancelMyJobApplication(request, pk):
+    job_application = get_object_or_404(JobApplication, id=pk)
+    if not job_application:
+        return Response({'message': 'Job application not found.'}, status=status.HTTP_404_NOT_FOUND)
+    if job_application.status != 'true':
+        return JsonResponse({'message': 'Job application has already been deleted or rejected.'}, status=status.HTTP_400_BAD_REQUEST)
+    job_application.delete()
+    return Response({'message': 'Job application request cancelled successfully.'}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def uploadDocuments(request, pk):
+
+    data = request.data
+
+    try:
+        user = get_object_or_404(User, pk=pk)
+    except User.DoesNotExist:
+        return Response({"error":"The user account you are trying to access with cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+
+    try: 
+        profile = get_object_or_404(Profile, user=user)
+    except Profile.DoesNotExist:
+        return Response({"error":"The profile you are attempting to upload documents to cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    if 'resume' not in data:
+        resume = ''
+    else:
+        resume = data['resume']
+        profile.resume = resume
+    
+    if 'coverLetter' not in data:
+        coverLetter = ''
+    else:
+        coverLetter = data['coverLetter']
+        profile.cover_letter = coverLetter
+    
+    profile.save()
+
+    return Response({"detail":"The documents have been uploaded to your profile."}, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def removeDocument(request, pk):
+
+    data = request.data
+
+    try:
+        user = get_object_or_404(User, pk=pk)
+    except User.DoesNotExist:
+        return Response({"error":"The user account you are trying to access with cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+
+    try: 
+        profile = get_object_or_404(Profile, user=user)
+    except Profile.DoesNotExist:
+        return Response({"error":"The profile you are attempting to upload documents to cannot be found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    if data['type'] == 'resume':
+        profile.resume = ''
+
+    if data['type'] == 'cover_letter':
+        profile.cover_letter = ''
+    
+    profile.save()
+
+    return Response({"detail":"The document has been removed from your profile."}, status=status.HTTP_200_OK)
 
 #This function allows a user to comment on a post.
 @api_view(['POST'])

@@ -259,6 +259,108 @@ footer {
   left: -10px;
 }
 
+.file-form-background {
+  width: 55%;
+  height: 70%;
+  background: #3D13C6;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  border-radius: 5px;
+}
+
+.file-form-wrapper{
+  width: 99%;
+  height: 99%;
+  box-shadow: 0 5px 15px rgba(67, 66, 66, 1);
+  background: #fff;
+  color: #000;
+  display: grid;
+  /* grid-template-rows: 50% 50%; */
+  /* grid-template-columns: 50% 50%; */
+  position: relative;
+  z-index: 99999;
+  border-radius: 10px;
+}
+
+
+.file-form-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+}
+
+.FileInputContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.FileInputText {
+  color:#3a0f90;
+}
+
+
+.file-form-button {
+  cursor:pointer;
+  border-color: #3a0f90;
+  border-width: 2px;
+  border-radius: 20px;
+  border:none;
+  background-color:#3a0f90;
+  color:white;
+  font-weight: bold;
+  width: 150px;
+  padding: 10px;
+  margin: 10px;
+  }
+
+.file-form-clear-button {
+  cursor:pointer;
+  border-color: #b91313;
+  border-width: 2px;
+  border-radius: 20px;
+  border:none;
+  background-color:#b91313;
+  color:white;
+  font-weight: bold;
+  width: 150px;
+  padding: 10px;
+  margin: 10px;
+  }
+
+
+.close-file-form-button{
+  cursor: pointer;
+  position: absolute;
+  background: #3a0f90;
+  color: #fff;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 20px; 
+  padding: 0;
+  z-index: 99999;
+}
+
+.userJobPost{
+  background: white;
+  border-radius: 7px;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-left: 14px;
+}
+
 #profilePage {
   background-color: #44599d;
   padding:5%;
@@ -310,10 +412,3 @@ footer {
   }
 
 }
-
-label, input::placeholder { 
-  user-select: none;
-  color: #303030;
-  font-size: 16px; 
-}
-

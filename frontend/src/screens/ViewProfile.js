@@ -19,7 +19,8 @@ import { get_profile } from '../actions/userActions'
 import { get_notifications } from "../actions/notificationActions";
 import ConnectionCard from '../components/ConnectionCard';
 import RecommendationCard from "../components/RecommendationCard";
-
+import FileForm from "../components/FileForm";
+import JobPosts from "../components/JobPosts";
 
 function ViewProfile() {
   
@@ -30,6 +31,7 @@ function ViewProfile() {
   const [receivedRecommendations, setReceivedRec]= useState(""); 
   const [editor, setEditor] = useState(false)
   const [postEditor, setPostEditor] = useState(false)
+  const [fileForm, setFileForm] = useState(false);
   
   const [post, setPost] = useState('') // Holds and sets the value of user's post data
 
@@ -40,7 +42,9 @@ function ViewProfile() {
   const { userInfo } = userLogin;
   const navigate = useNavigate();
 
-  
+  const openFileForm = () => {
+    setFileForm(prev => !prev);
+  };
   
  // If user is not logged in, redirect to the login page, else call the `getProfile` function
   
@@ -51,34 +55,27 @@ function ViewProfile() {
     } else {
     getProfile();
   }
-  }, [userInfo, navigate]);
-  
-  
-  
+  }, [userInfo, navigate, fileForm]);
 
   const getProfile = async () => {
     const { data } = await axios.get(
-      `http://localhost:8000/api/profile/` + userInfo.id
+      `http://localhost:8000/api/my_profile/${userInfo.id}`
     );
-    setProfile(data.profile);
+    console.log(data.profile)
     setRecommendation(data.sent_recommendations);
-    // console.log(data)
     setReceivedRec(data.received_recommendations);
-
-    // console.log(data)
+    setProfile(data.profile);
   };
 
   
   
    // If user is not logged in, redirect to the login page, else call the `getProfile` function
   useEffect(() => {
-    getProfile(); //getProfile function call 
+    getProfile(); 
+    //getProfile function call 
     // dispatch(get_profile(userInfo.id))
     userInfo && dispatch(get_notifications(userInfo.id))
   }, []);
-
-  
-  
   
   const editorMode = ()=>{
     setEditor(true)
@@ -117,6 +114,7 @@ function ViewProfile() {
             {editor ? <EditProfileForm profile={profile} quitEditor={quitEditor}/> : 
             postEditor ? <EditPostForm post={post} quitPostEditor={quitPostEditor}/> : 
               <Container>
+                <FileForm fileForm={fileForm} setFileForm={setFileForm} profile={profile}/>
                 <Row>
                   {/* Bio + Resume Column  */}
                   <Col sm={12} md={12} lg={8}>
@@ -131,8 +129,11 @@ function ViewProfile() {
                           <h1 className="profile-name">{profile.name}</h1>
                           <h4 className="profile-title">{profile.title}</h4>
                           <h6 className="profile-city" style={{paddingBottom:"10px"}}>{profile.city}</h6>
+                          <Link to='/network'>
                           <button className="profile-button">Connections</button>
+                          </Link>
                           <button className="profile-button" onClick={editorMode}>Edit Profile</button>
+                          <button className="profile-button" onClick={openFileForm}>Upload Documents</button>
                           <button className="profile-button">Contact Info</button>
                         </div>
                       </Row>
@@ -204,6 +205,12 @@ function ViewProfile() {
                             <div className="profile-card">
                               <h2 className="padd_small"><b>Languages</b></h2>
                               <ul className="languages-list">{profile.languages}</ul>
+                            </div>
+                            
+                            {/* Display user's job posts */}
+                            <div className="profile-card">
+                              <h2 className="padd_small"><b>Your Job Posts</b></h2>
+                              <JobPosts u_id={userLogin.userInfo.id}/>
                             </div>
 
                           </div>

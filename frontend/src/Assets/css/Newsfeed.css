@@ -68,6 +68,7 @@ span {
 }
 
 #applyLink {
+    text-decoration: none;
     text-align: center;
     border-width:2px;
     padding:1.5%;
@@ -87,6 +88,14 @@ span {
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 13px 0 rgba(0, 0, 0, 0.19);
     cursor: pointer;
     transition: background-color 0.5s ease-out;
+}
+
+#applyButtonContainer {
+    width: 100%;
+    display: flex;  
+    align-items: center; 
+    justify-content: center;
+    text-decoration: none;
 }
 
 .background {
@@ -111,3 +120,33 @@ span {
     }
 }
 
+p.job-card-text {
+    font-size: 1.0em;
+}
+
+p.job-card-text.description {
+    font-size: 1.0em;
+    white-space: pre-wrap;
+}
+
+p.post-card-text {
+    font-size: 1.0em;
+    white-space: pre-wrap;
+    padding: 15px 0;
+}
+
+h4.post-card-title {
+    text-align: left;
+    padding-bottom: 5px; 
+    padding-top: 6px;
+}
+
+h1.section-title {
+    text-align: left !important;
+    font-size: 2em;
+}
+
+.post-hr {
+    margin-bottom: 0px;
+    width: 96%;
+}

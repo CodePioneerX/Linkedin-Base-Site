@@ -18,12 +18,6 @@ from django.urls import path, include
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenRefreshView
 from workshare.views import *
-
-# from workshare.views import ProfileView, ProfileCreateView, getProfileView, updateUserProfile
-# from workshare.views import JobListingCreateView, JobListingLatestView, JobListingUpdateView, JobListingDeleteView
-# from workshare.views import PostView, PostCreateView, PostUpdateView, PostDeleteView, PostLatestView, PostListingCreateView, UserPostsView#, MessageList, MessageDetail, SendMessage, ReceiveMessages, DeleteMessage
-# from workshare.views import send_message, create_chat, get_my_chats #ConversationListCreateView, DirectMessageCreateView
-
 from django.conf import settings
 from django.conf.urls.static import static
 from workshare import views
@@ -45,6 +39,7 @@ urlpatterns = [
     path('reset/<uidb64>/<token>', views.passwordResetConfirm, name='passwordResetConfirm'),
     path('api/profile/<int:pk>', getProfileView, name='profile_detail'),
     path('api/profile/image/<str:email>', getProfileViewviaEmail, name='profile_detailviaEmail'),
+    path('api/my_profile/<int:pk>', getMyProfileView, name='my_profile_detail'),
     path('api/profile/', ProfileCreateView.as_view(), name='profile_create'),
     path('api/profile/update/<int:pk>', updateUserProfile, name='profile_update'),
     path('api/post/<int:pk>', PostView.as_view(), name='post_detail'),
@@ -59,6 +54,7 @@ urlpatterns = [
     path('api/job/update/<int:pk>', JobListingUpdateView, name='job_listing_update'),
     path('api/job/delete/<int:pk>', JobListingDeleteView, name='job_listing_delete'),
     path('api/jobs/', JobListingLatestView.as_view(), name='job_listing_latest_detail'),
+    path('api/jobs/user/<int:pk>', views.getUserJobListingsView, name='get_users_jobs'),
     path('api/job/<int:pk>', views.JobListingView, name='job_detail'),
     path('api/register/' , views.registerUser, name='register'),
     path('api/notification/delete/<int:pk>', views.deleteNotificationView, name='notification_delete'),
@@ -85,6 +81,14 @@ urlpatterns = [
     path('api/job_alerts/delete/<int:pk>/', views.deleteJobAlertView, name='delete_job_alert'),
     path('api/job_alerts/<int:pk>/create/', views.createJobAlertView, name='create_job_alert'),
     path('api/search/', views.searchFunction, name='search'),
+    path('api/job_applications/reject/<int:pk>/', rejectJobApplication, name='reject_job_application'),
+    path('api/my_job_applications/', views.getMyApplicationsView, name='my_job_applications'),
+    path('api/job/apply/', views.jobApplicationView, name='createjob_application'),
+    path('api/job/applications/<int:pk>', views.getJobApplicationsView, name='create_job_application'),
+    path('api/jobs_applications/user/<int:pk>', views.getUserJobsWithApplicationsView, name='get_users_jobs_with_applications'),
+    path('api/my_job_applications/cancel/<int:pk>/', cancelMyJobApplication, name='cancel_my_job_application'),
+    path('api/documentsUpload/<int:pk>/', uploadDocuments, name='upload_documents'),
+    path('api/documentRemove/<int:pk>/', removeDocument, name='remove_document'),
     path('api/posts/comment/<int:post_id>/', createComment, name='create_comment'),
     path('api/posts/like/<int:post_id>/', likePost, name='like_post'),
     path('api/users/report/', views.reportUserView, name='report-user'),

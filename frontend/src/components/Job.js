@@ -63,7 +63,7 @@ export default class Job extends Component {
     ) 
     if (this.state.ready) return (
       <div className='pageBackground'>
-        <Row id='container' >
+        <Row id='container'>
           <Container style={{paddingBottom:"80px"}}>
             <Col xs={12} style={{ borderRadius: "20px", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)", padding: "25px", backgroundColor: "white", border: "none", marginBottom: "-40px" }}>
               <Row className='mb-4'>
@@ -91,7 +91,7 @@ export default class Job extends Component {
                 <Row>
                   <Col xs={12}>
                     <h4>Description: </h4>
-                    <p style={{whiteSpace: 'pre-wrap'}}>{this.state.job.description}</p>
+                    <p className='job-card-text description'>{this.state.job.description}</p>
                   </Col>
                 </Row>
                 <Row className='mb-2'>
@@ -99,8 +99,8 @@ export default class Job extends Component {
                     <h4>Location: </h4>
                   </Col>
                   <Col sm={12} md={6} xl={8}>
-                    <p >{this.state.job.location}</p>
-                    {this.state.job.remote ? <p>Remote work possible.</p> : <p>Must be willing to work in person.</p>} 
+                    <p className='job-card-text'>{this.state.job.location}</p>
+                    {this.state.job.remote ? <p className='job-card-text'>Remote work possible.</p> : <p className='job-card-text'>Must be willing to work in person.</p>} 
                   </Col>
                 </Row>
                 <Row className='mb-2'>
@@ -108,7 +108,7 @@ export default class Job extends Component {
                     <h4>Salary: </h4>
                   </Col>
                   <Col sm={12} md={6} xl={8}>
-                    <p>${this.state.job.salary} {salary_types.map(type => ((type.value == this.state.job.salary_type) && <span key={type.value}>{type.name}</span>))}</p>
+                    <p className='job-card-text'>${this.state.job.salary} {salary_types.map(type => ((type.value == this.state.job.salary_type) && <span key={type.value}>{type.name}</span>))}</p>
                   </Col>
                 </Row>
                 <Row className='mb-2'>
@@ -116,7 +116,7 @@ export default class Job extends Component {
                     <h4>Position Type: </h4>
                   </Col>
                   <Col sm={12} md={6} xl={8}>
-                    <p>{job_types.map(type => ((type.value == this.state.job.job_type) && <span key={type.value}>{type.name}</span>))}</p>
+                    <p className='job-card-text'>{job_types.map(type => ((type.value == this.state.job.job_type) && <span key={type.value}>{type.name}</span>))}</p>
                   </Col>
                 </Row>
                 <Row className='mb-2'>
@@ -124,7 +124,7 @@ export default class Job extends Component {
                     <h4>Employment Term: </h4>
                   </Col>
                   <Col sm={12} md={6} xl={8}>
-                    <p>{employment_terms.map(type => ((type.value == this.state.job.employment_term) && <span key={type.value}>{type.name}</span>))}</p>
+                    <p className='job-card-text'>{employment_terms.map(type => ((type.value == this.state.job.employment_term) && <span key={type.value}>{type.name}</span>))}</p>
                   </Col>
                 </Row>
                 <Row className='mb-2'>
@@ -132,7 +132,7 @@ export default class Job extends Component {
                     <h4>Position Type: </h4>
                   </Col>
                   <Col sm={12} md={6} xl={8}>
-                    <p>{job_types.map(type => ((type.value == this.state.job.job_type) && <span key={type.value}>{type.name}</span>))}</p>
+                    <p className='job-card-text'>{job_types.map(type => ((type.value == this.state.job.job_type) && <span key={type.value}>{type.name}</span>))}</p>
                   </Col>
                 </Row>
                 <Row className='mb-2'>
@@ -140,7 +140,7 @@ export default class Job extends Component {
                     <h4>Posted: </h4>
                   </Col>
                   <Col sm={12} md={6} xl={8}>
-                    <p>{this.state.job.created_at.slice(0, 10)}</p>
+                    <p className='job-card-text'>{this.state.job.created_at.slice(0, 10)}</p>
                   </Col>
                 </Row>
                 <Row className='mb-2'>
@@ -148,7 +148,7 @@ export default class Job extends Component {
                     <h4>Application Deadline: </h4>
                   </Col>
                   <Col sm={12} md={6} xl={8}>
-                    <p>{this.state.job.deadline.slice(0, 10)}</p>
+                    <p className='job-card-text'>{this.state.job.deadline.slice(0, 10)}</p>
                   </Col>
                 </Row>
                 <Row className='mb-2'>
@@ -156,7 +156,7 @@ export default class Job extends Component {
                     <h4>Status: </h4>
                   </Col>
                   <Col sm={12} md={6} xl={8}>
-                    <p>{this.state.job.status ? <>Applications Open</> : <>Applications Closed</>}</p>
+                    <p className='job-card-text'>{this.state.job.status ? <>Applications Open</> : <>Applications Closed</>}</p>
                   </Col>
                 </Row>
                 <Row className='mb-2'>
@@ -164,7 +164,7 @@ export default class Job extends Component {
                     <h4>Application Type: </h4>
                   </Col>
                   <Col sm={12} md={6} xl={8}>
-                    <p>{(this.state.job.listing_type == 'INTERNAL') ? <>Internal</> : <a href={this.state.job.link}>External</a>}</p>
+                    <p className='job-card-text'>{(this.state.job.listing_type == 'INTERNAL') ? <>Internal</> : <a href={this.state.job.link}>External</a>}</p>
                   </Col>
                 </Row>
                 <Row className='mb-1'>
@@ -189,10 +189,14 @@ export default class Job extends Component {
               </Container>
               <Row>
                 <Col style={{display: 'flex', justifyContent: 'center'}}>
-                  {this.state.job.listing_type == 'INTERNAL' ? 
-                    <Button className='jobButton' id='applyLink'>Apply</Button> : 
+                {this.state.job.listing_type == 'INTERNAL' ? 
+                <>
+                <Link to="/jobApplication" id='applyButtonContainer' state={{job_id:this.state.job.id}}>
+                    <Button className='jobButton' id='applyLink'>Apply</Button> 
+                </Link>
+                </> : 
                     <>
-                      <Link to={this.state.job.link}>
+                      <Link to={this.state.job.link} id='applyButtonContainer'>
                         <Button className='jobButton' id='applyLink'>Apply Externally</Button>
                       </Link>
                     </>

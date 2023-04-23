@@ -32,7 +32,6 @@ function CreatePost() {
 
   const submitHandler = (e) => {
       e.preventDefault()
-      console.log('create_post: ',userInfo.email)
       dispatch(create_post(userInfo.email,title, content, image))
       navigate(from)
   }
@@ -57,7 +56,7 @@ function CreatePost() {
 
               <FormGroup>
                 <Label for="postImage">Attach an Image</Label>
-                <Input type="file" value={image}  onChange={(e)=> setImage(e.target.value)}/>
+                <Input type="file" onChange={(e)=> setImage(e.target.files[0])}/>
               </FormGroup>
            
               <Button id='submit' className='createPostButton' type='submit'>Create Post</Button>

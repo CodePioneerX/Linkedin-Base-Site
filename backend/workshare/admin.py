@@ -3,6 +3,14 @@ from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from .models import *
 
+# initialize Document instances for use in JobListing required_docs
+Document.objects.get_or_create(document_type='Resume')
+Document.objects.get_or_create(document_type='Cover Letter')
+Document.objects.get_or_create(document_type='Letter of Recommendation')
+Document.objects.get_or_create(document_type='Portfolio')
+Document.objects.get_or_create(document_type='Transcript')
+
+
 Reported, created = Group.objects.get_or_create(name='Reported')
 
 from .models import WorkShare, Profile, Post, JobListing, Comment, Chat, ChatMessage#, Conversation, DirectMessage 
@@ -37,6 +45,9 @@ class DocumentAdmin(admin.ModelAdmin):
 
 class JobAlertAdmin(admin.ModelAdmin):
     list_display = ('user', 'search_term', 'company', 'location', 'job_type', 'employment_term', 'salary_type', 'min_salary', 'max_salary', 'listing_type', 'remote')
+
+class JobApplicationAdmin(admin.ModelAdmin):
+    list_display = ('user', 'job_post')
 
 class LikesAdmin(admin.ModelAdmin):
     list_display = ('user', 'post')
@@ -82,6 +93,7 @@ admin.site.register(Connection,ConnectionAdmin)
 admin.site.register(Recommendations, RecommendationsAdmin)
 admin.site.register(Document, DocumentAdmin)
 admin.site.register(JobAlert, JobAlertAdmin)
+admin.site.register(JobApplication, JobApplicationAdmin)
 admin.site.register(Likes, LikesAdmin)
 admin.site.register(UserReport, UserReportAdmin)
 admin.site.register(PostReport, PostReportAdmin)

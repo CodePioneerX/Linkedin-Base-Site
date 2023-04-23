@@ -78,6 +78,8 @@ class Profile(models.Model):
     projects = models.TextField(default='')
     awards = models.TextField(default='')
     languages = models.TextField(default='')
+    resume = models.FileField(upload_to="documents/", blank=True)
+    cover_letter = models.FileField(upload_to="documents/", blank=True)
     
     #this function defines what will be returned when the class is printed. The code below will return the name.
     def __str__(self):
@@ -219,6 +221,7 @@ class Notification(models.Model):
     COMMENT = 'COMMENT'
     CONNECTION = 'CONNECTION'
     JOBALERT = 'JOBALERT'
+    JOBAPPLICATION = 'JOBAPPLICATION'
     LIKE = 'LIKE'
     MESSAGE = 'MESSAGE'
     RECOMMENDATION = 'RECOMMENDATION'
@@ -228,6 +231,7 @@ class Notification(models.Model):
         (COMMENT, 'Comment'),
         (CONNECTION, 'Connection'),
         (JOBALERT, 'Job Alert'),
+        (JOBAPPLICATION, 'Job Application'),
         (LIKE, 'Like'),
         (MESSAGE, 'Message'),
         (RECOMMENDATION, 'Recommendation'),
@@ -300,6 +304,38 @@ class JobAlert(models.Model):
 
     def __str__(self):
         return self.search_term + ' ' + self.user.first_name
+
+#This model details the JobApplication form the user has to fill to apply to a job.
+class JobApplication(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    job_post = models.ForeignKey(JobListing, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255, default='')
+    city = models.CharField(max_length=255, default='')
+    province = models.CharField(max_length=255, default='')
+    country = models.CharField(max_length=255, default='')
+    phone = models.IntegerField(default=0)
+    experience = models.TextField(default='')
+    work = models.TextField(default='')
+    education = models.TextField(default='')
+    volunteering = models.TextField(default='')
+    projects = models.TextField(default='')
+    courses = models.TextField(default='')
+    awards=models.TextField(default='')
+    languages = models.TextField(default='')
+    resume = models.FileField(upload_to="documents/", blank=True)
+    cover_letter = models.FileField(upload_to="documents/", blank=True)
+    letter_of_recommendation = models.FileField(upload_to="documents/", blank=True)
+    portfolio = models.FileField(upload_to="documents/", blank=True)
+    transcript = models.FileField(upload_to="documents/", blank=True)
+    other_documents = models.FileField(upload_to="documents/", blank=True)
+
+    #This sets the status of the JobApplication as either applied, inactive, or in-progress depending on the recruiter's decision.
+    STATUS_CHOICES = (
+        ('true', 'Applied'),
+        ('reject', 'Inactive'),
+    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='true')
 
 class UserReport(models.Model):
     sender = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE)
