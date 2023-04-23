@@ -128,8 +128,7 @@ export const EditProfileForm =(profile)=>{
                 <FormGroup className='mb-4'>
                 <Label className='labelE ' for="image">Choose your new profile image</Label>
                 <input type='file' name="image" id="image" 
-                onChange={(e)=> {setImage(e.target.files[0])
-                                setImagePath('/images/'+ e.target.files[0].name)}}/>
+                onChange={(e)=> {setImage(e.target.files[0])}}/>
                 </FormGroup>
 
                 <Row className='editButtonContainer'>

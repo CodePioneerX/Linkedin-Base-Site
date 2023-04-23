@@ -519,6 +519,7 @@ def updateUserProfile(request, pk):
     profile.experience = data['experience']
     profile.education = data['education']
     profile.work = data['work']
+    profile.image = data['image']
     profile.volunteering = data['volunteering']
     profile.courses = data['courses']
     profile.projects = data['projects']

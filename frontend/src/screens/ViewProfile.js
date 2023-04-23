@@ -121,7 +121,7 @@ function ViewProfile() {
                     {/* <Row> */}
                     <div className="profile-main-card">
                       <Row style={{backgroundImage: `url(${require("../images/a.jpg")})`, paddingBottom: "15px", backgroundSize: "cover", backgroundPosition: "center center", display: "flex", flexDirection: "column", alignItems: "center"}}>     
-                        <img src={profile.image} alt="Profile" className="profile-image padd_small" style={{ borderRadius: "50%", width: "auto", height: "250px"}}/>
+                        <img src={'http://localhost:8000' + profile.image} alt="Profile" className="profile-image padd_small" style={{ borderRadius: "50%", width: "auto", height: "250px"}}/>
                       </Row>
 
                       <Row style={{background:"white",display: "flex", flexDirection: "column", alignItems: "center"}}>
