@@ -62,3 +62,5 @@ from another terminal
 - React Bootstrap 
 - React Redux 
 
+## References 
+- Some parts of the Frontend for the Messaging features were used and modified from https://github.com/obrymec/TikTok-Chat-Simulation to capture the modern and professional look of it which is under the MIT License
