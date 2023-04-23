@@ -1185,12 +1185,6 @@ def clearNotificationsView(request, pk):
     return Response('Notifications Cleared')
 
 @api_view(['GET'])
-def getUserProfile(request):
-    user = request.user
-    serializer = UserSerializer(user, many=False)
-    return Response(serializer.data)
-
-@api_view(['GET'])
 def getProfileView(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
     profile_serializer = ProfileSerializer(profile)
@@ -1687,19 +1681,6 @@ def getJobApplicationsView(request, pk):
     job_applications = JobApplication.objects.filter(job_post=job, status="true")
     serializer = SimpleJobApplicationSerializer(job_applications, many=True)
     return Response(serializer.data)
-
-#This view shall allow the user to create a job application and upload the wanted files.
-class JobApplicationCreateView(generics.CreateAPIView):
-    queryset = JobApplication.objects.all()
-    serializer_class = SimpleJobApplicationSerializer
-    parser_classes = (MultiPartParser, FormParser)
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=201, headers=headers)
     
 @api_view(['POST'])
 def jobApplicationView(request):
