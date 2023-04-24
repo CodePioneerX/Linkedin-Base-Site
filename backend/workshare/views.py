@@ -756,6 +756,10 @@ def activate(request, uidb64, token):
     
     ###REDIRECTION LINK NEEDS TO BE CHANGED ONCE SITE GETS HOSTED
     return redirect("http://insightwearai.sytes.net:3000")
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
 
 # A function to create a connection between users.

@@ -38,6 +38,46 @@ import{
     UPDATE_PROFILE_FAIL,
 } from '../constants/userConstants'
 
+<<<<<<< Updated upstream
+=======
+export const updateToken = () => async (dispatch, getState) => {
+    try {
+
+        dispatch({
+            type: UPDATE_TOKEN_REQUEST
+        })
+
+        const { 
+            userLogin: { userInfo },
+        } = getState()
+
+        const body = {'refresh': userInfo.refresh}
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+            }
+        }
+    
+        let response = await axios.post(`http://insightwearai.sytes.net:8000/api/token/refresh/`, body, config)
+
+        dispatch({
+            type: UPDATE_TOKEN_SUCCESS,
+            payload: {'refresh': userInfo.refresh, 'access': response.data.access}
+        })
+        
+    } catch(error) {
+        dispatch({
+            type: UPDATE_TOKEN_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+    }
+    
+}
+
+>>>>>>> Stashed changes
 // Action creator to get profile details of a user with the given ID
 export const getProfileDetails = (id) => async (dispatch, getState) => {
     try {
@@ -393,3 +433,81 @@ export const update_profile = (uID, name, title, city, about, experience, educat
         })
     }
 }
+<<<<<<< Updated upstream
+=======
+
+// This function updates a user's profile on the server
+export const upload_document = (uID, resume, coverLetter) => async (dispatch) => {
+    try {
+        
+        // Dispatches an UPDATE_PROFILE_REQUEST action to start the request
+        dispatch({
+            type: UPLOAD_DOCUMENTS_REQUEST
+        })
+        
+        // Configures the headers for the request
+        const config = {
+            headers: {
+                'Content-type': 'multipart/form-data'}
+        }
+        
+        // Sends a POST request to upload user's resume and cover letter
+        const { data } = await axios.post(`http://insightwearai.sytes.net:8000/api/documentsUpload/${uID}/`, 
+            {'resume': resume, 
+            'coverLetter': coverLetter, 
+            }, 
+            config)
+
+        // Dispatches an UPLOAD_DOCUMENTS_SUCCESS action with the upload documents
+        dispatch({
+            type: UPLOAD_DOCUMENTS_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        // Dispatches an UPLOAD_DOCUMENTS_FAIL action with the error message
+        console.log('upload documents failed')
+        dispatch({
+            type: UPLOAD_DOCUMENTS_FAIL,
+            payload: error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+        })
+    }
+}
+
+// This function updates a user's profile on the server
+export const remove_document = (uID, type) => async (dispatch) => {
+    try {
+        
+        // Dispatches an UPDATE_PROFILE_REQUEST action to start the request
+        dispatch({
+            type: REMOVE_DOCUMENT_REQUEST
+        })
+        
+        // Configures the headers for the request
+        const config = {
+            headers: {
+                'Content-type': 'application/json'}
+        }
+        
+        // Sends a POST request to upload user's resume and cover letter
+        const { data } = await axios.put(`http://insightwearai.sytes.net:8000/api/documentRemove/${uID}/`, {'type': type}, config)
+
+        // Dispatches an REMOVE_DOCUMENT_SUCCESS action with the upload documents
+        dispatch({
+            type: REMOVE_DOCUMENT_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        // Dispatches an REMOVE_DOCUMENT_FAIL action with the error message
+        console.log('upload documents failed')
+        dispatch({
+            type: REMOVE_DOCUMENT_FAIL,
+            payload: error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+        })
+    }
+}
+
+>>>>>>> Stashed changes

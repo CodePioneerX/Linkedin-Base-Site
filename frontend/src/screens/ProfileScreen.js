@@ -44,6 +44,99 @@ export const ProfileScreen =()=>{
         //change state
     };
 
+<<<<<<< Updated upstream
+=======
+    const handleOpenForum = () => {
+      setIsForumOpen(true);
+    };
+
+    const handleCloseForum = () => {
+      setIsForumOpen(false);
+    };
+
+    const handleSendMessage  = async () =>{
+
+      const { data } = await axios.get(
+        `http://insightwearai.sytes.net:8000/api/profile/` + location.state.data
+      );
+      
+      console.log(message);
+      console.log(userInfo.email);
+      console.log(data.profile.email);
+
+      var to_user_id = data.profile.email; // u put the other user email here
+      var from_user_id = userInfo.email; // u put your email here
+      var chat_id;
+
+      // Create a new chat and get the chat_id
+      try {
+        const createChatResponse = await fetch(
+          `http://insightwearai.sytes.net:8000/create_chat/NewChat with ${to_user_id}/${from_user_id}/${to_user_id}/`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        if (createChatResponse.ok) {
+          const createChatData = await createChatResponse.json();
+          chat_id = createChatData.pk;
+        } else {
+          console.error(
+            'Error creating chat:',
+            createChatResponse.status,
+            createChatResponse.statusText
+          );
+          return;
+        }
+      } catch (error) {
+        console.error('Error creating chat:', error);
+        return;
+      }
+
+
+
+  // Send the message to the server
+  try {
+    const response = await fetch(
+      `http://insightwearai.sytes.net:8000/chat/${chat_id}/send_message/`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+          chat: chat_id,
+          from_user: from_user_id,
+          to_user: to_user_id,
+          content: message,
+        }),
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Message sent:', data);
+      navigate("/messaging");
+      window.location.reload(false);
+    } else {
+      console.error(
+        'Error sending message:',
+        response.status,
+        response.statusText
+      );
+    }
+  } catch (error) {
+    console.error('Error sending message:', error);
+  }
+
+      setMessage(""); // clear the message textarea
+      setIsForumOpen(false); // close the forum
+    };
+
+>>>>>>> Stashed changes
     //check the connection status between the logged-in user and the searched user
     const checkConnection = async (e) =>{
         
@@ -205,6 +298,35 @@ export const ProfileScreen =()=>{
         setReceivedRec(data.received_recommendations)
       };
 
+<<<<<<< Updated upstream
+=======
+      const reportUser = async (e) => {
+        e.preventDefault()
+        try {
+          // Set the headers for the HTTP request
+          const config = {
+            headers: {
+              'Content-type': 'application/json',
+            }
+          }
+        
+          // Send the HTTP request to report the user
+          const { data } = await axios.post(
+            `http://insightwearai.sytes.net:8000/api/users/report/`,
+              { 'sender': userInfo.id,
+                'recipient': otherUserId,
+                'message': reportMessage },
+              config
+          )
+          window.location.reload(false) 
+        } catch(error) {
+          console.log(error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message)
+        }
+      }
+
+>>>>>>> Stashed changes
       //page set up
       useEffect(() => {
         getProfile();

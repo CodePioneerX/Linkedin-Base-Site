@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-9v$2_5lcr#66z3^e)$98m#)h+cf-(%(4g&35t4i5)@)q(a+5=w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -180,6 +180,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = [
+<<<<<<< Updated upstream
      "http://insightwearai.sytes.net:8080",
      "http://insightwearai.sytes.net:3000",
 ]
@@ -187,6 +188,17 @@ CORS_ORIGIN_WHITELIST = [
 CORS_ALLOWED_ORIGINS = [
      "http://insightwearai.sytes.net:8080",
      "http://insightwearai.sytes.net:3000",
+=======
+     "http://insightwearai.sytes.net:8000",
+     "http://insightwearai.sytes.net:3000",
+     '*',
+]
+
+CORS_ALLOWED_ORIGINS = [
+     "http://insightwearai.sytes.net:8000",
+     "http://insightwearai.sytes.net:3000",
+     
+>>>>>>> Stashed changes
 ]
 
 CORS_ALLOWED_METHODS= [

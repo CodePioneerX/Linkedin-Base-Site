@@ -65,6 +65,23 @@ export const EditPostForm = (post) => {
                 <Input  name="content" value = {content} id="content"
                 onChange={(e)=> setContent(e.target.value)}/>
             </FormGroup>
+<<<<<<< Updated upstream
+=======
+            {post.post.image && image === post.post.image && 
+            <>
+                <Row>
+                    <Label className='labelE'>Existing Image:</Label>
+                    <Col xs={12} style={{display: 'flex', justifyContent: 'center'}}>                        
+                        <img src={'http://insightwearai.sytes.net:8000'+post.post.image} alt="test alt image text" style={{ width: "95%", height: "auto", paddingBottom: "1rem" }} />
+                    </Col>
+                </Row>
+            </>}
+            <FormGroup>
+                <Label className='labelE' for="postImage">Upload a New Image</Label>
+                <Input type="file" onChange={(e)=> setImage(e.target.files[0])}/>
+            </FormGroup>
+            
+>>>>>>> Stashed changes
         
             <Row className='editButtonContainer'>
                 <Col xs={12} md={4}>

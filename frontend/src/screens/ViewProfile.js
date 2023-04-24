@@ -55,7 +55,11 @@ function ViewProfile() {
 
   const getProfile = async () => {
     const { data } = await axios.get(
+<<<<<<< Updated upstream
       `http://insightwearai.sytes.net:8000/api/profile/` + userInfo.id
+=======
+      `http://insightwearai.sytes.net:8000/api/my_profile/${userInfo.id}`
+>>>>>>> Stashed changes
     );
     setProfile(data.profile);
     setRecommendation(data.sent_recommendations);
@@ -120,7 +124,11 @@ function ViewProfile() {
                     {/* <Row> */}
                     <div className="profile-main-card">
                       <Row style={{backgroundImage: `url(${require("../images/a.jpg")})`, paddingBottom: "15px", backgroundSize: "cover", backgroundPosition: "center center", display: "flex", flexDirection: "column", alignItems: "center"}}>     
+<<<<<<< Updated upstream
                         <img src={profile.image} alt="Profile" className="profile-image padd_small" style={{ borderRadius: "50%", width: "auto", height: "250px"}}/>
+=======
+                        <img src={'http://insightwearai.sytes.net:8000' + profile.image} alt="Profile" className="profile-image padd_small" style={{ borderRadius: "50%", width: "auto", height: "250px"}}/>
+>>>>>>> Stashed changes
                       </Row>
 
                       <Row style={{background:"white",display: "flex", flexDirection: "column", alignItems: "center"}}>

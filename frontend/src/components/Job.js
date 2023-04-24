@@ -86,8 +86,13 @@ export default class Job extends Component {
                 <Col xs={4} md={2} style={{display:'flex', alignItems: 'center', justifyContent: 'end'}}>
                 {this.props.author == this.state.job.author ? <button onClick={this.handleClick(this.state.job)} style={{ backgroundColor: "#3D13C6", color: "white", borderRadius: "25px", padding: "5px 10px", border: "none" }}><FontAwesomeIcon icon={faPenToSquare} style={{ color: "white"}}/> </button> : <></>}
                 </Col>
+<<<<<<< Updated upstream
             </Row>
             <Container className='darker'>
+=======
+              </Row>
+              <Container className='darker'>
+>>>>>>> Stashed changes
                 {this.state.job.image ? <img src={'http://insightwearai.sytes.net:8000'+this.state.job.image} alt={this.state.job.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
                 <Row>
                 <Col xs={12}>

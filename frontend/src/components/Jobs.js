@@ -74,7 +74,10 @@ export default class Jobs extends Component {
                   </Col>
                 </Row>
                 <Container className='darker'>
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
                   {job.image ? <img src={'http://insightwearai.sytes.net:8000'+job.image} alt={job.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
                   <Row>
                     <Col xs={12}>

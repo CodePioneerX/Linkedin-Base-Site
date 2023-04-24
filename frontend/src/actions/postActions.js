@@ -86,7 +86,13 @@ export const update_post = (postID, title, content) => async (dispatch, getState
         }
         
          // Make the PUT request to the API endpoint with the updated post information
+<<<<<<< Updated upstream
         const { data } = await axios.put(`http://insightwearai.sytes.net:8000/api/post/update/` + postID, {'title': title, 'content': content}, config)
+=======
+        const { data } = await axios.put(`http://insightwearai.sytes.net:8000/api/post/update/` + postID, 
+        {'title': title, 'content': content, 'image': image}, 
+        config)
+>>>>>>> Stashed changes
         
          // Dispatch an UPDATE_POST_SUCCESS action with the returned data from the API endpoint
         dispatch({
