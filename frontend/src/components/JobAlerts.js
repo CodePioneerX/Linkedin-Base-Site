@@ -10,14 +10,14 @@ const JobAlerts = (props) => {
 	const getJobAlerts = async () => {
 		
 		const { data } = await axios.get(
-			`http://localhost:8000/api/job_alerts/${userId}/`
+			`http://insightwearai.sytes.net:8000/api/job_alerts/${userId}/`
 		);
 		setJobAlerts(data)
 	}
 
 	const deleteHandler = async (id) => {
 		const reponse = await axios.delete(
-			`http://localhost:8000/api/job_alerts/delete/${id}/`
+			`http://insightwearai.sytes.net:8000/api/job_alerts/delete/${id}/`
 		);
     getJobAlerts();
 	}

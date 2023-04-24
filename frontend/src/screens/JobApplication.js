@@ -78,13 +78,13 @@ const JobApplication = () => {
    //Retrieves the user's profile information from the backend API using the user's ID
    const getProfile = async () => {
       const { data } = await axios.get(
-      `http://localhost:8000/api/my_profile/${userInfo.id}`
+      `http://insightwearai.sytes.net:8000/api/my_profile/${userInfo.id}`
       );
       setProfile(data.profile);
    };
 
    const getJob = async () => {
-      const { data } = await axios.get(`http://localhost:8000/api/job/${job_id}`);
+      const { data } = await axios.get(`http://insightwearai.sytes.net:8000/api/job/${job_id}`);
       setJob(data[0]);
       setRequiredDocs(data[1]);
       setReady(true);

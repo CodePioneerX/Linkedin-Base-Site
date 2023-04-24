@@ -42,7 +42,7 @@ export const create_post = (author, title, content, image)  => async (dispatch, 
         
         // Make the POST request to the API endpoint
         const { data } = await axios.post(
-            'http://localhost:8000/api/create_post/',
+            'http://insightwearai.sytes.net:8000/api/create_post/',
             { 'author': author, 'title': title, 'content': content, 'image':image },
             config
         )
@@ -86,7 +86,7 @@ export const update_post = (postID, title, content, image) => async (dispatch, g
         }
         
          // Make the PUT request to the API endpoint with the updated post information
-        const { data } = await axios.put(`http://localhost:8000/api/post/update/` + postID, 
+        const { data } = await axios.put(`http://insightwearai.sytes.net:8000/api/post/update/` + postID, 
         {'title': title, 'content': content, 'image': image}, 
         config)
         
@@ -130,7 +130,7 @@ export const delete_post = (id) => async (dispatch, getState) => {
         }
         
         const { data } = await axios.delete(
-            `http://localhost:8000/api/post/delete/` + id,
+            `http://insightwearai.sytes.net:8000/api/post/delete/` + id,
             config
         )
         

@@ -104,7 +104,7 @@ return (
             <Col>
             {applications.resume?<>
             <div>
-                <a href={'http://localhost:8000'+applications.resume} download>View Resume</a>
+                <a href={'http://insightwearai.sytes.net:8000'+applications.resume} download>View Resume</a>
             </div>
             </>:
             <p>N/A</p>
@@ -118,7 +118,7 @@ return (
             <Col>
             {applications.cover_letter?<>
             <div>
-                <a href={'http://localhost:8000'+applications.cover_letter} download>View Cover Letter</a>
+                <a href={'http://insightwearai.sytes.net:8000'+applications.cover_letter} download>View Cover Letter</a>
             </div>
             </>:
             <p>N/A</p>
@@ -132,7 +132,7 @@ return (
             <Col>
             {applications.letter_of_recommendation?<>
             <div>
-                <a href={'http://localhost:8000'+applications.letter_of_recommendation} download>View Letter of Recommendation</a>
+                <a href={'http://insightwearai.sytes.net:8000'+applications.letter_of_recommendation} download>View Letter of Recommendation</a>
             </div>
             </>:
             <p>N/A</p>
@@ -146,7 +146,7 @@ return (
             <Col>
             {applications.portfolio?<>
             <div>
-                <a href={'http://localhost:8000'+applications.portfolio} download>View Portfolio</a>
+                <a href={'http://insightwearai.sytes.net:8000'+applications.portfolio} download>View Portfolio</a>
             </div>
             </>:
             <p>N/A</p>
@@ -160,7 +160,7 @@ return (
             <Col>
             {applications.transcript?<>
             <div>
-                <a href={'http://localhost:8000'+applications.transcript} download>View Transcript</a>
+                <a href={'http://insightwearai.sytes.net:8000'+applications.transcript} download>View Transcript</a>
             </div>
             </>:
             <p>N/A</p>
@@ -174,7 +174,7 @@ return (
             <Col>
             {applications.other_documents?<>
             <div>
-                <a href={'http://localhost:8000'+applications.other_documents} download>View Other Documents</a>
+                <a href={'http://insightwearai.sytes.net:8000'+applications.other_documents} download>View Other Documents</a>
             </div>
             </>:
             <p>N/A</p>

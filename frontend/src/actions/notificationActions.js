@@ -56,7 +56,7 @@ export const get_notifications = (id) => async (dispatch, getState) => {
             },
         }
 
-        const { data } = await axios.get(`http://localhost:8000/api/notifications/user/${id}`, config)
+        const { data } = await axios.get(`http://insightwearai.sytes.net:8000/api/notifications/user/${id}`, config)
         
         dispatch({
             type: GET_NOTIFICATIONS_SUCCESS,
@@ -93,7 +93,7 @@ export const check_new_notifications = (id, datetime) => async (dispatch, getSta
             },
         }
 
-        const { data } = await axios.get(`http://localhost:8000/api/notifications/new/user/${id}`, 
+        const { data } = await axios.get(`http://insightwearai.sytes.net:8000/api/notifications/new/user/${id}`, 
             {params : {'datetime' : datetime}}, 
             config)
         
@@ -131,7 +131,7 @@ export const count_notifications = (id) => async (dispatch, getState) => {
             },
         }
 
-        const { data } = await axios.get(`http://localhost:8000/api/notifications/unread/user/${id}`, config)
+        const { data } = await axios.get(`http://insightwearai.sytes.net:8000/api/notifications/unread/user/${id}`, config)
         
         dispatch({
             type: COUNT_UNREAD_NOTIFICATIONS_SUCCESS,
@@ -168,7 +168,7 @@ export const delete_notification = (id) => async (dispatch, getState) => {
         }
         
         const { data } = await axios.delete(
-            `http://localhost:8000/api/notification/delete/${id}`,
+            `http://insightwearai.sytes.net:8000/api/notification/delete/${id}`,
             config
         )
         
@@ -206,7 +206,7 @@ export const clear_notifications = (id) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.delete(
-            `http://localhost:8000/api/notifications/user/clear/${id}`,
+            `http://insightwearai.sytes.net:8000/api/notifications/user/clear/${id}`,
             config
         )
 
@@ -243,7 +243,7 @@ export const read_notification = (id) => async (dispatch, getState) => {
         }
         
         const { data } = await axios.put(
-            `http://localhost:8000/api/notification/read/${id}`,
+            `http://insightwearai.sytes.net:8000/api/notification/read/${id}`,
             config
         )
         
@@ -281,7 +281,7 @@ export const read_all_notifications = (id) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.put(
-            `http://localhost:8000/api/notifications/user/read_all/${id}`,
+            `http://insightwearai.sytes.net:8000/api/notifications/user/read_all/${id}`,
             config
         )
 

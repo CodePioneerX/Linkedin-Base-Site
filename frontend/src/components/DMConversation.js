@@ -8,7 +8,7 @@ const DMConversation = ({ senderId, recipientId, conversationId }) => {
 
   useEffect(() => {
     // Create WebSocket connection to server
-    const newWs = new WebSocket(`ws://localhost:8000/ws/dm_conversation/${conversationId}/`);
+    const newWs = new WebSocket(`ws://insightwearai.sytes.net:8000/ws/dm_conversation/${conversationId}/`);
     // Set WebSocket connection to state
     setWs(newWs);
     // Clean up function to close WebSocket connection when component unmounts

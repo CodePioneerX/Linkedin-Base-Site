@@ -46,7 +46,7 @@ const Body = (props) => {
         console.log("user id for the post request : ");
         console.log(userInfo.id);
         const response = await axios.get(
-          `http://localhost:8000/direct_messages/${userInfo.email}/`
+          `http://insightwearai.sytes.net:8000/direct_messages/${userInfo.email}/`
         );
         setChatId(response.data[0].id);
         setReciever(response.data[0].messages[0].from_user);
@@ -96,7 +96,7 @@ const Body = (props) => {
     //get the data of the searched user's profile
     const getProfile = async (email) => {
       const { data } = await axios.get(
-        `http://localhost:8000/api/profile/image/` + email
+        `http://insightwearai.sytes.net:8000/api/profile/image/` + email
       );
       setProfile(data.profile);
       return data.profile;
@@ -268,7 +268,7 @@ const Body = (props) => {
         setTimeout(() => chat_context.current.scroll_to_bottom(), 100);
     
         // Send the message to the server
-        const response = await fetch(`http://localhost:8000/chat/${current_chat}/send_message/`, {
+        const response = await fetch(`http://insightwearai.sytes.net:8000/chat/${current_chat}/send_message/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

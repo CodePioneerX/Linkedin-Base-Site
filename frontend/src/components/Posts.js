@@ -21,7 +21,7 @@ export default class Posts extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:8000/api/posts/user/` + this.props.u_id)
+    axios.get(`http://insightwearai.sytes.net:8000/api/posts/user/` + this.props.u_id)
           .then(res => this.setState({ post_data: res.data['post_data'], profiles: res.data['profiles']}))
   }
   
@@ -31,7 +31,7 @@ export default class Posts extends Component {
         'Content-type': 'application/json'
       }
     }
-    axios.post(`http://localhost:8000/api/posts/like/${post_id}/`, {'user_id': this.props.u_id}, config)
+    axios.post(`http://insightwearai.sytes.net:8000/api/posts/like/${post_id}/`, {'user_id': this.props.u_id}, config)
           .then(res => {
             let posts_ = [...this.state.post_data]
             let index_ = posts_.findIndex(post => post.id === post_id)
@@ -50,7 +50,7 @@ export default class Posts extends Component {
           'Content-type': 'application/json'
         }
       }
-      axios.post(`http://localhost:8000/api/posts/comment/${post_id}/`, {'user_id': this.props.u_id, 'content': this.state.draft_comments[post_id]}, config)
+      axios.post(`http://insightwearai.sytes.net:8000/api/posts/comment/${post_id}/`, {'user_id': this.props.u_id, 'content': this.state.draft_comments[post_id]}, config)
             .then(res => {
               let posts_ = [...this.state.post_data]
               let index_ = posts_.findIndex(post => post.id === post_id)

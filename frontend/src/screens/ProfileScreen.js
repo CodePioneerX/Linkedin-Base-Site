@@ -65,7 +65,7 @@ export const ProfileScreen =()=>{
     const handleSendMessage  = async () =>{
 
       const { data } = await axios.get(
-        `http://localhost:8000/api/profile/` + location.state.data
+        `http://insightwearai.sytes.net:8000/api/profile/` + location.state.data
       );
       
       console.log(message);
@@ -79,7 +79,7 @@ export const ProfileScreen =()=>{
       // Create a new chat and get the chat_id
       try {
         const createChatResponse = await fetch(
-          `http://localhost:8000/create_chat/NewChat with ${to_user_id}/${from_user_id}/${to_user_id}/`,
+          `http://insightwearai.sytes.net:8000/create_chat/NewChat with ${to_user_id}/${from_user_id}/${to_user_id}/`,
           {
             method: 'GET',
             headers: {
@@ -108,7 +108,7 @@ export const ProfileScreen =()=>{
   // Send the message to the server
   try {
     const response = await fetch(
-      `http://localhost:8000/chat/${chat_id}/send_message/`,
+      `http://insightwearai.sytes.net:8000/chat/${chat_id}/send_message/`,
       {
         method: 'POST',
         headers: {
@@ -156,7 +156,7 @@ export const ProfileScreen =()=>{
             }
     
             const { data } = await axios.get(
-              `http://localhost:8000/api/connections/status/` + myUserId +`/`+ otherUserId +`/`,
+              `http://insightwearai.sytes.net:8000/api/connections/status/` + myUserId +`/`+ otherUserId +`/`,
                 config
             )
             
@@ -196,7 +196,7 @@ export const ProfileScreen =()=>{
             }
     
             const { data } = await axios.post(
-              `http://localhost:8000/api/connections/create/` + myUserId +`/`+ otherUserId +`/`,
+              `http://insightwearai.sytes.net:8000/api/connections/create/` + myUserId +`/`+ otherUserId +`/`,
                 config
             )
             window.location.reload(false)  
@@ -223,7 +223,7 @@ export const ProfileScreen =()=>{
             }
     
             const { data } = await axios.delete(
-              `http://localhost:8000/api/connections/delete/` + myUserId +`/`+ otherUserId +`/`,
+              `http://insightwearai.sytes.net:8000/api/connections/delete/` + myUserId +`/`+ otherUserId +`/`,
                 config
             )
             window.location.reload(false)  
@@ -255,7 +255,7 @@ export const ProfileScreen =()=>{
     //check if the current logged in user has recommended the searched user
     const checkRecommendation = async () =>{
       const { data } = await axios.get(
-        `http://localhost:8000/api/profile/` + myUserId
+        `http://insightwearai.sytes.net:8000/api/profile/` + myUserId
       );
       // console.log(data)
       // console.log(data.sent_recommendations)
@@ -292,7 +292,7 @@ export const ProfileScreen =()=>{
             }
     
             const { data } = await axios.delete(
-              `http://localhost:8000/api/delete_recommendation/` + myUserId +`/`+ otherUserId,
+              `http://insightwearai.sytes.net:8000/api/delete_recommendation/` + myUserId +`/`+ otherUserId,
                 config
             )
             window.location.reload(false)  
@@ -306,7 +306,7 @@ export const ProfileScreen =()=>{
     //get the data of the searched user's profile
     const getProfile = async () => {
         const { data } = await axios.get(
-          `http://localhost:8000/api/profile/` + otherUserId
+          `http://insightwearai.sytes.net:8000/api/profile/` + otherUserId
         );
         setProfile(data.profile);
         setRecommendation(data.sent_recommendations);
@@ -325,7 +325,7 @@ export const ProfileScreen =()=>{
         
           // Send the HTTP request to report the user
           const { data } = await axios.post(
-            `http://localhost:8000/api/users/report/`,
+            `http://insightwearai.sytes.net:8000/api/users/report/`,
               { 'sender': userInfo.id,
                 'recipient': otherUserId,
                 'message': reportMessage },

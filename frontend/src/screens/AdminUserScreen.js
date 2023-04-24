@@ -27,7 +27,7 @@ function AdminUserScreen() {
           }
         }
         const { data } = await axios.get(
-          `http://localhost:8000/api/users/reported`, config
+          `http://insightwearai.sytes.net:8000/api/users/reported`, config
         );
         setReportedUsersList( data );
       } catch(error) {

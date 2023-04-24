@@ -28,7 +28,7 @@ export const MyNetwork =()=> {
     const getConnections = async () => {
       try {
         const {data} = await axios.get(
-          `http://localhost:8000/api/connections/accepted/${userInfo.id}`
+          `http://insightwearai.sytes.net:8000/api/connections/accepted/${userInfo.id}`
         );
         setConnectionList(data);
       } catch(error) {
@@ -42,7 +42,7 @@ export const MyNetwork =()=> {
     const getPendingConnections = async () => {
       try {
         const {data} = await axios.get(
-          `http://localhost:8000/api/connections/pending/${userInfo.id}`
+          `http://insightwearai.sytes.net:8000/api/connections/pending/${userInfo.id}`
         );
         setPendingConnectionList(data);
       } catch(error) {
@@ -56,7 +56,7 @@ export const MyNetwork =()=> {
     const getPendingSentConnections = async () => {
       try {
       const {data} = await axios.get(
-        `http://localhost:8000/api/connections/pending_sent/${userInfo.id}`
+        `http://insightwearai.sytes.net:8000/api/connections/pending_sent/${userInfo.id}`
       );
       setPendingSentConnectionList(data);
       } catch(error) {
@@ -70,7 +70,7 @@ export const MyNetwork =()=> {
     const getPossibleConnections = async () => {
       try {
         const {data} = await axios.get(
-          `http://localhost:8000/api/connections/possible/${userInfo.id}`
+          `http://insightwearai.sytes.net:8000/api/connections/possible/${userInfo.id}`
         );
         setUnconnectedList(data);
       } catch(error) {

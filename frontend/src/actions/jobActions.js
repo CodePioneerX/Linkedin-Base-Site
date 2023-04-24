@@ -73,7 +73,7 @@ export const create_job = (author, email, title, description, remote, active, co
 
         // Sending the request to create a job using the axios.post() method and passing the job details along with the configuration object
         const { data } = await axios.post(
-            'http://localhost:8000/api/create_job/',
+            'http://insightwearai.sytes.net:8000/api/create_job/',
             { 'author': author, 
             'title': title, 
             'description': description, 
@@ -154,7 +154,7 @@ export const update_job = (jobID, author, title, description, remote, active, co
         }
         
         // Sending the request to update a job using the axios.put() method and passing the job details along with the job ID and configuration object
-        const { data } = await axios.put(`http://localhost:8000/api/job/update/` + jobID, 
+        const { data } = await axios.put(`http://insightwearai.sytes.net:8000/api/job/update/` + jobID, 
         { 'author': author, 
         'title': title, 
         'description': description, 
@@ -218,7 +218,7 @@ export const delete_job = (id) => async (dispatch, getState) => {
         
         // Send a DELETE request to remove the job from the server
         const { data } = await axios.delete(
-            `http://localhost:8000/api/job/delete/` + id,
+            `http://insightwearai.sytes.net:8000/api/job/delete/` + id,
             config
         )
         
@@ -273,7 +273,7 @@ export const create_job_alert = (userId, search_value, company, location, job_ty
         }
 
         const { data } = await axios.post(
-            `http://localhost:8000/api/job_alerts/${userId}/create/`,
+            `http://insightwearai.sytes.net:8000/api/job_alerts/${userId}/create/`,
             {'search_value': search_value, 
             'company': company,
             'location': location, 
@@ -348,7 +348,7 @@ export const create_job_application = (user_id, job_id, email, name, telephone, 
         }
 
         const { data } = await axios.post(
-            `http://localhost:8000/api/job/apply/`,
+            `http://insightwearai.sytes.net:8000/api/job/apply/`,
             {   
                 'user_id': user_id,
                 'job_id': job_id,
@@ -408,7 +408,7 @@ export const remove_job_application_review = (applicationId) => async (dispatch)
         
         // Send a DELETE request to remove the job application request
         const { data } = await axios.put(
-            `http://localhost:8000/api/job_applications/reject/`+applicationId + `/`,
+            `http://insightwearai.sytes.net:8000/api/job_applications/reject/`+applicationId + `/`,
             config
         )
         

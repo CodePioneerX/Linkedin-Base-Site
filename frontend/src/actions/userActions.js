@@ -70,7 +70,7 @@ export const updateToken = () => async (dispatch, getState) => {
             }
         }
     
-        let response = await axios.post(`http://localhost:8000/api/token/refresh/`, body, config)
+        let response = await axios.post(`http://insightwearai.sytes.net:8000/api/token/refresh/`, body, config)
 
         dispatch({
             type: UPDATE_TOKEN_SUCCESS,
@@ -108,7 +108,7 @@ export const getProfileDetails = (id) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.get(
-            `http://localhost:8000/api/profile/${id}`, // Send a GET request to the backend API to get the user's profile details with the given ID
+            `http://insightwearai.sytes.net:8000/api/profile/${id}`, // Send a GET request to the backend API to get the user's profile details with the given ID
             config
         )
 
@@ -141,7 +141,7 @@ export const login = (email,password) => async (dispatch) => {
         }
 
         const { data } = await axios.post(
-            'http://localhost:8000/api/login/', // Send a POST request to the backend API to log in the user
+            'http://insightwearai.sytes.net:8000/api/login/', // Send a POST request to the backend API to log in the user
             { 'username': email, 'password': password },
             config
         )
@@ -183,7 +183,7 @@ export const changePasswordForReset = (id, newPassword) => async (dispatch) => {
       };
   
       const { data } = await axios.put(
-        `http://localhost:8000/api/changePasswordForReset/${id}`,
+        `http://insightwearai.sytes.net:8000/api/changePasswordForReset/${id}`,
         { newPassword },
         config
       );
@@ -211,7 +211,7 @@ export const changePasswordForReset = (id, newPassword) => async (dispatch) => {
 
 
 /**
- * Sends a PUT request containing oldPassword and newPassword to the following url: `http://localhost:8000/api/changePassword/${id}`.
+ * Sends a PUT request containing oldPassword and newPassword to the following url: `http://insightwearai.sytes.net:8000/api/changePassword/${id}`.
  * This method can be used when a user is logged in. 
  * 
  * @param {int} id 
@@ -233,7 +233,7 @@ export const changePassword = (id, oldPassword, newPassword) => async (dispatch)
       };
   
       const { data } = await axios.put(
-        `http://localhost:8000/api/changePassword/${id}`,
+        `http://insightwearai.sytes.net:8000/api/changePassword/${id}`,
         { oldPassword, newPassword },
         config
       );
@@ -279,7 +279,7 @@ try {
     };
 
     const { data } = await axios.put(
-    `http://localhost:8000/api/password_reset/`,
+    `http://insightwearai.sytes.net:8000/api/password_reset/`,
     { email },
     config
     );
@@ -324,7 +324,7 @@ export const register = (name, email, password) => async (dispatch) => {
         }
         
         const { data } = await axios.post(
-            'http://localhost:8000/api/register/',
+            'http://insightwearai.sytes.net:8000/api/register/',
             { 'name': name, 'username': email, 'password': password },
             config
         )
@@ -370,7 +370,7 @@ export const get_profile = (id) => async (dispatch, getState) => {
 
         // Sends a GET request to the server to get the profile by ID
         const { data } = await axios.get(
-            `http://localhost:8000/api/profile/` + id, 
+            `http://insightwearai.sytes.net:8000/api/profile/` + id, 
             config
         )
 
@@ -411,7 +411,7 @@ export const update_profile = (uID, name, title, city, about, experience, educat
         }
         
         // Sends a PUT request to the server to update the user's profile
-        const { data } = await axios.put(`http://localhost:8000/api/profile/update/` + uID, 
+        const { data } = await axios.put(`http://insightwearai.sytes.net:8000/api/profile/update/` + uID, 
             {'name': name, 
             'title': title, 
             'city': city, 
@@ -460,7 +460,7 @@ export const upload_document = (uID, resume, coverLetter) => async (dispatch) =>
         }
         
         // Sends a POST request to upload user's resume and cover letter
-        const { data } = await axios.post(`http://localhost:8000/api/documentsUpload/${uID}/`, 
+        const { data } = await axios.post(`http://insightwearai.sytes.net:8000/api/documentsUpload/${uID}/`, 
             {'resume': resume, 
             'coverLetter': coverLetter, 
             }, 
@@ -499,7 +499,7 @@ export const remove_document = (uID, type) => async (dispatch) => {
         }
         
         // Sends a POST request to upload user's resume and cover letter
-        const { data } = await axios.put(`http://localhost:8000/api/documentRemove/${uID}/`, {'type': type}, config)
+        const { data } = await axios.put(`http://insightwearai.sytes.net:8000/api/documentRemove/${uID}/`, {'type': type}, config)
 
         // Dispatches an REMOVE_DOCUMENT_SUCCESS action with the upload documents
         dispatch({

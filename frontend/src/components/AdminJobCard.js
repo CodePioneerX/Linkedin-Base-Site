@@ -27,7 +27,7 @@ const AdminJobCard = (props) => {
           Authorization: `Bearer ${auth.access}`   
       }
     }
-    const response = await axios.put(`http://localhost:8000/api/users/ban/${author_id}`, {}, config)
+    const response = await axios.put(`http://insightwearai.sytes.net:8000/api/users/ban/${author_id}`, {}, config)
     window.location.reload()
   }
 
@@ -38,12 +38,12 @@ const AdminJobCard = (props) => {
           Authorization: `Bearer ${auth.access}`   
       }
     }
-    const response = await axios.delete(`http://localhost:8000/api/jobs/report/dismiss/${id}`, config)
+    const response = await axios.delete(`http://insightwearai.sytes.net:8000/api/jobs/report/dismiss/${id}`, config)
     window.location.reload()
   }
 
   const deleteJobHandler = async () => {
-    const response = await axios.delete(`http://localhost:8000/api/job/delete/${job_id}`)
+    const response = await axios.delete(`http://insightwearai.sytes.net:8000/api/job/delete/${job_id}`)
     window.location.reload()
   }
 

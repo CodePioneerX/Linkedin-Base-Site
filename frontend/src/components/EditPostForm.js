@@ -77,7 +77,7 @@ export const EditPostForm = (post) => {
                 <Row>
                     <Label className='labelE'>Existing Image:</Label>
                     <Col xs={12} style={{display: 'flex', justifyContent: 'center'}}>                        
-                        <img src={'http://localhost:8000'+post.post.image} alt="test alt image text" style={{ width: "95%", height: "auto", paddingBottom: "1rem" }} />
+                        <img src={'http://insightwearai.sytes.net:8000'+post.post.image} alt="test alt image text" style={{ width: "95%", height: "auto", paddingBottom: "1rem" }} />
                     </Col>
                 </Row>
             </>}

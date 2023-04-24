@@ -24,7 +24,7 @@ export default class Jobs extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:8000/api/jobs/')
+    axios.get('http://insightwearai.sytes.net:8000/api/jobs/')
       .then(res => this.setState({ jobs: res.data }))
     }
 
@@ -86,7 +86,7 @@ export default class Jobs extends Component {
                   </Col>
                 </Row>
                 <Container className='darker'>
-                  {job.image ? <img src={'http://localhost:8000'+job.image} alt={job.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
+                  {job.image ? <img src={'http://insightwearai.sytes.net:8000'+job.image} alt={job.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
                   <Row>
                     <Col xs={12}>
                       <h4>Description: </h4>

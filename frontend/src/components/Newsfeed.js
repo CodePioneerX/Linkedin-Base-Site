@@ -20,7 +20,7 @@ export default class Newsfeed extends Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:8000/api/newsfeed/${this.props.id}`)
+        axios.get(`http://insightwearai.sytes.net:8000/api/newsfeed/${this.props.id}`)
             .then(res => this.setState({ post_data: res.data['post_data'], profiles: res.data['profiles']}))
     }
 
@@ -41,7 +41,7 @@ export default class Newsfeed extends Component {
           'Content-type': 'application/json'
         }
       }
-      axios.post(`http://localhost:8000/api/posts/like/${post_id}/`, {'user_id': this.props.id}, config)
+      axios.post(`http://insightwearai.sytes.net:8000/api/posts/like/${post_id}/`, {'user_id': this.props.id}, config)
             .then(res => {
               let posts_ = [...this.state.post_data]
               let index_ = posts_.findIndex(post => post.id === post_id)
@@ -60,7 +60,7 @@ export default class Newsfeed extends Component {
             'Content-type': 'application/json'
           }
         }
-        axios.post(`http://localhost:8000/api/posts/comment/${post_id}/`, {'user_id': this.props.id, 'content': this.state.draft_comments[post_id]}, config)
+        axios.post(`http://insightwearai.sytes.net:8000/api/posts/comment/${post_id}/`, {'user_id': this.props.id, 'content': this.state.draft_comments[post_id]}, config)
               .then(res => {
                 let posts_ = [...this.state.post_data]
                 let index_ = posts_.findIndex(post => post.id === post_id)
@@ -114,7 +114,7 @@ export default class Newsfeed extends Component {
                       <Row style={{ display: "flex", alignItems: "center"}}>
                         <Col xs={2} md={1}>
                           {(profiles.find(profile => profile.user === post.author).image) ? 
-                            <img src={'http://localhost:8000'+(profiles.find(profile => profile.user === post.author).image)} alt="profile image" style={{ borderRadius: "50%", width: "auto", height: "55px", width: "55px", marginRight: "10px" }} /> : 
+                            <img src={'http://insightwearai.sytes.net:8000'+(profiles.find(profile => profile.user === post.author).image)} alt="profile image" style={{ borderRadius: "50%", width: "auto", height: "55px", width: "55px", marginRight: "10px" }} /> : 
                             <p style={{ borderRadius: "50%", border: "0.1rem solid black", width: "auto", height: "55px", width: "55px", marginRight: "10px" }}></p>}
                         </Col>
                         <Col xs={7} md={10}>
@@ -139,7 +139,7 @@ export default class Newsfeed extends Component {
                       {post.image && 
                         <Row>
                           <Col xs={12}>                        
-                            <img src={'http://localhost:8000'+post.image} alt="test alt image text" style={{ width: "100%", height: "auto", paddingBottom: "1rem" }} />
+                            <img src={'http://insightwearai.sytes.net:8000'+post.image} alt="test alt image text" style={{ width: "100%", height: "auto", paddingBottom: "1rem" }} />
                           </Col>
                         </Row>}
                       <Row style={{ justifyContent: "space-between", borderBottom: "1px solid #D3D3D3", marginBottom:"1%" }}>

@@ -2,7 +2,7 @@
   "id": "9945b483-4197-432e-9faf-c5817b4231a1",
   "version": "2.0",
   "name": "ConnecT",
-  "url": "http://localhost:3000",
+  "url": "http://insightwearai.sytes.net:3000",
   "tests": [{
     "id": "be0aa74e-2ba4-4f07-9169-5ab89cfb7de7",
     "name": "Opening and sending a message first conversation",
@@ -135,6 +135,6 @@
     "timeout": 300,
     "tests": ["be0aa74e-2ba4-4f07-9169-5ab89cfb7de7"]
   }],
-  "urls": ["http://localhost:3000/"],
+  "urls": ["http://insightwearai.sytes.net:3000/"],
   "plugins": []
 }

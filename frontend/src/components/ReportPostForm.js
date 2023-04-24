@@ -33,7 +33,7 @@ export const ReportPostForm = (post) => {
           }
           
           const { data } = await axios.post(
-            `http://localhost:8000/api/posts/report/`,
+            `http://insightwearai.sytes.net:8000/api/posts/report/`,
               { 'sender': userInfo.id,
                 'post': post.post.id,
                 'message': reportMessage },

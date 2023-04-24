@@ -27,7 +27,7 @@ function AdminPostScreen() {
           }
         }
         const { data } = await axios.get(
-          `http://localhost:8000/api/posts/reported`, config
+          `http://insightwearai.sytes.net:8000/api/posts/reported`, config
         );
         setReportedPostsList( data );
       } catch(error) {

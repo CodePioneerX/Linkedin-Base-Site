@@ -18,7 +18,7 @@ const [jobPosts, setJobPosts] = useState([])
 const getProfile = async () => {
     try{
     const { data } = await axios.get(
-      `http://localhost:8000/api/jobs_applications/user/` + props.u_id
+      `http://insightwearai.sytes.net:8000/api/jobs_applications/user/` + props.u_id
     );
     setJobPosts(data)
     }catch (error) {

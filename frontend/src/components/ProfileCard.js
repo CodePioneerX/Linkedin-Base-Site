@@ -11,7 +11,7 @@ const [profile, setProfile] = useState("");
 const getProfile = async () => {
 
   const {data} = await axios.get(
-    `http://localhost:8000/api/profile/${props.user.id}`
+    `http://insightwearai.sytes.net:8000/api/profile/${props.user.id}`
   );
   setProfile(data.profile);
   

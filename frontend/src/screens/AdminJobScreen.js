@@ -27,7 +27,7 @@ function AdminJobScreen() {
           }
         }
         const { data } = await axios.get(
-          `http://localhost:8000/api/jobs/reported`, config
+          `http://insightwearai.sytes.net:8000/api/jobs/reported`, config
         );
         setReportedJobsList( data );
       } catch(error) {

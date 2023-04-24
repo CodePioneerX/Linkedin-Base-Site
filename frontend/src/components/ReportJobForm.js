@@ -35,7 +35,7 @@ export const ReportJobForm = (job) => {
           }
           
           const { data } = await axios.post(
-            `http://localhost:8000/api/jobs/report/`,
+            `http://insightwearai.sytes.net:8000/api/jobs/report/`,
               { 'sender': userInfo.id,
                 'job': job.job.id,
                 'message': reportMessage },

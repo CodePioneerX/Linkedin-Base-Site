@@ -80,7 +80,7 @@ return (
               {!resumeRemoved &&
               <>
                 <div>
-                  <p>You've already uploaded a resume, you can <a href={'http://localhost:8000'+profile.resume} download>download it here</a>.</p>
+                  <p>You've already uploaded a resume, you can <a href={'http://insightwearai.sytes.net:8000'+profile.resume} download>download it here</a>.</p>
                 </div>
                 <div>
                     <p>Click <a href={''} onClick={(e) => removeDocument(e, 'resume')}>here</a> to remove your old resume.</p>    
@@ -100,7 +100,7 @@ return (
               {!coverLetterRemoved && 
               <>
                 <div>
-                  <p>You've already uploaded a cover letter, you can <a href={'http://localhost:8000'+profile.cover_letter} download>download it here</a>.</p>
+                  <p>You've already uploaded a cover letter, you can <a href={'http://insightwearai.sytes.net:8000'+profile.cover_letter} download>download it here</a>.</p>
                 </div>
                 <div>
                   <p>Click <a href={''} onClick={(e) => removeDocument(e, 'cover_letter')}>here</a> to remove your old cover letter.</p>

@@ -19,7 +19,7 @@ export default class Job extends Component {
 // Fetching data from API when component mounts
     componentDidMount() {
         try {
-            axios.get(`http://localhost:8000/api/job/${this.props.job_id}`)
+            axios.get(`http://insightwearai.sytes.net:8000/api/job/${this.props.job_id}`)
                 .then(res => this.setState({ job: res.data[0], required_docs: res.data[1], ready: true })) // Update the state with the job details and required documents
                 .catch(() => this.setState({error: true})) // If there's an error fetching the data, set the error state to true
        } catch(error) {
@@ -87,7 +87,7 @@ export default class Job extends Component {
                 </Col>
               </Row>
               <Container className='darker'>
-                {this.state.job.image ? <img src={'http://localhost:8000'+this.state.job.image} alt={this.state.job.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
+                {this.state.job.image ? <img src={'http://insightwearai.sytes.net:8000'+this.state.job.image} alt={this.state.job.title} style={{ borderRadius: "50%", width: "auto", height: "55px", marginRight: "10px" }} /> : <></>}
                 <Row>
                   <Col xs={12}>
                     <h4>Description: </h4>

@@ -24,7 +24,7 @@ const getProfile = async () => {
     }
 
     const {data} = await axios.get(
-      `http://localhost:8000/api/profile/${userId}`
+      `http://insightwearai.sytes.net:8000/api/profile/${userId}`
     );
     setProfile(data.profile);
   };

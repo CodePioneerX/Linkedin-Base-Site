@@ -52,7 +52,7 @@ function SearchScreen() {
   useEffect(() => {
     if (name) {
         console.log(name)
-      axios.get('http://localhost:8000/api/search/',
+      axios.get('http://insightwearai.sytes.net:8000/api/search/',
       { params:{   
             'searchValue': name, 
             'company': company,
@@ -108,7 +108,7 @@ function SearchScreen() {
                     'Content-type': 'application/json'
                 }
             }
-            const { data } = await axios.get(`http://localhost:8000/api/search/`, 
+            const { data } = await axios.get(`http://insightwearai.sytes.net:8000/api/search/`, 
             {params:{
               'searchValue': name, 
             'company': company,

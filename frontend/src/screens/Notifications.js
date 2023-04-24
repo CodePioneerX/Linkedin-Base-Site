@@ -73,7 +73,7 @@ function Notifications() {
     const cancelApplication = async (id, notification_id) => {
       try {
         const response = await axios.delete(
-          `http://localhost:8000/api/my_job_applications/cancel/${id}/`
+          `http://insightwearai.sytes.net:8000/api/my_job_applications/cancel/${id}/`
         )
         deleteHandler(notification_id)
         window.location.reload()
@@ -88,7 +88,7 @@ function Notifications() {
     const rejectConnection = async (id, notification) => {
       try {
         const { data } = await axios.get(
-          `http://localhost:8000/api/connections/status/${userInfo.id}/${id}/`)
+          `http://insightwearai.sytes.net:8000/api/connections/status/${userInfo.id}/${id}/`)
           
         const connected = data.status
         
@@ -98,7 +98,7 @@ function Notifications() {
   
         else if (connected === 'Confirm') {
           const response = await axios.delete(
-            `http://localhost:8000/api/connections/reject/${id}/${userInfo.id}/`
+            `http://insightwearai.sytes.net:8000/api/connections/reject/${id}/${userInfo.id}/`
           )
           dispatch(read_notification(notification))
           dispatch(get_notifications(userInfo.id))
@@ -118,7 +118,7 @@ function Notifications() {
     const acceptConnection = async (id, notification) => {
       try {
         const { data } = await axios.get(
-          `http://localhost:8000/api/connections/status/${userInfo.id}/${id}/`)
+          `http://insightwearai.sytes.net:8000/api/connections/status/${userInfo.id}/${id}/`)
           
         const connected = data.status
 
@@ -128,7 +128,7 @@ function Notifications() {
   
         else if (connected === 'Confirm') {
           const response = await axios.put(
-            `http://localhost:8000/api/connections/accept/${id}/${userInfo.id}/`
+            `http://insightwearai.sytes.net:8000/api/connections/accept/${id}/${userInfo.id}/`
           )
           dispatch(read_notification(notification))
           dispatch(get_notifications(userInfo.id))

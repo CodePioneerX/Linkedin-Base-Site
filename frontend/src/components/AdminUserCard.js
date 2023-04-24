@@ -25,7 +25,7 @@ const AdminUserCard = (props) => {
   const getProfile = async () => {
     // Send GET request to retrieve user profile information
     const {data} = await axios.get(
-      `http://localhost:8000/api/profile/${props.userId}`
+      `http://insightwearai.sytes.net:8000/api/profile/${props.userId}`
     );
     // Update state with retrieved profile information
     setProfile(data.profile);
@@ -41,7 +41,7 @@ const AdminUserCard = (props) => {
 
     // Send GET request to retrieve user report messages
     const {data} = await axios.get(
-      `http://localhost:8000/api/users/reports/${props.userId}`, config
+      `http://insightwearai.sytes.net:8000/api/users/reports/${props.userId}`, config
     );
     // Update state with retrieved report messages
     setReportMessages(data);
@@ -54,7 +54,7 @@ const AdminUserCard = (props) => {
           Authorization: `Bearer ${auth.access}`   
       }
     }
-    const response = await axios.put(`http://localhost:8000/api/users/ban/${props.userId}`, {}, config)
+    const response = await axios.put(`http://insightwearai.sytes.net:8000/api/users/ban/${props.userId}`, {}, config)
     window.location.reload()
   }
 
@@ -65,7 +65,7 @@ const AdminUserCard = (props) => {
           Authorization: `Bearer ${auth.access}`   
       }
     }
-    const response = await axios.delete(`http://localhost:8000/api/users/report/dismiss/${props.userId}`, config)
+    const response = await axios.delete(`http://insightwearai.sytes.net:8000/api/users/report/dismiss/${props.userId}`, config)
     window.location.reload()
   }
 
