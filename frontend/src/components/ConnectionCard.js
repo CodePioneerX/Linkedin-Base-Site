@@ -32,7 +32,7 @@ const getProfile = async () => {
   const acceptHandler = async () => {
     // accept connection request
     const response = await axios.put(
-      `http://localhost:8000/api/connections/accept/${props.yourId}/${props.otherUserId}/`
+      `http://localhost:8000/api/connections/accept/${props.otherUserId}/${props.yourId}/`
     )
     // Reload the page to show updated connection status
     window.location.reload()
@@ -42,7 +42,7 @@ const getProfile = async () => {
   const rejectHandler = async () => {
    // Send DELETE request to delete connection request
     const response = await axios.delete(
-      `http://localhost:8000/api/connections/reject/${props.yourId}/${props.otherUserId}/`
+      `http://localhost:8000/api/connections/reject/${props.otherUserId}/${props.yourId}/`
     )
     // Reload the page to show deleted connection request
     window.location.reload()
@@ -62,7 +62,7 @@ const getProfile = async () => {
   const sendConnectionRequestHandler = async () => {
   // Send POST request to create new connection request
     const response = await axios.post(
-      `http://localhost:8000/api/connections/create/${props.senderId}/${props.recipientId}/`  
+      `http://localhost:8000/api/connections/create/${props.yourId}/${props.otherUserId}/`  
     )
     // Reload the page to show newly created connection request
     window.location.reload()
@@ -109,7 +109,7 @@ const getProfile = async () => {
               <Col style={{display:'flex', justifyContent:'left'}}>
                   <Card.Img className='img-fluid rounded-pill' 
                   style={{width:'50px'}}
-                  src={profile.image} />  
+                  src={`http://localhost:8000${profile.image}`} />  
                   <Card.Title style={{marginLeft:'1rem',marginTop:'.5rem'}}><Link id='cardTitle' to="/profileScreen" state={{data:props.otherUserId}}>{profile.name}</Link></Card.Title>             
               </Col>
               <Col style={{display:'flex', justifyContent:'right'}}>
